@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key, this.username}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ProfileScreenState();
+  State<StatefulWidget> createState() => _ProfileScreenState(username);
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -20,11 +22,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Profile _profile = Profile(null, null, 'Loading...', 0, 0, 0, List(), '', false);
   Iterable<Tweet> _tweets = List();
 
+  StreamSubscription _sub;
+
+  String _username;
+
+  _ProfileScreenState(this._username);
+
   @override
   void initState() {
     super.initState();
+    fetchProfile(_username);
+  }
 
-    TwitterClient.getProfile(widget.username).then((profile) {
+  void fetchProfile(String username) {
+    TwitterClient.getProfile(username).then((profile) {
       setState(() {
         _profile = profile;
         _tweets = profile.tweets;
@@ -37,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var numberFormat = NumberFormat.compact();
 
     var tweets = _tweets.map((tweet) {
-      return TweetTile(tweet: tweet);
+      return TweetTile(currentUsername: _username, tweet: tweet);
     }).toList();
 
     var bannerImage = _profile.banner == null
@@ -107,5 +118,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     return child;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_sub != null) {
+      _sub.cancel();
+    }
   }
 }
