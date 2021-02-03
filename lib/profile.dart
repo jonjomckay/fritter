@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key, this.username}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ProfileScreenState(username);
+  State<StatefulWidget> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -24,14 +24,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   StreamSubscription _sub;
 
-  String _username;
-
-  _ProfileScreenState(this._username);
-
   @override
   void initState() {
     super.initState();
-    fetchProfile(_username);
+    fetchProfile(widget.username);
   }
 
   void fetchProfile(String username) {
@@ -44,11 +40,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void didUpdateWidget(ProfileScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.username != widget.username) {
+      fetchProfile(widget.username);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
 
     var tweets = _tweets.map((tweet) {
-      return TweetTile(currentUsername: _username, tweet: tweet);
+      return TweetTile(currentUsername: widget.username, tweet: tweet);
     }).toList();
 
     var bannerImage = _profile.banner == null
