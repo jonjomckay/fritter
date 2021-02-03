@@ -40,3 +40,12 @@ class Tweet {
     return Tweet([], [], '', DateTime.now(), '', 0, 0, 0, 0, false, '', '', '');
   }
 }
+
+class User {
+  final String avatar;
+  final String fullName;
+  final String username;
+  final bool verified;
+
+  User(this.avatar, this.fullName, this.username, this.verified);
+}

@@ -14,6 +14,7 @@
 * Viewing profiles
 * Viewing tweets and replies
 * Viewing pictures, videos and GIFs in tweets
+* Searching for tweets and users
 * Supports opening twitter.com links directly
 
 ## Acknowledgments
