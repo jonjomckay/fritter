@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/loading.dart';
 import 'package:fritter/models.dart';
 import 'package:fritter/tweet.dart';
 
@@ -15,14 +15,20 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-  Tweet _status;
+  bool _loading = true;
+  Tweet _status = Tweet.emptyTweet();
 
   @override
   void initState() {
     super.initState();
 
+    setState(() {
+      _loading = true;
+    });
+
     TwitterClient.getStatus(widget.username, widget.id).then((status) {
       setState(() {
+        _loading = false;
         _status = status;
       });
     });
@@ -30,36 +36,35 @@ class _StatusScreenState extends State<StatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-    if (_status == null) {
-      child = Center();
-    } else {
-      Iterable<Widget> comments = _status.comments.map((e) {
-        return TweetTile(currentUsername: widget.username, tweet: e);
-      });
-
-      if (comments.isEmpty) {
+    Iterable<Widget> comments = [];
+    if (_status != null) {
+      if (_status.comments.isEmpty) {
         comments = [Text('No replies')];
+      } else {
+        comments = _status.comments.map((e) {
+          return TweetTile(currentUsername: widget.username, tweet: e);
+        });
       }
-
-      child = SingleChildScrollView(
-        child: Column(
-          children: [
-            TweetTile(currentUsername: widget.username, tweet: _status),
-            Padding(
-              padding: EdgeInsets.all(32),
-              child: Column(
-                children: [...comments],
-              ),
-            )
-          ],
-        ),
-      );
-    };
+    }
 
     return Scaffold(
       appBar: AppBar(),
-      body: child,
+      body: SingleChildScrollView(
+        child: LoadingStack(
+          loading: _loading,
+          child: Column(
+            children: [
+              TweetTile(currentUsername: widget.username, tweet: _status),
+              Padding(
+                padding: EdgeInsets.all(32),
+                child: Column(
+                  children: [...comments],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
