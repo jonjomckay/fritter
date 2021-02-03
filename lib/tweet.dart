@@ -1,6 +1,7 @@
 import 'package:better_player/better_player.dart';
 import 'package:fritter/models.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/status.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -158,9 +159,18 @@ class TweetTile extends StatelessWidget {
                           trailing: Text(timeago.format(tweet.date),
                               style: Theme.of(context).textTheme.caption),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                          child: Text(tweet.content, style: Theme.of(context).textTheme.subtitle1),
+                        GestureDetector(
+                          onTap: () {
+                            var a = Uri.parse(tweet.link);
+                            var username = a.pathSegments[0];
+                            var statusId = a.pathSegments[2];
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                            child: Text(tweet.content, style: Theme.of(context).textTheme.subtitle1),
+                          ),
                         ),
                         ...attachments,
                       ],
