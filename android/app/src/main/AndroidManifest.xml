@@ -48,6 +48,10 @@
                 <data
                     android:scheme="https"
                     android:host="twitter.com" />
+
+                <data
+                    android:scheme="https"
+                    android:host="mobile.twitter.com" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
