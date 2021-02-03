@@ -20,7 +20,8 @@ class Profile {
 }
 
 class Tweet {
-  final List<Media> attachments;
+  final Iterable<Media> attachments;
+  final Iterable<Tweet> comments;
   final String content;
   final DateTime date;
   final String link;
@@ -33,5 +34,9 @@ class Tweet {
   final String userFullName;
   final String userUsername;
 
-  Tweet(this.attachments, this.content, this.date, this.link, this.numberOfComments, this.numberOfLikes, this.numberOfQuotes, this.numberOfRetweets, this.retweet, this.userAvatar, this.userFullName, this.userUsername);
+  Tweet(this.attachments, this.comments, this.content, this.date, this.link, this.numberOfComments, this.numberOfLikes, this.numberOfQuotes, this.numberOfRetweets, this.retweet, this.userAvatar, this.userFullName, this.userUsername);
+
+  static Tweet emptyTweet() {
+    return Tweet([], [], '', DateTime.now(), '', 0, 0, 0, 0, false, '', '', '');
+  }
 }
