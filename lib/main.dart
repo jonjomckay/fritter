@@ -41,13 +41,21 @@ class DefaultPage extends StatefulWidget {
 }
 
 class _DefaultPageState extends State<DefaultPage> {
+  String _page;
+
+  String _username;
+  String _statusId;
+
   StreamSubscription _sub;
 
   void handleInitialLink(Uri link) {
     // Parse the link
     if (link.pathSegments.length == 1) {
       // Assume it's a username
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: link.pathSegments.first)), (_) => false);
+      setState(() {
+        _page = 'profile';
+        _username = link.pathSegments.first;
+      });
       return;
     }
 
@@ -56,7 +64,11 @@ class _DefaultPageState extends State<DefaultPage> {
       var username = link.pathSegments[0];
       var statusId = link.pathSegments[2];
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)), (_) => false);
+      setState(() {
+        _page = 'status';
+        _username = username;
+        _statusId = statusId;
+      });
       return;
     }
   }
@@ -80,6 +92,15 @@ class _DefaultPageState extends State<DefaultPage> {
 
   @override
   Widget build(BuildContext context) {
+    switch (_page) {
+      case 'profile':
+        return ProfileScreen(username: _username);
+      case 'status':
+        return StatusScreen(username: _username, id: _statusId);
+      default:
+        return Container();
+    }
+
     return ProfileScreen(username: 'jonjomckay');
   }
 
