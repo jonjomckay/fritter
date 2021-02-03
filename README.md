@@ -9,6 +9,13 @@
   A free, open-source Twitter/Nitter client for Android and iOS.
 </p>
 
+## Features
+
+* Viewing profiles
+* Viewing tweets and replies
+* Viewing pictures, videos and GIFs in tweets
+* Supports opening twitter.com links directly
+
 ## Acknowledgments
 
 Icons made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com).
