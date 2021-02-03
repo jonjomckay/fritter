@@ -15,9 +15,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fritter',
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+
+        // TODO: These are only required due to https://github.com/flutter/flutter/issues/19089
+        accentColor: Colors.blue[500],
+        toggleableActiveColor: Colors.blue[500],
+        textSelectionColor: Colors.blue[200],
+      ),
+      themeMode: ThemeMode.system,
       home: DefaultPage(),
     );
   }
