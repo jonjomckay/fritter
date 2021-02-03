@@ -21,19 +21,6 @@ class TwitterClient {
 
     var document = parse(response.body);
 
-    var bannerElement = document.querySelector('.profile-banner img');
-    var banner = bannerElement == null
-        ? null
-        : '$BASE_URL${bannerElement.attributes['src']}';
-
-    var avatar = '$BASE_URL${document.querySelector('.profile-card-avatar img').attributes['src']}';
-    var fullName = document.querySelector('.profile-card-fullname').text;
-    var username = document.querySelector('.profile-card-username').text;
-    var verified = document.querySelector('.profile-card-fullname .verified-icon') != null;
-    var numberOfTweets = extractNumbers(document.querySelector('.profile-statlist .posts .profile-stat-num').text);
-    var numberOfFollowing = extractNumbers(document.querySelector('.profile-statlist .following .profile-stat-num').text);
-    var numberOfFollowers = extractNumbers(document.querySelector('.profile-statlist .followers .profile-stat-num').text);
-
     var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line').map((e) {
       // TODO: Handle threads properly
       if (e.classes.contains('thread-line')) {
@@ -44,7 +31,7 @@ class TwitterClient {
     })
         .map((e) => mapNodeToTweet(e));
 
-    return Profile(avatar, banner, fullName, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
+    return mapNodeToProfile(document.body, tweets);
   }
 
   static Future<Tweet> getStatus(String username, String id) async {
@@ -57,6 +44,57 @@ class TwitterClient {
     var document = parse(response.body);
     
     return mapNodeToTweet(document.querySelector('.conversation'));
+  }
+
+  static Future<Iterable<Tweet>> searchTweets(String query) async {
+    var response = await http.get('https://nitter.42l.fr/search?f=tweets&q=${Uri.encodeQueryComponent(query)}', headers: {
+      'Cookie': 'hlsPlayback=on'
+    });
+
+    // TODO: Handle errors, 429
+
+    var document = parse(response.body);
+
+    // TODO: This is copied from above
+    return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line').map((e) {
+      // TODO: Handle threads properly
+      if (e.classes.contains('thread-line')) {
+        return e.children.first;
+      }
+
+      return e;
+    })
+        .map((e) => mapNodeToTweet(e));
+  }
+
+  static Future<Iterable<User>> searchUsers(String query) async {
+    var response = await http.get('https://nitter.42l.fr/search?f=users&q=${Uri.encodeQueryComponent(query)}', headers: {
+      'Cookie': 'hlsPlayback=on'
+    });
+
+    // TODO: Handle errors, 429
+
+    var document = parse(response.body);
+
+    return document.querySelectorAll('.timeline > .timeline-item')
+        .map((e) => mapNodeToUser(e));
+  }
+
+  static Profile mapNodeToProfile(Element e, Iterable<Tweet> tweets) {
+    var bannerElement = e.querySelector('.profile-banner img');
+    var banner = bannerElement == null
+        ? null
+        : '$BASE_URL${bannerElement.attributes['src']}';
+
+    var avatar = '$BASE_URL${e.querySelector('.profile-card-avatar img').attributes['src']}';
+    var fullName = e.querySelector('.profile-card-fullname').text;
+    var username = e.querySelector('.profile-card-username').text;
+    var verified = e.querySelector('.profile-card-fullname .verified-icon') != null;
+    var numberOfTweets = extractNumbers(e.querySelector('.profile-statlist .posts .profile-stat-num').text);
+    var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num').text);
+    var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num').text);
+
+    return Profile(avatar, banner, fullName, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
   }
   
   static Tweet mapNodeToTweet(Element e) {
@@ -96,5 +134,14 @@ class TwitterClient {
     var userUsername = e.querySelector('.tweet-name-row .username').text;
 
     return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
+  }
+
+  static User mapNodeToUser(Element e) {
+    var avatar = '$BASE_URL${e.querySelector('.tweet-avatar img').attributes['src']}';
+    var fullName = e.querySelector('.tweet-header .fullname').text;
+    var username = e.querySelector('.tweet-header .username').text;
+    var verified = e.querySelector('.tweet-header .verified-icon') != null;
+
+    return User(avatar, fullName, username, verified);
   }
 }

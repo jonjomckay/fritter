@@ -205,7 +205,6 @@ class TweetTile extends StatelessWidget {
                 ),
               ],
             )
-
           ],
         ),
       );

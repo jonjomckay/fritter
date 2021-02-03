@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fritter/profile.dart';
+import 'package:fritter/search.dart';
 import 'package:fritter/status.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -98,7 +99,7 @@ class _DefaultPageState extends State<DefaultPage> {
       case 'status':
         return StatusScreen(username: _username, id: _statusId);
       default:
-        return Container();
+        return SearchScreen();
     }
 
     return ProfileScreen(username: 'jonjomckay');
