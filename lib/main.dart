@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fritter/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/profile.dart';
 import 'package:fritter/status.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -43,29 +43,35 @@ class DefaultPage extends StatefulWidget {
 class _DefaultPageState extends State<DefaultPage> {
   StreamSubscription _sub;
 
+  void handleInitialLink(Uri link) {
+    // Parse the link
+    if (link.pathSegments.length == 1) {
+      // Assume it's a username
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: link.pathSegments.first)), (_) => false);
+      return;
+    }
+
+    if (link.pathSegments.length == 3) {
+      // Assume it's a tweet
+      var username = link.pathSegments[0];
+      var statusId = link.pathSegments[2];
+
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)), (_) => false);
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    getInitialLink().then((value) {
+    getInitialUri().then((link) {
+      if (link != null) {
+        handleInitialLink(link);
+      }
+
       // Attach a listener to the stream
-      _sub = getUriLinksStream().listen((Uri link) {
-        // Parse the link
-        if (link.pathSegments.length == 1) {
-          // Assume it's a username
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: link.pathSegments.first)));
-          return;
-        }
-
-        if (link.pathSegments.length == 3) {
-          // Assume it's a tweet
-          var username = link.pathSegments[0];
-          var statusId = link.pathSegments[2];
-
-          Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
-          return;
-        }
-      }, onError: (err) {
+      _sub = getUriLinksStream().listen((link) => handleInitialLink(link), onError: (err) {
         // TODO: Handle exception by warning the user their action did not succeed
         int i = 0;
       });
