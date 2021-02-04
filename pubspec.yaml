@@ -40,6 +40,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons: "^0.8.0"
+  flutter_oss_licenses:
 
 flutter_icons:
   android: "launcher_icon"
