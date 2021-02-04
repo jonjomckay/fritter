@@ -8,76 +8,63 @@ class TwitterClient {
   static final String BASE_URL = 'https://nitter.42l.fr';
   static final RegExp ONLY_NUMBERS = new RegExp(r'[^0-9]');
 
-  static int extractNumbers(String text) {
-    return int.parse(text.replaceAll(ONLY_NUMBERS, ''));
-  }
-
   static Future<Profile> getProfile(String profile) async {
-    var response = await http.get('https://nitter.42l.fr/$profile', headers: {
-      'Cookie': 'hlsPlayback=on'
-    });
+    var document = await scrapePage('https://nitter.42l.fr/$profile');
 
-    // TODO: Handle errors, 429
+    var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
+        .map((e) {
+          // TODO: Handle threads properly
+          if (e.classes.contains('thread-line')) {
+            return e.children.first;
+          }
 
-    var document = parse(response.body);
-
-    var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line').map((e) {
-      // TODO: Handle threads properly
-      if (e.classes.contains('thread-line')) {
-        return e.children.first;
-      }
-
-      return e;
-    })
+          return e;
+        })
         .map((e) => mapNodeToTweet(e));
 
     return mapNodeToProfile(document.body, tweets);
   }
 
   static Future<Tweet> getStatus(String username, String id) async {
-    var response = await http.get('https://nitter.42l.fr/$username/status/$id', headers: {
-      'Cookie': 'hlsPlayback=on'
-    });
-
-    // TODO: Handle errors, 429
-
-    var document = parse(response.body);
+    var document = await scrapePage('https://nitter.42l.fr/$username/status/$id');
     
     return mapNodeToTweet(document.querySelector('.conversation'));
   }
 
   static Future<Iterable<Tweet>> searchTweets(String query) async {
-    var response = await http.get('https://nitter.42l.fr/search?f=tweets&q=${Uri.encodeQueryComponent(query)}', headers: {
-      'Cookie': 'hlsPlayback=on'
-    });
-
-    // TODO: Handle errors, 429
-
-    var document = parse(response.body);
+    var document = await scrapePage('https://nitter.42l.fr/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
 
     // TODO: This is copied from above
-    return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line').map((e) {
-      // TODO: Handle threads properly
-      if (e.classes.contains('thread-line')) {
-        return e.children.first;
-      }
+    return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
+        .map((e) {
+          // TODO: Handle threads properly
+          if (e.classes.contains('thread-line')) {
+            return e.children.first;
+          }
 
-      return e;
-    })
+          return e;
+        })
         .map((e) => mapNodeToTweet(e));
   }
 
   static Future<Iterable<User>> searchUsers(String query) async {
-    var response = await http.get('https://nitter.42l.fr/search?f=users&q=${Uri.encodeQueryComponent(query)}', headers: {
+    var document = await scrapePage('https://nitter.42l.fr/search?f=users&q=${Uri.encodeQueryComponent(query)}');
+
+    return document.querySelectorAll('.timeline > .timeline-item')
+        .map((e) => mapNodeToUser(e));
+  }
+
+  static Future<Document> scrapePage(String uri) async {
+    var response = await http.get(uri, headers: {
       'Cookie': 'hlsPlayback=on'
     });
 
     // TODO: Handle errors, 429
+    return parse(response.body);
+  }
 
-    var document = parse(response.body);
-
-    return document.querySelectorAll('.timeline > .timeline-item')
-        .map((e) => mapNodeToUser(e));
+  static int extractNumbers(String text) {
+    return int.parse(text.replaceAll(ONLY_NUMBERS, ''));
   }
 
   static Profile mapNodeToProfile(Element e, Iterable<Tweet> tweets) {
