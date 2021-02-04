@@ -17,11 +17,10 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchQuery = new TextEditingController();
   Timer _debounce;
 
-  bool _loading = false;
   List<Tweet> _tweets = [];
   List<User> _users = [];
+  bool _loading = false;
   String _oldSearch;
-  int _currentTab = 0;
 
   @override
   void initState() {
@@ -57,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _loading = false;
           _tweets = [];
           _users = [];
-          _oldSearch = '';
+          _oldSearch = null;
         });
       } else {
         var tweetSearch = TwitterClient.searchTweets(_searchQuery.text);
@@ -80,72 +79,42 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-
-    switch(_currentTab) {
-      case 0:
-        child = ListView.builder(
-          shrinkWrap: true,
-          primary: false,
-          itemCount: _tweets.length,
-          itemBuilder: (context, index) {
-            return TweetTile(tweet: _tweets[index]);
-          },
-        );
-        break;
-      case 1:
-        child = ListView.builder(
-          shrinkWrap: true,
-          primary: false,
-          itemCount: _users.length,
-          itemBuilder: (context, index) {
-            return UserTile(user: _users[index]);
-          },
-        );
-        break;
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Fritter'),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentTab,
-        onTap: (index) {
-          setState(() {
-            _currentTab = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.comment),
-            label: _tweets == null ? 'Tweets' : 'Tweets (${_tweets.length})'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-              label: _users == null ? 'Users' : 'Users (${_users.length})'
-          )
-        ],
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextFormField(
-                controller: _searchQuery,
-                decoration: InputDecoration(
-                    icon: Icon(Icons.search)
-                ),
-              ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Icon(Icons.search),
+          title: TextField(
+            controller: _searchQuery,
+            cursorColor: Colors.white,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'Search tweets and users'
             ),
-            Expanded(
-              child: LoadingStack(
-                loading: _loading,
-                child: child,
-              ),
-            )
-          ],
+          ),
+          bottom: TabBar(tabs: [
+            Tab(icon: Icon(Icons.comment)),
+            Tab(icon: Icon(Icons.person)),
+          ]),
+        ),
+        body: LoadingStack(
+          loading: _loading,
+          child: TabBarView(children: [
+            _tweets.isEmpty && _oldSearch != null
+                ? Center(child: Text('No results'))
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _tweets.length,
+                    itemBuilder: (context, index) => TweetTile(tweet: _tweets[index]),
+                  ),
+            _users.isEmpty && _oldSearch != null
+                ? Center(child: Text('No results'))
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _users.length,
+                    itemBuilder: (context, index) => UserTile(user: _users[index]),
+                  )
+          ]),
         ),
       ),
     );
