@@ -132,6 +132,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.1"
+  flutter_oss_licenses:
+    dependency: "direct dev"
+    description:
+      name: flutter_oss_licenses
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
