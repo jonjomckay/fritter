@@ -14,9 +14,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final _globalKey = GlobalKey<ScaffoldState>();
+
   final _searchQuery = new TextEditingController();
   Timer _debounce;
-
   List<Tweet> _tweets = [];
   List<User> _users = [];
   bool _loading = false;
@@ -47,34 +48,44 @@ class _SearchScreenState extends State<SearchScreen> {
         return;
       }
 
-      setState(() {
-        _loading = true;
-      });
-
-      if (_searchQuery.text.isEmpty) {
-        setState(() {
-          _loading = false;
-          _tweets = [];
-          _users = [];
-          _oldSearch = null;
-        });
-      } else {
-        var tweetSearch = TwitterClient.searchTweets(_searchQuery.text);
-        var usersSearch = TwitterClient.searchUsers(_searchQuery.text);
-
-        Future.wait([tweetSearch, usersSearch]).then((results) {
-          var tweets = results[0];
-          var users = results[1];
-
-          setState(() {
-            _loading = false;
-            _tweets = tweets.toList();
-            _users = users.toList();
-            _oldSearch = _searchQuery.text;
-          });
-        });
-      }
+      performSearch(_searchQuery.text);
     });
+  }
+
+  void performSearch(String query) {
+    setState(() {
+      _loading = true;
+    });
+
+    if (query.isEmpty) {
+      setState(() {
+        _loading = false;
+        _tweets = [];
+        _users = [];
+        _oldSearch = null;
+      });
+    } else {
+      var tweetSearch = TwitterClient.searchTweets(query);
+      var usersSearch = TwitterClient.searchUsers(query);
+
+      Future.wait([tweetSearch, usersSearch])
+          .then((results) => setState(() {
+                _tweets = results[0].toList();
+                _users = results[1].toList();
+                _oldSearch = query;
+              }))
+          .catchError((e) => _globalKey.currentState.showSnackBar(SnackBar(
+                content: Text('Something went wrong loading the profile! The error was: $e'),
+                duration: Duration(days: 1),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () => performSearch(query),
+                ),
+              )))
+          .whenComplete(() => setState(() {
+                _loading = false;
+              }));
+    }
   }
 
   @override
@@ -82,6 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        key: _globalKey,
         appBar: AppBar(
           leading: Icon(Icons.search),
           title: TextField(
@@ -89,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
             cursorColor: Colors.white,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Search tweets and users'
+                hintText: 'Search tweets and users'
             ),
           ),
           bottom: TabBar(tabs: [
@@ -103,19 +115,19 @@ class _SearchScreenState extends State<SearchScreen> {
             _tweets.isEmpty && _oldSearch != null
                 ? Center(child: Text('No results'))
                 : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _tweets.length,
-                    itemBuilder: (context, index) => TweetTile(tweet: _tweets[index]),
-                  ),
+              shrinkWrap: true,
+              itemCount: _tweets.length,
+              itemBuilder: (context, index) => TweetTile(tweet: _tweets[index]),
+            ),
             _users.isEmpty && _oldSearch != null
                 ? Center(child: Text('No results'))
                 : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) => UserTile(user: _users[index]),
-                  )
+              shrinkWrap: true,
+              itemCount: _users.length,
+              itemBuilder: (context, index) => UserTile(user: _users[index]),
+            )
           ]),
-        ),
+        )
       ),
     );
   }

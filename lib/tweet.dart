@@ -67,6 +67,10 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (tweet == null) {
+      return Container();
+    }
+
     var numberFormat = NumberFormat.compact();
 
     var attachments = tweet.attachments.map((e) {
