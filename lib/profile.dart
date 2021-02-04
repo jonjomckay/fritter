@@ -1,23 +1,36 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'models.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   final String username;
 
   const ProfileScreen({Key key, this.username}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ProfileScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ProfileScreenBody(),
+    );
+  }
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenBody extends StatefulWidget {
+  final String username;
+
+  const ProfileScreenBody({Key key, this.username}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _ProfileScreenBodyState();
+}
+
+class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   final double _appBarHeight = 256.0;
 
   bool _loading = true;
@@ -37,19 +50,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _loading = true;
     });
 
-    TwitterClient.getProfile(username).then((profile) {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-          _profile = profile;
-          _tweets = profile.tweets;
-        });
-      }
-    });
+    TwitterClient.getProfile(username)
+        .then((profile) => setState(() {
+              _profile = profile;
+              _tweets = profile.tweets;
+            }))
+        .catchError((Exception e) => Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Something went wrong loading the profile! The error was: $e'),
+              duration: Duration(days: 1),
+              action: SnackBarAction(
+                label: 'Retry',
+                onPressed: () => fetchProfile(username),
+              ),
+            )))
+        .whenComplete(() => setState(() {
+              _loading = false;
+            }));
   }
 
   @override
-  void didUpdateWidget(ProfileScreen oldWidget) {
+  void didUpdateWidget(ProfileScreenBody oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.username != widget.username) {
@@ -66,67 +86,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }).toList();
 
     var bannerImage = _profile.banner == null
-      ? Container()
-      : Image.network(_profile.banner, fit: BoxFit.cover, height: _appBarHeight);
+        ? Container()
+        : Image.network(_profile.banner, fit: BoxFit.cover, height: _appBarHeight);
 
     return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: _appBarHeight,
-              pinned: true,
-              bottom: TabBar(
-                tabs: [
-                  Tab(child: Column(
-                    children: [
-                      Text('Tweets', style: Theme.of(context).primaryTextTheme.subtitle2),
-                      Text('${numberFormat.format(_profile.numberOfTweets)}', style: Theme.of(context).primaryTextTheme.headline6),
-                    ],
-                  )),
-                  Tab(child: Column(
-                    children: [
-                      Text('Following', style: Theme.of(context).primaryTextTheme.subtitle2),
-                      Text('${numberFormat.format(_profile.numberOfFollowing)}', style: Theme.of(context).primaryTextTheme.headline6),
-                    ],
-                  )),
-                  Tab(child: Column(
-                    children: [
-                      Text('Followers', style: Theme.of(context).primaryTextTheme.subtitle2),
-                      Text('${numberFormat.format(_profile.numberOfFollowers)}', style: Theme.of(context).primaryTextTheme.headline6),
-                    ],
-                  )),
-                ],
-              ),
-              title: Text(_profile.fullName),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    bannerImage,
-                    const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: <Color>[Color(0xBB000000), Color(0x50000000)],
-                        ),
-                      ),
-                    ),
+        body: DefaultTabController(
+          length: 3,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: _appBarHeight,
+                pinned: true,
+                bottom: TabBar(
+                  tabs: [
+                    Tab(child: Column(
+                      children: [
+                        Text('Tweets', style: Theme.of(context).primaryTextTheme.subtitle2),
+                        Text('${numberFormat.format(_profile.numberOfTweets)}', style: Theme.of(context).primaryTextTheme.headline6),
+                      ],
+                    )),
+                    Tab(child: Column(
+                      children: [
+                        Text('Following', style: Theme.of(context).primaryTextTheme.subtitle2),
+                        Text('${numberFormat.format(_profile.numberOfFollowing)}', style: Theme.of(context).primaryTextTheme.headline6),
+                      ],
+                    )),
+                    Tab(child: Column(
+                      children: [
+                        Text('Followers', style: Theme.of(context).primaryTextTheme.subtitle2),
+                        Text('${numberFormat.format(_profile.numberOfFollowers)}', style: Theme.of(context).primaryTextTheme.headline6),
+                      ],
+                    )),
                   ],
                 ),
+                title: Text(_profile.fullName),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      bannerImage,
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: <Color>[Color(0xBB000000), Color(0x50000000)],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: LoadingStack(
-                loading: _loading,
-                child: Column(children: tweets),
-              )
-            ),
-          ],
-        ),
-      )
+              SliverToBoxAdapter(
+                  child: LoadingStack(
+                    loading: _loading,
+                    child: Column(children: tweets),
+                  )
+              ),
+            ],
+          ),
+        )
     );
   }
 

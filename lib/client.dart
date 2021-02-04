@@ -9,7 +9,7 @@ class TwitterClient {
   static final RegExp ONLY_NUMBERS = new RegExp(r'[^0-9]');
 
   static Future<Profile> getProfile(String profile) async {
-    var document = await scrapePage('https://nitter.42l.fr/$profile');
+    var document = await scrapePage('$BASE_URL/$profile');
 
     var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
         .map((e) {
@@ -26,13 +26,13 @@ class TwitterClient {
   }
 
   static Future<Tweet> getStatus(String username, String id) async {
-    var document = await scrapePage('https://nitter.42l.fr/$username/status/$id');
+    var document = await scrapePage('$BASE_URL/$username/status/$id');
     
     return mapNodeToTweet(document.querySelector('.conversation'));
   }
 
   static Future<Iterable<Tweet>> searchTweets(String query) async {
-    var document = await scrapePage('https://nitter.42l.fr/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
+    var document = await scrapePage('$BASE_URL/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
 
     // TODO: This is copied from above
     return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
@@ -48,7 +48,7 @@ class TwitterClient {
   }
 
   static Future<Iterable<User>> searchUsers(String query) async {
-    var document = await scrapePage('https://nitter.42l.fr/search?f=users&q=${Uri.encodeQueryComponent(query)}');
+    var document = await scrapePage('$BASE_URL/search?f=users&q=${Uri.encodeQueryComponent(query)}');
 
     return document.querySelectorAll('.timeline > .timeline-item')
         .map((e) => mapNodeToUser(e));
@@ -59,7 +59,14 @@ class TwitterClient {
       'Cookie': 'hlsPlayback=on'
     });
 
-    // TODO: Handle errors, 429
+    if (response.statusCode == 429) {
+      throw Exception('The server has been rate limited');
+    }
+
+    if (response.statusCode != 200) {
+      throw Exception('An unexpected error happened');
+    }
+
     return parse(response.body);
   }
 
