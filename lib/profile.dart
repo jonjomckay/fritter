@@ -87,7 +87,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     var numberFormat = NumberFormat.compact();
 
     var tweets = _tweets.map((tweet) {
-      return TweetTile(currentUsername: widget.username, tweet: tweet);
+      return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
     }).toList();
 
     var bannerImage = _profile.banner == null

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
@@ -122,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 : ListView.builder(
               shrinkWrap: true,
               itemCount: _tweets.length,
-              itemBuilder: (context, index) => TweetTile(tweet: _tweets[index]),
+              itemBuilder: (context, index) => TweetTile(tweet: _tweets[index], clickable: true),
             ),
             _users.isEmpty && _oldSearch != null
                 ? Center(child: Text('No results'))

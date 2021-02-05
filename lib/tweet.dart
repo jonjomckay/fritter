@@ -1,4 +1,5 @@
 import 'package:better_player/better_player.dart';
+import 'package:flutter/gestures.dart';
 import 'package:fritter/models.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
@@ -60,10 +61,11 @@ class _TweetVideoState extends State<TweetVideo> {
 }
 
 class TweetTile extends StatelessWidget {
+  final bool clickable;
   final String currentUsername;
   final Tweet tweet;
 
-  const TweetTile({Key key, this.currentUsername, this.tweet}) : super(key: key);
+  const TweetTile({Key key, this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +121,33 @@ class TweetTile extends StatelessWidget {
     }
 
     return Builder(builder: (context) {
+      List<InlineSpan> contentWidgets = [];
+
+      // Split the string by any mentions, and turn those mentions into links to the profile
+      tweet.content.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
+          onMatch: (match) {
+            var username = match.group(1);
+
+            contentWidgets.add(TextSpan(
+                text: '@$username',
+                style: TextStyle(color: Theme.of(context).accentColor),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: username)));
+                  }
+            ));
+
+            return username;
+          },
+          onNonMatch: (text) {
+            contentWidgets.add(TextSpan(
+                text: text
+            ));
+
+            return text;
+          }
+      );
+
       return Card(
         child: Column(
           children: [
@@ -156,11 +185,20 @@ class TweetTile extends StatelessWidget {
                             var username = a.pathSegments[0];
                             var statusId = a.pathSegments[2];
 
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
+                            if (clickable) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
+                            }
+
+                            return null;
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                            child: Text(tweet.content, style: Theme.of(context).textTheme.subtitle1),
+                            child: RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.subtitle1,
+                                children: contentWidgets
+                              ),
+                            ),
                           ),
                         ),
                         ...attachments,
