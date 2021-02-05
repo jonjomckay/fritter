@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
@@ -48,14 +50,18 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         .then((status) => setState(() {
               _status = status;
             }))
-        .catchError((e) => Scaffold.of(context).showSnackBar(SnackBar(
+        .catchError((e, stackTrace) {
+          log('Unable to load the tweet', error: e, stackTrace: stackTrace);
+
+          return Scaffold.of(context).showSnackBar(SnackBar(
               content: Text('Something went wrong loading the tweet! The error was: $e'),
               duration: Duration(days: 1),
               action: SnackBarAction(
                 label: 'Retry',
                 onPressed: () => fetchTweet(username, id),
               ),
-            )))
+            ));
+        })
         .whenComplete(() => setState(() {
               _loading = false;
             }));
