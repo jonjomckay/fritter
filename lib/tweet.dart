@@ -143,11 +143,10 @@ class TweetTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // retweetBanner,
                         ListTile(
                           onTap: () {
                             // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                            if (tweet.userUsername.endsWith(currentUsername)) {
+                            if (currentUsername != null && tweet.userUsername.endsWith(currentUsername)) {
                               return null;
                             }
 
