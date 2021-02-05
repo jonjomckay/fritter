@@ -119,18 +119,6 @@ class TweetTile extends StatelessWidget {
     }
 
     return Builder(builder: (context) {
-      // return Card(
-      //   child: IntrinsicHeight(
-      //     child: Row(
-      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-      //       children: [
-      //         Expanded(child: retweetBanner),
-      //         Expanded(child: Text('hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello'))
-      //       ],
-      //     ),
-      //   ),
-      // );
-
       return Card(
         child: Column(
           children: [
