@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -74,14 +75,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 _users = results[1].toList();
                 _oldSearch = query;
               }))
-          .catchError((e) => _globalKey.currentState.showSnackBar(SnackBar(
-                content: Text('Something went wrong loading the profile! The error was: $e'),
+          .catchError((e, stackTrace) {
+            log('Unable to load the search results', error: e, stackTrace: stackTrace);
+
+            return _globalKey.currentState.showSnackBar(SnackBar(
+                content: Text('Something went wrong loading the search results! The error was: $e'),
                 duration: Duration(days: 1),
                 action: SnackBarAction(
                   label: 'Retry',
                   onPressed: () => performSearch(query),
                 ),
-              )))
+              ));
+          })
           .whenComplete(() => setState(() {
                 _loading = false;
               }));

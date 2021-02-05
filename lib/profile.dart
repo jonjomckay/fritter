@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -55,14 +56,18 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
               _profile = profile;
               _tweets = profile.tweets;
             }))
-        .catchError((Exception e) => Scaffold.of(context).showSnackBar(SnackBar(
+        .catchError((e, stackTrace) {
+          log('Unable to load the profile', error: e, stackTrace: stackTrace);
+
+          return Scaffold.of(context).showSnackBar(SnackBar(
               content: Text('Something went wrong loading the profile! The error was: $e'),
               duration: Duration(days: 1),
               action: SnackBarAction(
                 label: 'Retry',
                 onPressed: () => fetchProfile(username),
               ),
-            )))
+            ));
+        })
         .whenComplete(() => setState(() {
               _loading = false;
             }));
