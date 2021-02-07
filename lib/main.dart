@@ -106,8 +106,6 @@ class _DefaultPageState extends State<DefaultPage> {
       default:
         return SearchScreen();
     }
-
-    return ProfileScreen(username: 'jonjomckay');
   }
 
   @override
