@@ -1,12 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fritter/options.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/search.dart';
 import 'package:fritter/status.dart';
+import 'package:preferences/preferences.dart';
 import 'package:uni_links/uni_links.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await PrefService.init(prefix: 'pref_');
   runApp(MyApp());
 }
 
