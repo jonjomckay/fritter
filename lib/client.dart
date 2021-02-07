@@ -131,7 +131,12 @@ class TwitterClient {
         src = '${getBaseUrl()}${e.querySelector('source').attributes['src']}';
         type = 'gif';
       } else if (e.classes.contains('gallery-video')) {
-        src = Uri.decodeFull(e.querySelector('video').attributes['data-url'].split('/')[3]);
+        var video = e.querySelector('video');
+        if (video == null) {
+          src = null;
+        }
+
+        src = Uri.decodeFull(video.attributes['data-url'].split('/')[3]);
         type = 'video';
       } else if (e.classes.contains('gallery-row')) {
         src = '${getBaseUrl()}${e.querySelector('img').attributes['src']}';
