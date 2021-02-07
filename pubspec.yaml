@@ -29,6 +29,7 @@ dependencies:
   http: ^0.12.2
   intl: ^0.16.1
   preferences: ^5.2.1
+  retry: ^3.0.1
   shared_preferences: '>=0.5.2 <2.0.0'
   timeago: ^2.0.29
   uni_links: ^0.4.0

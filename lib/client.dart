@@ -1,15 +1,36 @@
+import 'dart:developer';
+
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:fritter/models.dart';
 import 'package:intl/intl.dart';
+import 'package:preferences/preference_service.dart';
+import 'package:retry/retry.dart';
+
+import 'constants.dart';
 
 class TwitterClient {
-  static final String BASE_URL = 'https://nitter.42l.fr';
   static final RegExp ONLY_NUMBERS = new RegExp(r'[^0-9]');
 
+  static String getBaseUrl() {
+    // Select a random instance from the user's selection, or return a random one from the whole list
+    var instances = PrefService.getStringList('instances');
+    if (instances == null || instances.isEmpty) {
+      instances = INSTANCES.entries
+          .expand((element) => element.value)
+          .map((e) => e.hostname)
+          .toList();
+    }
+
+    return (instances..shuffle())
+        .take(1)
+        .map((i) => 'https://$i')
+        .first;
+  }
+
   static Future<Profile> getProfile(String profile) async {
-    var document = await scrapePage('$BASE_URL/$profile');
+    var document = await scrapePage('/$profile');
 
     var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
         .map((e) {
@@ -26,13 +47,13 @@ class TwitterClient {
   }
 
   static Future<Tweet> getStatus(String username, String id) async {
-    var document = await scrapePage('$BASE_URL/$username/status/$id');
+    var document = await scrapePage('/$username/status/$id');
     
     return mapNodeToTweet(document.querySelector('.conversation'));
   }
 
   static Future<Iterable<Tweet>> searchTweets(String query) async {
-    var document = await scrapePage('$BASE_URL/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
+    var document = await scrapePage('/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
 
     // TODO: This is copied from above
     return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
@@ -48,26 +69,37 @@ class TwitterClient {
   }
 
   static Future<Iterable<User>> searchUsers(String query) async {
-    var document = await scrapePage('$BASE_URL/search?f=users&q=${Uri.encodeQueryComponent(query)}');
+    var document = await scrapePage('/search?f=users&q=${Uri.encodeQueryComponent(query)}');
 
     return document.querySelectorAll('.timeline > .timeline-item')
         .map((e) => mapNodeToUser(e));
   }
 
-  static Future<Document> scrapePage(String uri) async {
-    var response = await http.get(uri, headers: {
-      'Cookie': 'hlsPlayback=on'
-    });
+  static Future<Document> scrapePage(String path) async {
+    return await retry(() async {
+        var uri = '${getBaseUrl()}$path';
 
-    if (response.statusCode == 429) {
-      throw Exception('The server has been rate limited');
-    }
+        log('Scraping $uri');
 
-    if (response.statusCode != 200) {
-      throw Exception('An unexpected error happened');
-    }
+        var response = await http.get(uri, headers: {
+          'Cookie': 'hlsPlayback=on'
+        });
 
-    return parse(response.body);
+        if (response.statusCode == 429) {
+          throw Exception('The server has been rate limited');
+        }
+
+        if (response.statusCode != 200) {
+          throw Exception('An unexpected error happened');
+        }
+
+        return parse(response.body);
+      },
+      retryIf: (e) => e is Exception,
+      onRetry: (e) {
+        log('Request failed. Retrying...');
+      },
+    );
   }
 
   static int extractNumbers(String text) {
@@ -78,9 +110,9 @@ class TwitterClient {
     var bannerElement = e.querySelector('.profile-banner img');
     var banner = bannerElement == null
         ? null
-        : '$BASE_URL${bannerElement.attributes['src']}';
+        : '${getBaseUrl()}${bannerElement.attributes['src']}';
 
-    var avatar = '$BASE_URL${e.querySelector('.profile-card-avatar img').attributes['src']}';
+    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img').attributes['src']}';
     var fullName = e.querySelector('.profile-card-fullname').text;
     var username = e.querySelector('.profile-card-username').text;
     var verified = e.querySelector('.profile-card-fullname .verified-icon') != null;
@@ -96,13 +128,13 @@ class TwitterClient {
       String src = 'unknown';
       String type = 'unknown';
       if (e.classes.contains('gallery-gif')) {
-        src = '$BASE_URL${e.querySelector('source').attributes['src']}';
+        src = '${getBaseUrl()}${e.querySelector('source').attributes['src']}';
         type = 'gif';
       } else if (e.classes.contains('gallery-video')) {
         src = Uri.decodeFull(e.querySelector('video').attributes['data-url'].split('/')[3]);
         type = 'video';
       } else if (e.classes.contains('gallery-row')) {
-        src = '$BASE_URL${e.querySelector('img').attributes['src']}';
+        src = '${getBaseUrl()}${e.querySelector('img').attributes['src']}';
         type = 'image';
       } else {
         int i = 0;
@@ -118,20 +150,30 @@ class TwitterClient {
     var content = e.querySelector('.tweet-content').text;
     var date = DateFormat('d/M/yyyy, H:m:s').parse(e.querySelector('.tweet-date > a').attributes['title']);
     var link = e.querySelector('.tweet-date > a').attributes['href'];
-    var numberOfComments = int.parse(e.querySelector('.tweet-stat .icon-comment').parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
-    var numberOfLikes = int.parse(e.querySelector('.tweet-stat .icon-heart').parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
-    var numberOfQuotes = int.parse(e.querySelector('.tweet-stat .icon-quote').parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
-    var numberOfRetweets = int.parse(e.querySelector('.tweet-stat .icon-retweet').parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
+    var numberOfComments = parseElementToNumber(e, '.tweet-stat .icon-comment');
+    var numberOfLikes = parseElementToNumber(e, '.tweet-stat .icon-heart');
+    var numberOfQuotes = parseElementToNumber(e, '.tweet-stat .icon-quote');
+    var numberOfRetweets = parseElementToNumber(e, '.tweet-stat .icon-retweet');
     var retweet = e.querySelector('.retweet-header') != null;
-    var userAvatar = '$BASE_URL${e.querySelector('.tweet-avatar img').attributes['src']}';
+    var userAvatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img').attributes['src']}';
     var userFullName = e.querySelector('.tweet-name-row .fullname').text;
     var userUsername = e.querySelector('.tweet-name-row .username').text;
 
     return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
   }
 
+  static int parseElementToNumber(Element e, String selector) {
+    var element = e.querySelector(selector);
+    if (element == null || element.parent == null) {
+      // TODO
+      return 0;
+    }
+
+    return int.parse(element.parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
+  }
+
   static User mapNodeToUser(Element e) {
-    var avatar = '$BASE_URL${e.querySelector('.tweet-avatar img').attributes['src']}';
+    var avatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img').attributes['src']}';
     var fullName = e.querySelector('.tweet-header .fullname').text;
     var username = e.querySelector('.tweet-header .username').text;
     var verified = e.querySelector('.tweet-header .verified-icon') != null;

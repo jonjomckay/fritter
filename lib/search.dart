@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
+import 'package:fritter/options.dart';
 import 'package:fritter/tweet.dart';
 
 import 'models.dart';
@@ -110,6 +111,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 hintText: 'Search tweets and users'
             ),
           ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OptionsScreen()));
+                },
+            )
+          ],
           bottom: TabBar(tabs: [
             Tab(icon: Icon(Icons.comment)),
             Tab(icon: Icon(Icons.person)),
