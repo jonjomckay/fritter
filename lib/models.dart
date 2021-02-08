@@ -23,6 +23,7 @@ class Profile {
   final String avatar;
   final String banner;
   final String fullName;
+  final int id;
   final int numberOfFollowers;
   final int numberOfFollowing;
   final int numberOfTweets;
@@ -30,7 +31,7 @@ class Profile {
   final String username;
   final bool verified;
 
-  Profile(this.avatar, this.banner, this.fullName, this.numberOfFollowers, this.numberOfFollowing, this.numberOfTweets, this.tweets, this.username, this.verified);
+  Profile(this.avatar, this.banner, this.fullName, this.id, this.numberOfFollowers, this.numberOfFollowing, this.numberOfTweets, this.tweets, this.username, this.verified);
 }
 
 class Tweet {
