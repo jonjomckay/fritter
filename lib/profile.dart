@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:fritter/client.dart';
+import 'package:fritter/client2.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
@@ -65,12 +65,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
       ));
     };
 
-    TwitterClient.getProfile(username).catchError(onError).then((profile) {
+    TwitterClient2.getProfile(username).catchError(onError).then((profile) {
       setState(() {
         switch (profile.statusCode) {
           case 200:
             _profile = profile.profile;
-            _tweets = profile.profile.tweets;
             break;
           case 403:
             _error = 'This profile is protected';
@@ -79,6 +78,24 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
             _error = 'There was an unknown error loading the profile';
             break;
         }
+      });
+
+      TwitterClient2.getTweets(_profile.id).catchError(onError).then((tweets) {
+        setState(() {
+          switch(tweets.statusCode) {
+            case 200:
+              _tweets = tweets.tweets;
+              break;
+            case 403:
+              _error = 'This profile is protected';
+              break;
+            default:
+              _error = 'There was an unknown error loading the profile';
+              break;
+          }
+
+          _loading = false;
+        });
       });
     }).whenComplete(() => setState(() {
       _loading = false;
