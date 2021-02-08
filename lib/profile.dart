@@ -35,7 +35,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   final double _appBarHeight = 256.0;
 
   bool _loading = true;
-  Profile _profile = Profile(null, null, 'Loading...', 0, 0, 0, List(), '', false);
+  Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, List(), '', false);
   Iterable<Tweet> _tweets = List();
 
   StreamSubscription _sub;

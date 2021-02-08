@@ -120,7 +120,7 @@ class TwitterClient {
     var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num').text);
     var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num').text);
 
-    return Profile(avatar, banner, fullName, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
+    return Profile(avatar, banner, fullName, null, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
   }
   
   static Tweet mapNodeToTweet(Element e) {
