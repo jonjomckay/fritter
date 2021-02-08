@@ -76,7 +76,7 @@ class TweetTile extends StatelessWidget {
     var numberFormat = NumberFormat.compact();
 
     var attachments = tweet.attachments.map((e) {
-      if (e.type == 'gif') {
+      if (e.type == 'animated_gif') {
         return TweetVideo(uri: e.src, loop: true);
       }
 
@@ -84,7 +84,7 @@ class TweetTile extends StatelessWidget {
         return TweetVideo(uri: e.src);
       }
 
-      if (e.type == 'image') {
+      if (e.type == 'photo') {
         return Image.network(e.src);
       }
 
