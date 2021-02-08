@@ -129,7 +129,7 @@ class TwitterClient {
       String type = 'unknown';
       if (e.classes.contains('gallery-gif')) {
         src = '${getBaseUrl()}${e.querySelector('source').attributes['src']}';
-        type = 'gif';
+        type = 'animated_gif';
       } else if (e.classes.contains('gallery-video')) {
         var video = e.querySelector('video');
         if (video == null) {
@@ -140,7 +140,7 @@ class TwitterClient {
         type = 'video';
       } else if (e.classes.contains('gallery-row')) {
         src = '${getBaseUrl()}${e.querySelector('img').attributes['src']}';
-        type = 'image';
+        type = 'photo';
       } else {
         int i = 0;
       }
