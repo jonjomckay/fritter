@@ -29,7 +29,7 @@ class TwitterClient {
         .first;
   }
 
-  static Future<Profile> getProfile(String profile) async {
+  static Future<ProfileResponse> getProfile(String profile) async {
     var document = await scrapePage('/$profile');
 
     var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
@@ -43,7 +43,10 @@ class TwitterClient {
         })
         .map((e) => mapNodeToTweet(e));
 
-    return mapNodeToProfile(document.body, tweets);
+    var result = mapNodeToProfile(document.body, tweets);
+
+    // TODO: This always returns 200 because we're throwing exceptions
+    return ProfileResponse(result, 200);
   }
 
   static Future<Tweet> getStatus(String username, String id) async {
