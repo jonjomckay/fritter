@@ -63,6 +63,13 @@ class Tweet {
   }
 }
 
+class TweetsResponse {
+  final Iterable<Tweet> tweets;
+  final int statusCode;
+
+  TweetsResponse(this.tweets, this.statusCode);
+}
+
 class User {
   final String avatar;
   final String fullName;
