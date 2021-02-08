@@ -34,6 +34,13 @@ class Profile {
   Profile(this.avatar, this.banner, this.fullName, this.id, this.numberOfFollowers, this.numberOfFollowing, this.numberOfTweets, this.tweets, this.username, this.verified);
 }
 
+class ProfileResponse {
+  final Profile profile;
+  final int statusCode;
+
+  ProfileResponse(this.profile, this.statusCode);
+}
+
 class Tweet {
   final Iterable<Media> attachments;
   final Iterable<Tweet> comments;

@@ -37,6 +37,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   bool _loading = true;
   Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, List(), '', false);
   Iterable<Tweet> _tweets = List();
+  String _error;
 
   StreamSubscription _sub;
 
@@ -51,26 +52,37 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
       _loading = true;
     });
 
-    TwitterClient.getProfile(username)
-        .then((profile) => setState(() {
-              _profile = profile;
-              _tweets = profile.tweets;
-            }))
-        .catchError((e, stackTrace) {
-          log('Unable to load the profile', error: e, stackTrace: stackTrace);
+    var onError = (e, stackTrace) {
+      log('Unable to load the profile', error: e, stackTrace: stackTrace);
 
-          return Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Something went wrong loading the profile! The error was: $e'),
-              duration: Duration(days: 1),
-              action: SnackBarAction(
-                label: 'Retry',
-                onPressed: () => fetchProfile(username),
-              ),
-            ));
-        })
-        .whenComplete(() => setState(() {
-              _loading = false;
-            }));
+      return Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Something went wrong loading the profile! The error was: $e'),
+        duration: Duration(days: 1),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () => fetchProfile(username),
+        ),
+      ));
+    };
+
+    TwitterClient.getProfile(username).catchError(onError).then((profile) {
+      setState(() {
+        switch (profile.statusCode) {
+          case 200:
+            _profile = profile.profile;
+            _tweets = profile.profile.tweets;
+            break;
+          case 403:
+            _error = 'This profile is protected';
+            break;
+          default:
+            _error = 'There was an unknown error loading the profile';
+            break;
+        }
+      });
+    }).whenComplete(() => setState(() {
+      _loading = false;
+    }));
   }
 
   @override
@@ -86,13 +98,23 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
 
-    var tweets = _tweets.map((tweet) {
-      return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
-    }).toList();
-
     var bannerImage = _profile.banner == null
         ? Container()
         : Image.network(_profile.banner, fit: BoxFit.cover, height: _appBarHeight);
+
+    Widget child;
+    if (_error != null) {
+      child = Padding(
+        padding: EdgeInsets.all(32),
+        child: Center(child: Text(_error)),
+      );
+    } else {
+      var tweets = _tweets.map((tweet) {
+        return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+      }).toList();
+
+      child = Column(children: tweets);
+    }
 
     return Scaffold(
         body: DefaultTabController(
@@ -146,7 +168,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
               SliverToBoxAdapter(
                   child: LoadingStack(
                     loading: _loading,
-                    child: Column(children: tweets),
+                    child: child,
                   )
               ),
             ],
