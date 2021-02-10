@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'models.dart';
+import 'ui/tab_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String username;
@@ -161,13 +162,15 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                   expandedHeight: _appBarHeight,
                   backgroundColor: Theme.of(context).cardColor,
                   pinned: true,
-                  bottom: TabBar(
-                    tabs: [
-                      Tab(child: Text('Tweets', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
-                      Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
-                      Tab(child: Text('Media', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
-                      Tab(child: Text('Likes', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
-                    ],
+                  bottom: TabBarWithFlexibleTabs(
+                    child: TabBar(
+                      tabs: [
+                        Tab(child: Text('Tweets', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
+                        Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
+                        Tab(child: Text('Media', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
+                        Tab(child: Text('Likes', textAlign: TextAlign.center, style: Theme.of(context).primaryTextTheme.subtitle2)),
+                      ],
+                    ),
                   ),
                   title: AnimatedOpacity(
                     duration: Duration(milliseconds: 400),
