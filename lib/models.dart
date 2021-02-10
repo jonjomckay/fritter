@@ -57,15 +57,17 @@ class Tweet {
   final int numberOfLikes;
   final int numberOfQuotes;
   final int numberOfRetweets;
+  final bool quote;
+  final Tweet quotedTweet;
   final bool retweet;
   final String userAvatar;
   final String userFullName;
   final String userUsername;
 
-  Tweet(this.attachments, this.comments, this.content, this.date, this.link, this.numberOfComments, this.numberOfLikes, this.numberOfQuotes, this.numberOfRetweets, this.retweet, this.userAvatar, this.userFullName, this.userUsername);
+  Tweet(this.attachments, this.comments, this.content, this.date, this.link, this.numberOfComments, this.numberOfLikes, this.numberOfQuotes, this.numberOfRetweets, this.quote, this.quotedTweet, this.retweet, this.userAvatar, this.userFullName, this.userUsername);
 
   static Tweet emptyTweet() {
-    return Tweet([], [], '', DateTime.now(), '', 0, 0, 0, 0, false, '', '', '');
+    return Tweet([], [], '', DateTime.now(), '', 0, 0, 0, 0, false, null, false, '', '', '');
   }
 }
 

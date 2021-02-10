@@ -132,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 : ListView.builder(
               shrinkWrap: true,
               itemCount: _tweets.length,
-              itemBuilder: (context, index) => TweetTile(tweet: _tweets[index], clickable: true),
+              itemBuilder: (context, index) => TweetTile(tweet: _tweets[index], clickable: true, isQuote: false),
             ),
             _users.isEmpty && _oldSearch != null
                 ? Center(child: Text('No results'))

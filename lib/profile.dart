@@ -139,7 +139,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
       );
     } else {
       var tweets = _tweets.map((tweet) {
-        return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+        return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true, isQuote: false);
       }).toList();
 
       child = Column(children: tweets);

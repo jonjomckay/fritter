@@ -2,8 +2,8 @@ import 'package:auto_direction/auto_direction.dart';
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
-import 'package:fritter/models.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/models.dart';
 import 'package:fritter/status.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -96,9 +96,10 @@ List<InlineSpan> addLinksToText(BuildContext context, String content) {
 class TweetTile extends StatelessWidget {
   final bool clickable;
   final String currentUsername;
+  final bool isQuote;
   final Tweet tweet;
 
-  const TweetTile({Key key, this.clickable, this.currentUsername, this.tweet}) : super(key: key);
+  const TweetTile({Key key, this.clickable, this.currentUsername, this.isQuote, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +143,6 @@ class TweetTile extends StatelessWidget {
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(Icons.repeat, size: 14, color: Theme.of(context).primaryColorDark),
                         ),
-                        // TextSpan(
-                        //   text: ' Retweeted',
-                        // ),
                       ],
                     )
                 )
@@ -153,8 +151,26 @@ class TweetTile extends StatelessWidget {
       );
     }
 
+    Widget quotedTweet = Container();
+    if (tweet.quote) {
+      quotedTweet = Card(
+        margin: EdgeInsets.all(16),
+        color: Theme.of(context).secondaryHeaderColor,
+        child: ClipRect(
+          child: TweetTile(
+            clickable: true,
+            currentUsername: currentUsername,
+            isQuote: true,
+            tweet: tweet.quotedTweet,
+          ),
+        ),
+      );
+    }
+
     return Builder(builder: (context) {
-      return Card(
+      return Container(
+        color: isQuote ? Theme.of(context).secondaryHeaderColor : Theme.of(context).cardColor,
+        margin: EdgeInsets.fromLTRB(0, 4, 0, 0),
         child: Column(
           children: [
             IntrinsicHeight(
@@ -200,7 +216,7 @@ class TweetTile extends StatelessWidget {
                           child: Container(
                             // Fill the width so both RTL and LTR text are displayed correctly
                             width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                             child: AutoDirection(
                               text: tweet.content,
                               child: RichText(
@@ -212,39 +228,41 @@ class TweetTile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ...attachments,
+                        quotedTweet,
+                        ...attachments
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            ButtonBar(
-              alignment: MainAxisAlignment.spaceAround,
-              buttonTextTheme: ButtonTextTheme.accent,
-              children: [
-                FlatButton.icon(
-                  icon: Icon(Icons.comment, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfComments)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.repeat, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfRetweets)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.message, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfQuotes)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.favorite, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfLikes)),
-                ),
-              ],
-            )
+            isQuote
+                ? Container()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FlatButton.icon(
+                        icon: Icon(Icons.comment, size: 20),
+                        onPressed: null,
+                        label: Text(numberFormat.format(tweet.numberOfComments)),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.repeat, size: 20),
+                        onPressed: null,
+                        label: Text(numberFormat.format(tweet.numberOfRetweets)),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.message, size: 20),
+                        onPressed: null,
+                        label: Text(numberFormat.format(tweet.numberOfQuotes)),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.favorite, size: 20),
+                        onPressed: null,
+                        label: Text(numberFormat.format(tweet.numberOfLikes)),
+                      ),
+                    ],
+                  )
           ],
         ),
       );

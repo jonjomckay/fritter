@@ -168,24 +168,51 @@ class TwitterClient {
 
       return Media(src, type);
     }).toList();
-    
+
     var comments = e.querySelectorAll('.replies > .reply').map((e) {
       return mapNodeToTweet(e);
     });
 
+    var dateFormat = DateFormat('d/M/yyyy, H:m:s');
+
     var content = e.querySelector('.tweet-content').text;
-    var date = DateFormat('d/M/yyyy, H:m:s').parse(e.querySelector('.tweet-date > a').attributes['title']);
+    var date = dateFormat.parse(e.querySelector('.tweet-date > a').attributes['title']);
     var link = e.querySelector('.tweet-date > a').attributes['href'];
     var numberOfComments = parseElementToNumber(e, '.tweet-stat .icon-comment');
     var numberOfLikes = parseElementToNumber(e, '.tweet-stat .icon-heart');
     var numberOfQuotes = parseElementToNumber(e, '.tweet-stat .icon-quote');
     var numberOfRetweets = parseElementToNumber(e, '.tweet-stat .icon-retweet');
+    var quote = e.querySelector('.quote') != null;
+    var quoteAvatar = quote
+      ? '${getBaseUrl()}${e.querySelector('.quote img.avatar').attributes['src']}'
+      : null;
+    var quoteDate = quote
+        ? dateFormat.parse(e.querySelector('.quote .tweet-date > a').attributes['title'])
+        : null;
+    var quoteLink = quote
+        ? e.querySelector('.quote-link').attributes['href']
+        : null;
+    var quoteContent = quote
+        ? e.querySelector('.quote-text').text
+        : null;
+    var quoteFullName = quote
+      ? e.querySelector('.quote .fullname').text
+      : null;
+    var quoteUsername = quote
+        ? e.querySelector('.quote .username').text
+        : null;
+
+    var quotedTweet = quote == false
+        ? null
+        : Tweet(attachments, [], quoteContent, quoteDate, quoteLink, 0, 0, 0, 0, false, null, false, quoteAvatar, quoteFullName, quoteUsername);
+
     var retweet = e.querySelector('.retweet-header') != null;
     var userAvatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img').attributes['src']}';
     var userFullName = e.querySelector('.tweet-name-row .fullname').text;
     var userUsername = e.querySelector('.tweet-name-row .username').text;
 
-    return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
+    // TODO: Check this attachments logic. Can a quoted tweet have attachments in both the parent and child?
+    return Tweet(quote ? [] : attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, quote, quotedTweet, retweet, userAvatar, userFullName, userUsername);
   }
 
   static int parseElementToNumber(Element e, String selector) {

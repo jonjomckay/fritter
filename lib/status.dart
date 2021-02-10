@@ -75,7 +75,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         comments = [Text('No replies')];
       } else {
         comments = _status.comments.map((e) {
-          return TweetTile(currentUsername: widget.username, tweet: e);
+          return TweetTile(currentUsername: widget.username, tweet: e, isQuote: false);
         });
       }
     }
@@ -85,7 +85,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         loading: _loading,
         child: Column(
           children: [
-            TweetTile(currentUsername: widget.username, tweet: _status, clickable: false),
+            TweetTile(currentUsername: widget.username, tweet: _status, clickable: false, isQuote: false),
             Padding(
               padding: EdgeInsets.all(32),
               child: Column(
