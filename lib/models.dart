@@ -22,16 +22,22 @@ class Media {
 class Profile {
   final String avatar;
   final String banner;
+  final String biography;
   final String fullName;
   final int id;
+  final DateTime joinDate;
+  final String location;
   final int numberOfFollowers;
   final int numberOfFollowing;
+  final int numberOfLikes;
   final int numberOfTweets;
   final Iterable<Tweet> tweets;
   final String username;
   final bool verified;
+  final Uri websiteLink;
+  final String websiteText;
 
-  Profile(this.avatar, this.banner, this.fullName, this.id, this.numberOfFollowers, this.numberOfFollowing, this.numberOfTweets, this.tweets, this.username, this.verified);
+  Profile(this.avatar, this.banner, this.biography, this.fullName, this.id, this.joinDate, this.location, this.numberOfFollowers, this.numberOfFollowing, this.numberOfLikes, this.numberOfTweets, this.tweets, this.username, this.verified, this.websiteLink, this.websiteText);
 }
 
 class ProfileResponse {

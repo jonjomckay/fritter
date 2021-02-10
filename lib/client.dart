@@ -20,6 +20,7 @@ class TwitterClient {
       instances = INSTANCES.entries
           .expand((element) => element.value)
           .map((e) => e.hostname)
+          .cast<String>()
           .toList();
     }
 
@@ -115,15 +116,31 @@ class TwitterClient {
         ? null
         : '${getBaseUrl()}${bannerElement.attributes['src']}';
 
-    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img').attributes['src']}';
-    var fullName = e.querySelector('.profile-card-fullname').text;
-    var username = e.querySelector('.profile-card-username').text;
+    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img').attributes['src']}'.trim();
+    var biography = e.querySelector('.profile-bio').text.trim();
+    var fullName = e.querySelector('.profile-card-fullname').text.trim();
+    var joinDate = DateFormat('hh:mm aa - dd MMM yyyy').parse(e.querySelector('.profile-joindate > span').attributes['title']);
+    var username = e.querySelector('.profile-card-username').text.trim();
     var verified = e.querySelector('.profile-card-fullname .verified-icon') != null;
     var numberOfTweets = extractNumbers(e.querySelector('.profile-statlist .posts .profile-stat-num').text);
     var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num').text);
     var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num').text);
+    var numberOfLikes = extractNumbers(e.querySelector('.profile-statlist .likes .profile-stat-num').text);
 
-    return Profile(avatar, banner, fullName, null, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
+    var locationElement = e.querySelector('.profile-location');
+    var location = locationElement == null
+      ? null
+      : locationElement.text.trim();
+
+    var website = e.querySelector('.profile-website a');
+    var websiteLink = website == null
+      ? null
+      : Uri.parse(website.attributes['href']);
+    var websiteText = website == null
+      ? null
+      : website.text;
+
+    return Profile(avatar, banner, biography, fullName, null, joinDate, location, numberOfFollowers, numberOfFollowing, numberOfLikes, numberOfTweets, tweets, username, verified, websiteLink, websiteText);
   }
   
   static Tweet mapNodeToTweet(Element e) {
@@ -137,9 +154,10 @@ class TwitterClient {
         var video = e.querySelector('video');
         if (video == null) {
           src = null;
+        } else {
+          src = Uri.decodeFull(video.attributes['data-url'].split('/')[3]);
         }
 
-        src = Uri.decodeFull(video.attributes['data-url'].split('/')[3]);
         type = 'video';
       } else if (e.classes.contains('gallery-row')) {
         src = '${getBaseUrl()}${e.querySelector('img').attributes['src']}';

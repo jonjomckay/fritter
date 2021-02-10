@@ -1,5 +1,6 @@
 import 'package:auto_direction/auto_direction.dart';
 import 'package:better_player/better_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:fritter/models.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,37 @@ class _TweetVideoState extends State<TweetVideo> {
     super.dispose();
     _controller.dispose();
   }
+}
+
+List<InlineSpan> addLinksToText(BuildContext context, String content) {
+  List<InlineSpan> contentWidgets = [];
+
+  // Split the string by any mentions, and turn those mentions into links to the profile
+  content.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
+      onMatch: (match) {
+        var username = match.group(1);
+
+        contentWidgets.add(TextSpan(
+            text: '@$username',
+            style: TextStyle(color: Theme.of(context).accentColor),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: username)));
+              }
+        ));
+
+        return username;
+      },
+      onNonMatch: (text) {
+        contentWidgets.add(TextSpan(
+            text: text
+        ));
+
+        return text;
+      }
+  );
+
+  return contentWidgets;
 }
 
 class TweetTile extends StatelessWidget {
@@ -122,33 +154,6 @@ class TweetTile extends StatelessWidget {
     }
 
     return Builder(builder: (context) {
-      List<InlineSpan> contentWidgets = [];
-
-      // Split the string by any mentions, and turn those mentions into links to the profile
-      tweet.content.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
-          onMatch: (match) {
-            var username = match.group(1);
-
-            contentWidgets.add(TextSpan(
-                text: '@$username',
-                style: TextStyle(color: Theme.of(context).accentColor),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: username)));
-                  }
-            ));
-
-            return username;
-          },
-          onNonMatch: (text) {
-            contentWidgets.add(TextSpan(
-                text: text
-            ));
-
-            return text;
-          }
-      );
-
       return Card(
         child: Column(
           children: [
@@ -175,7 +180,7 @@ class TweetTile extends StatelessWidget {
                           subtitle: Text(tweet.userUsername),
                           leading: CircleAvatar(
                             radius: 24,
-                            backgroundImage: NetworkImage(tweet.userAvatar),
+                            backgroundImage: CachedNetworkImageProvider(tweet.userAvatar),
                           ),
                           trailing: Text(timeago.format(tweet.date),
                               style: Theme.of(context).textTheme.caption),
@@ -201,7 +206,7 @@ class TweetTile extends StatelessWidget {
                               child: RichText(
                                 text: TextSpan(
                                     style: Theme.of(context).textTheme.subtitle1,
-                                    children: contentWidgets
+                                    children: addLinksToText(context, tweet.content)
                                 ),
                               ),
                             ),
