@@ -28,7 +28,7 @@ jobs:
       - name: Install and set up FLutter
         uses: subosito/flutter-action@v1
         with:
-          channel: 'stable'
+          flutter-version: '1.22.6'
 
       - name: Build APKs
         run: |
