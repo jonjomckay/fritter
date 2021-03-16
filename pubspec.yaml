@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
 
   better_player: ^0.0.49
+  flex_color_scheme: ^1.4.1
   html: ^0.14.0+4
   http: ^0.12.2
   intl: ^0.16.1

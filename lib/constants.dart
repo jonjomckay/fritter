@@ -1,5 +1,7 @@
 import 'models.dart';
 
+const OPTION_THEME_TRUE_BLACK = 'theme.true_black';
+
 var COUNTRIES = {
   'BG': Country('\u{1F1E7}\u{1F1EC}', 'Bulgaria'),
   'DE': Country('\u{1F1E9}\u{1F1EA}', 'Germany'),
