@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _debounce.cancel();
     }
 
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 750), () {
       // If the query is the same as before, do nothing
       if (_searchQuery.text == _oldSearch) {
         return;
