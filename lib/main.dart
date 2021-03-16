@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/options.dart';
 import 'package:fritter/profile.dart';
@@ -8,6 +9,8 @@ import 'package:fritter/status.dart';
 import 'package:preferences/preferences.dart';
 import 'package:uni_links/uni_links.dart';
 
+import 'constants.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -15,25 +18,48 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _trueBlack = PrefService.getBool(OPTION_THEME_TRUE_BLACK);
+
+  @override
+  void initState() {
+    super.initState();
+
+    PrefService.onNotify(OPTION_THEME_TRUE_BLACK, () {
+      setState(() {
+        this._trueBlack = PrefService.getBool(OPTION_THEME_TRUE_BLACK);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    FlexSchemeData fritterColorScheme = FlexSchemeData(
+      name: 'Fritter blue',
+      description: 'Blue theme based on the Twitter color scheme',
+      light: FlexSchemeColor(
+        primary: Colors.blue,
+        primaryVariant: Color(0xFF320019),
+        secondary: Colors.blue[500],
+        secondaryVariant: Color(0xFF002411),
+      ),
+      dark: FlexSchemeColor(
+        primary: Colors.blue,
+        primaryVariant: Color(0xFF775C69),
+        secondary: Colors.blue[500],
+        secondaryVariant: Color(0xFF5C7267),
+      ),
+    );
+
     return MaterialApp(
       title: 'Fritter',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
-
-        // TODO: These are only required due to https://github.com/flutter/flutter/issues/19089
-        accentColor: Colors.blue[500],
-        toggleableActiveColor: Colors.blue[500],
-        textSelectionColor: Colors.blue[200],
-      ),
+      theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
+      darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
       themeMode: ThemeMode.system,
       home: DefaultPage(),
     );
