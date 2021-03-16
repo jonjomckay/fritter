@@ -1,0 +1,5 @@
+* Added support for clicking on mentions
+* Added the ability to select which Nitter instances to use
+* Added support for RTL languages
+* Added the ability to use true black when in dark mode
+* Fixed the inability to view certain videos in tweets

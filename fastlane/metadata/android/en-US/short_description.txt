@@ -1,1 +1,1 @@
-A free, open-source Twitter/Nitter client.`
+A free, open-source Twitter/Nitter client.
