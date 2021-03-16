@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/gestures.dart';
 import 'package:fritter/models.dart';
@@ -191,12 +192,17 @@ class TweetTile extends StatelessWidget {
 
                             return null;
                           },
-                          child: Padding(
+                          child: Container(
+                            // Fill the width so both RTL and LTR text are displayed correctly
+                            width: double.infinity,
                             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                            child: RichText(
-                              text: TextSpan(
-                                style: Theme.of(context).textTheme.subtitle1,
-                                children: contentWidgets
+                            child: AutoDirection(
+                              text: tweet.content,
+                              child: RichText(
+                                text: TextSpan(
+                                    style: Theme.of(context).textTheme.subtitle1,
+                                    children: contentWidgets
+                                ),
                               ),
                             ),
                           ),
