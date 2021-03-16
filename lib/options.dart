@@ -103,6 +103,16 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 onlySaveOnSubmit: false,
               ),
             ),
+
+            PreferenceTitle('Theme'),
+            SwitchPreference(
+              'True Black?',
+              OPTION_THEME_TRUE_BLACK,
+              desc: 'Use true black for the dark mode theme',
+              onChange: () {
+                PrefService.notify(OPTION_THEME_TRUE_BLACK);
+              },
+            )
           ]);
         },
       ),
