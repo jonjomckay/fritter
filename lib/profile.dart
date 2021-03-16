@@ -331,7 +331,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                                     Icon(Icons.link, size: 12, color: Theme.of(context).hintColor),
                                     SizedBox(width: 4),
                                     InkWell(
-                                      child: Text('${_profile.websiteLink.host}${_profile.websiteLink.path}', style: Theme.of(context).textTheme.bodyText1),
+                                      child: Text('${_profile.websiteLink.host}${_profile.websiteLink.path}', style: Theme.of(context).textTheme.bodyText2),
                                       onTap: () => launch(_profile.websiteLink.toString()),
                                     ),
                                   ],
