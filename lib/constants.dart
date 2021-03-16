@@ -19,7 +19,6 @@ var INSTANCES = {
   'DE': [
     Instance('nitter.net', '\u{1F1E9}\u{1F1EA}'),
     Instance('nitter.nixnet.services', '\u{1F1E9}\u{1F1EA}'),
-    Instance('nitter.13ad.de', '\u{1F1E9}\u{1F1EA}'),
     Instance('nitter.pussthecat.org', '\u{1F1E9}\u{1F1EA}'),
     Instance('nitter.mastodont.cat', '\u{1F1E9}\u{1F1EA}'),
     Instance('nitter.cattube.org', '\u{1F1E9}\u{1F1EA}'),
@@ -50,7 +49,5 @@ var INSTANCES = {
     Instance('nitter.dark.fail', '\u{1F1FA}\u{1F1F8}'),
     Instance('nitter.1d4.us', '\u{1F1FA}\u{1F1F8}'),
     Instance('tweet.lambda.dance', '\u{1F1FA}\u{1F1F8}'),
-    Instance('nitter.weaponizedhumiliation.com', '\u{1F1FA}\u{1F1F8}'),
-    Instance('nitter.domain.glass', '\u{1F1FA}\u{1F1F8}'),
   ],
 };
