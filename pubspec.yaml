@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  auto_direction: ^0.0.4+1
   better_player: ^0.0.49
   html: ^0.14.0+4
   http: ^0.12.2
