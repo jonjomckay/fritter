@@ -165,6 +165,22 @@ class TweetTile extends StatelessWidget {
           }
       );
 
+      var quotedTweet = Container();
+      if (tweet.quotedStatus != null) {
+        quotedTweet = Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor),
+            borderRadius: BorderRadius.circular(8)
+          ),
+          margin: EdgeInsets.all(8),
+          child: TweetTile(
+            clickable: true,
+            tweet: tweet.quotedStatus,
+            currentUsername: tweet.user?.screenName,
+          ),
+        );
+      }
+
       return Card(
         child: Column(
           children: [
@@ -207,7 +223,7 @@ class TweetTile extends StatelessWidget {
                           child: Container(
                             // Fill the width so both RTL and LTR text are displayed correctly
                             width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                             child: AutoDirection(
                               text: tweetText,
                               child: RichText(
@@ -220,6 +236,7 @@ class TweetTile extends StatelessWidget {
                           ),
                         ),
                         ...attachments,
+                        quotedTweet,
                       ],
                     ),
                   ),
