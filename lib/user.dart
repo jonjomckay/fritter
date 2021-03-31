@@ -6,7 +6,7 @@ import 'profile.dart';
 class UserTile extends StatelessWidget {
   final User user;
 
-  const UserTile({Key key, this.user}) : super(key: key);
+  const UserTile({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class UserTile extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              return Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.username)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.username)));
             },
             title: Text(user.fullName,
                 style: TextStyle(fontWeight: FontWeight.w500)),

@@ -20,10 +20,10 @@ class Media {
 }
 
 class Profile {
-  final String avatar;
-  final String banner;
+  final String? avatar;
+  final String? banner;
   final String fullName;
-  final int id;
+  final int? id;
   final int numberOfFollowers;
   final int numberOfFollowing;
   final int numberOfTweets;
@@ -46,7 +46,7 @@ class Tweet {
   final Iterable<Tweet> comments;
   final String content;
   final DateTime date;
-  final String link;
+  final String? link;
   final int numberOfComments;
   final int numberOfLikes;
   final int numberOfQuotes;

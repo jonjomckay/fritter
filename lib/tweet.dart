@@ -13,14 +13,14 @@ class TweetVideo extends StatefulWidget {
   final bool loop;
   final String uri;
 
-  const TweetVideo({Key key, this.loop, this.uri}) : super(key: key);
+  const TweetVideo({Key? key, required this.loop, required this.uri}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
 }
 
 class _TweetVideoState extends State<TweetVideo> {
-  BetterPlayerController _controller;
+  late BetterPlayerController _controller;
 
   @override
   void initState() {
@@ -33,8 +33,9 @@ class _TweetVideoState extends State<TweetVideo> {
     _controller = BetterPlayerController(configuration, betterPlayerDataSource: dataSource);
     _controller.addEventsListener((e) {
       if (e.betterPlayerEventType == BetterPlayerEventType.initialized) {
+        // TODO: Replace this with the information from the API
         setState(() {
-          _controller.setOverriddenAspectRatio(_controller.videoPlayerController.value.aspectRatio);
+          _controller.setOverriddenAspectRatio(_controller.videoPlayerController!.value.aspectRatio);
         });
       }
     });
@@ -45,7 +46,7 @@ class _TweetVideoState extends State<TweetVideo> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _controller.isPlaying()
+          (_controller.isPlaying() ?? false)
               ? _controller.pause()
               : _controller.play();
         });
@@ -63,13 +64,14 @@ class _TweetVideoState extends State<TweetVideo> {
 
 class TweetTile extends StatelessWidget {
   final bool clickable;
-  final String currentUsername;
-  final Tweet tweet;
+  final String? currentUsername;
+  final Tweet? tweet;
 
-  const TweetTile({Key key, this.clickable, this.currentUsername, this.tweet}) : super(key: key);
+  const TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var tweet = this.tweet;
     if (tweet == null) {
       return Container();
     }
@@ -82,7 +84,7 @@ class TweetTile extends StatelessWidget {
       }
 
       if (e.type == 'video') {
-        return TweetVideo(uri: e.src);
+        return TweetVideo(uri: e.src, loop: false);
       }
 
       if (e.type == 'photo') {
@@ -127,7 +129,7 @@ class TweetTile extends StatelessWidget {
       // Split the string by any mentions, and turn those mentions into links to the profile
       tweet.content.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
           onMatch: (match) {
-            var username = match.group(1);
+            var username = match.group(1) ?? '';
 
             contentWidgets.add(TextSpan(
                 text: '@$username',
@@ -164,11 +166,11 @@ class TweetTile extends StatelessWidget {
                         ListTile(
                           onTap: () {
                             // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                            if (currentUsername != null && tweet.userUsername.endsWith(currentUsername)) {
+                            if (currentUsername != null && tweet.userUsername.endsWith(currentUsername!)) {
                               return null;
                             }
 
-                            return Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.userUsername)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.userUsername)));
                           },
                           title: Text(tweet.userFullName,
                               style: TextStyle(fontWeight: FontWeight.w500)),
@@ -182,7 +184,12 @@ class TweetTile extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            var a = Uri.parse(tweet.link);
+                            var link = tweet.link;
+                            if (link == null) {
+                              return;
+                            }
+
+                            var a = Uri.parse(link);
                             var username = a.pathSegments[0];
                             var statusId = a.pathSegments[2];
 
