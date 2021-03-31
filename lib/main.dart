@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
 
     // Enable "true blacks" if the preference is set
     setState(() {
-      this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK);
+      this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK) ?? false;
     });
 
     // Whenever the "true black" preference is toggled, apply the toggle
