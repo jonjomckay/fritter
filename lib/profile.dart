@@ -33,10 +33,11 @@ class ProfileScreenBody extends StatefulWidget {
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   final double _appBarHeight = 256.0;
+  final _scrollController = ScrollController();
 
   bool _loading = true;
   Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, [], '', false);
-  Iterable<Tweet> _tweets = [];
+  List<Tweet> _tweets = [];
   String? _error;
 
   late StreamSubscription _sub;
@@ -84,7 +85,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
         setState(() {
           switch(tweets.statusCode) {
             case 200:
-              _tweets = tweets.tweets;
+              _tweets = tweets.tweets.toList(growable: false);
               break;
             case 403:
               _error = 'This profile is protected';
@@ -127,17 +128,26 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
         child: Center(child: Text(_error!)),
       );
     } else {
-      var tweets = _tweets.map((tweet) {
-        return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
-      }).toList();
+      child = Container(
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          controller: _scrollController,
+          shrinkWrap: true,
+          itemCount: _tweets.length,
+          itemBuilder: (context, index) {
+            var tweet = _tweets[index];
 
-      child = Column(children: tweets);
+            return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+          },
+        ),
+      );
     }
 
     return Scaffold(
         body: DefaultTabController(
           length: 3,
           child: CustomScrollView(
+            controller: _scrollController,
             slivers: [
               SliverAppBar(
                 expandedHeight: _appBarHeight,
