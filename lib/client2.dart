@@ -75,55 +75,56 @@ class TwitterClient2 {
       tweets = instructions[0]['addEntries']['entries']
           .where((entry) => entry['entryId'].startsWith('tweet') as bool)
           .map<Tweet>((entry) {
-        var tweet = globalTweets[entry['sortIndex']];
+            var tweet = globalTweets[entry['sortIndex']];
 
-        var createdAt = (tweet['created_at'] as String)
-            .split(' ');
+            var createdAt = (tweet['created_at'] as String)
+                .split(' ');
 
-        createdAt.removeAt(4);
+            createdAt.removeAt(4);
 
-        Iterable<Media> attachments = [];
-        if (tweet['extended_entities'] != null && tweet['extended_entities']['media'] != null) {
-          attachments = (tweet['extended_entities']['media'] ?? []).map<Media>((media) {
-            String src = '';
+            Iterable<Media> attachments = [];
+            if (tweet['extended_entities'] != null && tweet['extended_entities']['media'] != null) {
+              attachments = (tweet['extended_entities']['media'] ?? []).map<Media>((media) {
+                String src = '';
 
-            switch (media['type']) {
-              case 'animated_gif':
-                src = media['video_info']['variants'][0]['url'];
-                break;
-              case 'photo':
-                src = media['media_url_https'];
-                break;
-              case 'video':
-                src = media['video_info']['variants'][0]['url'];
-                break;
-              default:
-                print('Unknown media type encountered: ${media['type']}');
-                break;
+                switch (media['type']) {
+                  case 'animated_gif':
+                    src = media['video_info']['variants'][0]['url'];
+                    break;
+                  case 'photo':
+                    src = media['media_url_https'];
+                    break;
+                  case 'video':
+                    src = media['video_info']['variants'][0]['url'];
+                    break;
+                  default:
+                    print('Unknown media type encountered: ${media['type']}');
+                    break;
+                }
+
+
+                return Media(src, media['type']);
+              });
             }
 
+            var author = globalUsers[tweet['user_id_str']];
 
-            return Media(src, media['type']);
-          });
-        }
+            List<Tweet> comments = [];
+            var content = tweet['full_text'];
+            var date = dateFormat.parse(createdAt.join(' '));
+            var link = '/${author['screen_name']}/status/${tweet['id_str']}';
+            var numberOfComments = tweet['reply_count'];
+            var numberOfLikes = tweet['favorite_count'];
+            var numberOfQuotes = tweet['quote_count'];
+            var numberOfRetweets = tweet['retweet_count'];
+            var retweet = tweet['retweeted_status_id_str'] != null;
+            var userAvatar = author['profile_image_url_https'];
+            var userFullName = author['name'];
+            var userUsername = author['screen_name'];
 
-        var author = globalUsers[tweet['user_id_str']];
-
-        List<Tweet> comments = [];
-        var content = tweet['full_text'];
-        var date = dateFormat.parse(createdAt.join(' '));
-        var link = '/${author['screen_name']}/status/${tweet['id_str']}';
-        var numberOfComments = tweet['reply_count'];
-        var numberOfLikes = tweet['favorite_count'];
-        var numberOfQuotes = tweet['quote_count'];
-        var numberOfRetweets = tweet['retweet_count'];
-        var retweet = tweet['retweeted_status_id_str'] != null;
-        var userAvatar = author['profile_image_url_https'];
-        var userFullName = author['name'];
-        var userUsername = author['screen_name'];
-
-        return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
-      });
+            return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
+          })
+          .toList(growable: false);
     }
 
     return TweetsResponse(tweets, response.statusCode);
