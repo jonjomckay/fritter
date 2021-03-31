@@ -1,7 +1,7 @@
 import 'package:auto_direction/auto_direction.dart';
 import 'package:better_player/better_player.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
-import 'package:fritter/models.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
 import 'package:intl/intl.dart';
@@ -78,24 +78,24 @@ class TweetTile extends StatelessWidget {
 
     var numberFormat = NumberFormat.compact();
 
-    var attachments = tweet.attachments.map((e) {
+    var attachments = (tweet.extendedEntities?.media ?? []).map((e) {
       if (e.type == 'animated_gif') {
-        return TweetVideo(uri: e.src, loop: true);
+        return TweetVideo(uri: e.videoInfo!.variants![0].url!, loop: true);
       }
 
       if (e.type == 'video') {
-        return TweetVideo(uri: e.src, loop: false);
+        return TweetVideo(uri: e.videoInfo!.variants![0].url!, loop: false);
       }
 
       if (e.type == 'photo') {
-        return Image.network(e.src);
+        return Image.network(e.mediaUrlHttps!);
       }
 
       return Text('Unknown');
     });
 
     Widget retweetBanner = Container();
-    if (tweet.retweet) {
+    if (tweet.retweeted ?? false) {
       retweetBanner = ColoredBox(
           color: Theme.of(context).secondaryHeaderColor,
           child: Center(
@@ -126,8 +126,22 @@ class TweetTile extends StatelessWidget {
     return Builder(builder: (context) {
       List<InlineSpan> contentWidgets = [];
 
+      var tweetText = tweet.fullText == null
+        ? tweet.text
+        : tweet.fullText;
+
+      if (tweetText == null) {
+        var message = 'The tweet did not contain any text. This is unexpected';
+
+        print(message);
+
+        return Container(child: Text(
+            'The tweet did not contain any text. This is unexpected'
+        ));
+      }
+
       // Split the string by any mentions, and turn those mentions into links to the profile
-      tweet.content.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
+      tweetText.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
           onMatch: (match) {
             var username = match.group(1) ?? '';
 
@@ -166,35 +180,26 @@ class TweetTile extends StatelessWidget {
                         ListTile(
                           onTap: () {
                             // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                            if (currentUsername != null && tweet.userUsername.endsWith(currentUsername!)) {
+                            if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
                               return null;
                             }
 
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.userUsername)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.user!.screenName!)));
                           },
-                          title: Text(tweet.userFullName,
+                          title: Text(tweet.user!.name!,
                               style: TextStyle(fontWeight: FontWeight.w500)),
-                          subtitle: Text(tweet.userUsername),
+                          subtitle: Text(tweet.user!.screenName!),
                           leading: CircleAvatar(
                             radius: 24,
-                            backgroundImage: NetworkImage(tweet.userAvatar),
+                            backgroundImage: NetworkImage(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200')),
                           ),
-                          trailing: Text(timeago.format(tweet.date),
+                          trailing: Text(timeago.format(tweet.createdAt!),
                               style: Theme.of(context).textTheme.caption),
                         ),
                         GestureDetector(
                           onTap: () {
-                            var link = tweet.link;
-                            if (link == null) {
-                              return;
-                            }
-
-                            var a = Uri.parse(link);
-                            var username = a.pathSegments[0];
-                            var statusId = a.pathSegments[2];
-
                             if (clickable) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
                             }
 
                             return null;
@@ -204,7 +209,7 @@ class TweetTile extends StatelessWidget {
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                             child: AutoDirection(
-                              text: tweet.content,
+                              text: tweetText,
                               child: RichText(
                                 text: TextSpan(
                                     style: Theme.of(context).textTheme.subtitle1,
@@ -221,32 +226,33 @@ class TweetTile extends StatelessWidget {
                 ],
               ),
             ),
-            ButtonBar(
-              alignment: MainAxisAlignment.spaceAround,
-              buttonTextTheme: ButtonTextTheme.accent,
-              children: [
-                FlatButton.icon(
-                  icon: Icon(Icons.comment, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfComments)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.repeat, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfRetweets)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.message, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfQuotes)),
-                ),
-                FlatButton.icon(
-                  icon: Icon(Icons.favorite, size: 20),
-                  onPressed: null,
-                  label: Text(numberFormat.format(tweet.numberOfLikes)),
-                ),
-              ],
-            )
+            if (tweet.replyCount != null)
+              ButtonBar(
+                alignment: MainAxisAlignment.spaceAround,
+                buttonTextTheme: ButtonTextTheme.accent,
+                children: [
+                  FlatButton.icon(
+                    icon: Icon(Icons.comment, size: 20),
+                    onPressed: null,
+                    label: Text(numberFormat.format(tweet.replyCount)),
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.repeat, size: 20),
+                    onPressed: null,
+                    label: Text(numberFormat.format(tweet.retweetCount)),
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.message, size: 20),
+                    onPressed: null,
+                    label: Text(numberFormat.format(tweet.quoteCount)),
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.favorite, size: 20),
+                    onPressed: null,
+                    label: Text(numberFormat.format(tweet.favoriteCount)),
+                  ),
+                ],
+              )
           ],
         ),
       );
