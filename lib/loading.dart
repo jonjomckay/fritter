@@ -4,7 +4,7 @@ class LoadingStack extends StatelessWidget {
   final bool loading;
   final Widget child;
 
-  const LoadingStack({Key key, this.loading, this.child}) : super(key: key);
+  const LoadingStack({Key? key, required this.loading, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

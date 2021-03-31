@@ -5,7 +5,6 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:fritter/models.dart';
 import 'package:intl/intl.dart';
-import 'package:preferences/preference_service.dart';
 import 'package:retry/retry.dart';
 
 import 'constants.dart';
@@ -14,14 +13,14 @@ class TwitterClient {
   static final RegExp ONLY_NUMBERS = new RegExp(r'[^0-9]');
 
   static String getBaseUrl() {
-    // Select a random instance from the user's selection, or return a random one from the whole list
-    var instances = PrefService.getStringList('instances');
-    if (instances == null || instances.isEmpty) {
-      instances = INSTANCES.entries
+    // // Select a random instance from the user's selection, or return a random one from the whole list
+    // var instances = PrefService.of(context).get('instances');
+    // if (instances == null || instances.isEmpty) {
+   var instances = INSTANCES.entries
           .expand((element) => element.value)
           .map((e) => e.hostname)
           .toList();
-    }
+    // }
 
     return (instances..shuffle())
         .take(1)
@@ -80,7 +79,7 @@ class TwitterClient {
 
   static Future<Document> scrapePage(String path) async {
     return await retry(() async {
-        var uri = '${getBaseUrl()}$path';
+        var uri = Uri.parse('${getBaseUrl()}$path');
 
         log('Scraping $uri');
 
@@ -109,29 +108,37 @@ class TwitterClient {
     return int.parse(text.replaceAll(ONLY_NUMBERS, ''));
   }
 
-  static Profile mapNodeToProfile(Element e, Iterable<Tweet> tweets) {
+  static Profile mapNodeToProfile(Element? e, Iterable<Tweet> tweets) {
+    if (e == null) {
+      throw new Exception('The profile element was empty');
+    }
+
     var bannerElement = e.querySelector('.profile-banner img');
     var banner = bannerElement == null
         ? null
         : '${getBaseUrl()}${bannerElement.attributes['src']}';
 
-    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img').attributes['src']}';
-    var fullName = e.querySelector('.profile-card-fullname').text;
-    var username = e.querySelector('.profile-card-username').text;
+    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img')!.attributes['src']}';
+    var fullName = e.querySelector('.profile-card-fullname')!.text;
+    var username = e.querySelector('.profile-card-username')!.text;
     var verified = e.querySelector('.profile-card-fullname .verified-icon') != null;
-    var numberOfTweets = extractNumbers(e.querySelector('.profile-statlist .posts .profile-stat-num').text);
-    var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num').text);
-    var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num').text);
+    var numberOfTweets = extractNumbers(e.querySelector('.profile-statlist .posts .profile-stat-num')!.text);
+    var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num')!.text);
+    var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num')!.text);
 
     return Profile(avatar, banner, fullName, null, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
   }
   
-  static Tweet mapNodeToTweet(Element e) {
+  static Tweet mapNodeToTweet(Element? e) {
+    if (e == null) {
+      throw new Exception('The tweet element was empty');
+    }
+
     var attachments = e.querySelectorAll('.attachments > div').map((e) {
-      String src = 'unknown';
+      String? src = 'unknown';
       String type = 'unknown';
       if (e.classes.contains('gallery-gif')) {
-        src = '${getBaseUrl()}${e.querySelector('source').attributes['src']}';
+        src = '${getBaseUrl()}${e.querySelector('source')!.attributes['src']}';
         type = 'animated_gif';
       } else if (e.classes.contains('gallery-video')) {
         var video = e.querySelector('video');
@@ -139,10 +146,10 @@ class TwitterClient {
           src = null;
         }
 
-        src = Uri.decodeFull(video.attributes['data-url'].split('/')[3]);
+        src = Uri.decodeFull(video!.attributes['data-url']!.split('/')[3]);
         type = 'video';
       } else if (e.classes.contains('gallery-row')) {
-        src = '${getBaseUrl()}${e.querySelector('img').attributes['src']}';
+        src = '${getBaseUrl()}${e.querySelector('img')!.attributes['src']}';
         type = 'photo';
       } else {
         int i = 0;
@@ -155,17 +162,17 @@ class TwitterClient {
       return mapNodeToTweet(e);
     });
 
-    var content = e.querySelector('.tweet-content').text;
-    var date = DateFormat('d/M/yyyy, H:m:s').parse(e.querySelector('.tweet-date > a').attributes['title']);
-    var link = e.querySelector('.tweet-date > a').attributes['href'];
+    var content = e.querySelector('.tweet-content')!.text;
+    var date = DateFormat('d/M/yyyy, H:m:s').parse(e.querySelector('.tweet-date > a')!.attributes['title']!);
+    var link = e.querySelector('.tweet-date > a')!.attributes['href'];
     var numberOfComments = parseElementToNumber(e, '.tweet-stat .icon-comment');
     var numberOfLikes = parseElementToNumber(e, '.tweet-stat .icon-heart');
     var numberOfQuotes = parseElementToNumber(e, '.tweet-stat .icon-quote');
     var numberOfRetweets = parseElementToNumber(e, '.tweet-stat .icon-retweet');
     var retweet = e.querySelector('.retweet-header') != null;
-    var userAvatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img').attributes['src']}';
-    var userFullName = e.querySelector('.tweet-name-row .fullname').text;
-    var userUsername = e.querySelector('.tweet-name-row .username').text;
+    var userAvatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img')!.attributes['src']}';
+    var userFullName = e.querySelector('.tweet-name-row .fullname')!.text;
+    var userUsername = e.querySelector('.tweet-name-row .username')!.text;
 
     return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
   }
@@ -177,13 +184,13 @@ class TwitterClient {
       return 0;
     }
 
-    return int.parse(element.parent.text.replaceAll(new RegExp(r'[^0-9]'), ''));
+    return int.parse(element.parent!.text.replaceAll(new RegExp(r'[^0-9]'), ''));
   }
 
   static User mapNodeToUser(Element e) {
-    var avatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img').attributes['src']}';
-    var fullName = e.querySelector('.tweet-header .fullname').text;
-    var username = e.querySelector('.tweet-header .username').text;
+    var avatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img')!.attributes['src']}';
+    var fullName = e.querySelector('.tweet-header .fullname')!.text;
+    var username = e.querySelector('.tweet-header .username')!.text;
     var verified = e.querySelector('.tweet-header .verified-icon') != null;
 
     return User(avatar, fullName, username, verified);

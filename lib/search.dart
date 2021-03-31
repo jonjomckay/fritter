@@ -17,14 +17,14 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _globalKey = GlobalKey<ScaffoldState>();
+  final _globalKey = GlobalKey<ScaffoldMessengerState>();
 
   final _searchQuery = new TextEditingController();
-  Timer _debounce;
+  Timer? _debounce;
   List<Tweet> _tweets = [];
   List<User> _users = [];
   bool _loading = false;
-  String _oldSearch;
+  String? _oldSearch;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) {
-      _debounce.cancel();
+      _debounce?.cancel();
     }
 
     _debounce = Timer(const Duration(milliseconds: 750), () {
@@ -73,14 +73,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
       Future.wait([tweetSearch, usersSearch])
           .then((results) => setState(() {
-                _tweets = results[0].toList();
-                _users = results[1].toList();
+                _tweets = results[0].cast<Tweet>().toList();
+                _users = results[1].cast<User>().toList();
                 _oldSearch = query;
               }))
           .catchError((e, stackTrace) {
             log('Unable to load the search results', error: e, stackTrace: stackTrace);
 
-            return _globalKey.currentState.showSnackBar(SnackBar(
+            _globalKey.currentState!.showSnackBar(SnackBar(
                 content: Text('Something went wrong loading the search results! The error was: $e'),
                 duration: Duration(days: 1),
                 action: SnackBarAction(

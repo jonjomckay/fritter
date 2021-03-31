@@ -2,20 +2,23 @@ import 'dart:async';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/options.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/search.dart';
 import 'package:fritter/status.dart';
-import 'package:preferences/preferences.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:pref/pref.dart';
+import 'package:uni_links2/uni_links.dart';
 
 import 'constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await PrefService.init(prefix: 'pref_');
-  runApp(MyApp());
+  final prefService = await PrefServiceShared.init(prefix: 'pref_');
+
+  runApp(PrefService(
+      child: MyApp(),
+      service: prefService
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -24,15 +27,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _trueBlack = PrefService.getBool(OPTION_THEME_TRUE_BLACK);
+  bool _trueBlack = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    PrefService.onNotify(OPTION_THEME_TRUE_BLACK, () {
+    // Enable "true blacks" if the preference is set
+    setState(() {
+      this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK);
+    });
+
+    // Whenever the "true black" preference is toggled, apply the toggle
+    PrefService.of(context).addKeyListener(OPTION_THEME_TRUE_BLACK, () {
       setState(() {
-        this._trueBlack = PrefService.getBool(OPTION_THEME_TRUE_BLACK);
+        this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK);
       });
     });
   }
@@ -45,13 +54,13 @@ class _MyAppState extends State<MyApp> {
       light: FlexSchemeColor(
         primary: Colors.blue,
         primaryVariant: Color(0xFF320019),
-        secondary: Colors.blue[500],
+        secondary: Colors.blue[500]!,
         secondaryVariant: Color(0xFF002411),
       ),
       dark: FlexSchemeColor(
         primary: Colors.blue,
         primaryVariant: Color(0xFF775C69),
-        secondary: Colors.blue[500],
+        secondary: Colors.blue[500]!,
         secondaryVariant: Color(0xFF5C7267),
       ),
     );
@@ -73,12 +82,12 @@ class DefaultPage extends StatefulWidget {
 }
 
 class _DefaultPageState extends State<DefaultPage> {
-  String _page;
+  String? _page;
 
-  String _username;
-  String _statusId;
+  late String _username;
+  late String _statusId;
 
-  StreamSubscription _sub;
+  late StreamSubscription _sub;
 
   void handleInitialLink(Uri link) {
     // Parse the link
@@ -115,7 +124,7 @@ class _DefaultPageState extends State<DefaultPage> {
       }
 
       // Attach a listener to the stream
-      _sub = getUriLinksStream().listen((link) => handleInitialLink(link), onError: (err) {
+      _sub = uriLinkStream.listen((link) => handleInitialLink(link!), onError: (err) {
         // TODO: Handle exception by warning the user their action did not succeed
         int i = 0;
       });

@@ -10,7 +10,7 @@ class StatusScreen extends StatelessWidget {
   final String username;
   final String id;
 
-  const StatusScreen({Key key, this.username, this.id}) : super(key: key);
+  const StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class StatusScreenBody extends StatefulWidget {
   final String username;
   final String id;
 
-  const StatusScreenBody({Key key, this.username, this.id}) : super(key: key);
+  const StatusScreenBody({Key? key, required this.username, required this.id}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _StatusScreenBodyState();
@@ -33,7 +33,7 @@ class StatusScreenBody extends StatefulWidget {
 
 class _StatusScreenBodyState extends State<StatusScreenBody> {
   bool _loading = true;
-  Tweet _status;
+  Tweet? _status;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         .catchError((e, stackTrace) {
           log('Unable to load the tweet', error: e, stackTrace: stackTrace);
 
-          return Scaffold.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Something went wrong loading the tweet! The error was: $e'),
               duration: Duration(days: 1),
               action: SnackBarAction(
@@ -70,12 +70,14 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
   @override
   Widget build(BuildContext context) {
     Iterable<Widget> comments = [];
-    if (_status != null) {
-      if (_status.comments.isEmpty) {
+
+    var status = _status;
+    if (status != null) {
+      if (status.comments.isEmpty) {
         comments = [Text('No replies')];
       } else {
-        comments = _status.comments.map((e) {
-          return TweetTile(currentUsername: widget.username, tweet: e);
+        comments = status.comments.map((e) {
+          return TweetTile(clickable: false, currentUsername: widget.username, tweet: e);
         });
       }
     }
@@ -85,7 +87,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         loading: _loading,
         child: Column(
           children: [
-            TweetTile(currentUsername: widget.username, tweet: _status, clickable: false),
+            TweetTile(currentUsername: widget.username, tweet: status, clickable: false),
             Padding(
               padding: EdgeInsets.all(32),
               child: Column(

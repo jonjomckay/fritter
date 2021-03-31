@@ -12,7 +12,7 @@ import 'models.dart';
 class ProfileScreen extends StatelessWidget {
   final String username;
 
-  const ProfileScreen({Key key, this.username}) : super(key: key);
+  const ProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
 class ProfileScreenBody extends StatefulWidget {
   final String username;
 
-  const ProfileScreenBody({Key key, this.username}) : super(key: key);
+  const ProfileScreenBody({Key? key, required this.username}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
@@ -35,11 +35,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   final double _appBarHeight = 256.0;
 
   bool _loading = true;
-  Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, List(), '', false);
-  Iterable<Tweet> _tweets = List();
-  String _error;
+  Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, [], '', false);
+  Iterable<Tweet> _tweets = [];
+  String? _error;
 
-  StreamSubscription _sub;
+  late StreamSubscription _sub;
 
   @override
   void initState() {
@@ -98,15 +98,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
 
-    var bannerImage = _profile.banner == null
+    var banner = _profile.banner;
+    var bannerImage = banner == null
         ? Container()
-        : Image.network(_profile.banner, fit: BoxFit.cover, height: _appBarHeight);
+        : Image.network(banner, fit: BoxFit.cover, height: _appBarHeight);
 
     Widget child;
     if (_error != null) {
       child = Padding(
         padding: EdgeInsets.all(32),
-        child: Center(child: Text(_error)),
+        child: Center(child: Text(_error!)),
       );
     } else {
       var tweets = _tweets.map((tweet) {
