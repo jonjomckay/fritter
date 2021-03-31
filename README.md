@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  A free, open-source Twitter/Nitter client for Android and iOS.
+  A free, open-source Twitter client for Android and iOS.
 </p>
 
 ## Features
