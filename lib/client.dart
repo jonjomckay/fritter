@@ -1,198 +1,257 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:html/dom.dart';
-import 'package:html/parser.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/src/utils/date_utils.dart';
+import 'package:faker/faker.dart';
 import 'package:http/http.dart' as http;
-import 'package:fritter/models.dart';
-import 'package:intl/intl.dart';
-import 'package:retry/retry.dart';
 
-import 'constants.dart';
+const Duration _defaultTimeout = Duration(seconds: 10);
+const String _bearerToken = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 
-class TwitterClient {
-  static final RegExp ONLY_NUMBERS = new RegExp(r'[^0-9]');
+class _FritterTwitterClient extends TwitterClient {
+  _FritterTwitterClient() : super(
+    consumerKey: '',
+    consumerSecret: '',
+    token: '',
+    secret: ''
+  );
 
-  static String getBaseUrl() {
-    // // Select a random instance from the user's selection, or return a random one from the whole list
-    // var instances = PrefService.of(context).get('instances');
-    // if (instances == null || instances.isEmpty) {
-   var instances = INSTANCES.entries
-          .expand((element) => element.value)
-          .map((e) => e.hostname)
-          .toList();
-    // }
+  static String? _token;
+  static int _expiresAt = -1;
+  static int _tokenLimit = -1;
+  static int _tokenRemaining = -1;
 
-    return (instances..shuffle())
-        .take(1)
-        .map((i) => 'https://$i')
-        .first;
+  @override
+  Future<http.Response> get(Uri uri, {Map<String, String>? headers, Duration? timeout}) {
+    return fetch(uri, headers: headers)
+        .timeout(timeout ?? _defaultTimeout)
+        .then((response) {
+      var value = response.statusCode >= 200 && response.statusCode < 300
+          ? response
+          : Future.error(response);
+
+      return value as FutureOr<http.Response>;
+    });
   }
 
-  static Future<ProfileResponse> getProfile(String profile) async {
-    var document = await scrapePage('/$profile');
-
-    var tweets = document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
-        .map((e) {
-          // TODO: Handle threads properly
-          if (e.classes.contains('thread-line')) {
-            return e.children.first;
-          }
-
-          return e;
-        })
-        .map((e) => mapNodeToTweet(e));
-
-    var result = mapNodeToProfile(document.body, tweets);
-
-    // TODO: This always returns 200 because we're throwing exceptions
-    return ProfileResponse(result, 200);
-  }
-
-  static Future<Tweet> getStatus(String username, String id) async {
-    var document = await scrapePage('/$username/status/$id');
-    
-    return mapNodeToTweet(document.querySelector('.conversation'));
-  }
-
-  static Future<Iterable<Tweet>> searchTweets(String query) async {
-    var document = await scrapePage('/search?f=tweets&q=${Uri.encodeQueryComponent(query)}');
-
-    // TODO: This is copied from above
-    return document.querySelectorAll('.timeline > .timeline-item, .timeline > .thread-line')
-        .map((e) {
-          // TODO: Handle threads properly
-          if (e.classes.contains('thread-line')) {
-            return e.children.first;
-          }
-
-          return e;
-        })
-        .map((e) => mapNodeToTweet(e));
-  }
-
-  static Future<Iterable<User>> searchUsers(String query) async {
-    var document = await scrapePage('/search?f=users&q=${Uri.encodeQueryComponent(query)}');
-
-    return document.querySelectorAll('.timeline > .timeline-item')
-        .map((e) => mapNodeToUser(e));
-  }
-
-  static Future<Document> scrapePage(String path) async {
-    return await retry(() async {
-        var uri = Uri.parse('${getBaseUrl()}$path');
-
-        log('Scraping $uri');
-
-        var response = await http.get(uri, headers: {
-          'Cookie': 'hlsPlayback=on'
-        });
-
-        if (response.statusCode == 429) {
-          throw Exception('The server has been rate limited');
-        }
-
-        if (response.statusCode != 200) {
-          throw Exception('An unexpected error happened');
-        }
-
-        return parse(response.body);
-      },
-      retryIf: (e) => e is Exception,
-      onRetry: (e) {
-        log('Request failed. Retrying...');
-      },
-    );
-  }
-
-  static int extractNumbers(String text) {
-    return int.parse(text.replaceAll(ONLY_NUMBERS, ''));
-  }
-
-  static Profile mapNodeToProfile(Element? e, Iterable<Tweet> tweets) {
-    if (e == null) {
-      throw new Exception('The profile element was empty');
-    }
-
-    var bannerElement = e.querySelector('.profile-banner img');
-    var banner = bannerElement == null
-        ? null
-        : '${getBaseUrl()}${bannerElement.attributes['src']}';
-
-    var avatar = '${getBaseUrl()}${e.querySelector('.profile-card-avatar img')!.attributes['src']}';
-    var fullName = e.querySelector('.profile-card-fullname')!.text;
-    var username = e.querySelector('.profile-card-username')!.text;
-    var verified = e.querySelector('.profile-card-fullname .verified-icon') != null;
-    var numberOfTweets = extractNumbers(e.querySelector('.profile-statlist .posts .profile-stat-num')!.text);
-    var numberOfFollowing = extractNumbers(e.querySelector('.profile-statlist .following .profile-stat-num')!.text);
-    var numberOfFollowers = extractNumbers(e.querySelector('.profile-statlist .followers .profile-stat-num')!.text);
-
-    return Profile(avatar, banner, fullName, null, numberOfFollowers, numberOfFollowing, numberOfTweets, tweets, username, verified);
-  }
-  
-  static Tweet mapNodeToTweet(Element? e) {
-    if (e == null) {
-      throw new Exception('The tweet element was empty');
-    }
-
-    var attachments = e.querySelectorAll('.attachments > div').map((e) {
-      String? src = 'unknown';
-      String type = 'unknown';
-      if (e.classes.contains('gallery-gif')) {
-        src = '${getBaseUrl()}${e.querySelector('source')!.attributes['src']}';
-        type = 'animated_gif';
-      } else if (e.classes.contains('gallery-video')) {
-        var video = e.querySelector('video');
-        if (video == null) {
-          src = null;
-        }
-
-        src = Uri.decodeFull(video!.attributes['data-url']!.split('/')[3]);
-        type = 'video';
-      } else if (e.classes.contains('gallery-row')) {
-        src = '${getBaseUrl()}${e.querySelector('img')!.attributes['src']}';
-        type = 'photo';
-      } else {
-        int i = 0;
+  static Future<String> getToken() async {
+    if (_token != null) {
+      // If we don't have an expiry or limit, it's probably because we haven't made a request yet, so assume they're OK
+      if (_expiresAt == -1 && _tokenLimit == -1 && _tokenRemaining == -1) {
+        // TODO: Null safety with concurrent threads
+        return _token!;
       }
 
-      return Media(src, type);
-    }).toList();
-    
-    var comments = e.querySelectorAll('.replies > .reply').map((e) {
-      return mapNodeToTweet(e);
-    });
-
-    var content = e.querySelector('.tweet-content')!.text;
-    var date = DateFormat('d/M/yyyy, H:m:s').parse(e.querySelector('.tweet-date > a')!.attributes['title']!);
-    var link = e.querySelector('.tweet-date > a')!.attributes['href'];
-    var numberOfComments = parseElementToNumber(e, '.tweet-stat .icon-comment');
-    var numberOfLikes = parseElementToNumber(e, '.tweet-stat .icon-heart');
-    var numberOfQuotes = parseElementToNumber(e, '.tweet-stat .icon-quote');
-    var numberOfRetweets = parseElementToNumber(e, '.tweet-stat .icon-retweet');
-    var retweet = e.querySelector('.retweet-header') != null;
-    var userAvatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img')!.attributes['src']}';
-    var userFullName = e.querySelector('.tweet-name-row .fullname')!.text;
-    var userUsername = e.querySelector('.tweet-name-row .username')!.text;
-
-    return Tweet(attachments, comments, content, date, link, numberOfComments, numberOfLikes, numberOfQuotes, numberOfRetweets, retweet, userAvatar, userFullName, userUsername);
-  }
-
-  static int parseElementToNumber(Element e, String selector) {
-    var element = e.querySelector(selector);
-    if (element == null || element.parent == null) {
-      // TODO
-      return 0;
+      // Check if the token we have hasn't expired yet
+      if (DateTime.now().millisecondsSinceEpoch < _expiresAt) {
+        // Check if the token we have still has usages remaining
+        if (_tokenRemaining < _tokenLimit) {
+          // TODO: Null safety with concurrent threads
+          return _token!;
+        }
+      }
     }
 
-    return int.parse(element.parent!.text.replaceAll(new RegExp(r'[^0-9]'), ''));
+    // Otherwise, fetch a new token
+    _token = null;
+    _tokenLimit = -1;
+    _tokenRemaining = -1;
+    _expiresAt = -1;
+
+    var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
+      'authorization': _bearerToken,
+    });
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      if (result.containsKey('guest_token')) {
+        _token = result['guest_token'];
+
+        return _token!;
+      }
+    }
+
+    // TODO
+    throw new Exception('Unable to refresh the token');
   }
 
-  static User mapNodeToUser(Element e) {
-    var avatar = '${getBaseUrl()}${e.querySelector('.tweet-avatar img')!.attributes['src']}';
-    var fullName = e.querySelector('.tweet-header .fullname')!.text;
-    var username = e.querySelector('.tweet-header .username')!.text;
-    var verified = e.querySelector('.tweet-header .verified-icon') != null;
+  static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
+    log('Fetching $uri');
 
-    return User(avatar, fullName, username, verified);
+    var response = await http.get(uri, headers: {
+      ...?headers,
+      'authorization': _bearerToken,
+      'x-guest-token': await getToken(),
+      'x-twitter-active-user': 'yes',
+      'user-agent': faker.internet.userAgent()
+    });
+
+    var headerRateLimitReset = response.headers['x-rate-limit-reset'];
+    var headerRateLimitRemaining = response.headers['x-rate-limit-remaining'];
+    var headerRateLimitLimit = response.headers['x-rate-limit-limit'];
+
+    if (headerRateLimitReset == null || headerRateLimitRemaining == null || headerRateLimitLimit == null) {
+      throw new Exception('One or more of the rate limit headers are missing');
+    }
+
+    // Update our token's rate limit counters
+    _expiresAt = int.parse(headerRateLimitReset) * 1000;
+    _tokenRemaining = int.parse(headerRateLimitRemaining);
+    _tokenLimit = int.parse(headerRateLimitLimit);
+
+    return response;
+  }
+
+}
+
+class Twitter {
+  static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
+  
+  static Future<User> getProfile(String username) async {
+    var result = await _twitterApi.userService.usersShow(
+      screenName: username
+    );
+
+    return result;
+  }
+
+  static Future<Tweet> getTweet(String id) async {
+    var result = await _twitterApi.tweetService.show(
+      id: id,
+    );
+
+    return result;
+  }
+
+  static Future<List<Tweet>> getTweetReplies(String id, { String after = "" }) async {
+    var response = await _twitterApi.client.get(
+      Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json')
+    );
+
+    var result = json.decode(response.body);
+
+    var globalTweets = result['globalObjects']['tweets'];
+    var instructions = result['timeline']['instructions'];
+    var globalUsers = result['globalObjects']['users'];
+
+    return List.from(instructions[0]['addEntries']['entries'])
+        .where((entry) => entry['entryId'].startsWith('conversationThread') as bool)
+        .where((entry) {
+          // I love this API!
+          if (entry['content']['timelineModule'] != null &&
+              entry['content']['timelineModule']['items'] != null &&
+              entry['content']['timelineModule']['items'][0] != null &&
+              entry['content']['timelineModule']['items'][0]['item'] != null &&
+              entry['content']['timelineModule']['items'][0]['item']['content'] != null &&
+              entry['content']['timelineModule']['items'][0]['item']['content']['tweet'] != null &&
+              entry['content']['timelineModule']['items'][0]['item']['content']['tweet']['id'] != null) {
+            return true;
+          }
+
+          return false;
+        })
+        .map((e) => tweetFromJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
+        .toList(growable: false);
+  }
+
+  static Future<List<Tweet>> searchTweets(String query) async {
+    var result = await _twitterApi.tweetSearchService.searchTweets(
+      q: query,
+      includeEntities: true
+    );
+
+    return result.statuses ?? [];
+  }
+
+  static Future<List<User>> searchUsers(String query) async {
+    var result = await _twitterApi.userService.usersSearch(
+      q: query,
+    );
+
+    return result;
+  }
+
+  static Future<List<Tweet>> getTweets(String id) async {
+    var response = await _twitterApi.client.get(
+      Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', {
+        'include_tweet_replies': 'false',
+        'include_profile_interstitial_type': '0',
+        'include_blocking': '0',
+        'include_blocked_by': '0',
+        'include_followed_by': '0',
+        'include_want_retweets': '0',
+        'include_mute_edge': '0',
+        'include_can_dm': '0',
+        'include_can_media_tag': '1',
+        'skip_status': '1',
+        'cards_platform': 'Web-12',
+        'include_cards': '1',
+        'include_composer_source': 'false',
+        'include_ext_alt_text': 'true',
+        'include_reply_count': '1',
+        'tweet_mode': 'extended',
+        'include_entities': 'true',
+        'include_user_entities': 'true',
+        'include_ext_media_color': 'false',
+        'include_ext_media_availability': 'true',
+        'send_error_codes': 'true',
+        'simple_quoted_tweet': 'true',
+        'ext': 'mediaStats',
+        'include_quote_count': 'true'
+      })
+    );
+
+    var result = json.decode(response.body);
+
+    var globalTweets = result['globalObjects']['tweets'];
+    var instructions = result['timeline']['instructions'];
+    var globalUsers = result['globalObjects']['users'];
+
+    return instructions[0]['addEntries']['entries']
+        .where((entry) => entry['entryId'].startsWith('tweet') as bool)
+        .map<Tweet>((entry) => tweetFromJson(globalTweets, globalUsers, globalTweets[entry['sortIndex']]))
+        .toList(growable: false);
+  }
+
+  static Tweet tweetFromJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
+    Tweet tweet = Tweet();
+    tweet.createdAt = convertTwitterDateTime(e['created_at']);
+    tweet.entities = e['entities'] == null ? null : Entities.fromJson(e['entities']);
+    tweet.extendedEntities = e['extended_entities'] == null ? null : Entities.fromJson(e['extended_entities']);
+    tweet.favorited = e['favorited'] as bool?;
+    tweet.favoriteCount = e['favorite_count'] as int?;
+    tweet.fullText = e['full_text'] as String?;
+    tweet.idStr = e['id_str'] as String?;
+    tweet.inReplyToScreenName = e['in_reply_to_screen_name'] as String?;
+    tweet.inReplyToStatusIdStr = e['in_reply_to_status_id_str'] as String?;
+    tweet.inReplyToUserIdStr = e['in_reply_to_user_id_str'] as String?;
+    tweet.isQuoteStatus = e['is_quote_status'] as bool?;
+    tweet.lang = e['lang'] as String?;
+    tweet.quoteCount = e['quote_count'] as int?;
+    tweet.quotedStatus = e['quoted_status_id_str'] == null ? null : tweetFromJson(tweets, users, tweets[e['quoted_status_id_str']]);
+    tweet.quotedStatusIdStr = e['quoted_status_id_str'] as String?;
+    tweet.quotedStatusPermalink = e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
+    tweet.replyCount = e['reply_count'] as int?;
+    tweet.retweetCount = e['retweet_count'] as int?;
+    tweet.retweeted = e['retweeted'] as bool?;
+    tweet.retweetedStatus = e['retweeted_status_id_str'] == null ? null : tweetFromJson(tweets, users, tweets[e['retweeted_status_id_str']]);
+    tweet.source = e['source'] as String?;
+    tweet.text = e['text'] ?? e['full_text'] as String?;
+    tweet.user = e['user_id_str'] == null ? null : User.fromJson(users[e['user_id_str']]);
+
+    tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)
+        ?.map((e) => e as int)
+        .toList();
+
+    // TODO
+    tweet.coordinates = null;
+    tweet.truncated = null;
+    tweet.place = null;
+    tweet.possiblySensitive = null;
+    tweet.possiblySensitiveAppealable = null;
+
+    return tweet;
   }
 }

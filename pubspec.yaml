@@ -1,5 +1,5 @@
 name: fritter
-description: An open-source Twitter/Nitter client
+description: An open-source Twitter client
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+20210316
+version: 2.0.0+20210331
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -26,6 +26,8 @@ dependencies:
 
   auto_direction: ^0.0.5
   better_player: ^0.0.63
+  dart_twitter_api: ^0.5.0
+  faker: ^2.0.0-rc.2
   flex_color_scheme: ^2.1.1
   html: ^0.15.0
   http: ^0.13.1

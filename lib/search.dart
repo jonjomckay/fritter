@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/gestures.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/options.dart';
-import 'package:fritter/tweet.dart';
 
-import 'models.dart';
+import 'client.dart';
+import 'tweet.dart';
 import 'user.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -68,8 +67,8 @@ class _SearchScreenState extends State<SearchScreen> {
         _oldSearch = null;
       });
     } else {
-      var tweetSearch = TwitterClient.searchTweets(query);
-      var usersSearch = TwitterClient.searchUsers(query);
+      var tweetSearch = Twitter.searchTweets(query);
+      var usersSearch = Twitter.searchUsers(query);
 
       Future.wait([tweetSearch, usersSearch])
           .then((results) => setState(() {

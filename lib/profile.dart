@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
-
-import 'models.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String username;
@@ -33,13 +32,14 @@ class ProfileScreenBody extends StatefulWidget {
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   final double _appBarHeight = 256.0;
+  final _scrollController = ScrollController();
 
   bool _loading = true;
-  Profile _profile = Profile(null, null, 'Loading...', null, 0, 0, 0, [], '', false);
-  Iterable<Tweet> _tweets = [];
+  User? _profile;
+  List<Tweet> _tweets = [];
   String? _error;
 
-  late StreamSubscription _sub;
+  StreamSubscription? _sub;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     var onError = (e, stackTrace) {
       log('Unable to load the profile', error: e, stackTrace: stackTrace);
 
-      return Scaffold.of(context).showSnackBar(SnackBar(
+      Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Something went wrong loading the profile! The error was: $e'),
         duration: Duration(days: 1),
         action: SnackBarAction(
@@ -65,20 +65,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
       ));
     };
 
-    TwitterClient.getProfile(username).catchError(onError).then((profile) {
-      setState(() {
-        switch (profile.statusCode) {
-          case 200:
-            _profile = profile.profile;
-            _tweets = profile.profile.tweets;
-            break;
-          case 403:
-            _error = 'This profile is protected';
-            break;
-          default:
-            _error = 'There was an unknown error loading the profile';
-            break;
-        }
+    Twitter.getProfile(username).catchError(onError).then((profile) {
+      Twitter.getTweets(profile.idStr!).catchError(onError).then((tweets) {
+        setState(() {
+          _profile = profile;
+          _tweets = tweets;
+          _loading = false;
+        });
       });
     }).whenComplete(() => setState(() {
       _loading = false;
@@ -98,29 +91,45 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
 
-    var banner = _profile.banner;
+    Widget child;
+
+    var profile = _profile;
+    if (profile == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
         ? Container()
         : Image.network(banner, fit: BoxFit.cover, height: _appBarHeight);
 
-    Widget child;
+
     if (_error != null) {
       child = Padding(
         padding: EdgeInsets.all(32),
         child: Center(child: Text(_error!)),
       );
     } else {
-      var tweets = _tweets.map((tweet) {
-        return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
-      }).toList();
+      child = Container(
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          controller: _scrollController,
+          shrinkWrap: true,
+          itemCount: _tweets.length,
+          itemBuilder: (context, index) {
+            var tweet = _tweets[index];
 
-      child = Column(children: tweets);
+            return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+          },
+        ),
+      );
     }
 
     return Scaffold(
         body: DefaultTabController(
           length: 3,
           child: CustomScrollView(
+            controller: _scrollController,
             slivers: [
               SliverAppBar(
                 expandedHeight: _appBarHeight,
@@ -130,24 +139,24 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                     Tab(child: Column(
                       children: [
                         Text('Tweets', style: Theme.of(context).primaryTextTheme.subtitle2),
-                        Text('${numberFormat.format(_profile.numberOfTweets)}', style: Theme.of(context).primaryTextTheme.headline6),
+                        Text('${numberFormat.format(profile.statusesCount)}', style: Theme.of(context).primaryTextTheme.headline6),
                       ],
                     )),
                     Tab(child: Column(
                       children: [
                         Text('Following', style: Theme.of(context).primaryTextTheme.subtitle2),
-                        Text('${numberFormat.format(_profile.numberOfFollowing)}', style: Theme.of(context).primaryTextTheme.headline6),
+                        Text('${numberFormat.format(profile.friendsCount)}', style: Theme.of(context).primaryTextTheme.headline6),
                       ],
                     )),
                     Tab(child: Column(
                       children: [
                         Text('Followers', style: Theme.of(context).primaryTextTheme.subtitle2),
-                        Text('${numberFormat.format(_profile.numberOfFollowers)}', style: Theme.of(context).primaryTextTheme.headline6),
+                        Text('${numberFormat.format(profile.followersCount)}', style: Theme.of(context).primaryTextTheme.headline6),
                       ],
                     )),
                   ],
                 ),
-                title: Text(_profile.fullName),
+                title: Text(profile.name!),
                 flexibleSpace: FlexibleSpaceBar(
                   background: Stack(
                     fit: StackFit.expand,
@@ -181,8 +190,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   @override
   void dispose() {
     super.dispose();
-    if (_sub != null) {
-      _sub.cancel();
-    }
+    _sub?.cancel();
   }
 }
