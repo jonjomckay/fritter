@@ -35,7 +35,7 @@ class Profile {
 }
 
 class ProfileResponse {
-  final Profile profile;
+  final Profile? profile;
   final int statusCode;
 
   ProfileResponse(this.profile, this.statusCode);
@@ -64,7 +64,7 @@ class Tweet {
 }
 
 class TweetsResponse {
-  final Iterable<Tweet> tweets;
+  final List<Tweet>? tweets;
   final int statusCode;
 
   TweetsResponse(this.tweets, this.statusCode);

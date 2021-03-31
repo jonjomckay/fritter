@@ -12,7 +12,7 @@ class TwitterClient2 {
       'screen_name': username
     });
 
-    Profile profile;
+    Profile? profile;
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
 
@@ -62,7 +62,7 @@ class TwitterClient2 {
       'include_quote_count': 'true'
     });
 
-    Iterable<Tweet> tweets;
+    List<Tweet>? tweets;
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
 
@@ -129,34 +129,36 @@ class TwitterClient2 {
     return TweetsResponse(tweets, response.statusCode);
   }
 
-  static String _token;
-  static int _expiresAt;
-  static int _tokenLimit;
-  static int _tokenRemaining;
+  static String? _token;
+  static int _expiresAt = -1;
+  static int _tokenLimit = -1;
+  static int _tokenRemaining = -1;
 
   static Future<String> getToken() async {
     if (_token != null) {
       // If we don't have an expiry or limit, it's probably because we haven't made a request yet, so assume they're OK
-      if (_expiresAt == null && _tokenLimit == null && _tokenRemaining == null) {
-        return _token;
+      if (_expiresAt == -1 && _tokenLimit == -1 && _tokenRemaining == -1) {
+        // TODO: Null safety with concurrent threads
+        return _token!;
       }
 
       // Check if the token we have hasn't expired yet
       if (DateTime.now().millisecondsSinceEpoch < _expiresAt) {
         // Check if the token we have still has usages remaining
         if (_tokenRemaining < _tokenLimit) {
-          return _token;
+          // TODO: Null safety with concurrent threads
+          return _token!;
         }
       }
     }
 
     // Otherwise, fetch a new token
     _token = null;
-    _tokenLimit = null;
-    _tokenRemaining = null;
-    _expiresAt = null;
+    _tokenLimit = -1;
+    _tokenRemaining = -1;
+    _expiresAt = -1;
 
-    var response = await http.post('https://api.twitter.com/1.1/guest/activate.json', headers: {
+    var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
       'authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA',
     });
 
@@ -165,12 +167,13 @@ class TwitterClient2 {
       if (result.containsKey('guest_token')) {
         _token = result['guest_token'];
 
-        return _token;
+        return _token!;
       }
     }
 
     // TODO
     int i = 0;
+    throw new Exception('Unable to refresh the token');
   }
 
   static Future<http.Response> fetch(String path, Map<String, String> queryParameters) async {
@@ -188,10 +191,18 @@ class TwitterClient2 {
       'user-agent': faker.internet.userAgent()
     });
 
+    var headerRateLimitReset = response.headers['x-rate-limit-reset'];
+    var headerRateLimitRemaining = response.headers['x-rate-limit-remaining'];
+    var headerRateLimitLimit = response.headers['x-rate-limit-limit'];
+
+    if (headerRateLimitReset == null || headerRateLimitRemaining == null || headerRateLimitLimit == null) {
+      throw new Exception('One or more of the rate limit headers are missing');
+    }
+
     // Update our token's rate limit counters
-    _expiresAt = int.parse(response.headers['x-rate-limit-reset']) * 1000;
-    _tokenRemaining = int.parse(response.headers['x-rate-limit-remaining']);
-    _tokenLimit = int.parse(response.headers['x-rate-limit-limit']);
+    _expiresAt = int.parse(headerRateLimitReset) * 1000;
+    _tokenRemaining = int.parse(headerRateLimitRemaining);
+    _tokenLimit = int.parse(headerRateLimitLimit);
 
     return response;
 

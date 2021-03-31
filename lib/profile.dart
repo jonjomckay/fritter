@@ -70,7 +70,25 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
       setState(() {
         switch (profile.statusCode) {
           case 200:
-            _profile = profile.profile;
+            _profile = profile.profile!;
+
+            TwitterClient2.getTweets(_profile.id!).catchError(onError).then((tweets) {
+              setState(() {
+                switch(tweets.statusCode) {
+                  case 200:
+                    _tweets = tweets.tweets!.toList(growable: false);
+                    break;
+                  case 403:
+                    _error = 'This profile is protected';
+                    break;
+                  default:
+                    _error = 'There was an unknown error loading the profile';
+                    break;
+                }
+
+                _loading = false;
+              });
+            });
             break;
           case 403:
             _error = 'This profile is protected';
@@ -79,24 +97,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
             _error = 'There was an unknown error loading the profile';
             break;
         }
-      });
-
-      TwitterClient2.getTweets(_profile.id).catchError(onError).then((tweets) {
-        setState(() {
-          switch(tweets.statusCode) {
-            case 200:
-              _tweets = tweets.tweets.toList(growable: false);
-              break;
-            case 403:
-              _error = 'This profile is protected';
-              break;
-            default:
-              _error = 'There was an unknown error loading the profile';
-              break;
-          }
-
-          _loading = false;
-        });
       });
     }).whenComplete(() => setState(() {
       _loading = false;
