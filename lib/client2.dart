@@ -91,8 +91,14 @@ class TwitterClient2 {
               case 'animated_gif':
                 src = media['video_info']['variants'][0]['url'];
                 break;
-              default:
+              case 'photo':
                 src = media['media_url_https'];
+                break;
+              case 'video':
+                src = media['video_info']['variants'][0]['url'];
+                break;
+              default:
+                print('Unknown media type encountered: ${media['type']}');
                 break;
             }
 
