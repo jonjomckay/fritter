@@ -2,4 +2,4 @@ This release contains a major change - support for Nitter instances has been rem
 
 Support for Nitter was removed mainly so that the app doesn't DOS (abuse) public instances, and also due to development issues caused by differing data structures from all the different Nitter versions being hosted in the wild.
 
-* Removed Nitter support in favour of using the Twitter API directly, in order to be friendlier to Nitter instance administrators
+* Removed Nitter support in favour of using the Twitter API directly
