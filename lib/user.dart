@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class UserTile extends StatelessWidget {
             subtitle: Text(user.screenName!),
             leading: CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage(user.profileImageUrlHttps!),
+              backgroundImage: CachedNetworkImageProvider(user.profileImageUrlHttps!),
             )
           )
         ],
