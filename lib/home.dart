@@ -1,12 +1,11 @@
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/database.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:intl/intl.dart';
 
-import 'loading.dart';
 import 'options.dart';
 import 'profile.dart';
 
@@ -209,23 +208,37 @@ class TrendsContent extends StatelessWidget {
   }
 }
 
-class FollowingContent extends StatelessWidget {
+class FollowingContent extends StatefulWidget {
+  @override
+  _FollowingContentState createState() => _FollowingContentState();
+}
+
+class _FollowingContentState extends State<FollowingContent> {
+  late Future<List<Following>> _future;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      this._future = listFollowing();
+    });
+  }
+
+  Future<List<Following>> listFollowing() async {
+    var database = await Repository.open();
+
+    return (await database.query('following'))
+        .map((e) => Following.fromMap(e))
+        .toList(growable: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder<List<User>>(
-        future: Future.value([
-          User.fromJson({
-            'name': 'Jonjo McKay',
-            'screen_name': 'jonjomckay',
-            'profile_image_url_https': 'https://pbs.twimg.com/profile_images/1026736272348536832/K4wevsHF_400x400.jpg',
-          }),
-          User.fromJson({
-            'name': '30 Rock',
-            'screen_name': '30rock',
-            'profile_image_url_https': 'https://pbs.twimg.com/profile_images/1282777570765758465/95ttE6lU_400x400.jpg',
-          })
-        ]),
+      child: FutureBuilder<List<Following>>(
+        future: _future,
         builder: (context, snapshot) {
           var data = snapshot.data;
           if (data == null) {
@@ -233,9 +246,9 @@ class FollowingContent extends StatelessWidget {
           }
 
           // TODO: Make this happen pre-future value?
-          data.sort((a, b) => a.screenName!.compareTo(b.screenName!));
+          data.sort((a, b) => a.screenName.compareTo(b.screenName));
 
-          return               ListView.builder(
+          return ListView.builder(
             shrinkWrap: true,
             itemCount: data.length,
             itemBuilder: (context, index) {
@@ -248,15 +261,15 @@ class FollowingContent extends StatelessWidget {
                   child: CachedNetworkImage(
                       imageUrl: user.profileImageUrlHttps!, // TODO
                       placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      errorWidget: (context, url, error) => Icon(Icons.error), // TODO: This can error if the profile image has changed... use SWR-like
                       width: 48,
                       height: 48
                   ),
                 ),
-                title: Text(user.name!), // TODO
-                subtitle: Text('@${user.screenName!}'),
+                title: Text(user.name),
+                subtitle: Text('@${user.screenName}'),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.screenName!)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.screenName)));
                 },
               );
             },

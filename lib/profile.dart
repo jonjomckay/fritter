@@ -5,9 +5,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/database.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String? id;
@@ -155,6 +157,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
               SliverAppBar(
                 expandedHeight: _appBarHeight,
                 pinned: true,
+                actions: [
+                  FollowButton(user: profile)
+                ],
                 bottom: TabBar(
                   tabs: [
                     Tab(child: Column(
@@ -212,5 +217,76 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   void dispose() {
     super.dispose();
     _sub?.cancel();
+  }
+}
+
+class FollowButton extends StatefulWidget {
+  final User user;
+
+  const FollowButton({Key? key, required this.user}) : super(key: key);
+  @override
+  _FollowButtonState createState() => _FollowButtonState();
+}
+
+class _FollowButtonState extends State<FollowButton> {
+  bool? _followed;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchFollowed();
+  }
+
+  Future fetchFollowed() {
+    return isFollowed(int.parse(widget.user.idStr!))
+        .then((value) => setState(() {
+          this._followed = value;
+        }));
+  }
+
+  Future<bool> isFollowed(int id) async {
+    Database database = await Repository.open();
+
+    var result = await database.rawQuery('SELECT EXISTS (SELECT 1 FROM following WHERE id = ?)', [id]);
+    if (result.isEmpty) {
+      return false;
+    }
+
+    return result.first.values.first == 1
+      ? true
+      : false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var id = int.parse(widget.user.idStr!);
+
+    var followed = _followed;
+    if (followed == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return MaterialButton(
+        child: followed
+            ? Text('Unfollow')
+            : Text('Follow'),
+        onPressed: () async {
+          Database database = await Repository.open();
+
+          if (followed) {
+            await database.delete('following', where: 'id = ?', whereArgs: [id]);
+          } else {
+            await database.insert('following', {
+              'id': id,
+              'screen_name': widget.user.screenName,
+              'name': widget.user.name,
+              'profile_image_url_https': widget.user.profileImageUrlHttps
+            });
+          }
+
+          await fetchFollowed();
+        }
+    );
   }
 }
