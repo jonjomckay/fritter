@@ -421,7 +421,7 @@ packages:
     source: hosted
     version: "1.8.0"
   sqflite:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqflite
       url: "https://pub.dartlang.org"
