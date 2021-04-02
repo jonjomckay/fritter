@@ -248,24 +248,25 @@ class TweetTile extends StatelessWidget {
               ButtonBar(
                 alignment: MainAxisAlignment.spaceAround,
                 buttonTextTheme: ButtonTextTheme.accent,
+                buttonPadding: EdgeInsets.symmetric(horizontal: 6),
                 children: [
                   FlatButton.icon(
-                    icon: Icon(Icons.comment, size: 20),
+                    icon: Icon(Icons.comment, size: 16),
                     onPressed: null,
                     label: Text(numberFormat.format(tweet.replyCount)),
                   ),
                   FlatButton.icon(
-                    icon: Icon(Icons.repeat, size: 20),
+                    icon: Icon(Icons.repeat, size: 16),
                     onPressed: null,
                     label: Text(numberFormat.format(tweet.retweetCount)),
                   ),
                   FlatButton.icon(
-                    icon: Icon(Icons.message, size: 20),
+                    icon: Icon(Icons.message, size: 16),
                     onPressed: null,
                     label: Text(numberFormat.format(tweet.quoteCount)),
                   ),
                   FlatButton.icon(
-                    icon: Icon(Icons.favorite, size: 20),
+                    icon: Icon(Icons.favorite, size: 16),
                     onPressed: null,
                     label: Text(numberFormat.format(tweet.favoriteCount)),
                   ),
