@@ -24,7 +24,8 @@ class UserTile extends StatelessWidget {
             leading: CircleAvatar(
               radius: 24,
               backgroundImage: CachedNetworkImageProvider(user.profileImageUrlHttps!),
-            )
+            ),
+            trailing: FollowButton(user: user),
           )
         ],
       ),
