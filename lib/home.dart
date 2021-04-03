@@ -245,6 +245,23 @@ class _FollowingContentState extends State<FollowingContent> {
             return Center(child: CircularProgressIndicator());
           }
 
+          if (data.isEmpty) {
+            return Center(child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('¯\\_(ツ)_/¯', style: TextStyle(
+                  fontSize: 32
+                )),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16),
+                  child: Text('Try searching for some users to follow!', style: TextStyle(
+                    color: Theme.of(context).hintColor
+                  )),
+                )
+              ])
+            );
+          }
+
           // TODO: Make this happen pre-future value?
           data.sort((a, b) => a.screenName.compareTo(b.screenName));
 
