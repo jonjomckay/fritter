@@ -97,51 +97,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 }
 
 class TweetSearch extends SearchDelegate {
-  Future<List<Tweet>> searchTweets(String query) async {
+  Future<List<Tweet>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
     } else {
-      try {
-        return await Twitter.searchTweets(query);
-      } catch (e) {
-        // log('Unable to load the search results', error: e, stackTrace: stackTrace);
-
-
-
-        // _globalKey.currentState!.showSnackBar(SnackBar(
-        //   content: Text('Something went wrong loading the search results! The error was: $e'),
-        //   duration: Duration(days: 1),
-        //   action: SnackBarAction(
-        //     label: 'Retry',
-        //     onPressed: () => performSearch(query),
-        //   ),
-        // ));
-
-        return [];
-      }
+      return await Twitter.searchTweets(query);
     }
   }
 
-  Future<List<User>> searchUsers(String query) async {
+  Future<List<User>> searchUsers(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
     } else {
-      try {
-        return await Twitter.searchUsers(query);
-      } catch (e) {
-        // log('Unable to load the search results', error: e, stackTrace: stackTrace);
-
-        // _globalKey.currentState!.showSnackBar(SnackBar(
-        //   content: Text('Something went wrong loading the search results! The error was: $e'),
-        //   duration: Duration(days: 1),
-        //   action: SnackBarAction(
-        //     label: 'Retry',
-        //     onPressed: () => performSearch(query),
-        //   ),
-        // ));
-
-        return [];
-      }
+      return await Twitter.searchUsers(query);
     }
   }
 
@@ -179,8 +147,30 @@ class TweetSearch extends SearchDelegate {
           Container(
             child: Expanded(child: TabBarView(children: [
               FutureBuilder<List<Tweet>>(
-                future: searchTweets(query),
+                future: searchTweets(context, query),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    var error = snapshot.error as Exception;
+
+                    return Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Oops! Something went wrong 🥲', style: TextStyle(
+                              fontSize: 18
+                          )),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            child: Text('$error', style: TextStyle(
+                                color: Theme.of(context).hintColor
+                            )),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+
                   var tweets = snapshot.data;
                   if (tweets == null) {
                     return Center(child: CircularProgressIndicator());
@@ -198,8 +188,30 @@ class TweetSearch extends SearchDelegate {
                 },
               ),
               FutureBuilder<List<User>>(
-                future: searchUsers(query),
+                future: searchUsers(context, query),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    var error = snapshot.error as Exception;
+
+                    return Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Oops! Something went wrong 🥲', style: TextStyle(
+                            fontSize: 18
+                          )),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            child: Text('$error', style: TextStyle(
+                                color: Theme.of(context).hintColor
+                            )),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+
                   var users = snapshot.data;
                   if (users == null) {
                     return Center(child: CircularProgressIndicator());
