@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 
 import 'options.dart';
 import 'profile.dart';
+import 'tweet.dart';
+import 'user.dart';
 
 class _Tab {
   final String title;
@@ -95,6 +97,54 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 }
 
 class TweetSearch extends SearchDelegate {
+  Future<List<Tweet>> searchTweets(String query) async {
+    if (query.isEmpty) {
+      return [];
+    } else {
+      try {
+        return await Twitter.searchTweets(query);
+      } catch (e) {
+        // log('Unable to load the search results', error: e, stackTrace: stackTrace);
+
+
+
+        // _globalKey.currentState!.showSnackBar(SnackBar(
+        //   content: Text('Something went wrong loading the search results! The error was: $e'),
+        //   duration: Duration(days: 1),
+        //   action: SnackBarAction(
+        //     label: 'Retry',
+        //     onPressed: () => performSearch(query),
+        //   ),
+        // ));
+
+        return [];
+      }
+    }
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    if (query.isEmpty) {
+      return [];
+    } else {
+      try {
+        return await Twitter.searchUsers(query);
+      } catch (e) {
+        // log('Unable to load the search results', error: e, stackTrace: stackTrace);
+
+        // _globalKey.currentState!.showSnackBar(SnackBar(
+        //   content: Text('Something went wrong loading the search results! The error was: $e'),
+        //   duration: Duration(days: 1),
+        //   action: SnackBarAction(
+        //     label: 'Retry',
+        //     onPressed: () => performSearch(query),
+        //   ),
+        // ));
+
+        return [];
+      }
+    }
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -116,32 +166,61 @@ class TweetSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return DefaultTabController(length: 2, child: Column(
-      children: [
-        TabBar(tabs: [
-          Tab(icon: Icon(Icons.comment)),
-          Tab(icon: Icon(Icons.person)),
-        ]),
-        TabBarView(children: [
-          Text('1'),
-          Text('2'),
-          // _tweets.isEmpty && _oldSearch != null
-          //     ? Center(child: Text('No results'))
-          //     : ListView.builder(
-          //   shrinkWrap: true,
-          //   itemCount: _tweets.length,
-          //   itemBuilder: (context, index) => TweetTile(tweet: _tweets[index], clickable: true),
-          // ),
-          // _users.isEmpty && _oldSearch != null
-          //     ? Center(child: Text('No results'))
-          //     : ListView.builder(
-          //   shrinkWrap: true,
-          //   itemCount: _users.length,
-          //   itemBuilder: (context, index) => UserTile(user: _users[index]),
-          // )
-        ])
-      ],
-    ));
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Container(
+            child: TabBar(tabs: [
+              Tab(icon: Icon(Icons.comment)),
+              Tab(icon: Icon(Icons.person)),
+            ]),
+          ),
+          Container(
+            child: Expanded(child: TabBarView(children: [
+              FutureBuilder<List<Tweet>>(
+                future: searchTweets(query),
+                builder: (context, snapshot) {
+                  var tweets = snapshot.data;
+                  if (tweets == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (tweets.isEmpty) {
+                    return Center(child: Text('No results'));
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: tweets.length,
+                    itemBuilder: (context, index) => TweetTile(tweet: tweets[index], clickable: true),
+                  );
+                },
+              ),
+              FutureBuilder<List<User>>(
+                future: searchUsers(query),
+                builder: (context, snapshot) {
+                  var users = snapshot.data;
+                  if (users == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (users.isEmpty) {
+                    return Center(child: Text('No results'));
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: users.length,
+                    itemBuilder: (context, index) => UserTile(user: users[index]),
+                  );
+                },
+              )
+            ])),
+          )
+        ],
+      )
+    );
   }
 
   @override
