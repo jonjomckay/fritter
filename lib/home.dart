@@ -96,6 +96,59 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 }
 
+typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
+
+class TweetSearchResultList<T> extends StatelessWidget {
+
+  final AsyncSnapshot<List<T>> snapshot;
+  final ItemWidgetBuilder itemBuilder;
+
+  const TweetSearchResultList({Key? key, required this.snapshot, required this.itemBuilder}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (snapshot.hasError) {
+      var error = snapshot.error as Exception;
+
+      return Container(
+        margin: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Oops! Something went wrong 🥲', style: TextStyle(
+                fontSize: 18
+            )),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              child: Text('$error', style: TextStyle(
+                  color: Theme.of(context).hintColor
+              )),
+            )
+          ],
+        ),
+      );
+    }
+
+    var items = snapshot.data;
+    if (items == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    if (items.isEmpty) {
+      return Center(child: Text('No results'));
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return itemBuilder(context, items[index]);
+      },
+    );
+  }
+}
+
+
 class TweetSearch extends SearchDelegate {
   Future<List<Tweet>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
@@ -149,83 +202,13 @@ class TweetSearch extends SearchDelegate {
               FutureBuilder<List<Tweet>>(
                 future: searchTweets(context, query),
                 builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    var error = snapshot.error as Exception;
-
-                    return Container(
-                      margin: EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Oops! Something went wrong 🥲', style: TextStyle(
-                              fontSize: 18
-                          )),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            child: Text('$error', style: TextStyle(
-                                color: Theme.of(context).hintColor
-                            )),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-
-                  var tweets = snapshot.data;
-                  if (tweets == null) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (tweets.isEmpty) {
-                    return Center(child: Text('No results'));
-                  }
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: tweets.length,
-                    itemBuilder: (context, index) => TweetTile(tweet: tweets[index], clickable: true),
-                  );
+                  return TweetSearchResultList(snapshot: snapshot, itemBuilder: (context, item) => TweetTile(tweet: item, clickable: true));
                 },
               ),
               FutureBuilder<List<User>>(
                 future: searchUsers(context, query),
                 builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    var error = snapshot.error as Exception;
-
-                    return Container(
-                      margin: EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Oops! Something went wrong 🥲', style: TextStyle(
-                            fontSize: 18
-                          )),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            child: Text('$error', style: TextStyle(
-                                color: Theme.of(context).hintColor
-                            )),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-
-                  var users = snapshot.data;
-                  if (users == null) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (users.isEmpty) {
-                    return Center(child: Text('No results'));
-                  }
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: users.length,
-                    itemBuilder: (context, index) => UserTile(user: users[index]),
-                  );
+                  return TweetSearchResultList(snapshot: snapshot, itemBuilder: (context, item) => UserTile(user: item));
                 },
               )
             ])),
