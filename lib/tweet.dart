@@ -167,18 +167,32 @@ class TweetTile extends StatelessWidget {
       );
 
       var quotedTweet = Container();
-      if (tweet.quotedStatus != null) {
-        quotedTweet = Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(8)
-          ),
-          margin: EdgeInsets.all(8),
-          child: TweetTile(
+      if (tweet.isQuoteStatus ?? false) {
+        Widget quotedTweetTile;
+
+        if (tweet.quotedStatus != null) {
+          quotedTweetTile = TweetTile(
             clickable: true,
             tweet: tweet.quotedStatus,
             currentUsername: tweet.user?.screenName,
+          );
+        } else {
+          quotedTweetTile = Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Text('This tweet is unavailable', style: TextStyle(
+                color: Theme.of(context).hintColor
+            )),
+          );
+        }
+
+        quotedTweet = Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(8)
           ),
+          margin: EdgeInsets.all(8),
+          child: quotedTweetTile,
         );
       }
 

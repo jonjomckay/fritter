@@ -230,7 +230,6 @@ class Twitter {
     tweet.isQuoteStatus = e['is_quote_status'] as bool?;
     tweet.lang = e['lang'] as String?;
     tweet.quoteCount = e['quote_count'] as int?;
-    tweet.quotedStatus = e['quoted_status_id_str'] == null ? null : tweetFromJson(tweets, users, tweets[e['quoted_status_id_str']]);
     tweet.quotedStatusIdStr = e['quoted_status_id_str'] as String?;
     tweet.quotedStatusPermalink = e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
     tweet.replyCount = e['reply_count'] as int?;
@@ -244,6 +243,12 @@ class Twitter {
     tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)
         ?.map((e) => e as int)
         .toList();
+
+    // Some quotes aren't returned, even though we're given their ID, so double check and don't fail with a null value
+    var quoteId = e['quoted_status_id_str'];
+    if (quoteId != null && tweets[quoteId] != null) {
+      tweet.quotedStatus = tweetFromJson(tweets, users, tweets[quoteId]);
+    }
 
     // TODO
     tweet.coordinates = null;
