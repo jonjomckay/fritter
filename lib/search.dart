@@ -138,7 +138,16 @@ class _SearchScreenState extends State<SearchScreen> {
                 : ListView.builder(
               shrinkWrap: true,
               itemCount: _users.length,
-              itemBuilder: (context, index) => UserTile(user: _users[index]),
+              itemBuilder: (context, index) {
+                var user = _users[index];
+
+                return UserTile(
+                  id: user.idStr!,
+                  name: user.name!,
+                  screenName: user.screenName!,
+                  imageUri: user.profileImageUrlHttps,
+                );
+              },
             )
           ]),
         )

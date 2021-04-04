@@ -101,7 +101,7 @@ typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 class TweetSearchResultList<T> extends StatelessWidget {
 
   final AsyncSnapshot<List<T>> snapshot;
-  final ItemWidgetBuilder itemBuilder;
+  final ItemWidgetBuilder<T> itemBuilder;
 
   const TweetSearchResultList({Key? key, required this.snapshot, required this.itemBuilder}) : super(key: key);
 
@@ -202,13 +202,25 @@ class TweetSearch extends SearchDelegate {
               FutureBuilder<List<Tweet>>(
                 future: searchTweets(context, query),
                 builder: (context, snapshot) {
-                  return TweetSearchResultList(snapshot: snapshot, itemBuilder: (context, item) => TweetTile(tweet: item, clickable: true));
+                  return TweetSearchResultList<Tweet>(snapshot: snapshot, itemBuilder: (context, item) {
+                    return TweetTile(
+                      tweet: item,
+                      clickable: true
+                    );
+                  });
                 },
               ),
               FutureBuilder<List<User>>(
                 future: searchUsers(context, query),
                 builder: (context, snapshot) {
-                  return TweetSearchResultList(snapshot: snapshot, itemBuilder: (context, item) => UserTile(user: item));
+                  return TweetSearchResultList<User>(snapshot: snapshot, itemBuilder: (context, item) {
+                    return UserTile(
+                      id: item.idStr!,
+                      name: item.name!,
+                      imageUri: item.profileImageUrlHttps!,
+                      screenName: item.screenName!
+                    );
+                  });
                 },
               )
             ])),
@@ -345,23 +357,11 @@ class _FollowingContentState extends State<FollowingContent> {
             itemBuilder: (context, index) {
               var user = data[index];
 
-              return ListTile(
-                dense: true,
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(64),
-                  child: CachedNetworkImage(
-                      imageUrl: user.profileImageUrlHttps!, // TODO
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error), // TODO: This can error if the profile image has changed... use SWR-like
-                      width: 48,
-                      height: 48
-                  ),
-                ),
-                title: Text(user.name),
-                subtitle: Text('@${user.screenName}'),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.screenName)));
-                },
+              return UserTile(
+                id: user.id.toString(),
+                name: user.name,
+                screenName: user.screenName,
+                imageUri: user.profileImageUrlHttps,
               );
             },
           );
