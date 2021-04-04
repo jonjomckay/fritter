@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -8,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'options.dart';
-import 'profile.dart';
 import 'tweet.dart';
 import 'user.dart';
 
@@ -375,21 +373,6 @@ class _FollowingContentState extends State<FollowingContent> {
                 );
               },
             ),
-          );
-
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              var user = data[index];
-
-              return UserTile(
-                id: user.id.toString(),
-                name: user.name,
-                screenName: user.screenName,
-                imageUri: user.profileImageUrlHttps,
-              );
-            },
           );
         },
       ),
