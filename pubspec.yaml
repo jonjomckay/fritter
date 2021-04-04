@@ -34,6 +34,7 @@ dependencies:
   http: ^0.13.1
   intl: ^0.17.0
   pref: ^2.0.2
+  pull_to_refresh: 1.6.4-nullsafety.0
   retry: ^3.1.0
   sqflite: ^2.0.0+3
   timeago: ^3.0.2
