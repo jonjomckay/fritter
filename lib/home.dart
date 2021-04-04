@@ -254,7 +254,7 @@ class TrendsContent extends StatelessWidget {
 
           var trends = data[0].trends;
           if (trends == null) {
-            return Text('TODO');
+            return Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.');
           }
 
           var numberFormat = NumberFormat.compact();
