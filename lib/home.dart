@@ -5,6 +5,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/database.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'options.dart';
 import 'profile.dart';
@@ -300,24 +301,31 @@ class FollowingContent extends StatefulWidget {
 }
 
 class _FollowingContentState extends State<FollowingContent> {
-  late Future<List<Following>> _future;
+  final _refreshController = RefreshController(initialRefresh: false);
 
+  Future<List<Following>>? _future;
 
   @override
   void initState() {
     super.initState();
 
-    setState(() {
-      this._future = listFollowing();
-    });
+    _onRefresh();
   }
 
   Future<List<Following>> listFollowing() async {
     var database = await Repository.open();
 
-    return (await database.query('following'))
+    return (await database.query('following', orderBy: 'screen_name'))
         .map((e) => Following.fromMap(e))
         .toList(growable: false);
+  }
+
+  Future _onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 400));
+
+    setState(() {
+      this._future = listFollowing().whenComplete(() => _refreshController.refreshCompleted());
+    });
   }
 
   @override
@@ -348,8 +356,26 @@ class _FollowingContentState extends State<FollowingContent> {
             );
           }
 
-          // TODO: Make this happen pre-future value?
-          data.sort((a, b) => a.screenName.compareTo(b.screenName));
+          return SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            enablePullUp: false,
+            onRefresh: _onRefresh,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                var user = data[index];
+
+                return UserTile(
+                  id: user.id.toString(),
+                  name: user.name,
+                  screenName: user.screenName,
+                  imageUri: user.profileImageUrlHttps,
+                );
+              },
+            ),
+          );
 
           return ListView.builder(
             shrinkWrap: true,
