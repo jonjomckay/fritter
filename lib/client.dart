@@ -173,6 +173,14 @@ class Twitter {
     return result;
   }
 
+  static Future<List<Trends>> getTrends() async {
+    var result = await _twitterApi.trendsService.place(
+      id: 1
+    );
+
+    return result;
+  }
+
   static Future<List<Tweet>> getTweets(String id) async {
     var response = await _twitterApi.client.get(
       Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', {
