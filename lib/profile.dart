@@ -5,9 +5,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/database.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'user.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String? id;
@@ -155,6 +159,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
               SliverAppBar(
                 expandedHeight: _appBarHeight,
                 pinned: true,
+                actions: [
+                  FollowButton(id: profile.idStr!, name: profile.name!, screenName: profile.screenName!, imageUri: profile.profileImageUrlHttps)
+                ],
                 bottom: TabBar(
                   tabs: [
                     Tab(child: Column(
