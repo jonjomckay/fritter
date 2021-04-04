@@ -10,22 +10,24 @@ import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final String? id;
   final String username;
 
-  const ProfileScreen({Key? key, required this.username}) : super(key: key);
+  const ProfileScreen({Key? key, this.id, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ProfileScreenBody(username: username),
+      body: ProfileScreenBody(id: id, username: username),
     );
   }
 }
 
 class ProfileScreenBody extends StatefulWidget {
+  final String? id;
   final String username;
 
-  const ProfileScreenBody({Key? key, required this.username}) : super(key: key);
+  const ProfileScreenBody({Key? key, this.id, required this.username}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
@@ -45,10 +47,10 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   @override
   void initState() {
     super.initState();
-    fetchProfile(widget.username);
+    fetchProfile(widget.id, widget.username);
   }
 
-  void fetchProfile(String username) {
+  void fetchProfile(String? id, String username) {
     setState(() {
       _loading = true;
     });
@@ -61,22 +63,41 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
         duration: Duration(days: 1),
         action: SnackBarAction(
           label: 'Retry',
-          onPressed: () => fetchProfile(username),
+          onPressed: () => fetchProfile(id, username),
         ),
       ));
     };
 
-    Twitter.getProfile(username).catchError(onError).then((profile) {
-      Twitter.getTweets(profile.idStr!).catchError(onError).then((tweets) {
+    // If we're given an ID, we can perform both requests at the same time, otherwise we need to load the profile first to get the ID
+    if (id == null) {
+      Twitter.getProfile(username).catchError(onError).then((profile) {
+        Twitter.getTweets(profile.idStr!).catchError(onError).then((tweets) {
+          setState(() {
+            _profile = profile;
+            _tweets = tweets;
+            _loading = false;
+          });
+        });
+      }).whenComplete(() => setState(() {
+        _loading = false;
+      }));
+    } else {
+      var task1 = Twitter.getProfile(username).catchError(onError);
+      var task2 = Twitter.getTweets(id).catchError(onError);
+
+      Future.wait([task1, task2]).then((value) {
+        var profile = value[0] as User;
+        var tweets = value[1] as List<Tweet>;
+
         setState(() {
           _profile = profile;
           _tweets = tweets;
           _loading = false;
         });
-      });
-    }).whenComplete(() => setState(() {
-      _loading = false;
-    }));
+      }).whenComplete(() => setState(() {
+        _loading = false;
+      }));
+    }
   }
 
   @override
@@ -84,7 +105,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.username != widget.username) {
-      fetchProfile(widget.username);
+      fetchProfile(widget.id, widget.username);
     }
   }
 

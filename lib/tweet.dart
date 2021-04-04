@@ -201,7 +201,7 @@ class TweetTile extends StatelessWidget {
                               return null;
                             }
 
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.user!.screenName!)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
                           },
                           title: Text(tweet.user!.name!,
                               style: TextStyle(fontWeight: FontWeight.w500)),
