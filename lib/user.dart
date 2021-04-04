@@ -18,7 +18,7 @@ class UserTile extends StatelessWidget {
       image = Container(width: 48, height: 48);
     } else {
       image = CachedNetworkImage(
-          imageUrl: imageUri!, // TODO
+          imageUrl: imageUri!.replaceAll('normal', '200x200'), // TODO
           placeholder: (context, url) => CircularProgressIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error), // TODO: This can error if the profile image has changed... use SWR-like
           width: 48,
