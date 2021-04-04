@@ -158,7 +158,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                 expandedHeight: _appBarHeight,
                 pinned: true,
                 actions: [
-                  FollowButton(user: profile)
+                  FollowButton(id: profile.idStr!, name: profile.name!, screenName: profile.screenName!, imageUri: profile.profileImageUrlHttps)
                 ],
                 bottom: TabBar(
                   tabs: [
@@ -221,9 +221,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
 }
 
 class FollowButton extends StatefulWidget {
-  final User user;
+  final String id;
+  final String name;
+  final String screenName;
+  final String? imageUri;
 
-  const FollowButton({Key? key, required this.user}) : super(key: key);
+  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri}) : super(key: key);
+
   @override
   _FollowButtonState createState() => _FollowButtonState();
 }
@@ -239,7 +243,7 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Future fetchFollowed() {
-    return isFollowed(int.parse(widget.user.idStr!))
+    return isFollowed(int.parse(widget.id))
         .then((value) => setState(() {
           this._followed = value;
         }));
@@ -260,33 +264,32 @@ class _FollowButtonState extends State<FollowButton> {
 
   @override
   Widget build(BuildContext context) {
-    var id = int.parse(widget.user.idStr!);
+    var id = int.parse(widget.id);
 
     var followed = _followed;
     if (followed == null) {
       return Center(child: CircularProgressIndicator());
     }
 
-    return MaterialButton(
-        child: followed
-            ? Text('Unfollow')
-            : Text('Follow'),
-        onPressed: () async {
-          Database database = await Repository.open();
+    var icon = followed
+      ? Icon(Icons.person_remove)
+      : Icon(Icons.person_add);
 
-          if (followed) {
-            await database.delete('following', where: 'id = ?', whereArgs: [id]);
-          } else {
-            await database.insert('following', {
-              'id': id,
-              'screen_name': widget.user.screenName,
-              'name': widget.user.name,
-              'profile_image_url_https': widget.user.profileImageUrlHttps
-            });
-          }
+    return IconButton(icon: icon, onPressed: () async {
+      Database database = await Repository.open();
 
-          await fetchFollowed();
-        }
-    );
+      if (followed) {
+        await database.delete('following', where: 'id = ?', whereArgs: [id]);
+      } else {
+        await database.insert('following', {
+          'id': id,
+          'screen_name': widget.screenName,
+          'name': widget.name,
+          'profile_image_url_https': widget.imageUri
+        });
+      }
+
+      await fetchFollowed();
+    });
   }
 }
