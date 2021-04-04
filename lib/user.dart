@@ -16,7 +16,7 @@ class UserTile extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: user.screenName!)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: user.idStr, username: user.screenName!)));
             },
             title: Text(user.name!,
                 style: TextStyle(fontWeight: FontWeight.w500)),
