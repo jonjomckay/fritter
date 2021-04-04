@@ -282,6 +282,13 @@ class TrendsContent extends StatelessWidget {
                     subtitle: trend.tweetVolume == null
                         ? null
                         : Text('${numberFormat.format(trend.tweetVolume)} tweets'),
+                    onTap: () async {
+                      await showSearch(
+                          context: context,
+                          delegate: TweetSearch(),
+                          query: Uri.decodeQueryComponent(trend.query!)
+                      );
+                    },
                   );
                 },
               )
