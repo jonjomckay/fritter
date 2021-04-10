@@ -5,11 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/database.dart';
 import 'package:fritter/loading.dart';
 import 'package:fritter/tweet.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'user.dart';
 
