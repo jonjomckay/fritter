@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^5.0.0
 
   auto_direction: ^0.0.5
   better_player: ^0.0.63
