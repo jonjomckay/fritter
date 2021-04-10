@@ -192,12 +192,25 @@ class TweetSearch extends SearchDelegate {
         children: [
           Container(
             child: TabBar(tabs: [
-              Tab(icon: Icon(Icons.comment)),
               Tab(icon: Icon(Icons.person)),
+              Tab(icon: Icon(Icons.comment)),
             ]),
           ),
           Container(
             child: Expanded(child: TabBarView(children: [
+              FutureBuilder<List<User>>(
+                future: searchUsers(context, query),
+                builder: (context, snapshot) {
+                  return TweetSearchResultList<User>(snapshot: snapshot, itemBuilder: (context, item) {
+                    return UserTile(
+                        id: item.idStr!,
+                        name: item.name!,
+                        imageUri: item.profileImageUrlHttps!,
+                        screenName: item.screenName!
+                    );
+                  });
+                },
+              ),
               FutureBuilder<List<Tweet>>(
                 future: searchTweets(context, query),
                 builder: (context, snapshot) {
@@ -209,19 +222,6 @@ class TweetSearch extends SearchDelegate {
                   });
                 },
               ),
-              FutureBuilder<List<User>>(
-                future: searchUsers(context, query),
-                builder: (context, snapshot) {
-                  return TweetSearchResultList<User>(snapshot: snapshot, itemBuilder: (context, item) {
-                    return UserTile(
-                      id: item.idStr!,
-                      name: item.name!,
-                      imageUri: item.profileImageUrlHttps!,
-                      screenName: item.screenName!
-                    );
-                  });
-                },
-              )
             ])),
           )
         ],
