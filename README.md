@@ -11,6 +11,7 @@
 
 ## Features
 
+* Following users locally on your device, Newpipe-style (local subscriptions)
 * Viewing profiles
 * Viewing tweets and replies
 * Viewing pictures, videos and GIFs in tweets
