@@ -1,4 +1,5 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
@@ -317,57 +318,151 @@ class _FollowingContentState extends State<FollowingContent> {
     }
   }
 
+  Widget _createGroupCard(IconData icon, String name) {
+    return Card(
+      child: InkWell(
+        onTap: () {
+
+        },
+        child: Column(
+          children: [
+            Container(
+              color: Colors.white10,
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Icon(icon, size: 16),
+            ),
+            Container(
+              alignment: Alignment.center,
+              color: Colors.white24,
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Text(name, style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold
+              )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var numberOfGroups = 10;
+
     return Container(
       child: Consumer<HomeModel>(
         builder: (context, model, child) {
-          return FutureBuilder<List<Following>>(
-            future: model.listFollowing(),
-            builder: (context, snapshot) {
-              var data = snapshot.data;
-              if (data == null) {
-                return Center(child: CircularProgressIndicator());
-              }
+          return Column(
+            children: [
+              Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  title: Text('Groups', style: TextStyle(
+                      fontWeight: FontWeight.bold
+                  )),
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      child: GridView.extent(
+                          maxCrossAxisExtent: 80,
+                          childAspectRatio: 200 / 155,
+                          shrinkWrap: true,
+                          children: [
+                            _createGroupCard(Icons.rss_feed, 'All'),
+                            ...List.generate(numberOfGroups, (index) => _createGroupCard(Icons.icecream, 'Group $index')),
+                            Card(
+                              child: InkWell(
+                                onTap: () {
 
-              if (data.isEmpty) {
-                return Center(child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('¯\\_(ツ)_/¯', style: TextStyle(
-                          fontSize: 32
-                      )),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        child: Text('Try searching for some users to follow!', style: TextStyle(
-                            color: Theme.of(context).hintColor
-                        )),
-                      )
-                    ])
-                );
-              }
-
-              return SmartRefresher(
-                controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: false,
-                onRefresh: _onRefresh,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    var user = data[index];
-
-                    return UserTile(
-                      id: user.id.toString(),
-                      name: user.name,
-                      screenName: user.screenName,
-                      imageUri: user.profileImageUrlHttps,
-                    );
-                  },
+                                },
+                                child: DottedBorder(
+                                  color: Colors.white,
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          // color: Colors.white10,
+                                          // width: double.infinity,
+                                          child: Icon(Icons.add, size: 16),
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text('New', style: TextStyle(
+                                          fontSize: 11,
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ]),
+                    )
+                  ],
                 ),
-              );
-            },
+              ),
+              Expanded(child: Column(
+                children: [
+                  ListTile(
+                    title: Text('Following', style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    )),
+                  ),
+                  Expanded(child: FutureBuilder<List<Following>>(
+                    future: model.listFollowing(),
+                    builder: (context, snapshot) {
+                      var data = snapshot.data;
+                      if (data == null) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (data.isEmpty) {
+                        return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('¯\\_(ツ)_/¯', style: TextStyle(
+                                  fontSize: 32
+                              )),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                child: Text('Try searching for some users to follow!', style: TextStyle(
+                                    color: Theme.of(context).hintColor
+                                )),
+                              )
+                            ])
+                        );
+                      }
+
+                      return SmartRefresher(
+                        controller: _refreshController,
+                        enablePullDown: true,
+                        enablePullUp: false,
+                        onRefresh: _onRefresh,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            var user = data[index];
+
+                            return UserTile(
+                              id: user.id.toString(),
+                              name: user.name,
+                              screenName: user.screenName,
+                              imageUri: user.profileImageUrlHttps,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ))
+                ],
+              ))
+            ],
           );
         },
       ),
