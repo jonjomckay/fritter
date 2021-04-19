@@ -76,7 +76,7 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Future<bool> isFollowed(int id) async {
-    Database database = await Repository.open();
+    Database database = await Repository.readOnly();
 
     var result = await database.rawQuery('SELECT EXISTS (SELECT 1 FROM following WHERE id = ?)', [id]);
     if (result.isEmpty) {
@@ -100,7 +100,7 @@ class _FollowButtonState extends State<FollowButton> {
         : Icon(Icons.person_add);
 
     return IconButton(icon: icon, onPressed: () async {
-      Database database = await Repository.open();
+      Database database = await Repository.writable();
 
       if (followed) {
         await database.delete('following', where: 'id = ?', whereArgs: [id]);
