@@ -1,0 +1,32 @@
+This release contains a few exciting major changes! 🎉
+
+<b>Local Subscriptions</b>
+
+Fritter now has support for device-local subscriptions, meaning you can now follow all your favourite Twitter accounts without needing an account yourself!
+
+There is no limit to the number of accounts you can follow, and you are also able to place accounts into a "subscription group", allowing you to create custom categorised feeds.
+
+Thanks to everyone who participated in issue #1, especially the following for suggestions and helping to test:
+
+* @backme7
+* @peterflock
+* @q1nt
+* @lukas-conlance
+* @candiesdoodle
+* @ScriptForAll
+
+<b>Removal of Nitter Support</b>
+
+Support for Nitter instances has now been removed, and is now replaced with direct support for the Twitter API, using the same methods Nitter uses under the hood.
+
+This was done mainly so that the app doesn't DOS (abuse) public Nitter instances, and also due to development issues caused by differing data structures from all the different Nitter versions being hosted in the wild.
+
+<b>Changelog</b>
+
+* Added support for local subscriptions and groups
+* Added support for quoted tweets
+* Added worldwide trending page
+* Removed Nitter support in favour of using the Twitter API directly
+* Improved profile view performance
+* Improved general image performance
+* Fixed not being able view some media (photos, GIFs, videos)

@@ -17,11 +17,12 @@
 
 ## Features
 
-* Following users locally on your device, Newpipe-style (local subscriptions)
+* Device-local subscriptions and groups, Newpipe-style, including a feed view
 * Viewing profiles
 * Viewing tweets and replies
 * Viewing pictures, videos and GIFs in tweets
 * Searching for tweets and users
+* Viewing trending topics
 * Supports opening twitter.com links directly
 
 ## Screenshots
