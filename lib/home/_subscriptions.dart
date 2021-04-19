@@ -11,12 +11,12 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class FollowingContent extends StatefulWidget {
+class SubscriptionsContent extends StatefulWidget {
   @override
-  _FollowingContentState createState() => _FollowingContentState();
+  _SubscriptionsContentState createState() => _SubscriptionsContentState();
 }
 
-class _FollowingContentState extends State<FollowingContent> {
+class _SubscriptionsContentState extends State<SubscriptionsContent> {
   final _refreshController = RefreshController(initialRefresh: false);
 
   Future _onRefresh() async {
@@ -81,8 +81,8 @@ class _FollowingContentState extends State<FollowingContent> {
                 touched: true
             ),
             'subscriptions': FormArray<bool>(
-                edit.allFollowing
-                    .map((e) => FormControl<bool>(value: edit.following.contains(e.id)))
+                edit.allSubscriptions
+                    .map((e) => FormControl<bool>(value: edit.members.contains(e.id)))
                     .toList(growable: false)
             )
           });
@@ -110,13 +110,13 @@ class _FollowingContentState extends State<FollowingContent> {
                           var index = e.key;
                           var value = e.value;
                           if (value != null && value == true) {
-                            return edit.allFollowing[index];
+                            return edit.allSubscriptions[index];
                           }
 
                           return null;
                         })
                             .where((element) => element != null)
-                            .cast<Following>()
+                            .cast<Subscription>()
                             .toList(growable: false);
 
                         await model.saveSubscriptionGroup(
@@ -154,7 +154,7 @@ class _FollowingContentState extends State<FollowingContent> {
                       ),
                       Expanded(
                         child: SubscriptionCheckboxList(
-                          following: edit.allFollowing,
+                          subscriptions: edit.allSubscriptions,
                         ),
                       )
                     ],
@@ -271,12 +271,12 @@ class _FollowingContentState extends State<FollowingContent> {
                   Expanded(child: Column(
                     children: [
                       ListTile(
-                        title: Text('Following', style: TextStyle(
+                        title: Text('Subscriptions', style: TextStyle(
                             fontWeight: FontWeight.bold
                         )),
                       ),
-                      Expanded(child: FutureBuilder<List<Following>>(
-                        future: model.listFollowing(),
+                      Expanded(child: FutureBuilder<List<Subscription>>(
+                        future: model.listSubscriptions(),
                         builder: (context, snapshot) {
                           var error = snapshot.error;
                           if (error != null) {

@@ -1,13 +1,13 @@
-class Following {
+class Subscription {
   final String id;
   final String screenName;
   final String name;
   final String? profileImageUrlHttps;
 
-  Following({ required this.id, required this.screenName, required this.name, required this.profileImageUrlHttps });
+  Subscription({ required this.id, required this.screenName, required this.name, required this.profileImageUrlHttps });
 
-  factory Following.fromMap(Map<String, Object?> map) {
-    return Following(
+  factory Subscription.fromMap(Map<String, Object?> map) {
+    return Subscription(
         id: map['id'] as String,
         screenName: map['screen_name'] as String,
         name: map['name'] as String,
@@ -26,15 +26,15 @@ class SubscriptionGroup {
 class SubscriptionGroupGet {
   final int id;
   final String name;
-  final List<Following> following;
+  final List<Subscription> subscriptions;
 
-  SubscriptionGroupGet({required this.id, required this.name, required this.following});
+  SubscriptionGroupGet({required this.id, required this.name, required this.subscriptions});
 }
 
 class SubscriptionGroupEdit {
   final String name;
-  final Set<String> following;
-  final List<Following> allFollowing;
+  final Set<String> members;
+  final List<Subscription> allSubscriptions;
 
-  SubscriptionGroupEdit({required this.name, required this.following, required this.allFollowing});
+  SubscriptionGroupEdit({required this.name, required this.members, required this.allSubscriptions});
 }

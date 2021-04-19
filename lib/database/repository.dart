@@ -6,6 +6,10 @@ import 'package:sqflite_migration_plan/sqflite_migration_plan.dart';
 
 const String DATABASE_NAME = 'fritter.db';
 
+const String TABLE_SUBSCRIPTION = 'subscription';
+const String TABLE_SUBSCRIPTION_GROUP = 'subscription_group';
+const String TABLE_SUBSCRIPTION_GROUP_MEMBER = 'subscription_group_member';
+
 class Repository {
   static Future<Database> readOnly() async {
     return openDatabase(DATABASE_NAME, readOnly: true, singleInstance: false);
@@ -38,10 +42,16 @@ class Repository {
         SqlMigration('INSERT INTO following_group_profile (group_id, profile_id) SELECT group_id, profile_id FROM following_group_profile_old'),
         SqlMigration('DROP TABLE following_group_profile_old')
       ],
+      6: [
+        // Rename the old following tables to match the names in the UI
+        SqlMigration('ALTER TABLE following RENAME TO $TABLE_SUBSCRIPTION'),
+        SqlMigration('ALTER TABLE following_group RENAME TO $TABLE_SUBSCRIPTION_GROUP'),
+        SqlMigration('ALTER TABLE following_group_profile RENAME TO $TABLE_SUBSCRIPTION_GROUP_MEMBER'),
+      ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 5,
+        version: 6,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan
