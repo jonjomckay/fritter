@@ -1,11 +1,10 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/database.dart';
+import 'package:fritter/client.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/tweet.dart';
 import 'package:pagination_view/pagination_view.dart';
-
-import 'client.dart';
 
 class SubscriptionGroupScreen extends StatefulWidget {
   final int id;

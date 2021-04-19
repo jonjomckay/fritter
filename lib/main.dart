@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/home/home.dart';
+import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/status.dart';
 import 'package:pref/pref.dart';
