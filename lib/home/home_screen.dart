@@ -2,7 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/database/entities.dart';
-import 'package:fritter/home/_following.dart';
+import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home/_trends.dart';
 import 'package:fritter/home_model.dart';
@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final List<_Tab> _tabs = [
     _Tab('Trending', Icons.trending_up),
-    _Tab('Following', Icons.people),
+    _Tab('Subscriptions', Icons.people),
   ];
   
   late TabController _tabController;
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           controller: _tabController,
           children: [
             TrendsContent(),
-            FollowingContent(),
+            SubscriptionsContent(),
           ],
         ),
       ),
@@ -94,9 +94,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 }
 
 class SubscriptionCheckboxList extends StatefulWidget {
-  final List<Following> following;
+  final List<Subscription> subscriptions;
 
-  const SubscriptionCheckboxList({Key? key, required this.following}) : super(key: key);
+  const SubscriptionCheckboxList({Key? key, required this.subscriptions}) : super(key: key);
 
   @override
   _SubscriptionCheckboxListState createState() => _SubscriptionCheckboxListState();
@@ -116,7 +116,7 @@ class _SubscriptionCheckboxListState extends State<SubscriptionCheckboxList> {
                   var index = entry.key;
                   var value = entry.value;
 
-                  var e = widget.following[index];
+                  var e = widget.subscriptions[index];
 
                   // TODO: This is just copied from UserTile
                   var image = e.profileImageUrlHttps == null

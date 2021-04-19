@@ -22,21 +22,21 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
     var database = await Repository.readOnly();
 
     if (id == -1) {
-      var following = (await database.rawQuery('SELECT id, name, screen_name, profile_image_url_https FROM following'))
-          .map((e) => Following.fromMap(e))
+      var subscriptions = (await database.query(TABLE_SUBSCRIPTION))
+          .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: -1, name: 'All', following: following);
+      return SubscriptionGroupGet(id: -1, name: 'All', subscriptions: subscriptions);
     } else {
-      var group = (await database.query('following_group', where: 'id = ?', whereArgs: [id]))
+      var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
           .map((e) => SubscriptionGroup(id: e['id'] as int, name: e['name'] as String))
           .first;
 
-      var following = (await database.rawQuery('SELECT f.id, f.name, f.screen_name, f.profile_image_url_https FROM following f LEFT JOIN following_group_profile fgp ON fgp.profile_id = f.id WHERE fgp.group_id = ?', [id]))
-          .map((e) => Following.fromMap(e))
+      var subscriptions = (await database.rawQuery('SELECT s.id, s.name, s.screen_name, s.profile_image_url_https FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
+          .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: group.id, name: group.name, following: following);
+      return SubscriptionGroupGet(id: group.id, name: group.name, subscriptions: subscriptions);
     }
   }
 
@@ -93,7 +93,7 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
           return Center(child: CircularProgressIndicator());
         }
 
-        var users = group.following.map((e) => e.screenName).toList();
+        var users = group.subscriptions.map((e) => e.screenName).toList();
 
         // TODO: Nesting the scaffold looks weird on the device when loading
         return Scaffold(
