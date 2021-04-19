@@ -28,7 +28,7 @@ jobs:
       - name: Install and set up FLutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.0.3'
+          flutter-version: '2.0.4'
 
       - name: Build
         run: |
