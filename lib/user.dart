@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -19,12 +19,20 @@ class UserTile extends StatelessWidget {
 
     var image = imageUri == null
         ? Container(width: 48, height: 48)
-        : CachedNetworkImage(
-            imageUrl: imageUri.replaceAll('normal', '200x200'),
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error), // TODO: This can error if the profile image has changed... use SWR-like
+        : ExtendedImage.network(
+            // TODO: This can error if the profile image has changed... use SWR-like
+            imageUri.replaceAll('normal', '200x200'),
+            cache: true,
             width: 48,
-            height: 48
+            height: 48,
+            loadStateChanged: (state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.failed:
+                  return Icon(Icons.error);
+                default:
+                  return state.completedWidget;
+              }
+            },
           );
 
     return ListTile(

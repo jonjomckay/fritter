@@ -1,6 +1,6 @@
 import 'package:auto_direction/auto_direction.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
@@ -127,7 +127,7 @@ class TweetTile extends StatelessWidget {
       }
 
       if (e.type == 'photo') {
-        return CachedNetworkImage(imageUrl: e.mediaUrlHttps!);
+        return ExtendedImage.network(e.mediaUrlHttps!, cache: true);
       }
 
       return Text('Unknown');
@@ -260,7 +260,7 @@ class TweetTile extends StatelessWidget {
                           subtitle: Text(tweet.user!.screenName!),
                           leading: CircleAvatar(
                             radius: 24,
-                            backgroundImage: CachedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200')),
+                            backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
                           ),
                           trailing: Text(timeago.format(tweet.createdAt!),
                               style: Theme.of(context).textTheme.caption),

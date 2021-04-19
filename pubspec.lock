@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  cached_network_image:
-    dependency: "direct main"
-    description:
-      name: cached_network_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   characters:
     dependency: transitive
     description:
@@ -106,6 +99,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0-nullsafety.0"
+  extended_image:
+    dependency: "direct main"
+    description:
+      name: extended_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
+  extended_image_library:
+    dependency: transitive
+    description:
+      name: extended_image_library
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -153,20 +160,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0"
-  flutter_blurhash:
-    dependency: transitive
-    description:
-      name: flutter_blurhash
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0"
-  flutter_cache_manager:
-    dependency: transitive
-    description:
-      name: flutter_cache_manager
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -198,6 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.1"
+  http_client_helper:
+    dependency: transitive
+    description:
+      name: http_client_helper
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   http_parser:
     dependency: transitive
     description:
@@ -268,13 +268,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  octo_image:
-    dependency: transitive
-    description:
-      name: octo_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   pagination_view:
     dependency: "direct main"
     description:
@@ -401,13 +394,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "10.1.0"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.26.0"
   shared_preferences:
     dependency: transitive
     description:
@@ -560,13 +546,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0+2"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.3"
   vector_math:
     dependency: transitive
     description:
