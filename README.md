@@ -10,9 +10,11 @@
 </p>
 
 <p align="center">
-  [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+  <a href="https://f-droid.org/packages/com.jonjomckay.fritter/">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
        alt="Get it on F-Droid"
-       height="80">](https://f-droid.org/packages/com.jonjomckay.fritter/)
+       height="80">
+   </a>
 </p>
 
 ## Features
