@@ -29,15 +29,19 @@ dependencies:
   better_player: ^0.0.63
   cached_network_image: ^3.0.0
   dart_twitter_api: ^0.5.0
+  dotted_border: ^2.0.0-nullsafety.0
   faker: ^2.0.0-rc.2
   flex_color_scheme: ^2.1.1
   html: ^0.15.0
   http: ^0.13.1
   intl: ^0.17.0
+  pagination_view: ^2.0.0-nullsafety.0
   pref: ^2.0.2
   pull_to_refresh: 1.6.4-nullsafety.0
+  reactive_forms: ^10.1.0
   retry: ^3.1.0
   sqflite: ^2.0.0+3
+  sqflite_migration_plan: ^0.1.0
   timeago: ^3.0.2
   uni_links2: ^0.6.0+2
 
