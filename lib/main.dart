@@ -2,16 +2,20 @@ import 'dart:async';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/home.dart';
+import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/status.dart';
 import 'package:pref/pref.dart';
 import 'package:uni_links2/uni_links.dart';
 
 import 'constants.dart';
+import 'database/repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Repository connection = Repository();
+  connection.migrate();
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_');
 
