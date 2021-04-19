@@ -9,6 +9,12 @@
   A free, open-source Twitter client for Android and iOS.
 </p>
 
+<p align="center">
+  [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+       alt="Get it on F-Droid"
+       height="80">](https://f-droid.org/packages/com.jonjomckay.fritter/)
+</p>
+
 ## Features
 
 * Following users locally on your device, Newpipe-style (local subscriptions)
@@ -18,10 +24,9 @@
 * Searching for tweets and users
 * Supports opening twitter.com links directly
 
+## Screenshots
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.jonjomckay.fritter/)
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="200"/> |
 
 ## Acknowledgments
 
