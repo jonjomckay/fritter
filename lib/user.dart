@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'database.dart';
+import 'database/repository.dart';
 import 'profile.dart';
 
 class UserTile extends StatelessWidget {

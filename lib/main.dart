@@ -9,7 +9,7 @@ import 'package:pref/pref.dart';
 import 'package:uni_links2/uni_links.dart';
 
 import 'constants.dart';
-import 'database.dart';
+import 'database/repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

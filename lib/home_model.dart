@@ -2,7 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 
-import 'database.dart';
+import 'database/repository.dart';
 import 'database/entities.dart';
 
 class HomeModel extends ChangeNotifier {
