@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
@@ -125,7 +125,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
         ? Container()
-        : CachedNetworkImage(imageUrl: banner, fit: BoxFit.cover, height: _appBarHeight);
+        : ExtendedImage.network(banner, fit: BoxFit.cover, height: _appBarHeight, cache: true);
 
     if (_error != null) {
       child = Padding(
