@@ -1,11 +1,16 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/subscription_group.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import 'home_model.dart';
 import 'options.dart';
@@ -300,6 +305,72 @@ class TrendsContent extends StatelessWidget {
   }
 }
 
+class SubscriptionCheckboxList extends StatefulWidget {
+  final List<Following> following;
+
+  const SubscriptionCheckboxList({Key? key, required this.following}) : super(key: key);
+
+  @override
+  _SubscriptionCheckboxListState createState() => _SubscriptionCheckboxListState();
+}
+
+class _SubscriptionCheckboxListState extends State<SubscriptionCheckboxList> {
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveFormConsumer(
+      builder: (context, form, child) {
+        return ReactiveFormArray<bool>(
+          formArrayName: 'subscriptions',
+          builder: (context, formArray, child) {
+            var children = formArray.controls
+                .asMap().entries
+                .map((entry) {
+                  var index = entry.key;
+                  var value = entry.value;
+
+                  var e = widget.following[index];
+
+                  // TODO: This is just copied from UserTile
+                  var image = e.profileImageUrlHttps == null
+                      ? Container(width: 48, height: 48)
+                      : CachedNetworkImage(
+                      imageUrl: e.profileImageUrlHttps!.replaceAll('normal', '200x200'),
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error), // TODO: This can error if the profile image has changed... use SWR-like
+                      width: 40,
+                      height: 40
+                  );
+
+                  return CheckboxListTile(
+                    dense: true,
+                    secondary: ClipRRect(
+                      borderRadius: BorderRadius.circular(64),
+                      child: image,
+                    ),
+                    title: Text(e.name),
+                    subtitle: Text('@${e.screenName}'),
+                    value: value.value ?? false,
+                    onChanged: (v) {
+                      if (v != null) {
+                        value.value = v;
+                      }
+                    },
+                  );
+                })
+                .toList(growable: false);
+
+            return ListView(
+                shrinkWrap: true,
+                children: children
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+
 class FollowingContent extends StatefulWidget {
   @override
   _FollowingContentState createState() => _FollowingContentState();
@@ -318,12 +389,152 @@ class _FollowingContentState extends State<FollowingContent> {
     }
   }
 
-  Widget _createGroupCard(IconData icon, String name) {
+  void openDeleteSubscriptionGroupDialog(int id, String name) {
+    var model = context.read<HomeModel>();
+
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await model.deleteSubscriptionGroup(id);
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: Text('Yes'),
+          ),
+        ],
+        title: Text('Are you sure?'),
+        content: Text('Are you sure you want to delete the subscription group $name?'),
+      );
+    });
+  }
+
+  void openSubscriptionGroupDialog(int? id, String name) {
+    var model = context.read<HomeModel>();
+
+    showDialog(context: context, builder: (context) {
+      return FutureBuilder<SubscriptionGroupEdit>(
+        future: model.loadSubscriptionGroupEdit(id),
+        builder: (context, snapshot) {
+          var error = snapshot.error;
+          if (error != null) {
+            // TODO
+            log('Unable to load the subscription group', error: error);
+          }
+
+          var edit = snapshot.data;
+          if (edit == null) {
+            // TODO: Alert
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final form = FormGroup({
+            'name': FormControl<String>(
+                value: name,
+                validators: [Validators.required],
+                touched: true
+            ),
+            'subscriptions': FormArray<bool>(
+                edit.allFollowing
+                    .map((e) => FormControl<bool>(value: edit.following.contains(e.id)))
+                    .toList(growable: false)
+            )
+          });
+
+          return ReactiveForm(
+              formGroup: form,
+              child: AlertDialog(
+                actions: [
+                  TextButton(
+                    onPressed: id == null
+                      ? null
+                      : () => openDeleteSubscriptionGroupDialog(id, name),
+                    child: Text('Delete'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Cancel'),
+                  ),
+                  ReactiveFormConsumer(
+                    builder: (context, form, child) {
+                      var onPressed = () async {
+                        var selectedSubscriptions = (form.control('subscriptions').value as List<bool?>)
+                            .asMap().entries
+                            .map((e) {
+                          var index = e.key;
+                          var value = e.value;
+                          if (value != null && value == true) {
+                            return edit.allFollowing[index];
+                          }
+
+                          return null;
+                        })
+                            .where((element) => element != null)
+                            .cast<Following>()
+                            .toList(growable: false);
+
+                        await model.saveSubscriptionGroup(
+                            id,
+                            form.control('name').value,
+                            selectedSubscriptions
+                        );
+
+                        Navigator.pop(context);
+                      };
+
+                      return TextButton(
+                        child: Text('OK'),
+                        onPressed: form.valid
+                            ? onPressed
+                            : null,
+                      );
+                    },
+                  ),
+                ],
+                content: Container(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ReactiveTextField(
+                        formControlName: 'name',
+                        decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            hintText: 'Name'
+                        ),
+                        validationMessages: (control) => {
+                          ValidationMessage.required: 'Please enter a name',
+                        },
+                      ),
+                      Expanded(
+                        child: SubscriptionCheckboxList(
+                          following: edit.allFollowing,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+          );
+        },
+      );
+    });
+  }
+
+  Widget _createGroupCard(IconData icon, int id, String name, void Function()? onLongPress) {
     return Card(
       child: InkWell(
         onTap: () {
-
+          // Open page with the group's feed
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionGroupScreen(id: id)));
         },
+        onLongPress: onLongPress,
         child: Column(
           children: [
             Container(
@@ -332,16 +543,21 @@ class _FollowingContentState extends State<FollowingContent> {
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Icon(icon, size: 16),
             ),
-            Container(
+            Expanded(child: Container(
               alignment: Alignment.center,
               color: Colors.white24,
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 4),
-              child: Text(name, style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold
-              )),
-            )
+              padding: EdgeInsets.all(4),
+              child: Text(name,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold
+                )
+              ),
+            ))
           ],
         ),
       ),
@@ -350,119 +566,133 @@ class _FollowingContentState extends State<FollowingContent> {
 
   @override
   Widget build(BuildContext context) {
-    var numberOfGroups = 10;
-
     return Container(
       child: Consumer<HomeModel>(
         builder: (context, model, child) {
-          return Column(
-            children: [
-              Theme(
-                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  initiallyExpanded: true,
-                  title: Text('Groups', style: TextStyle(
-                      fontWeight: FontWeight.bold
-                  )),
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: GridView.extent(
-                          maxCrossAxisExtent: 80,
-                          childAspectRatio: 200 / 155,
-                          shrinkWrap: true,
-                          children: [
-                            _createGroupCard(Icons.rss_feed, 'All'),
-                            ...List.generate(numberOfGroups, (index) => _createGroupCard(Icons.icecream, 'Group $index')),
-                            Card(
-                              child: InkWell(
-                                onTap: () {
+          return FutureBuilder<List<SubscriptionGroup>>(
+            future: model.listSubscriptionGroups(),
+            builder: (context, snapshot) {
+              var groups = snapshot.data;
+              if (groups == null) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-                                },
-                                child: DottedBorder(
-                                  color: Colors.white,
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          // color: Colors.white10,
-                                          // width: double.infinity,
-                                          child: Icon(Icons.add, size: 16),
+              return Column(
+                children: [
+                  Theme(
+                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                    child: ExpansionTile(
+                      initiallyExpanded: true,
+                      title: Text('Groups', style: TextStyle(
+                          fontWeight: FontWeight.bold
+                      )),
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          child: GridView.extent(
+                              maxCrossAxisExtent: 120,
+                              childAspectRatio: 200 / 125,
+                              shrinkWrap: true,
+                              children: [
+                                _createGroupCard(Icons.rss_feed, -1, 'All', null),
+                                ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, () => openSubscriptionGroupDialog(e.id, e.name))),
+                                Card(
+                                  child: InkWell(
+                                    onTap: () {
+                                      openSubscriptionGroupDialog(null, '');
+                                    },
+                                    child: DottedBorder(
+                                      color: Colors.white,
+                                      child: Container(
+                                        width: double.infinity,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              // color: Colors.white10,
+                                              // width: double.infinity,
+                                              child: Icon(Icons.add, size: 16),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text('New', style: TextStyle(
+                                              fontSize: 11,
+                                            ))
+                                          ],
                                         ),
-                                        SizedBox(height: 4),
-                                        Text('New', style: TextStyle(
-                                          fontSize: 11,
-                                        ))
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            )
-                          ]),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(child: Column(
-                children: [
-                  ListTile(
-                    title: Text('Following', style: TextStyle(
-                        fontWeight: FontWeight.bold
-                    )),
+                                )
+                              ]),
+                        )
+                      ],
+                    ),
                   ),
-                  Expanded(child: FutureBuilder<List<Following>>(
-                    future: model.listFollowing(),
-                    builder: (context, snapshot) {
-                      var data = snapshot.data;
-                      if (data == null) {
-                        return Center(child: CircularProgressIndicator());
-                      }
+                  Expanded(child: Column(
+                    children: [
+                      ListTile(
+                        title: Text('Following', style: TextStyle(
+                            fontWeight: FontWeight.bold
+                        )),
+                      ),
+                      Expanded(child: FutureBuilder<List<Following>>(
+                        future: model.listFollowing(),
+                        builder: (context, snapshot) {
+                          var error = snapshot.error;
+                          if (error != null) {
+                            // TODO
+                            log('Unable to list the user\'s subscriptions', error: error);
+                          }
 
-                      if (data.isEmpty) {
-                        return Center(child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('¯\\_(ツ)_/¯', style: TextStyle(
-                                  fontSize: 32
-                              )),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 16),
-                                child: Text('Try searching for some users to follow!', style: TextStyle(
-                                    color: Theme.of(context).hintColor
-                                )),
-                              )
-                            ])
-                        );
-                      }
+                          var data = snapshot.data;
+                          if (data == null) {
+                            return Center(child: CircularProgressIndicator());
+                          }
 
-                      return SmartRefresher(
-                        controller: _refreshController,
-                        enablePullDown: true,
-                        enablePullUp: false,
-                        onRefresh: _onRefresh,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            var user = data[index];
-
-                            return UserTile(
-                              id: user.id.toString(),
-                              name: user.name,
-                              screenName: user.screenName,
-                              imageUri: user.profileImageUrlHttps,
+                          if (data.isEmpty) {
+                            return Center(child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('¯\\_(ツ)_/¯', style: TextStyle(
+                                      fontSize: 32
+                                  )),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 16),
+                                    child: Text('Try searching for some users to follow!', style: TextStyle(
+                                        color: Theme.of(context).hintColor
+                                    )),
+                                  )
+                                ])
                             );
-                          },
-                        ),
-                      );
-                    },
+                          }
+
+                          return SmartRefresher(
+                            controller: _refreshController,
+                            enablePullDown: true,
+                            enablePullUp: false,
+                            onRefresh: _onRefresh,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                var user = data[index];
+
+                                return UserTile(
+                                  id: user.id.toString(),
+                                  name: user.name,
+                                  screenName: user.screenName,
+                                  imageUri: user.profileImageUrlHttps,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ))
+                    ],
                   ))
                 ],
-              ))
-            ],
+              );
+            },
           );
         },
       ),

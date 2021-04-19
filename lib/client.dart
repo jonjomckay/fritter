@@ -156,10 +156,12 @@ class Twitter {
         .toList(growable: false);
   }
 
-  static Future<List<Tweet>> searchTweets(String query) async {
+  static Future<List<Tweet>> searchTweets(String query, {int limit = 25, String? maxId}) async {
     var result = await _twitterApi.tweetSearchService.searchTweets(
       q: query,
-      includeEntities: true
+      includeEntities: true,
+      count: limit,
+      maxId: maxId
     );
 
     return result.statuses ?? [];
