@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,10 @@ Future<void> main() async {
   Repository connection = Repository();
   connection.migrate();
 
-  final prefService = await PrefServiceShared.init(prefix: 'pref_');
+  final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    OPTION_THEME_MODE: 'system',
+    OPTION_THEME_TRUE_BLACK: false
+  });
 
   runApp(PrefService(
       child: MyApp(),
@@ -31,21 +35,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String _themeMode = 'system';
   bool _trueBlack = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    
+    var prefService = PrefService.of(context);
 
-    // Enable "true blacks" if the preference is set
+    // Set any already-enabled preferences
     setState(() {
-      this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK) ?? false;
+      this._themeMode = prefService.get(OPTION_THEME_MODE) ?? 'system';
+      this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK) ?? false;
     });
 
     // Whenever the "true black" preference is toggled, apply the toggle
-    PrefService.of(context).addKeyListener(OPTION_THEME_TRUE_BLACK, () {
+    prefService.addKeyListener(OPTION_THEME_TRUE_BLACK, () {
       setState(() {
-        this._trueBlack = PrefService.of(context).get(OPTION_THEME_TRUE_BLACK);
+        this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK);
+      });
+    });
+
+    prefService.addKeyListener(OPTION_THEME_MODE, () {
+      setState(() {
+        this._themeMode = prefService.get(OPTION_THEME_MODE);
       });
     });
   }
@@ -69,11 +83,28 @@ class _MyAppState extends State<MyApp> {
       ),
     );
 
+    ThemeMode themeMode;
+    switch (_themeMode) {
+      case 'dark':
+        themeMode = ThemeMode.dark;
+        break;
+      case 'light':
+        themeMode = ThemeMode.light;
+        break;
+      case 'system':
+        themeMode = ThemeMode.system;
+        break;
+      default:
+        log('Unknown theme mode preference: '+ _themeMode);
+        themeMode = ThemeMode.system;
+        break;
+    }
+
     return MaterialApp(
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       home: DefaultPage(),
     );
   }
