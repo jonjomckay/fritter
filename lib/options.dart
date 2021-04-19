@@ -18,7 +18,24 @@ class _OptionsScreenState extends State<OptionsScreen> {
         future: SharedPreferences.getInstance(),
         builder: (context, snapshot) {
           return PrefPage(children: [
-            PrefTitle(title: Text('Theme')),
+            PrefTitle(
+              title: Text('Theme')
+            ),
+            PrefRadio(
+              title: Text('System Theme'),
+              value: 'system',
+              pref: OPTION_THEME_MODE,
+            ),
+            PrefRadio(
+              title: Text('Light Theme'),
+              value: 'light',
+              pref: OPTION_THEME_MODE,
+            ),
+            PrefRadio(
+              title: Text('Dark Theme'),
+              value: 'dark',
+              pref: OPTION_THEME_MODE,
+            ),
             PrefSwitch(
               title: Text('True Black?'),
               pref: OPTION_THEME_TRUE_BLACK,
