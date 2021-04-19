@@ -1,5 +1,4 @@
 import 'package:auto_direction/auto_direction.dart';
-import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:video_player/video_player.dart';
 
 import 'profile.dart';
 
@@ -21,25 +21,53 @@ class TweetVideo extends StatefulWidget {
 }
 
 class _TweetVideoState extends State<TweetVideo> {
-  late BetterPlayerController _controller;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    BetterPlayerDataSource dataSource = BetterPlayerDataSource(BetterPlayerDataSourceType.network, widget.uri);
+    _controller = VideoPlayerController.network(widget.uri);
+    _controller.setLooping(widget.loop);
+    _controller.initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
 
-    var configuration = BetterPlayerConfiguration(autoDetectFullscreenDeviceOrientation: true, looping: widget.loop);
-
-    _controller = BetterPlayerController(configuration, betterPlayerDataSource: dataSource);
-    _controller.addEventsListener((e) {
-      if (e.betterPlayerEventType == BetterPlayerEventType.initialized) {
-        // TODO: Replace this with the information from the API
-        setState(() {
-          _controller.setOverriddenAspectRatio(_controller.videoPlayerController!.value.aspectRatio);
-        });
-      }
+    _controller.addListener(() {
+      setState(() {});
     });
+  }
+
+  Widget _createControls() {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: _controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+            color: Colors.black26,
+            child: Center(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 100.0,
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            _controller.value.isPlaying
+                ? _controller.pause()
+                : _controller.play();
+          },
+        ),
+      ],
+    );
+
   }
 
   @override
@@ -47,12 +75,22 @@ class _TweetVideoState extends State<TweetVideo> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          (_controller.isPlaying() ?? false)
+          _controller.value.isPlaying
               ? _controller.pause()
               : _controller.play();
         });
       },
-      child: BetterPlayer(controller: _controller),
+      // TODO: Replace this with the information from the API
+      child: AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            VideoPlayer(_controller),
+            _createControls(),
+          ],
+        ),
+      ),
     );
   }
 
