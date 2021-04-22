@@ -28,11 +28,11 @@ class _FritterTwitterClient extends TwitterClient {
     return fetch(uri, headers: headers)
         .timeout(timeout ?? _defaultTimeout)
         .then((response) {
-      var value = response.statusCode >= 200 && response.statusCode < 300
-          ? response
-          : Future.error(response);
-
-      return value as FutureOr<http.Response>;
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return response;
+      } else {
+        return Future.error(response);
+      }
     });
   }
 
