@@ -52,7 +52,9 @@ class TrendsContent extends StatelessWidget {
                         onTap: () async {
                           await showSearch(
                               context: context,
-                              delegate: TweetSearchDelegate(),
+                              delegate: TweetSearchDelegate(
+                                initialTab: 1
+                              ),
                               query: Uri.decodeQueryComponent(trend.query!)
                           );
                         },
