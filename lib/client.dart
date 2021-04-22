@@ -215,12 +215,13 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    var globalTweets = result['globalObjects']['tweets'];
+    var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
 
     return instructions[0]['addEntries']['entries']
         .where((entry) => entry['entryId'].startsWith('tweet') as bool)
+        .where((entry) => globalTweets.containsKey(entry['sortIndex'])) // TODO: This ignores tweets from suspended accounts, e.g. 1215411856564768768
         .map<Tweet>((entry) => tweetFromJson(globalTweets, globalUsers, globalTweets[entry['sortIndex']]))
         .toList(growable: false);
   }
