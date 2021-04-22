@@ -1,6 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -93,9 +94,14 @@ class TweetContent extends StatelessWidget {
     List<TweetEntity> entities = [];
 
     for (var hashtag in hashtags) {
-      entities.add(TweetHashtag(hashtag, () {
-        int i = 0;
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: username)));
+      entities.add(TweetHashtag(hashtag, () async {
+        await showSearch(
+            context: context,
+            delegate: TweetSearchDelegate(
+              initialTab: 1
+            ),
+            query: Uri.decodeQueryComponent('#${hashtag.text}')
+        );
       }));
     }
 
