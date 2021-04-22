@@ -60,7 +60,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: TweetSearchDelegate());
+              showSearch(context: context, delegate: TweetSearchDelegate(
+                initialTab: 0
+              ));
             },
           ),
           IconButton(

@@ -5,6 +5,10 @@ import 'package:fritter/tweet.dart';
 import 'package:fritter/user.dart';
 
 class TweetSearchDelegate extends SearchDelegate {
+  final int initialTab;
+
+  TweetSearchDelegate({ required this.initialTab });
+
   Future<List<Tweet>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
@@ -44,6 +48,7 @@ class TweetSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     return DefaultTabController(
         length: 2,
+        initialIndex: initialTab,
         child: Column(
           children: [
             Container(
