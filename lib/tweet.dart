@@ -110,12 +110,15 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tweet = this.tweet;
-    if (tweet == null) {
+    if (this.tweet == null) {
       return Container();
     }
 
     var numberFormat = NumberFormat.compact();
+
+    Tweet tweet = this.tweet!.retweetedStatus == null
+      ? this.tweet!
+      : this.tweet!.retweetedStatus!;
 
     var attachments = (tweet.extendedEntities?.media ?? []).map((e) {
       if (e.type == 'animated_gif') {
@@ -134,7 +137,7 @@ class TweetTile extends StatelessWidget {
     });
 
     Widget retweetBanner = Container();
-    if (tweet.retweeted ?? false) {
+    if (this.tweet!.retweetedStatus != null) {
       retweetBanner = ColoredBox(
           color: Theme.of(context).secondaryHeaderColor,
           child: Center(
@@ -151,9 +154,6 @@ class TweetTile extends StatelessWidget {
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(Icons.repeat, size: 14, color: Theme.of(context).primaryColorDark),
                         ),
-                        // TextSpan(
-                        //   text: ' Retweeted',
-                        // ),
                       ],
                     )
                 )
