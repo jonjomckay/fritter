@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
+import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
@@ -163,46 +166,19 @@ class TweetTile extends StatelessWidget {
     }
 
     return Builder(builder: (context) {
-      List<InlineSpan> contentWidgets = [];
-
       var tweetText = tweet.fullText == null
-        ? tweet.text
-        : tweet.fullText;
+          ? tweet.text
+          : tweet.fullText;
 
       if (tweetText == null) {
         var message = 'The tweet did not contain any text. This is unexpected';
 
-        print(message);
+        log(message);
 
         return Container(child: Text(
             'The tweet did not contain any text. This is unexpected'
         ));
       }
-
-      // Split the string by any mentions, and turn those mentions into links to the profile
-      tweetText.splitMapJoin(RegExp(r'\B\@([\w\-]+)'),
-          onMatch: (match) {
-            var username = match.group(1) ?? '';
-
-            contentWidgets.add(TextSpan(
-                text: '@$username',
-                style: TextStyle(color: Theme.of(context).accentColor),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: username)));
-                  }
-            ));
-
-            return username;
-          },
-          onNonMatch: (text) {
-            contentWidgets.add(TextSpan(
-                text: text
-            ));
-
-            return text;
-          }
-      );
 
       var quotedTweet = Container();
       if (tweet.isQuoteStatus ?? false) {
@@ -279,11 +255,11 @@ class TweetTile extends StatelessWidget {
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                             child: AutoDirection(
                               text: tweetText,
-                              child: RichText(
-                                text: TextSpan(
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                    children: contentWidgets
-                                ),
+                              child: TweetContent(
+                                text: tweetText,
+                                urls: tweet.entities?.urls ?? [],
+                                mentions: tweet.entities?.userMentions ?? [],
+                                hashtags: tweet.entities?.hashtags ?? []
                               ),
                             ),
                           ),
