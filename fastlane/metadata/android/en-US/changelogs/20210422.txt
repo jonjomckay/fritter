@@ -1,0 +1,5 @@
+* Added an option to manually select the app's theme
+* Added support for opening hashtags, mentions and URLs
+* Improved performance of photo and video attachments
+* Fixed displaying of retweets in timelines
+* Fixed some tweets from suspended accounts breaking profiles
