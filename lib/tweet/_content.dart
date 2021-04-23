@@ -151,8 +151,8 @@ class TweetContent extends StatelessWidget {
     // Finally, add any remaining tweet text
     addText(index);
 
-    return RichText(
-      text: TextSpan(
+    return SelectableText.rich(
+      TextSpan(
         children: parts
       ),
     );
