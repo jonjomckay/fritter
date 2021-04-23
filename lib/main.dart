@@ -125,9 +125,8 @@ class _DefaultPageState extends State<DefaultPage> {
   late StreamSubscription _sub;
 
   void handleInitialLink(Uri link) {
-    // Parse the link
+    // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      // Assume it's a username
       setState(() {
         _page = 'profile';
         _username = link.pathSegments.first;
@@ -135,7 +134,7 @@ class _DefaultPageState extends State<DefaultPage> {
       return;
     }
 
-    if (link.pathSegments.length == 3) {
+    if (link.pathSegments.any((segment) => segment.contains('/status/'))) {
       // Assume it's a tweet
       var username = link.pathSegments[0];
       var statusId = link.pathSegments[2];
