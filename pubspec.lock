@@ -271,9 +271,11 @@ packages:
   pagination_view:
     dependency: "direct main"
     description:
-      name: pagination_view
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: af4662c
+      resolved-ref: af4662cf32735e73ef56259b2a84092ccbb97f4b
+      url: "git://github.com/jonjomckay/pagination_view.git"
+    source: git
     version: "2.0.0-nullsafety.0"
   path:
     dependency: transitive

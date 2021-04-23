@@ -183,34 +183,41 @@ class Twitter {
     return result;
   }
 
-  static Future<List<Tweet>> getTweets(String id) async {
+  static Future<TweetList> getTweets(String id, { int count = 10, String? cursor }) async {
+    var query = {
+      'count': count.toString(),
+      'include_tweet_replies': 'false',
+      'include_profile_interstitial_type': '0',
+      'include_blocking': '0',
+      'include_blocked_by': '0',
+      'include_followed_by': '0',
+      'include_want_retweets': '0',
+      'include_mute_edge': '0',
+      'include_can_dm': '0',
+      'include_can_media_tag': '1',
+      'skip_status': '1',
+      'cards_platform': 'Web-12',
+      'include_cards': '1',
+      'include_composer_source': 'false',
+      'include_ext_alt_text': 'true',
+      'include_reply_count': '1',
+      'tweet_mode': 'extended',
+      'include_entities': 'true',
+      'include_user_entities': 'true',
+      'include_ext_media_color': 'false',
+      'include_ext_media_availability': 'true',
+      'send_error_codes': 'true',
+      'simple_quoted_tweet': 'true',
+      'ext': 'mediaStats',
+      'include_quote_count': 'true'
+    };
+
+    if (cursor != null) {
+      query['cursor'] = cursor;
+    }
+
     var response = await _twitterApi.client.get(
-      Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', {
-        'include_tweet_replies': 'false',
-        'include_profile_interstitial_type': '0',
-        'include_blocking': '0',
-        'include_blocked_by': '0',
-        'include_followed_by': '0',
-        'include_want_retweets': '0',
-        'include_mute_edge': '0',
-        'include_can_dm': '0',
-        'include_can_media_tag': '1',
-        'skip_status': '1',
-        'cards_platform': 'Web-12',
-        'include_cards': '1',
-        'include_composer_source': 'false',
-        'include_ext_alt_text': 'true',
-        'include_reply_count': '1',
-        'tweet_mode': 'extended',
-        'include_entities': 'true',
-        'include_user_entities': 'true',
-        'include_ext_media_color': 'false',
-        'include_ext_media_availability': 'true',
-        'send_error_codes': 'true',
-        'simple_quoted_tweet': 'true',
-        'ext': 'mediaStats',
-        'include_quote_count': 'true'
-      })
+      Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', query)
     );
 
     var result = json.decode(response.body);
@@ -218,12 +225,21 @@ class Twitter {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
+    var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
 
-    return instructions[0]['addEntries']['entries']
+    var cursorBottom = entries
+        .where((entry) => entry['entryId'].startsWith('cursor-bottom'))
+        .map((e) => e['content']['operation']['cursor']['value'])
+        .cast<String>()
+        .first;
+
+    var tweets = entries
         .where((entry) => entry['entryId'].startsWith('tweet') as bool)
         .where((entry) => globalTweets.containsKey(entry['sortIndex'])) // TODO: This ignores tweets from suspended accounts, e.g. 1215411856564768768
         .map<Tweet>((entry) => tweetFromJson(globalTweets, globalUsers, globalTweets[entry['sortIndex']]))
         .toList(growable: false);
+
+    return TweetList(tweets: tweets, cursorBottom: cursorBottom);
   }
 
   static Tweet tweetFromJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
@@ -270,4 +286,11 @@ class Twitter {
 
     return tweet;
   }
+}
+
+class TweetList {
+  final List<Tweet> tweets;
+  final String? cursorBottom;
+
+  TweetList({required this.tweets, required this.cursorBottom });
 }
