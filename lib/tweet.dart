@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_content.dart';
@@ -15,9 +14,9 @@ import 'profile.dart';
 
 class TweetVideo extends StatefulWidget {
   final bool loop;
-  final String uri;
+  final Media media;
 
-  const TweetVideo({Key? key, required this.loop, required this.uri}) : super(key: key);
+  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -30,7 +29,7 @@ class _TweetVideoState extends State<TweetVideo> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.uri);
+    _controller = VideoPlayerController.network(widget.media.videoInfo!.variants![0].url!);
     _controller.setLooping(widget.loop);
     _controller.initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
@@ -75,6 +74,10 @@ class _TweetVideoState extends State<TweetVideo> {
 
   @override
   Widget build(BuildContext context) {
+    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
+      ?  _controller.value.aspectRatio
+      : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -83,9 +86,8 @@ class _TweetVideoState extends State<TweetVideo> {
               : _controller.play();
         });
       },
-      // TODO: Replace this with the information from the API
       child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
+        aspectRatio: aspectRatio,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -125,11 +127,11 @@ class TweetTile extends StatelessWidget {
 
     var attachments = (tweet.extendedEntities?.media ?? []).map((e) {
       if (e.type == 'animated_gif') {
-        return TweetVideo(uri: e.videoInfo!.variants![0].url!, loop: true);
+        return TweetVideo(media: e, loop: true);
       }
 
       if (e.type == 'video') {
-        return TweetVideo(uri: e.videoInfo!.variants![0].url!, loop: false);
+        return TweetVideo(media: e, loop: false);
       }
 
       if (e.type == 'photo') {
