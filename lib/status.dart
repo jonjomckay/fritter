@@ -91,7 +91,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         comments = [Text('No replies')];
       } else {
         comments = replies.map((e) {
-          return TweetTile(clickable: false, currentUsername: widget.username, tweet: e);
+          return TweetTile(clickable: true, currentUsername: widget.username, tweet: e);
         });
       }
     }
