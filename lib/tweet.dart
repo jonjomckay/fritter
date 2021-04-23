@@ -208,101 +208,107 @@ class TweetTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(8)
           ),
           margin: EdgeInsets.all(8),
-          child: quotedTweetTile,
+          child: Container(
+            margin: EdgeInsets.all(4),
+            child: quotedTweetTile,
+          ),
         );
       }
 
       return Card(
-        child: Column(
-          children: [
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                child: retweetBanner,
+              ),
+              Expanded(child: Column(
                 children: [
-                  retweetBanner,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                            if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
-                              return null;
-                            }
-
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
-                          },
-                          title: Text(tweet.user!.name!,
-                              style: TextStyle(fontWeight: FontWeight.w500)),
-                          subtitle: Text(tweet.user!.screenName!),
-                          leading: CircleAvatar(
-                            radius: 24,
-                            backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
-                          ),
-                          trailing: Text(timeago.format(tweet.createdAt!),
-                              style: Theme.of(context).textTheme.caption),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (clickable) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
-                            }
-
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
+                          if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
                             return null;
-                          },
-                          child: Container(
-                            // Fill the width so both RTL and LTR text are displayed correctly
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            child: AutoDirection(
-                              text: tweetText,
-                              child: TweetContent(
+                          }
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
+                        },
+                        title: Text(tweet.user!.name!,
+                            style: TextStyle(fontWeight: FontWeight.w500)),
+                        subtitle: Text(tweet.user!.screenName!),
+                        leading: CircleAvatar(
+                          radius: 24,
+                          backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
+                        ),
+                        trailing: Text(timeago.format(tweet.createdAt!),
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (clickable) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
+                          }
+
+                          return null;
+                        },
+                        child: Container(
+                          // Fill the width so both RTL and LTR text are displayed correctly
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          child: AutoDirection(
+                            text: tweetText,
+                            child: TweetContent(
                                 text: tweetText,
                                 urls: tweet.entities?.urls ?? [],
                                 mentions: tweet.entities?.userMentions ?? [],
                                 hashtags: tweet.entities?.hashtags ?? []
-                              ),
                             ),
                           ),
                         ),
-                        ...attachments,
-                        quotedTweet,
-                      ],
-                    ),
+                      ),
+                      ...attachments,
+                      quotedTweet,
+                    ],
                   ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceAround,
+                    buttonTextTheme: ButtonTextTheme.accent,
+                    buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                    children: [
+                      if (tweet.replyCount != null)
+                        TextButton.icon(
+                            onPressed: null,
+                            icon: Icon(Icons.comment, size: 16),
+                            label: Text(numberFormat.format(tweet.replyCount))
+                        ),
+                      if (tweet.retweetCount != null)
+                        TextButton.icon(
+                          icon: Icon(Icons.repeat, size: 16),
+                          onPressed: null,
+                          label: Text(numberFormat.format(tweet.retweetCount)),
+                        ),
+                      if (tweet.quoteCount != null)
+                        TextButton.icon(
+                          icon: Icon(Icons.message, size: 16),
+                          onPressed: null,
+                          label: Text(numberFormat.format(tweet.quoteCount)),
+                        ),
+                      if (tweet.favoriteCount != null)
+                        TextButton.icon(
+                          icon: Icon(Icons.favorite, size: 16),
+                          onPressed: null,
+                          label: Text(numberFormat.format(tweet.favoriteCount)),
+                        ),
+                    ],
+                  )
                 ],
-              ),
-            ),
-            if (tweet.replyCount != null)
-              ButtonBar(
-                alignment: MainAxisAlignment.spaceAround,
-                buttonTextTheme: ButtonTextTheme.accent,
-                buttonPadding: EdgeInsets.symmetric(horizontal: 6),
-                children: [
-                  FlatButton.icon(
-                    icon: Icon(Icons.comment, size: 16),
-                    onPressed: null,
-                    label: Text(numberFormat.format(tweet.replyCount)),
-                  ),
-                  FlatButton.icon(
-                    icon: Icon(Icons.repeat, size: 16),
-                    onPressed: null,
-                    label: Text(numberFormat.format(tweet.retweetCount)),
-                  ),
-                  FlatButton.icon(
-                    icon: Icon(Icons.message, size: 16),
-                    onPressed: null,
-                    label: Text(numberFormat.format(tweet.quoteCount)),
-                  ),
-                  FlatButton.icon(
-                    icon: Icon(Icons.favorite, size: 16),
-                    onPressed: null,
-                    label: Text(numberFormat.format(tweet.favoriteCount)),
-                  ),
-                ],
-              )
-          ],
+              ))
+            ],
+          ),
         ),
       );
     });
