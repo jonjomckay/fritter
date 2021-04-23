@@ -1,0 +1,6 @@
+* Added support for loading all tweets on profiles
+* Made tweet content selectable
+* Fixed missing counts underneath tweets (replies, retweets, quotes and favourites)
+* Fixed links to sub-tweet resources (photos, media) to open the tweet instead of the trending screen
+* Fixed replies to tweets not being openable
+* Fixed invalid aspect ratios for some videos
