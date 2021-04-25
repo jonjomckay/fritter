@@ -27,12 +27,14 @@ dependencies:
 
   auto_direction: ^0.0.5
   dart_twitter_api: ^0.5.0
+  device_info: ^2.0.0
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
   flex_color_scheme: ^2.1.1
   http: ^0.13.1
   intl: ^0.17.0
+  package_info: ^2.0.0
   pagination_view:
     git:
       url: git://github.com/jonjomckay/pagination_view.git

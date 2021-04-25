@@ -1,0 +1,1 @@
+* Added opt-in button to submit a one-time non-identifying ping to help future development
