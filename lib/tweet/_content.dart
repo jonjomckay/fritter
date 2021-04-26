@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile.dart';
+import 'package:fritter/status.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class TweetEntity {
@@ -82,17 +83,15 @@ extension IterableRange<T> on Iterable<T> {
 }
 
 class TweetContent extends StatelessWidget {
-  final String text;
-  final List<Url> urls;
-  final List<UserMention> mentions;
-  final List<Hashtag> hashtags;
+  final Tweet tweet;
 
-  TweetContent({ required this.text, required this.urls, required this.mentions, required this.hashtags });
+  TweetContent({ required this.tweet });
 
   @override
   Widget build(BuildContext context) {
     List<TweetEntity> entities = [];
 
+    var hashtags = tweet.entities?.hashtags ?? [];
     for (var hashtag in hashtags) {
       entities.add(TweetHashtag(hashtag, () async {
         await showSearch(
@@ -105,12 +104,14 @@ class TweetContent extends StatelessWidget {
       }));
     }
 
+    var mentions = tweet.entities?.userMentions ?? [];
     for (var mention in mentions) {
       entities.add(TweetUserMention(mention, () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: mention.idStr, username: mention.screenName!)));
       }));
     }
 
+    var urls = tweet.entities?.urls ?? [];
     for (var url in urls) {
       entities.add(TweetUrl(url, () async {
         var uri = url.expandedUrl;
@@ -124,7 +125,7 @@ class TweetContent extends StatelessWidget {
 
     List<InlineSpan> parts = [];
     var index = 0;
-    var runes = Runes(text);
+    var runes = Runes(tweet.fullText ?? tweet.text!);
 
     entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
@@ -155,6 +156,8 @@ class TweetContent extends StatelessWidget {
       TextSpan(
         children: parts
       ),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!))),
     );
   }
 }

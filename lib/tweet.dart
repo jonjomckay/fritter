@@ -247,27 +247,13 @@ class TweetTile extends StatelessWidget {
                         trailing: Text(timeago.format(tweet.createdAt!),
                             style: Theme.of(context).textTheme.caption),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          if (clickable) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
-                          }
-
-                          return null;
-                        },
-                        child: Container(
-                          // Fill the width so both RTL and LTR text are displayed correctly
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: AutoDirection(
-                            text: tweetText,
-                            child: TweetContent(
-                                text: tweetText,
-                                urls: tweet.entities?.urls ?? [],
-                                mentions: tweet.entities?.userMentions ?? [],
-                                hashtags: tweet.entities?.hashtags ?? []
-                            ),
-                          ),
+                      Container(
+                        // Fill the width so both RTL and LTR text are displayed correctly
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: AutoDirection(
+                          text: tweetText,
+                          child: TweetContent(tweet: tweet),
                         ),
                       ),
                       ...attachments,
