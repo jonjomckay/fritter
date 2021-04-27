@@ -6,6 +6,7 @@ import 'package:sqflite_migration_plan/sqflite_migration_plan.dart';
 
 const String DATABASE_NAME = 'fritter.db';
 
+const String TABLE_SAVED_TWEET = 'saved_tweet';
 const String TABLE_SUBSCRIPTION = 'subscription';
 const String TABLE_SUBSCRIPTION_GROUP = 'subscription_group';
 const String TABLE_SUBSCRIPTION_GROUP_MEMBER = 'subscription_group_member';
@@ -47,11 +48,15 @@ class Repository {
         SqlMigration('ALTER TABLE following RENAME TO $TABLE_SUBSCRIPTION'),
         SqlMigration('ALTER TABLE following_group RENAME TO $TABLE_SUBSCRIPTION_GROUP'),
         SqlMigration('ALTER TABLE following_group_profile RENAME TO $TABLE_SUBSCRIPTION_GROUP_MEMBER'),
+      ],
+      7: [
+        // Add the table for saved tweets
+        SqlMigration('CREATE TABLE IF NOT EXISTS $TABLE_SAVED_TWEET (id VARCHAR PRIMARY KEY, content TEXT NOT NULL, saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', reverseSql: 'DROP TABLE $TABLE_SAVED_TWEET')
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 6,
+        version: 7,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

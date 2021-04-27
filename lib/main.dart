@@ -4,9 +4,11 @@ import 'dart:developer';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home/home_screen.dart';
+import 'package:fritter/home_model.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/status.dart';
 import 'package:pref/pref.dart';
+import 'package:provider/provider.dart';
 import 'package:uni_links2/uni_links.dart';
 
 import 'constants.dart';
@@ -24,7 +26,10 @@ Future<void> main() async {
   });
 
   runApp(PrefService(
-      child: MyApp(),
+      child: ChangeNotifierProvider(
+        create: (context) => HomeModel(),
+        child: MyApp(),
+      ),
       service: prefService
   ));
 }

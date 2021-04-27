@@ -5,9 +5,11 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 
@@ -115,6 +117,16 @@ class TweetTile extends StatelessWidget {
 
   const TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
+  _createFooterButton(IconData icon, String label, [Color? color, Function()? onPressed]) {
+    return TextButton.icon(
+      icon: Icon(icon, size: 16, color: color),
+      onPressed: onPressed,
+      label: Text(label, style: TextStyle(
+          color: color
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (this.tweet == null) {
@@ -216,7 +228,7 @@ class TweetTile extends StatelessWidget {
       );
     }
 
-    return Card(
+    return Consumer<HomeModel>(builder: (context, model, child) => Card(
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -268,29 +280,33 @@ class TweetTile extends StatelessWidget {
                   buttonPadding: EdgeInsets.symmetric(horizontal: 0),
                   children: [
                     if (tweet.replyCount != null)
-                      TextButton.icon(
-                          onPressed: null,
-                          icon: Icon(Icons.comment, size: 16),
-                          label: Text(numberFormat.format(tweet.replyCount))
-                      ),
+                      _createFooterButton(Icons.comment, numberFormat.format(tweet.replyCount)),
                     if (tweet.retweetCount != null)
-                      TextButton.icon(
-                        icon: Icon(Icons.repeat, size: 16),
-                        onPressed: null,
-                        label: Text(numberFormat.format(tweet.retweetCount)),
-                      ),
+                      _createFooterButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                     if (tweet.quoteCount != null)
-                      TextButton.icon(
-                        icon: Icon(Icons.message, size: 16),
-                        onPressed: null,
-                        label: Text(numberFormat.format(tweet.quoteCount)),
-                      ),
+                      _createFooterButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                     if (tweet.favoriteCount != null)
-                      TextButton.icon(
-                        icon: Icon(Icons.favorite, size: 16),
-                        onPressed: null,
-                        label: Text(numberFormat.format(tweet.favoriteCount)),
-                      ),
+                      _createFooterButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                    FutureBuilder<bool>(
+                      future: model.isTweetSaved(tweet.idStr!),
+                      builder: (context, snapshot) {
+                        var saved = snapshot.data;
+                        if (saved == null) {
+                          return _createFooterButton(Icons.bookmark_outline, 'Loading', null, null);
+                        }
+
+                        var color = Theme.of(context).disabledColor;
+
+                        if (saved) {
+                          return _createFooterButton(Icons.bookmark, 'Saved', color, () async {
+                            await model.deleteSavedTweet(tweet.idStr!);
+                          });
+                        } else {
+                          return _createFooterButton(Icons.bookmark_outline, 'Save', color, () async {
+                            await model.saveTweet(tweet.idStr!, tweet.toJson());
+                          });
+                        }},
+                    )
                   ],
                 )
               ],
@@ -298,6 +314,6 @@ class TweetTile extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }

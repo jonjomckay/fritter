@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'database/repository.dart';
 import 'database/entities.dart';
@@ -11,6 +15,43 @@ class HomeModel extends ChangeNotifier {
 
     await database.delete(TABLE_SUBSCRIPTION_GROUP_MEMBER, where: 'group_id = ?', whereArgs: [id]);
     await database.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]);
+
+    notifyListeners();
+  }
+
+  Future<bool> isTweetSaved(String id) async {
+    var database = await Repository.readOnly();
+
+    var result = await database.rawQuery('SELECT EXISTS (SELECT 1 FROM $TABLE_SAVED_TWEET WHERE id = ?)', [id]);
+
+    return Sqflite.firstIntValue(result) == 1;
+  }
+
+  Future deleteSavedTweet(String id) async {
+    var database = await Repository.writable();
+
+    await database.delete(TABLE_SAVED_TWEET, where: 'id = ?', whereArgs: [id]);
+
+    notifyListeners();
+  }
+
+  Future<List<TweetWithCard>> listSavedTweets() async {
+    log('Listing saved tweets');
+
+    var database = await Repository.readOnly();
+
+    return (await database.query(TABLE_SAVED_TWEET, orderBy: 'saved_at DESC'))
+        .map((e) => TweetWithCard.fromJson(jsonDecode(e['content'] as String)))
+        .toList(growable: false);
+  }
+
+  Future saveTweet(String id, Map<String, dynamic> content) async {
+    var database = await Repository.writable();
+
+    await database.insert(TABLE_SAVED_TWEET, {
+      'id': id,
+      'content': jsonEncode(content)
+    });
 
     notifyListeners();
   }
