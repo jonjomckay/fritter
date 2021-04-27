@@ -1,3 +1,4 @@
 * Added opt-in button to submit a one-time non-identifying ping to help future development
 * Added a more detailed message when the Twitter API token cannot be refreshed
 * Fixed some tweet URLs not launching the app correctly
+* Fixed some user mentions cutting off the start of replies

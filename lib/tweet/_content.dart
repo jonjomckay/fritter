@@ -123,7 +123,7 @@ class TweetContent extends StatelessWidget {
       }));
     }
 
-    var tweetText = tweet.fullText ?? tweet.text!;
+    var tweetText = Runes(tweet.fullText ?? tweet.text!);
 
     // If we're not given a text display range, we just display the entire text
     var displayTextRange = tweet.displayTextRange;
@@ -133,7 +133,9 @@ class TweetContent extends StatelessWidget {
 
     List<InlineSpan> parts = [];
     var index = 0;
-    var runes = Runes(tweetText).getRange(displayTextRange[0], displayTextRange[1]);
+
+    // Don't use the starting text range, as it might be a mention and I haven't figured out how to not mangle that text
+    var runes = tweetText.getRange(0, displayTextRange[1]);
 
     entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
