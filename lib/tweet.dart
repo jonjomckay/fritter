@@ -4,12 +4,15 @@ import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/client.dart';
+import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 
 import 'profile.dart';
+
 
 class TweetVideo extends StatefulWidget {
   final bool loop;
@@ -108,7 +111,7 @@ class _TweetVideoState extends State<TweetVideo> {
 class TweetTile extends StatelessWidget {
   final bool clickable;
   final String? currentUsername;
-  final Tweet? tweet;
+  final TweetWithCard? tweet;
 
   const TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
@@ -120,9 +123,9 @@ class TweetTile extends StatelessWidget {
 
     var numberFormat = NumberFormat.compact();
 
-    Tweet tweet = this.tweet!.retweetedStatus == null
+    TweetWithCard tweet = this.tweet!.retweetedStatusWithCard == null
       ? this.tweet!
-      : this.tweet!.retweetedStatus!;
+      : this.tweet!.retweetedStatusWithCard!;
 
     var attachments = (tweet.extendedEntities?.media ?? []).map((e) {
       if (e.type == 'animated_gif') {
@@ -141,7 +144,7 @@ class TweetTile extends StatelessWidget {
     });
 
     Widget retweetBanner = Container();
-    if (this.tweet!.retweetedStatus != null) {
+    if (this.tweet!.retweetedStatusWithCard != null) {
       retweetBanner = ColoredBox(
           color: Theme.of(context).secondaryHeaderColor,
           child: Center(
@@ -184,10 +187,10 @@ class TweetTile extends StatelessWidget {
     if (tweet.isQuoteStatus ?? false) {
       Widget quotedTweetTile;
 
-      if (tweet.quotedStatus != null) {
+      if (tweet.quotedStatusWithCard != null) {
         quotedTweetTile = TweetTile(
           clickable: true,
-          tweet: tweet.quotedStatus,
+          tweet: tweet.quotedStatusWithCard,
           currentUsername: tweet.user?.screenName,
         );
       } else {
@@ -256,6 +259,7 @@ class TweetTile extends StatelessWidget {
                     ),
                     ...attachments,
                     quotedTweet,
+                    TweetCard(tweet: tweet, card: tweet.card),
                   ],
                 ),
                 ButtonBar(

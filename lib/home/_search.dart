@@ -9,7 +9,7 @@ class TweetSearchDelegate extends SearchDelegate {
 
   TweetSearchDelegate({ required this.initialTab });
 
-  Future<List<Tweet>> searchTweets(BuildContext context, String query) async {
+  Future<List<TweetWithCard>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
     } else {
@@ -72,10 +72,10 @@ class TweetSearchDelegate extends SearchDelegate {
                     });
                   },
                 ),
-                FutureBuilder<List<Tweet>>(
+                FutureBuilder<List<TweetWithCard>>(
                   future: searchTweets(context, query),
                   builder: (context, snapshot) {
-                    return TweetSearchResultList<Tweet>(snapshot: snapshot, itemBuilder: (context, item) {
+                    return TweetSearchResultList<TweetWithCard>(snapshot: snapshot, itemBuilder: (context, item) {
                       return TweetTile(
                           tweet: item,
                           clickable: true
