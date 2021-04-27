@@ -60,6 +60,8 @@ class _FritterTwitterClient extends TwitterClient {
     _tokenRemaining = -1;
     _expiresAt = -1;
 
+    log('Refreshing the Twitter token');
+
     var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
       'authorization': _bearerToken,
     });
@@ -73,8 +75,9 @@ class _FritterTwitterClient extends TwitterClient {
       }
     }
 
-    // TODO
-    throw new Exception('Unable to refresh the token');
+    var message = 'Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body;
+    log(message);
+    throw new Exception(message);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
