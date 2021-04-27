@@ -123,9 +123,17 @@ class TweetContent extends StatelessWidget {
       }));
     }
 
+    var tweetText = tweet.fullText ?? tweet.text!;
+
+    // If we're not given a text display range, we just display the entire text
+    var displayTextRange = tweet.displayTextRange;
+    if (displayTextRange == null) {
+      displayTextRange = [0, tweetText.length];
+    }
+
     List<InlineSpan> parts = [];
     var index = 0;
-    var runes = Runes(tweet.fullText ?? tweet.text!);
+    var runes = Runes(tweetText).getRange(displayTextRange[0], displayTextRange[1]);
 
     entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
