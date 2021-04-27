@@ -1,0 +1,2 @@
+* Fixed tweets not opening when tapped
+* Removed t.co URLs that were being displayed at the end of tweets containing media or links
