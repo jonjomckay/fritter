@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile.dart';
 import 'package:fritter/status.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class TweetEntity {
@@ -139,13 +140,15 @@ class TweetContent extends StatelessWidget {
 
     entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
+    var htmlUnescape = HtmlUnescape();
+
     var addText = (int start, [int? end]) {
       var string = runes.getRange(start, end).map((e) => String.fromCharCode(e)).join('');
       if (string.isEmpty) {
         return;
       }
 
-      parts.add(TextSpan(text: string, style: Theme.of(context).textTheme.bodyText2));
+      parts.add(TextSpan(text: htmlUnescape.convert(string), style: Theme.of(context).textTheme.bodyText2));
     };
 
     entities.forEach((part) {
