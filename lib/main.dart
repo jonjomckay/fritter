@@ -134,17 +134,19 @@ class _DefaultPageState extends State<DefaultPage> {
       return;
     }
 
-    if (link.pathSegments.any((segment) => segment.contains('/status/'))) {
-      // Assume it's a tweet
-      var username = link.pathSegments[0];
-      var statusId = link.pathSegments[2];
+    if (link.pathSegments.length > 2) {
+      if (link.pathSegments[1] == 'status') {
+        // Assume it's a tweet
+        var username = link.pathSegments[0];
+        var statusId = link.pathSegments[2];
 
-      setState(() {
-        _page = 'status';
-        _username = username;
-        _statusId = statusId;
-      });
-      return;
+        setState(() {
+          _page = 'status';
+          _username = username;
+          _statusId = statusId;
+        });
+        return;
+      }
     }
   }
 
