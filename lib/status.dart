@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/loading.dart';
@@ -33,8 +32,7 @@ class StatusScreenBody extends StatefulWidget {
 
 class _StatusScreenBodyState extends State<StatusScreenBody> {
   bool _loading = true;
-  Tweet? _status;
-  List<Tweet>? _replies;
+  TweetStatus? _status;
 
   @override
   void initState() {
@@ -60,40 +58,34 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
       ));
     };
 
-    var task1 = Twitter.getTweetReplies(id)
-      .then((replies) {
-        setState(() {
-          _replies = replies;
-        });
-      })
-      .catchError(onError);
-
-    var task2 = Twitter.getTweet(id)
+    Twitter.getTweet(id)
         .then((status) {
           setState(() {
             _status = status;
           });
         })
-        .catchError(onError);
-
-    Future.wait([task1, task2]).whenComplete(() => setState(() {
-      _loading = false;
-    }));
+        .catchError(onError)
+        .whenComplete(() => setState(() {
+              _loading = false;
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
     Iterable<Widget> comments = [];
 
-    var replies = _replies;
-    if (replies != null) {
-      if (replies.isEmpty) {
-        comments = [Text('No replies')];
-      } else {
-        comments = replies.map((e) {
-          return TweetTile(clickable: true, currentUsername: widget.username, tweet: e);
-        });
-      }
+    var status = _status;
+    if (status == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    var replies = status.replies;
+    if (replies.isEmpty) {
+      comments = [Text('No replies')];
+    } else {
+      comments = replies.map((e) {
+        return TweetTile(clickable: true, currentUsername: widget.username, tweet: e);
+      });
     }
 
     return SingleChildScrollView(
@@ -101,7 +93,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         loading: _loading,
         child: Column(
           children: [
-            TweetTile(currentUsername: widget.username, tweet: _status, clickable: false),
+            TweetTile(currentUsername: widget.username, tweet: status.tweet, clickable: false),
             Padding(
               padding: EdgeInsets.all(24),
               child: Column(

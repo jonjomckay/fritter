@@ -40,8 +40,8 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
     }
   }
 
-  Future<List<Tweet>> _listTweets(List<String> users) async {
-    List<Future<List<Tweet>>> futures = [];
+  Future<List<TweetWithCard>> _listTweets(List<String> users) async {
+    List<Future<List<TweetWithCard>>> futures = [];
 
     // TODO: Split into groups, and have a max_id per group
 
@@ -100,8 +100,8 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
           appBar: AppBar(
             title: Text(group.name),
           ),
-          body: PaginationView<Tweet>(
-            itemBuilder: (BuildContext context, Tweet tweet, int index) {
+          body: PaginationView<TweetWithCard>(
+            itemBuilder: (BuildContext context, TweetWithCard tweet, int index) {
               return TweetTile(tweet: tweet, clickable: true);
             },
             paginationViewType: PaginationViewType.listView,

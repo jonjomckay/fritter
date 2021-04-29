@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:http/http.dart' as http;
 
@@ -111,26 +111,43 @@ class _FritterTwitterClient extends TwitterClient {
 
 class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
+
+  static Map<String, String> defaultParams = {
+    'include_tweet_replies': 'false',
+    'include_profile_interstitial_type': '0',
+    'include_blocking': '0',
+    'include_blocked_by': '0',
+    'include_followed_by': '0',
+    'include_want_retweets': '0',
+    'include_mute_edge': '0',
+    'include_can_dm': '0',
+    'include_can_media_tag': '1',
+    'skip_status': '1',
+    'cards_platform': 'Web-12',
+    'include_cards': '1',
+    'include_composer_source': 'false',
+    'include_ext_alt_text': 'true',
+    'include_reply_count': '1',
+    'tweet_mode': 'extended',
+    'include_entities': 'true',
+    'include_user_entities': 'true',
+    'include_ext_media_color': 'false',
+    'include_ext_media_availability': 'true',
+    'send_error_codes': 'true',
+    'simple_quoted_tweet': 'true',
+    'ext': 'mediaStats',
+    'include_quote_count': 'true'
+  };
   
-  static Future<User> getProfile(String username) async {
-    var result = await _twitterApi.userService.usersShow(
+  static Future<User> getProfile(String username) async => await _twitterApi.userService.usersShow(
       screenName: username
     );
 
-    return result;
-  }
-
-  static Future<Tweet> getTweet(String id) async {
-    var result = await _twitterApi.tweetService.show(
-      id: id,
-    );
-
-    return result;
-  }
-
-  static Future<List<Tweet>> getTweetReplies(String id, { String after = "" }) async {
+  static Future<TweetStatus> getTweet(String id) async {
     var response = await _twitterApi.client.get(
-      Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json')
+        Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', {
+          ...defaultParams
+        })
     );
 
     var result = json.decode(response.body);
@@ -139,80 +156,46 @@ class Twitter {
     var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
 
-    return List.from(instructions[0]['addEntries']['entries'])
+    var replies = List.from(instructions[0]['addEntries']['entries'])
         .where((entry) => entry['entryId'].startsWith('conversationThread') as bool)
-        .where((entry) {
-          // I love this API!
-          if (entry['content']['timelineModule'] != null &&
-              entry['content']['timelineModule']['items'] != null &&
-              entry['content']['timelineModule']['items'][0] != null &&
-              entry['content']['timelineModule']['items'][0]['item'] != null &&
-              entry['content']['timelineModule']['items'][0]['item']['content'] != null &&
-              entry['content']['timelineModule']['items'][0]['item']['content']['tweet'] != null &&
-              entry['content']['timelineModule']['items'][0]['item']['content']['tweet']['id'] != null) {
-            return true;
-          }
+        .where((entry) => entry['content']?['timelineModule']?['items']?[0]?['item']?['content']?['tweet']?['id'] != null)
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
+        .toList(growable: false);
 
-          return false;
+    return TweetStatus(tweet: _createTweets('tweet', result).last, replies: replies);
+  }
+
+  static Future<List<TweetWithCard>> searchTweets(String query, {int limit = 25, String? maxId}) async {
+    var response = await _twitterApi.client.get(
+        Uri.https('api.twitter.com', '/2/search/adaptive.json', {
+          ...defaultParams,
+          'count': limit.toString(),
+          'max_id': maxId,
+          'q': query,
+          'query_source': 'typed_query',
+          'pc': '1',
+          'spelling_corrections': '1',
         })
-        .map((e) => tweetFromJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
+    );
+
+    var result = json.decode(response.body);
+
+    return _createTweets('sq-I-t', result)
         .toList(growable: false);
   }
 
-  static Future<List<Tweet>> searchTweets(String query, {int limit = 25, String? maxId}) async {
-    var result = await _twitterApi.tweetSearchService.searchTweets(
-      q: query,
-      includeEntities: true,
-      count: limit,
-      maxId: maxId
-    );
-
-    return result.statuses ?? [];
-  }
-
-  static Future<List<User>> searchUsers(String query) async {
-    var result = await _twitterApi.userService.usersSearch(
+  static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
       q: query,
     );
 
-    return result;
-  }
-
-  static Future<List<Trends>> getTrends() async {
-    var result = await _twitterApi.trendsService.place(
+  static Future<List<Trends>> getTrends() async => await _twitterApi.trendsService.place(
       id: 1
     );
 
-    return result;
-  }
-
   static Future<TweetList> getTweets(String id, { int count = 10, String? cursor }) async {
     var query = {
+      ...defaultParams,
       'count': count.toString(),
-      'include_tweet_replies': 'false',
-      'include_profile_interstitial_type': '0',
-      'include_blocking': '0',
-      'include_blocked_by': '0',
-      'include_followed_by': '0',
-      'include_want_retweets': '0',
-      'include_mute_edge': '0',
-      'include_can_dm': '0',
-      'include_can_media_tag': '1',
-      'skip_status': '1',
-      'cards_platform': 'Web-12',
-      'include_cards': '1',
-      'include_composer_source': 'false',
-      'include_ext_alt_text': 'true',
-      'include_reply_count': '1',
-      'tweet_mode': 'extended',
-      'include_entities': 'true',
-      'include_user_entities': 'true',
-      'include_ext_media_color': 'false',
-      'include_ext_media_availability': 'true',
-      'send_error_codes': 'true',
-      'simple_quoted_tweet': 'true',
-      'ext': 'mediaStats',
-      'include_quote_count': 'true'
     };
 
     if (cursor != null) {
@@ -225,10 +208,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
-    var instructions = result['timeline']['instructions'];
-    var globalUsers = result['globalObjects']['users'];
-    var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
+    var entries = result['timeline']['instructions'][0]['addEntries']['entries'] as List<dynamic>;
 
     var cursorBottom = entries
         .where((entry) => entry['entryId'].startsWith('cursor-bottom'))
@@ -236,17 +216,37 @@ class Twitter {
         .cast<String>()
         .first;
 
-    var tweets = entries
-        .where((entry) => entry['entryId'].startsWith('tweet') as bool)
-        .where((entry) => globalTweets.containsKey(entry['sortIndex'])) // TODO: This ignores tweets from suspended accounts, e.g. 1215411856564768768
-        .map<Tweet>((entry) => tweetFromJson(globalTweets, globalUsers, globalTweets[entry['sortIndex']]))
+    var tweets = _createTweets('tweet', result)
         .toList(growable: false);
 
     return TweetList(tweets: tweets, cursorBottom: cursorBottom);
   }
 
-  static Tweet tweetFromJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
-    Tweet tweet = Tweet();
+  static Iterable<TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
+    var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
+    var instructions = result['timeline']['instructions'];
+    var globalUsers = result['globalObjects']['users'];
+    var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
+
+    entries.sort((a, b) => b['sortIndex'].compareTo(a['sortIndex']));
+
+    return entries
+        .where((entry) => entry['entryId'].startsWith(entryPrefix) as bool)
+        .where((entry) => globalTweets.containsKey(entry['content']['item']['content']['tweet']['id']))
+        .map<TweetWithCard>((entry) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[entry['content']['item']['content']['tweet']['id']]));
+  }
+}
+
+class TweetWithCard extends Tweet {
+  Map<String, dynamic>? card;
+  TweetWithCard? quotedStatusWithCard;
+  TweetWithCard? retweetedStatusWithCard;
+
+  TweetWithCard();
+
+  factory TweetWithCard.fromCardJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
+    TweetWithCard tweet = TweetWithCard();
+    tweet.card = e['card'];
     tweet.createdAt = convertTwitterDateTime(e['created_at']);
     tweet.entities = e['entities'] == null ? null : Entities.fromJson(e['entities']);
     tweet.extendedEntities = e['extended_entities'] == null ? null : Entities.fromJson(e['extended_entities']);
@@ -265,20 +265,26 @@ class Twitter {
     tweet.replyCount = e['reply_count'] as int?;
     tweet.retweetCount = e['retweet_count'] as int?;
     tweet.retweeted = e['retweeted'] as bool?;
-    tweet.retweetedStatus = e['retweeted_status_id_str'] == null ? null : tweetFromJson(tweets, users, tweets[e['retweeted_status_id_str']]);
     tweet.source = e['source'] as String?;
     tweet.text = e['text'] ?? e['full_text'] as String?;
     tweet.user = e['user_id_str'] == null ? null : User.fromJson(users[e['user_id_str']]);
 
-    tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)
-        ?.map((e) => e as int)
-        .toList();
+    var retweetedStatus = e['retweeted_status_id_str'] == null ? null : TweetWithCard.fromCardJson(tweets, users, tweets[e['retweeted_status_id_str']]);
+    tweet.retweetedStatus = retweetedStatus;
+    tweet.retweetedStatusWithCard = retweetedStatus;
 
     // Some quotes aren't returned, even though we're given their ID, so double check and don't fail with a null value
     var quoteId = e['quoted_status_id_str'];
     if (quoteId != null && tweets[quoteId] != null) {
-      tweet.quotedStatus = tweetFromJson(tweets, users, tweets[quoteId]);
+      var quotedStatus = TweetWithCard.fromCardJson(tweets, users, tweets[quoteId]);
+
+      tweet.quotedStatus = quotedStatus;
+      tweet.quotedStatusWithCard = quotedStatus;
     }
+
+    tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)
+        ?.map((e) => e as int)
+        .toList();
 
     // TODO
     tweet.coordinates = null;
@@ -292,8 +298,15 @@ class Twitter {
 }
 
 class TweetList {
-  final List<Tweet> tweets;
+  final List<TweetWithCard> tweets;
   final String? cursorBottom;
 
   TweetList({required this.tweets, required this.cursorBottom });
+}
+
+class TweetStatus {
+  final TweetWithCard tweet;
+  final List<TweetWithCard> replies;
+
+  TweetStatus({ required this.tweet, required this.replies });
 }

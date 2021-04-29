@@ -72,7 +72,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     });
   }
 
-  Future<List<Tweet>> _loadTweets() async {
+  Future<List<TweetWithCard>> _loadTweets() async {
     try {
       var result = await Twitter.getTweets(_profile!.idStr!, cursor: _cursor, count: _pageSize);
 
@@ -113,8 +113,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     return Scaffold(
         body: DefaultTabController(
           length: 3,
-          child: PaginationView<Tweet>(
-            itemBuilder: (BuildContext context, Tweet tweet, int index) {
+          child: PaginationView<TweetWithCard>(
+            itemBuilder: (BuildContext context, TweetWithCard tweet, int index) {
               return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
             },
             paginationViewType: PaginationViewType.listView,
