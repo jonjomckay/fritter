@@ -10,6 +10,7 @@ import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 
@@ -134,6 +135,7 @@ class TweetTile extends StatelessWidget {
     }
 
     var numberFormat = NumberFormat.compact();
+    var actionColour = Theme.of(context).disabledColor;
 
     TweetWithCard tweet = this.tweet!.retweetedStatusWithCard == null
       ? this.tweet!
@@ -295,18 +297,37 @@ class TweetTile extends StatelessWidget {
                           return _createFooterButton(Icons.bookmark_outline, 'Loading', null, null);
                         }
 
-                        var color = Theme.of(context).disabledColor;
-
                         if (saved) {
-                          return _createFooterButton(Icons.bookmark, 'Saved', color, () async {
+                          return _createFooterButton(Icons.bookmark, 'Saved', actionColour, () async {
                             await model.deleteSavedTweet(tweet.idStr!);
                           });
                         } else {
-                          return _createFooterButton(Icons.bookmark_outline, 'Save', color, () async {
+                          return _createFooterButton(Icons.bookmark_outline, 'Save', actionColour, () async {
                             await model.saveTweet(tweet.idStr!, tweet.toJson());
                           });
                         }},
-                    )
+                    ),
+                    _createFooterButton(Icons.share, 'Share', actionColour, () async {
+                      var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(text, style: TextStyle(
+                              fontSize: 16
+                          )),
+                        ),
+                        onPressed: () => Share.share(shareContent),
+                      );
+
+                      showDialog(context: context, builder: (context) {
+                        return SimpleDialog(
+                          contentPadding: EdgeInsets.symmetric(vertical: 8),
+                          children: [
+                            createShareDialogItem('Share tweet content', tweetText),
+                            createShareDialogItem('Share tweet link', 'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}'),
+                          ],
+                        );
+                      });
+                    }),
                   ],
                 )
               ],
