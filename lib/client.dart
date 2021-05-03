@@ -244,6 +244,55 @@ class TweetWithCard extends Tweet {
 
   TweetWithCard();
 
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['card'] = card;
+    json['quotedStatusWithCard'] = quotedStatusWithCard?.toJson();
+    json['retweetedStatusWithCard'] = retweetedStatusWithCard?.toJson();
+
+    return json;
+  }
+
+  factory TweetWithCard.fromJson(Map<String, dynamic> e) {
+    var tweet = Tweet.fromJson(e);
+
+    var tweetWithCard = TweetWithCard();
+    tweetWithCard.card = e['card'];
+    tweetWithCard.createdAt = tweet.createdAt;
+    tweetWithCard.entities = tweet.entities;
+    tweetWithCard.displayTextRange = tweet.displayTextRange;
+    tweetWithCard.extendedEntities = tweet.extendedEntities;
+    tweetWithCard.favorited = tweet.favorited;
+    tweetWithCard.favoriteCount = tweet.favoriteCount;
+    tweetWithCard.fullText = tweet.fullText;
+    tweetWithCard.idStr = tweet.idStr;
+    tweetWithCard.inReplyToScreenName = tweet.inReplyToScreenName;
+    tweetWithCard.inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
+    tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
+    tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
+    tweetWithCard.lang = tweet.lang;
+    tweetWithCard.quoteCount = tweet.quoteCount;
+    tweetWithCard.quotedStatusIdStr = tweet.quotedStatusIdStr;
+    tweetWithCard.quotedStatusPermalink = tweet.quotedStatusPermalink;
+    tweetWithCard.quotedStatusWithCard = e['quotedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['quotedStatusWithCard']);
+    tweetWithCard.replyCount = tweet.replyCount;
+    tweetWithCard.retweetCount = tweet.retweetCount;
+    tweetWithCard.retweeted = tweet.retweeted;
+    tweetWithCard.retweetedStatus = tweet.retweetedStatus;
+    tweetWithCard.retweetedStatusWithCard = e['retweetedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['retweetedStatusWithCard']);
+    tweetWithCard.source = tweet.source;
+    tweetWithCard.text = tweet.text;
+    tweetWithCard.user = tweet.user;
+
+    tweetWithCard.coordinates = tweet.coordinates;
+    tweetWithCard.truncated = tweet.truncated;
+    tweetWithCard.place = tweet.place;
+    tweetWithCard.possiblySensitive = tweet.possiblySensitive;
+    tweetWithCard.possiblySensitiveAppealable = tweet.possiblySensitiveAppealable;
+
+    return tweetWithCard;
+  }
+
   factory TweetWithCard.fromCardJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
     TweetWithCard tweet = TweetWithCard();
     tweet.card = e['card'];

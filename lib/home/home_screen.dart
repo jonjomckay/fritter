@@ -2,6 +2,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home/_trends.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final List<_Tab> _tabs = [
     _Tab('Trending', Icons.trending_up),
     _Tab('Subscriptions', Icons.people),
+    _Tab('Saved', Icons.bookmark),
   ];
   
   late TabController _tabController;
@@ -81,15 +83,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ]
         ),
       ),
-      body: ChangeNotifierProvider(
-        create: (context) => HomeModel(),
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            TrendsContent(),
-            SubscriptionsContent(),
-          ],
-        ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          TrendsContent(),
+          SubscriptionsContent(),
+          SavedContent(),
+        ],
       ),
     );
   }
