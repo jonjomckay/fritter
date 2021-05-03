@@ -1,0 +1,2 @@
+* Fixed replies not appearing on the profile screen
+* Fixed subscription ordering, by adding the ability to sort them manually
