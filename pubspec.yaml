@@ -43,6 +43,7 @@ dependencies:
   pref: ^2.0.2
   pull_to_refresh: 1.6.4-nullsafety.0
   reactive_forms: ^10.1.0
+  share: ^2.0.1
   sqflite: ^2.0.0+3
   sqflite_migration_plan: ^0.1.0
   timeago: ^3.0.2
