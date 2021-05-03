@@ -31,7 +31,7 @@ class HomeModel extends ChangeNotifier {
   Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(int? id) async {
     var database = await Repository.readOnly();
 
-    var allSubscriptions = await listSubscriptions();
+    var allSubscriptions = await listSubscriptions(orderBy: 'name', orderByAscending: true);
 
     if (id == null) {
       return SubscriptionGroupEdit(
@@ -61,10 +61,14 @@ class HomeModel extends ChangeNotifier {
     );
   }
 
-  Future<List<Subscription>> listSubscriptions() async {
+  Future<List<Subscription>> listSubscriptions({ required String orderBy, required bool orderByAscending }) async {
     var database = await Repository.readOnly();
 
-    return (await database.query(TABLE_SUBSCRIPTION, orderBy: 'screen_name'))
+    var orderByDirection = orderByAscending
+      ? 'ASC'
+      : 'DESC';
+
+    return (await database.query(TABLE_SUBSCRIPTION, orderBy: '$orderBy $orderByDirection'))
         .map((e) => Subscription.fromMap(e))
         .toList(growable: false);
   }

@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/user.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -18,6 +20,42 @@ class SubscriptionsContent extends StatefulWidget {
 
 class _SubscriptionsContentState extends State<SubscriptionsContent> {
   final _refreshController = RefreshController(initialRefresh: false);
+
+  late String _orderSubscriptionsByField;
+  late bool _orderSubscriptionsAscending;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var prefs = PrefService.of(context);
+
+    setState(() {
+      _orderSubscriptionsAscending = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING) ?? true;
+      _orderSubscriptionsByField = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD) ?? 'name';
+    });
+  }
+
+  void _onChangeOrderSubscriptionsBy(String? value) {
+    var prefs = PrefService.of(context);
+
+    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value);
+
+    setState(() {
+      this._orderSubscriptionsByField = value ?? 'name';
+    });
+  }
+
+  void _onToggleOrderSubscriptionsAscending() {
+    var prefs = PrefService.of(context);
+    var value = !_orderSubscriptionsAscending;
+
+    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, value);
+
+    setState(() {
+      this._orderSubscriptionsAscending = value;
+    });
+  }
 
   Future _onRefresh() async {
     try {
@@ -274,9 +312,27 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                         title: Text('Subscriptions', style: TextStyle(
                             fontWeight: FontWeight.bold
                         )),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            PopupMenuButton<String>(
+                              icon: Icon(Icons.sort),
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(child: Text('Name'), value: 'name'),
+                                const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
+                                const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
+                              ],
+                              onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.sort_by_alpha),
+                              onPressed: () => _onToggleOrderSubscriptionsAscending(),
+                            )
+                          ],
+                        ),
                       ),
                       Expanded(child: FutureBuilder<List<Subscription>>(
-                        future: model.listSubscriptions(),
+                        future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
                         builder: (context, snapshot) {
                           var error = snapshot.error;
                           if (error != null) {
