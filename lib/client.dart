@@ -113,7 +113,7 @@ class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
   static Map<String, String> defaultParams = {
-    'include_tweet_replies': 'false',
+    'include_tweet_replies': '1',
     'include_profile_interstitial_type': '0',
     'include_blocking': '0',
     'include_blocked_by': '0',
