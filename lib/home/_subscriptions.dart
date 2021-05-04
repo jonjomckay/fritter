@@ -130,6 +130,25 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
               child: AlertDialog(
                 actions: [
                   TextButton(
+                    onPressed: () {
+                      var control = form.control('subscriptions') as FormArray<bool?>;
+
+                      var value = control.value;
+                      if (value == null || value.isEmpty || value.every((e) => e == false)) {
+                        // If no subscriptions are selected, mark them all as selected
+                        control.updateValue(edit.allSubscriptions
+                            .map((e) => true)
+                            .toList(growable: false));
+                      } else {
+                        // If one or more subscriptions are selected, deselect them all
+                        control.updateValue(edit.allSubscriptions
+                            .map((e) => false)
+                            .toList(growable: false));
+                      }
+                    },
+                    child: Text('Toggle All'),
+                  ),
+                  TextButton(
                     onPressed: id == null
                         ? null
                         : () => openDeleteSubscriptionGroupDialog(id, name),
@@ -145,14 +164,14 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                         var selectedSubscriptions = (form.control('subscriptions').value as List<bool?>)
                             .asMap().entries
                             .map((e) {
-                          var index = e.key;
-                          var value = e.value;
-                          if (value != null && value == true) {
-                            return edit.allSubscriptions[index];
-                          }
+                              var index = e.key;
+                              var value = e.value;
+                              if (value != null && value == true) {
+                                return edit.allSubscriptions[index];
+                              }
 
-                          return null;
-                        })
+                              return null;
+                            })
                             .where((element) => element != null)
                             .cast<Subscription>()
                             .toList(growable: false);

@@ -2,6 +2,7 @@
 * Added support for sharing links to tweets, and sharing tweet content
 * Added opt-in button to submit a one-time non-identifying ping to help future development
 * Added a more detailed message when the Twitter API token cannot be refreshed
+* Added option to toggle all subscriptions when creating a group.
 * Now displaying the number of subscriptions in total, and per group.
 * Fixed inconsistent padding to improve tweet, media and reaction UX
 * Fixed some tweet URLs not launching the app correctly
