@@ -118,12 +118,23 @@ class TweetTile extends StatelessWidget {
 
   const TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
-  _createFooterButton(IconData icon, String label, [Color? color, Function()? onPressed]) {
+  _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
+    return InkWell(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16),
+        child: Icon(icon, size: 14, color: color),
+      ),
+      onTap: onPressed,
+    );
+  }
+
+  _createFooterTextButton(IconData icon, String label, [Color? color, Function()? onPressed]) {
     return TextButton.icon(
-      icon: Icon(icon, size: 16, color: color),
+      icon: Icon(icon, size: 14, color: color),
       onPressed: onPressed,
       label: Text(label, style: TextStyle(
-          color: color
+        color: color,
+        fontSize: 12.5
       )),
     );
   }
@@ -224,7 +235,6 @@ class TweetTile extends StatelessWidget {
         ),
         margin: EdgeInsets.all(8),
         child: Container(
-          margin: EdgeInsets.all(4),
           child: quotedTweetTile,
         ),
       );
@@ -271,43 +281,50 @@ class TweetTile extends StatelessWidget {
                         child: TweetContent(tweet: tweet),
                       ),
                     ),
-                    ...attachments,
+                    if (attachments.isNotEmpty)
+                      Container(
+                        margin: EdgeInsets.only(top: 8, left: 16, right: 16),
+                        child: Column(
+                          children: [
+                            ...attachments
+                          ],
+                        ),
+                      ),
                     quotedTweet,
                     TweetCard(tweet: tweet, card: tweet.card),
                   ],
                 ),
                 ButtonBar(
-                  alignment: MainAxisAlignment.spaceAround,
                   buttonTextTheme: ButtonTextTheme.accent,
                   buttonPadding: EdgeInsets.symmetric(horizontal: 0),
                   children: [
                     if (tweet.replyCount != null)
-                      _createFooterButton(Icons.comment, numberFormat.format(tweet.replyCount)),
+                      _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount)),
                     if (tweet.retweetCount != null)
-                      _createFooterButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
+                      _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                     if (tweet.quoteCount != null)
-                      _createFooterButton(Icons.message, numberFormat.format(tweet.quoteCount)),
+                      _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                     if (tweet.favoriteCount != null)
-                      _createFooterButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                      _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
                     FutureBuilder<bool>(
                       future: model.isTweetSaved(tweet.idStr!),
                       builder: (context, snapshot) {
                         var saved = snapshot.data;
                         if (saved == null) {
-                          return _createFooterButton(Icons.bookmark_outline, 'Loading', null, null);
+                          return _createFooterIconButton(Icons.bookmark_outline);
                         }
 
                         if (saved) {
-                          return _createFooterButton(Icons.bookmark, 'Saved', actionColour, () async {
+                          return _createFooterIconButton(Icons.bookmark, actionColour, () async {
                             await model.deleteSavedTweet(tweet.idStr!);
                           });
                         } else {
-                          return _createFooterButton(Icons.bookmark_outline, 'Save', actionColour, () async {
+                          return _createFooterIconButton(Icons.bookmark_outline, actionColour, () async {
                             await model.saveTweet(tweet.idStr!, tweet.toJson());
                           });
                         }},
                     ),
-                    _createFooterButton(Icons.share, 'Share', actionColour, () async {
+                    _createFooterIconButton(Icons.share, actionColour, () async {
                       var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 8),
@@ -327,7 +344,7 @@ class TweetTile extends StatelessWidget {
                           ],
                         );
                       });
-                    }),
+                    })
                   ],
                 )
               ],
