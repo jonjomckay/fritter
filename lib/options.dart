@@ -7,6 +7,8 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fritter/settings/settings_export_screen.dart';
+import 'package:fritter/settings/settings_import_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
@@ -182,6 +184,22 @@ class _OptionsScreenState extends State<OptionsScreen> {
           title: Text('True Black?'),
           pref: OPTION_THEME_TRUE_BLACK,
           subtitle: Text('Use true black for the dark mode theme'),
+        ),
+
+        PrefTitle(
+          title: Text('Data'),
+        ),
+        PrefLabel(
+          leading: Icon(Icons.import_export),
+          title: Text('Import'),
+          subtitle: Text('Import data from another device'),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsImportScreen())),
+        ),
+        PrefLabel(
+          leading: Icon(Icons.save),
+          title: Text('Export'),
+          subtitle: Text('Export your data'),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsExportScreen())),
         ),
 
         PrefTitle(

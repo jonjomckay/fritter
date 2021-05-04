@@ -40,7 +40,7 @@ if (keystoreFile != null && !keystoreFile.isEmpty()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -52,7 +52,7 @@ android {
 
     defaultConfig {
         applicationId "com.jonjomckay.fritter"
-        minSdkVersion 16
+        minSdkVersion 19 // TODO: See if this can still be 16, but check at runtime for >=19 when exporting
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

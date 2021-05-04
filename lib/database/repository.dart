@@ -52,11 +52,18 @@ class Repository {
       7: [
         // Add the table for saved tweets
         SqlMigration('CREATE TABLE IF NOT EXISTS $TABLE_SAVED_TWEET (id VARCHAR PRIMARY KEY, content TEXT NOT NULL, saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', reverseSql: 'DROP TABLE $TABLE_SAVED_TWEET')
+      ],
+      8: [
+        // Add a primary key to the $TABLE_SUBSCRIPTION_GROUP_MEMBER table to prevent duplicates
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER RENAME TO ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+        SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id INTEGER, profile_id VARCHAR, CONSTRAINT pk_$TABLE_SUBSCRIPTION_GROUP_MEMBER PRIMARY KEY (group_id, profile_id))'),
+        SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id, profile_id) SELECT group_id, profile_id FROM ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old')
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 7,
+        version: 8,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

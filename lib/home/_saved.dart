@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,7 @@ class SavedContent extends StatelessWidget {
     var model = context.read<HomeModel>();
 
     return Container(
-      child: FutureBuilder<List<TweetWithCard>>(
+      child: FutureBuilder<List<SavedTweet>>(
         future: model.listSavedTweets(),
         builder: (context, snapshot) {
           var error = snapshot.error;
@@ -29,7 +31,10 @@ class SavedContent extends StatelessWidget {
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
-              return TweetTile(tweet: data[index], clickable: true);
+              var item = data[index];
+              var tweet = TweetWithCard.fromJson(jsonDecode(item.content));
+
+              return TweetTile(tweet: tweet, clickable: true);
             },
           );
         },
