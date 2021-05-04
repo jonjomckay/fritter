@@ -44,6 +44,7 @@ dependencies:
   pull_to_refresh: 1.6.4-nullsafety.0
   reactive_forms: ^10.1.0
   share: ^2.0.1
+  simple_icons: ^4.22.0
   sqflite: ^2.0.0+3
   sqflite_migration_plan: ^0.1.0
   timeago: ^3.0.2
@@ -79,8 +80,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - assets/profile.html
+  assets:
+    - assets/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

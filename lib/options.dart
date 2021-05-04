@@ -4,10 +4,14 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
+import 'package:simple_icons/simple_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'constants.dart';
 
@@ -17,6 +21,10 @@ class OptionsScreen extends StatefulWidget {
 }
 
 class _OptionsScreenState extends State<OptionsScreen> {
+  String _createVersionString(PackageInfo packageInfo) {
+    return 'v${packageInfo.version}+${packageInfo.buildNumber}';
+  }
+
   Future _sendPing() async {
     var deviceInfo = DeviceInfoPlugin();
     var packageInfo = await PackageInfo.fromPlatform();
@@ -151,6 +159,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
           subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
           onTap: _sendPing,
         ),
+
         PrefTitle(
             title: Text('Theme')
         ),
@@ -173,6 +182,128 @@ class _OptionsScreenState extends State<OptionsScreen> {
           title: Text('True Black?'),
           pref: OPTION_THEME_TRUE_BLACK,
           subtitle: Text('Use true black for the dark mode theme'),
+        ),
+
+        PrefTitle(
+          title: Text('About')
+        ),
+        FutureBuilder<PackageInfo>(
+          future: PackageInfo.fromPlatform(),
+          builder: (context, snapshot) {
+            var data = snapshot.data;
+            if (data == null) {
+              return Text('');
+            }
+
+            var version = _createVersionString(data);
+
+            return PrefLabel(
+              leading: Icon(Icons.info),
+              title: Text('Version'),
+              subtitle: Text(version),
+              onTap: () async {
+                await Clipboard.setData(ClipboardData(text: version));
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Copied version to clipboard'),
+                ));
+              },
+            );
+          },
+        ),
+        PrefLabel(
+          leading: Icon(Icons.favorite),
+          title: Text('Contribute'),
+          subtitle: Text('Help make Fritter even better'),
+          onTap: () => launch('https://github.com/jonjomckay/fritter'),
+        ),
+        PrefLabel(
+          leading: Icon(Icons.bug_report),
+          title: Text('Report a bug'),
+          subtitle: Text('Let the developers know if something\'s broken'),
+          onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
+        ),
+        PrefLabel(
+          leading: Icon(Icons.attach_money),
+          title: Text('Donate'),
+          subtitle: Text('Help support Fritter\'s future'),
+          onTap: () => showDialog(context: context, builder: (context) {
+            return SimpleDialog(
+              title: Text('Donate'),
+              children: [
+                SimpleDialogOption(
+                  child: ListTile(
+                    leading: Icon(SimpleIcons.bitcoin),
+                    title: Text('Bitcoin'),
+                  ),
+                  onPressed: () async {
+                    await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+
+                    Navigator.pop(context);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Copied address to clipboard'),
+                    ));
+                  },
+                ),
+                SimpleDialogOption(
+                  child: ListTile(
+                    leading: Icon(SimpleIcons.github),
+                    title: Text('GitHub'),
+                  ),
+                  onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
+                ),
+                SimpleDialogOption(
+                  child: ListTile(
+                    leading: Icon(SimpleIcons.liberapay),
+                    title: Text('Liberapay'),
+                  ),
+                  onPressed: () => launch('https://liberapay.com/jonjomckay'),
+                ),
+                SimpleDialogOption(
+                  child: ListTile(
+                    leading: Icon(SimpleIcons.paypal),
+                    title: Text('PayPal'),
+                  ),
+                  onPressed: () => launch('https://paypal.me/jonjomckay'),
+                )
+              ],
+            );
+          }),
+        ),
+        FutureBuilder<PackageInfo>(
+          future: PackageInfo.fromPlatform(),
+          builder: (context, snapshot) {
+            var data = snapshot.data;
+            if (data == null) {
+              return Text('');
+            }
+
+            var version = _createVersionString(data);
+
+            return PrefLabel(
+              leading: Icon(Icons.copyright),
+              title: Text('Licenses'),
+              subtitle: Text('All the great software used by Fritter'),
+              onTap: () => showLicensePage(
+                context: context,
+                applicationName: 'Fritter',
+                applicationVersion: version,
+                applicationLegalese: 'Released under the MIT License',
+                applicationIcon: Container(
+                  margin: EdgeInsets.all(12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(48.0),
+                    child: Image.asset(
+                      'assets/icon.png',
+                      height: 48.0,
+                      width: 48.0,
+                    ),
+                  ),
+                )
+              ),
+            );
+          },
         ),
       ]),
     );
