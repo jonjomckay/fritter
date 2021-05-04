@@ -29,14 +29,13 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
       return SubscriptionGroupGet(id: -1, name: 'All', subscriptions: subscriptions);
     } else {
       var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
-          .map((e) => SubscriptionGroup(id: e['id'] as int, name: e['name'] as String))
           .first;
 
       var subscriptions = (await database.rawQuery('SELECT s.id, s.name, s.screen_name, s.profile_image_url_https FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: group.id, name: group.name, subscriptions: subscriptions);
+      return SubscriptionGroupGet(id: group['id'] as int, name: group['name'] as String, subscriptions: subscriptions);
     }
   }
 

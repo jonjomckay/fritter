@@ -205,7 +205,11 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
     });
   }
 
-  Widget _createGroupCard(IconData icon, int id, String name, void Function()? onLongPress) {
+  Widget _createGroupCard(IconData icon, int id, String name, int? numberOfMembers, void Function()? onLongPress) {
+    var title = numberOfMembers == null
+      ? name
+      : '$name ($numberOfMembers)';
+
     return Card(
       child: InkWell(
         onTap: () {
@@ -226,7 +230,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
               color: Colors.white24,
               width: double.infinity,
               padding: EdgeInsets.all(4),
-              child: Text(name,
+              child: Text(title,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -272,8 +276,8 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                               childAspectRatio: 200 / 125,
                               shrinkWrap: true,
                               children: [
-                                _createGroupCard(Icons.rss_feed, -1, 'All', null),
-                                ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, () => openSubscriptionGroupDialog(e.id, e.name))),
+                                _createGroupCard(Icons.rss_feed, -1, 'All', null, null),
+                                ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
                                 Card(
                                   child: InkWell(
                                     onTap: () {
@@ -306,63 +310,63 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                       ],
                     ),
                   ),
-                  Expanded(child: Column(
-                    children: [
-                      ListTile(
-                        title: Text('Subscriptions', style: TextStyle(
-                            fontWeight: FontWeight.bold
-                        )),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            PopupMenuButton<String>(
-                              icon: Icon(Icons.sort),
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(child: Text('Name'), value: 'name'),
-                                const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
-                                const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
+                  Expanded(child: FutureBuilder<List<Subscription>>(
+                    future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
+                    builder: (context, snapshot) {
+                      var error = snapshot.error;
+                      if (error != null) {
+                        log('Unable to list the user\'s subscriptions', error: error);
+                        return Center(child: Text('Unable to list the subscriptions: $error'));
+                      }
+
+                      var data = snapshot.data;
+                      if (data == null) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (data.isEmpty) {
+                        return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('¯\\_(ツ)_/¯', style: TextStyle(
+                                  fontSize: 32
+                              )),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                child: Text('Try searching for some users to follow!', style: TextStyle(
+                                    color: Theme.of(context).hintColor
+                                )),
+                              )
+                            ])
+                        );
+                      }
+
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text('Subscriptions (${data.length})', style: TextStyle(
+                                fontWeight: FontWeight.bold
+                            )),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                PopupMenuButton<String>(
+                                  icon: Icon(Icons.sort),
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(child: Text('Name'), value: 'name'),
+                                    const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
+                                    const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
+                                  ],
+                                  onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.sort_by_alpha),
+                                  onPressed: () => _onToggleOrderSubscriptionsAscending(),
+                                )
                               ],
-                              onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.sort_by_alpha),
-                              onPressed: () => _onToggleOrderSubscriptionsAscending(),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(child: FutureBuilder<List<Subscription>>(
-                        future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
-                        builder: (context, snapshot) {
-                          var error = snapshot.error;
-                          if (error != null) {
-                            // TODO
-                            log('Unable to list the user\'s subscriptions', error: error);
-                          }
-
-                          var data = snapshot.data;
-                          if (data == null) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-
-                          if (data.isEmpty) {
-                            return Center(child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('¯\\_(ツ)_/¯', style: TextStyle(
-                                      fontSize: 32
-                                  )),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 16),
-                                    child: Text('Try searching for some users to follow!', style: TextStyle(
-                                        color: Theme.of(context).hintColor
-                                    )),
-                                  )
-                                ])
-                            );
-                          }
-
-                          return SmartRefresher(
+                          ),
+                          Expanded(child: SmartRefresher(
                             controller: _refreshController,
                             enablePullDown: true,
                             enablePullUp: false,
@@ -381,11 +385,11 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                                 );
                               },
                             ),
-                          );
-                        },
-                      ))
-                    ],
-                  ))
+                          ))
+                        ],
+                      );
+                    },
+                  )),
                 ],
               );
             },

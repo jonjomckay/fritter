@@ -63,8 +63,10 @@ class HomeModel extends ChangeNotifier {
   Future<List<SubscriptionGroup>> listSubscriptionGroups() async {
     var database = await Repository.readOnly();
 
-    return (await database.query(TABLE_SUBSCRIPTION_GROUP))
-        .map((e) => SubscriptionGroup(id: e['id'] as int, name: e['name'] as String))
+    var query = 'SELECT g.id, g.name, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id GROUP BY gm.group_id';
+
+    return (await database.rawQuery(query))
+        .map((e) => SubscriptionGroup(id: e['id'] as int, name: e['name'] as String, numberOfMembers: e['number_of_members'] as int))
         .toList(growable: false);
   }
 

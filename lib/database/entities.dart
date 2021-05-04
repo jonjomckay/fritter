@@ -19,8 +19,9 @@ class Subscription {
 class SubscriptionGroup {
   final int id;
   final String name;
+  final int numberOfMembers;
 
-  SubscriptionGroup({required this.id, required this.name});
+  SubscriptionGroup({required this.id, required this.name, required this.numberOfMembers});
 }
 
 class SubscriptionGroupGet {
