@@ -36,7 +36,6 @@ class ProfileScreenBody extends StatefulWidget {
 }
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> {
-  final double _appBarHeight = 256.0;
   final _scrollController = ScrollController();
 
   User? _profile;
@@ -100,6 +99,10 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
 
+    // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
+    var deviceSize = MediaQuery.of(context).size;
+    var appBarHeight = deviceSize.width * (500 / 1500);
+
     var profile = _profile;
     if (profile == null) {
       return Center(child: CircularProgressIndicator());
@@ -108,7 +111,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
     var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
         ? Container()
-        : ExtendedImage.network(banner, fit: BoxFit.cover, height: _appBarHeight, cache: true);
+        : ExtendedImage.network(banner, fit: BoxFit.cover, height: appBarHeight, cache: true);
 
     return Scaffold(
         body: DefaultTabController(
@@ -153,7 +156,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             header: SliverAppBar(
-              expandedHeight: _appBarHeight,
+              expandedHeight: appBarHeight,
               pinned: true,
               actions: [
                 FollowButton(id: profile.idStr!,

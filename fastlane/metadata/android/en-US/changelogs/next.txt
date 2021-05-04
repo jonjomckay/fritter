@@ -5,3 +5,4 @@
 * Fixed some tweet URLs not launching the app correctly
 * Fixed some user mentions cutting off the start of replies
 * Fixed some characters displaying incorrectly (e.g. `&amp;`)
+* Fixed profile header images being mostly cut off on the sides
