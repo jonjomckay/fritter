@@ -19,7 +19,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
   bool _exportSettings = false;
   bool _exportSubscriptions = false;
   bool _exportSubscriptionGroups = false;
-  bool _exportSubscriptionGroupMembers= false;
+  bool _exportSubscriptionGroupMembers = false;
   bool _exportTweets = false;
 
   void toggleExportSubscriptionGroupMembersIfRequired() {

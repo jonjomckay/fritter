@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration_plan/migration/sql.dart';
 import 'package:sqflite_migration_plan/sqflite_migration_plan.dart';
+import 'package:uuid/uuid.dart';
 
 const String DATABASE_NAME = 'fritter.db';
 
@@ -59,11 +60,50 @@ class Repository {
         SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id INTEGER, profile_id VARCHAR, CONSTRAINT pk_$TABLE_SUBSCRIPTION_GROUP_MEMBER PRIMARY KEY (group_id, profile_id))'),
         SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id, profile_id) SELECT group_id, profile_id FROM ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old')
+      ],
+      9: [
+        // Add a new ID field for subscription groups for a UUID to determine uniqueness across devices
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN uuid VARCHAR NULL'),
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER ADD COLUMN group_uuid VARCHAR NULL'),
+
+        // Generate a UUID for each existing subscription group
+        Migration(Operation((db) async {
+          var uuid = Uuid();
+
+          // Update the existing subscription group and all of its members with the new ID
+          var groups = await db.query(TABLE_SUBSCRIPTION_GROUP);
+          for (var group in groups) {
+            var oldId = group['id'];
+            var newId = uuid.v4();
+
+            db.update(TABLE_SUBSCRIPTION_GROUP, {
+              'uuid': newId
+            }, where: 'id = ?', whereArgs: [oldId]);
+
+            db.update(TABLE_SUBSCRIPTION_GROUP_MEMBER, {
+              'group_uuid': newId
+            }, where: 'group_id = ?', whereArgs: [oldId]);
+          }
+        })),
+
+        // Replace the old ID fields with the new ones
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP RENAME TO ${TABLE_SUBSCRIPTION_GROUP}_old'),
+        SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION_GROUP (id VARCHAR PRIMARY KEY, name VARCHAR NOT NULL, icon VARCHAR NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
+        SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION_GROUP (id, name, icon, created_at) SELECT uuid, name, icon, created_at FROM ${TABLE_SUBSCRIPTION_GROUP}_old'),
+
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER RENAME TO ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+        SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id VARCHAR, profile_id VARCHAR, CONSTRAINT pk_$TABLE_SUBSCRIPTION_GROUP_MEMBER PRIMARY KEY (group_id, profile_id))'),
+        SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id, profile_id) SELECT group_uuid, profile_id FROM ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+      ],
+      10: [
+        // Drop the old subscription group tables now that we've replaced the IDs
+        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP}_old'),
+        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 8,
+        version: 10,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

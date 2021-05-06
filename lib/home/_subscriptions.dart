@@ -67,7 +67,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
     }
   }
 
-  void openDeleteSubscriptionGroupDialog(int id, String name) {
+  void openDeleteSubscriptionGroupDialog(String id, String name) {
     var model = context.read<HomeModel>();
 
     showDialog(context: context, builder: (context) {
@@ -93,7 +93,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
     });
   }
 
-  void openSubscriptionGroupDialog(int? id, String name) {
+  void openSubscriptionGroupDialog(String? id, String name) {
     var model = context.read<HomeModel>();
 
     showDialog(context: context, builder: (context) {
@@ -224,7 +224,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
     });
   }
 
-  Widget _createGroupCard(IconData icon, int id, String name, int? numberOfMembers, void Function()? onLongPress) {
+  Widget _createGroupCard(IconData icon, String id, String name, int? numberOfMembers, void Function()? onLongPress) {
     var title = numberOfMembers == null
       ? name
       : '$name ($numberOfMembers)';
@@ -295,7 +295,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                               childAspectRatio: 200 / 125,
                               shrinkWrap: true,
                               children: [
-                                _createGroupCard(Icons.rss_feed, -1, 'All', null, null),
+                                _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
                                 ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
                                 Card(
                                   child: InkWell(

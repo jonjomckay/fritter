@@ -46,7 +46,7 @@ class Subscription {
 }
 
 class SubscriptionGroup {
-  final int id;
+  final String id;
   final String name;
   final String icon;
   final int numberOfMembers;
@@ -56,7 +56,7 @@ class SubscriptionGroup {
 
   factory SubscriptionGroup.fromMap(Map<String, Object?> json) {
     return SubscriptionGroup(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       icon: json['icon'] as String,
       numberOfMembers: 0,
@@ -75,7 +75,7 @@ class SubscriptionGroup {
 }
 
 class SubscriptionGroupGet {
-  final int id;
+  final String id;
   final String name;
   final List<Subscription> subscriptions;
 
@@ -91,14 +91,14 @@ class SubscriptionGroupEdit {
 }
 
 class SubscriptionGroupMember {
-  final int group;
+  final String group;
   final String profile;
 
   SubscriptionGroupMember({required this.group, required this.profile});
 
   factory SubscriptionGroupMember.fromMap(Map<String, Object?> json) {
     return SubscriptionGroupMember(
-      group: json['group_id'] as int,
+      group: json['group_id'] as String,
       profile: json['profile_id'] as String
     );
   }

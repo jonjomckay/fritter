@@ -5,12 +5,13 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 
 import 'database/repository.dart';
 import 'database/entities.dart';
 
 class HomeModel extends ChangeNotifier {
-  Future deleteSubscriptionGroup(int id) async {
+  Future deleteSubscriptionGroup(String id) async {
     var database = await Repository.writable();
 
     await database.delete(TABLE_SUBSCRIPTION_GROUP_MEMBER, where: 'group_id = ?', whereArgs: [id]);
@@ -66,7 +67,7 @@ class HomeModel extends ChangeNotifier {
     var query = 'SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id GROUP BY gm.group_id';
 
     return (await database.rawQuery(query))
-        .map((e) => SubscriptionGroup(id: e['id'] as int, name: e['name'] as String, icon: e['icon'] as String, numberOfMembers: e['number_of_members'] as int, createdAt: DateTime.parse(e['created_at'] as String)))
+        .map((e) => SubscriptionGroup(id: e['id'] as String, name: e['name'] as String, icon: e['icon'] as String, numberOfMembers: e['number_of_members'] as int, createdAt: DateTime.parse(e['created_at'] as String)))
         .toList(growable: false);
   }
 
@@ -74,11 +75,11 @@ class HomeModel extends ChangeNotifier {
     var database = await Repository.readOnly();
 
     return (await database.query(TABLE_SUBSCRIPTION_GROUP_MEMBER))
-        .map((e) => SubscriptionGroupMember(group: e['group_id'] as int, profile: e['profile_id'] as String))
+        .map((e) => SubscriptionGroupMember(group: e['group_id'] as String, profile: e['profile_id'] as String))
         .toList(growable: false);
   }
 
-  Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(int? id) async {
+  Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(String? id) async {
     var database = await Repository.readOnly();
 
     var allSubscriptions = await listSubscriptions(orderBy: 'name', orderByAscending: true);
@@ -127,12 +128,14 @@ class HomeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future saveSubscriptionGroup(int? id, String name, List<Subscription> subscriptions) async {
+  Future saveSubscriptionGroup(String? id, String name, List<Subscription> subscriptions) async {
     var database = await Repository.writable();
 
     // First insert or update the subscription group details
     if (id == null) {
-      id = await database.insert(TABLE_SUBSCRIPTION_GROUP, {
+      id = Uuid().v4();
+
+      await database.insert(TABLE_SUBSCRIPTION_GROUP, {
         'id': id,
         'name': name,
         'icon': ''
@@ -172,11 +175,11 @@ class HomeModel extends ChangeNotifier {
     await batch.commit();
   }
 
-  Future<Map<int, int>> importSubscriptionGroups(List<SubscriptionGroup> subscriptionGroups) async {
+  Future<Map<String, String>> importSubscriptionGroups(List<SubscriptionGroup> subscriptionGroups) async {
     var database = await Repository.writable();
 
     var batch = database.batch();
-    var mapping = Map<int, int>();
+    var mapping = Map<String, String>();
 
     var existingGroups = await listSubscriptionGroups();
     existingGroups.sort((a, b) => b.id.compareTo(a.id));
@@ -213,7 +216,7 @@ class HomeModel extends ChangeNotifier {
     return mapping;
   }
 
-  Future importSubscriptionGroupMembers(List<SubscriptionGroupMember> members, Map<int, int> groupMappings) async {
+  Future importSubscriptionGroupMembers(List<SubscriptionGroupMember> members, Map<String, String> groupMappings) async {
     var database = await Repository.writable();
 
     var batch = database.batch();

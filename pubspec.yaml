@@ -51,6 +51,7 @@ dependencies:
   timeago: ^3.0.2
   uni_links2: ^0.6.0+2
   url_launcher: ^6.0.3
+  uuid: ^3.0.4
   video_player: ^2.1.1
 
   # The following adds the Cupertino Icons font to your application.

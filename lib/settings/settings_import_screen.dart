@@ -47,7 +47,7 @@ class _SettingsImportScreenState extends State<SettingsImportScreen> {
                       await model.importSubscriptions(subscriptions);
                     }
 
-                    Map<int, int> groupMappings = {};
+                    Map<String, String> groupMappings = {};
 
                     var subscriptionGroups = data.subscriptionGroups;
                     if (subscriptionGroups != null) {
