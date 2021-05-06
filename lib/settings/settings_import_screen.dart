@@ -19,11 +19,68 @@ class SettingsImportScreen extends StatefulWidget {
 }
 
 class _SettingsImportScreenState extends State<SettingsImportScreen> {
+  Future _importFromFile(File file) async {
+    var content = jsonDecode(file.readAsStringSync());
+
+    var model = context.read<HomeModel>();
+    var prefs = PrefService.of(context);
+
+    var data = SettingsData.fromJson(content);
+
+    var settings = data.settings;
+    if (settings != null) {
+      prefs.fromMap(settings);
+    }
+
+    var dataToImport = Map<String, List<ToMappable>>();
+
+    var subscriptions = data.subscriptions;
+    if (subscriptions != null) {
+      dataToImport[TABLE_SUBSCRIPTION] = subscriptions;
+    }
+
+    var subscriptionGroups = data.subscriptionGroups;
+    if (subscriptionGroups != null) {
+      dataToImport[TABLE_SUBSCRIPTION_GROUP] = subscriptionGroups;
+    }
+
+    var subscriptionGroupMembers = data.subscriptionGroupMembers;
+    if (subscriptionGroupMembers != null) {
+      dataToImport[TABLE_SUBSCRIPTION_GROUP_MEMBER] = subscriptionGroupMembers;
+    }
+
+    var tweets = data.tweets;
+    if (tweets != null) {
+      dataToImport[TABLE_SAVED_TWEET] = tweets;
+    }
+
+    await model.importData(dataToImport);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Data imported successfully'),
+    ));
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Import'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.cloud_upload),
+        onPressed: () async {
+          var deviceInfo = await DeviceInfoPlugin().androidInfo;
+          if (deviceInfo != null && deviceInfo.version.sdkInt < 19) {
+            await _importFromFile(File(await getLegacyExportPath()));
+          } else {
+            await FilePickerWritable().openFile((fileInfo, file) async {
+              await _importFromFile(file);
+            });
+          }
+        },
       ),
       body: Center(
         child: FutureBuilder<AndroidDeviceInfo>(
@@ -33,12 +90,10 @@ class _SettingsImportScreenState extends State<SettingsImportScreen> {
               return Center(child: CircularProgressIndicator());
             }
 
-            Widget legacyAndroidMessage = Container();
-
             // Check if the platform is too old to support a directory picker or not
             var deviceInfo = snapshot.data;
-            if (deviceInfo == null || deviceInfo.version.sdkInt < 19) {
-              legacyAndroidMessage = FutureBuilder<String>(
+            if (deviceInfo != null && deviceInfo.version.sdkInt < 19) {
+              return FutureBuilder<String>(
                 future: getLegacyExportPath(),
                 builder: (context, snapshot) {
                   var legacyExportPath = snapshot.data;
@@ -47,14 +102,17 @@ class _SettingsImportScreenState extends State<SettingsImportScreen> {
                   }
 
                   return Container(
-                    margin: EdgeInsets.all(8),
+                    margin: EdgeInsets.all(16),
                     child: Column(
                       children: [
                         Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
-                            textAlign: TextAlign.center),
-                        SizedBox(height: 8),
+                          textAlign: TextAlign.center),
+                        SizedBox(height: 16),
                         Text(legacyExportPath,
-                            textAlign: TextAlign.center),
+                          textAlign: TextAlign.center),
+                        SizedBox(height: 16),
+                        Text('Please make sure the data you wish to import is located there, then press the import button below.',
+                          textAlign: TextAlign.center)
                       ],
                     ),
                   );
@@ -62,67 +120,7 @@ class _SettingsImportScreenState extends State<SettingsImportScreen> {
               );
             }
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                legacyAndroidMessage,
-                ElevatedButton(
-                    child: Text('Import'),
-                    onPressed: () async {
-                      var importFromFile = (File file) async {
-                        var content = jsonDecode(file.readAsStringSync());
-
-                        var model = context.read<HomeModel>();
-                        var prefs = PrefService.of(context);
-
-                        var data = SettingsData.fromJson(content);
-
-                        var settings = data.settings;
-                        if (settings != null) {
-                          prefs.fromMap(settings);
-                        }
-
-                        var dataToImport = Map<String, List<ToMappable>>();
-
-                        var subscriptions = data.subscriptions;
-                        if (subscriptions != null) {
-                          dataToImport[TABLE_SUBSCRIPTION] = subscriptions;
-                        }
-
-                        var subscriptionGroups = data.subscriptionGroups;
-                        if (subscriptionGroups != null) {
-                          dataToImport[TABLE_SUBSCRIPTION_GROUP] = subscriptionGroups;
-                        }
-
-                        var subscriptionGroupMembers = data.subscriptionGroupMembers;
-                        if (subscriptionGroupMembers != null) {
-                          dataToImport[TABLE_SUBSCRIPTION_GROUP_MEMBER] = subscriptionGroupMembers;
-                        }
-
-                        var tweets = data.tweets;
-                        if (tweets != null) {
-                          dataToImport[TABLE_SAVED_TWEET] = tweets;
-                        }
-
-                        await model.importData(dataToImport);
-
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Data imported successfully'),
-                        ));
-                      };
-
-                      var platformInfo = await DeviceInfoPlugin().androidInfo;
-                      if (platformInfo != null && platformInfo.version.sdkInt < 19) {
-                        await importFromFile(File(await getLegacyExportPath()));
-                      } else {
-                        await FilePickerWritable().openFile((fileInfo, file) async {
-                          await importFromFile(file);
-                        });
-                      }
-                    }
-                )
-              ],
-            );
+            return Container();
           },
         ),
       ),
