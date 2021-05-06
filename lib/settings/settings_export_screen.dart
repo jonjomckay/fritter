@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
@@ -70,81 +73,142 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
       appBar: AppBar(
         title: Text('Export'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CheckboxListTile(
-                value: _exportSettings,
-                title: Text('Export settings?'),
-                onChanged: (v) => toggleExportSettings()
-            ),
-            CheckboxListTile(
-                value: _exportSubscriptions,
-                title: Text('Export subscriptions?'),
-                onChanged: (v) => toggleExportSubscriptions()
-            ),
-            CheckboxListTile(
-                value: _exportSubscriptionGroups,
-                title: Text('Export subscription groups?'),
-                onChanged: (v) => toggleExportSubscriptionGroups()
-            ),
-            CheckboxListTile(
-                value: _exportSubscriptionGroupMembers,
-                title: Text('Export subscription group members?'),
-                onChanged: _exportSubscriptions && _exportSubscriptionGroups
-                  ? (v) => toggleExportSubscriptionGroupMembers()
-                  : null
-            ),
-            CheckboxListTile(
-                value: _exportTweets,
-                title: Text('Export tweets?'),
-                onChanged: (v) => toggleExportTweets()
-            ),
-
-            ElevatedButton(
-              child: Text('Export'),
-              onPressed: () async {
-                var model = context.read<HomeModel>();
-                var prefs = PrefService.of(context);
-
-                var settings = _exportSettings
-                  ? prefs.toMap()
-                  : null;
-
-                var subscriptions = _exportSubscriptions
-                  ? await model.listSubscriptions(orderBy: 'id', orderByAscending: true)
-                  : null;
-
-                var subscriptionGroups = _exportSubscriptionGroups
-                  ? await model.listSubscriptionGroups()
-                  : null;
-
-                var subscriptionGroupMembers = _exportSubscriptionGroupMembers
-                  ? await model.listSubscriptionGroupMembers()
-                  : null;
-
-                var tweets = _exportTweets
-                  ? await model.listSavedTweets()
-                  : null;
-
-                var data = SettingsData(
-                    settings: settings,
-                    subscriptions: subscriptions,
-                    subscriptionGroups: subscriptionGroups,
-                    subscriptionGroupMembers: subscriptionGroupMembers,
-                    tweets: tweets
-                );
-
-                var dateFormat = DateFormat('yyyy-MM-dd');
-                var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
-
-                await FilePickerWritable().openFileForCreate(fileName: fileName, writer: (file) async {
-                  file.writeAsStringSync(jsonEncode(data.toJson()));
-                });
+      body: SingleChildScrollView(
+        child: Center(
+          child: FutureBuilder<AndroidDeviceInfo>(
+            future: DeviceInfoPlugin().androidInfo,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Center(child: CircularProgressIndicator());
               }
-            )
-          ],
+
+              Widget legacyAndroidMessage = Container();
+
+              // Check if the platform is too old to support a directory picker or not
+              var deviceInfo = snapshot.data;
+              if (deviceInfo == null || deviceInfo.version.sdkInt < 19) {
+                legacyAndroidMessage = FutureBuilder<String>(
+                  future: getLegacyExportPath(),
+                  builder: (context, snapshot) {
+                    var legacyExportPath = snapshot.data;
+                    if (legacyExportPath == null) {
+                      return CircularProgressIndicator();
+                    }
+
+                    return Container(
+                      margin: EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Text('Your device is running a version of Android older than KitKat (4.4), so the export can only be saved to:',
+                              textAlign: TextAlign.center),
+                          SizedBox(height: 8),
+                          Text(legacyExportPath,
+                              textAlign: TextAlign.center),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CheckboxListTile(
+                      value: _exportSettings,
+                      title: Text('Export settings?'),
+                      onChanged: (v) => toggleExportSettings()
+                  ),
+                  CheckboxListTile(
+                      value: _exportSubscriptions,
+                      title: Text('Export subscriptions?'),
+                      onChanged: (v) => toggleExportSubscriptions()
+                  ),
+                  CheckboxListTile(
+                      value: _exportSubscriptionGroups,
+                      title: Text('Export subscription groups?'),
+                      onChanged: (v) => toggleExportSubscriptionGroups()
+                  ),
+                  CheckboxListTile(
+                      value: _exportSubscriptionGroupMembers,
+                      title: Text('Export subscription group members?'),
+                      onChanged: _exportSubscriptions && _exportSubscriptionGroups
+                          ? (v) => toggleExportSubscriptionGroupMembers()
+                          : null
+                  ),
+                  CheckboxListTile(
+                      value: _exportTweets,
+                      title: Text('Export tweets?'),
+                      onChanged: (v) => toggleExportTweets()
+                  ),
+                  legacyAndroidMessage,
+
+                  ElevatedButton(
+                      child: Text('Export'),
+                      onPressed: () async {
+                        var model = context.read<HomeModel>();
+                        var prefs = PrefService.of(context);
+
+                        var settings = _exportSettings
+                            ? prefs.toMap()
+                            : null;
+
+                        var subscriptions = _exportSubscriptions
+                            ? await model.listSubscriptions(orderBy: 'id', orderByAscending: true)
+                            : null;
+
+                        var subscriptionGroups = _exportSubscriptionGroups
+                            ? await model.listSubscriptionGroups()
+                            : null;
+
+                        var subscriptionGroupMembers = _exportSubscriptionGroupMembers
+                            ? await model.listSubscriptionGroupMembers()
+                            : null;
+
+                        var tweets = _exportTweets
+                            ? await model.listSavedTweets()
+                            : null;
+
+                        var data = SettingsData(
+                            settings: settings,
+                            subscriptions: subscriptions,
+                            subscriptionGroups: subscriptionGroups,
+                            subscriptionGroupMembers: subscriptionGroupMembers,
+                            tweets: tweets
+                        );
+
+                        var exportData = jsonEncode(data.toJson());
+
+                        var platformInfo = await DeviceInfoPlugin().androidInfo;
+                        if (platformInfo != null && platformInfo.version.sdkInt < 19) {
+                          // This platform is too old to support a directory picker, so we just save the file to a predefined location
+                          var fullPath = await getLegacyExportPath();
+
+                          await Directory(path.dirname(fullPath)).create(recursive: true);
+                          await File(fullPath).writeAsString(exportData);
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Data exported to $fullPath'),
+                          ));
+                        } else {
+                          var dateFormat = DateFormat('yyyy-MM-dd');
+                          var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
+
+                          // This platform can support the directory picker, so display it
+                          await FilePickerWritable().openFileForCreate(fileName: fileName, writer: (file) async {
+                            file.writeAsStringSync(exportData);
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Data exported to $fileName'),
+                          ));
+                        }
+                      }
+                  )
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
