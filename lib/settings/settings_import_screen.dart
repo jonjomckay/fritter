@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/database/entities.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:pref/pref.dart';
@@ -42,27 +44,29 @@ class _SettingsImportScreenState extends State<SettingsImportScreen> {
                       prefs.fromMap(settings);
                     }
 
+                    var dataToImport = Map<String, List<ToMappable>>();
+
                     var subscriptions = data.subscriptions;
                     if (subscriptions != null) {
-                      await model.importSubscriptions(subscriptions);
+                      dataToImport[TABLE_SUBSCRIPTION] = subscriptions;
                     }
-
-                    Map<String, String> groupMappings = {};
 
                     var subscriptionGroups = data.subscriptionGroups;
                     if (subscriptionGroups != null) {
-                      groupMappings = await model.importSubscriptionGroups(subscriptionGroups);
+                      dataToImport[TABLE_SUBSCRIPTION_GROUP] = subscriptionGroups;
                     }
 
                     var subscriptionGroupMembers = data.subscriptionGroupMembers;
                     if (subscriptionGroupMembers != null) {
-                      await model.importSubscriptionGroupMembers(subscriptionGroupMembers, groupMappings);
+                      dataToImport[TABLE_SUBSCRIPTION_GROUP_MEMBER] = subscriptionGroupMembers;
                     }
 
                     var tweets = data.tweets;
                     if (tweets != null) {
-                      await model.importTweets(tweets);
+                      dataToImport[TABLE_SAVED_TWEET] = tweets;
                     }
+
+                    await model.importData(dataToImport);
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Data imported successfully'),

@@ -24,7 +24,7 @@ class SettingsData {
       'settings': settings,
       'subscriptions': subscriptions?.map((e) => e.toMap()).toList(),
       'subscriptionGroups': subscriptionGroups?.map((e) => e.toMap()).toList(),
-      'subscriptionGroupMembers': subscriptionGroupMembers?.map((e) => e.toJson()).toList(),
+      'subscriptionGroupMembers': subscriptionGroupMembers?.map((e) => e.toMap()).toList(),
       'tweets': tweets?.map((e) => e.toMap()).toList()
     };
   }

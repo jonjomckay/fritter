@@ -1,4 +1,8 @@
-class SavedTweet {
+mixin ToMappable {
+  Map<String, dynamic> toMap();
+}
+
+class SavedTweet with ToMappable {
   final String id;
   final String content;
 
@@ -19,7 +23,7 @@ class SavedTweet {
   }
 }
 
-class Subscription {
+class Subscription with ToMappable {
   final String id;
   final String screenName;
   final String name;
@@ -45,7 +49,7 @@ class Subscription {
   }
 }
 
-class SubscriptionGroup {
+class SubscriptionGroup with ToMappable {
   final String id;
   final String name;
   final String icon;
@@ -90,7 +94,7 @@ class SubscriptionGroupEdit {
   SubscriptionGroupEdit({required this.name, required this.members, required this.allSubscriptions});
 }
 
-class SubscriptionGroupMember {
+class SubscriptionGroupMember with ToMappable {
   final String group;
   final String profile;
 
@@ -103,7 +107,7 @@ class SubscriptionGroupMember {
     );
   }
   
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'group_id': group,
       'profile_id': profile

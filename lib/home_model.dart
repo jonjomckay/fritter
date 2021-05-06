@@ -163,84 +163,17 @@ class HomeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future importSubscriptions(List<Subscription> subscriptions) async {
+  Future importData(Map<String, List<ToMappable>> data) async {
     var database = await Repository.writable();
 
     var batch = database.batch();
 
-    for (var subscription in subscriptions) {
-      batch.insert(TABLE_SUBSCRIPTION, subscription.toMap(), conflictAlgorithm: ConflictAlgorithm.ignore);
-    }
-
-    await batch.commit();
-  }
-
-  Future<Map<String, String>> importSubscriptionGroups(List<SubscriptionGroup> subscriptionGroups) async {
-    var database = await Repository.writable();
-
-    var batch = database.batch();
-    var mapping = Map<String, String>();
-
-    var existingGroups = await listSubscriptionGroups();
-    existingGroups.sort((a, b) => b.id.compareTo(a.id));
-    var maxId = existingGroups.map((e) => e.id).first;
-
-    if (existingGroups.isNotEmpty) {
-      // If we already have some subscriptions, we'll remap all the incoming IDs so they don't conflict
-      for (var group in subscriptionGroups) {
-        var existingGroup = existingGroups.where((e) => e.id == group.id && e.createdAt == group.createdAt);
-        if (existingGroup.isNotEmpty) {
-          // The group already exists, so update it
-          batch.update(TABLE_SUBSCRIPTION_GROUP, group.toMap(), where: 'id = ?', whereArgs: [group.id]);
-        } else {
-          // The group doesn't exist, so insert it
-          var newId = maxId + group.id;
-
-          batch.insert(TABLE_SUBSCRIPTION_GROUP, {
-            ...group.toMap(),
-            'id': newId
-          }, conflictAlgorithm: ConflictAlgorithm.replace);
-
-          mapping[group.id] = newId;
-        }
+    for (var pair in data.entries) {
+      for (var datum in pair.value) {
+        batch.insert(pair.key, datum.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       }
-    } else {
-      // We don't have any subscriptions already, so we can just straight up import
-      for (var group in subscriptionGroups) {
-        batch.insert(TABLE_SUBSCRIPTION_GROUP, group.toMap());
-      }
-    }
 
-    await batch.commit();
-
-    return mapping;
-  }
-
-  Future importSubscriptionGroupMembers(List<SubscriptionGroupMember> members, Map<String, String> groupMappings) async {
-    var database = await Repository.writable();
-
-    var batch = database.batch();
-
-    for (var member in members) {
-      // Import the members, using any newly mapped group ID, if one exists
-      batch.insert(TABLE_SUBSCRIPTION_GROUP_MEMBER, {
-        ...member.toJson(),
-        'group_id': groupMappings.containsKey(member.group)
-          ? groupMappings[member.group]
-          : member.group
-      }, conflictAlgorithm: ConflictAlgorithm.ignore);
-    }
-
-    await batch.commit();
-  }
-
-  Future importTweets(List<SavedTweet> tweets) async {
-    var database = await Repository.writable();
-
-    var batch = database.batch();
-
-    for (var tweet in tweets) {
-      batch.insert(TABLE_SAVED_TWEET, tweet.toMap(), conflictAlgorithm: ConflictAlgorithm.ignore);
+      log('Imported data into ${pair.key}');
     }
 
     await batch.commit();
