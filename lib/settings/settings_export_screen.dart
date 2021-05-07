@@ -109,8 +109,8 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
 
           var exportData = jsonEncode(data.toJson());
 
-          var platformInfo = await DeviceInfoPlugin().androidInfo;
-          if (platformInfo != null && platformInfo.version.sdkInt < 19) {
+          var isLegacy = await isLegacyAndroid();
+          if (isLegacy) {
             // This platform is too old to support a directory picker, so we just save the file to a predefined location
             var fullPath = await getLegacyExportPath();
 
@@ -135,18 +135,18 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           }
         },
       ),
-      body: FutureBuilder<AndroidDeviceInfo>(
-        future: DeviceInfoPlugin().androidInfo,
+      body: FutureBuilder<bool>(
+        future: isLegacyAndroid(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
+          var isLegacy = snapshot.data;
+          if (isLegacy == null) {
             return Center(child: CircularProgressIndicator());
           }
 
           Widget legacyAndroidMessage = Container();
 
           // Check if the platform is too old to support a directory picker or not
-          var deviceInfo = snapshot.data;
-          if (deviceInfo == null || deviceInfo.version.sdkInt < 19) {
+          if (isLegacy) {
             legacyAndroidMessage = FutureBuilder<String>(
               future: getLegacyExportPath(),
               builder: (context, snapshot) {

@@ -4,18 +4,21 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fritter/constants.dart';
+import 'package:fritter/database/entities.dart';
+import 'package:fritter/database/repository.dart';
+import 'package:fritter/home_model.dart';
+import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
-import 'package:fritter/settings/settings_import_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'constants.dart';
 
 class OptionsScreen extends StatefulWidget {
   @override
@@ -25,6 +28,48 @@ class OptionsScreen extends StatefulWidget {
 class _OptionsScreenState extends State<OptionsScreen> {
   String _createVersionString(PackageInfo packageInfo) {
     return 'v${packageInfo.version}+${packageInfo.buildNumber}';
+  }
+
+  Future _importFromFile(File file) async {
+    var content = jsonDecode(file.readAsStringSync());
+
+    var model = context.read<HomeModel>();
+    var prefs = PrefService.of(context);
+
+    var data = SettingsData.fromJson(content);
+
+    var settings = data.settings;
+    if (settings != null) {
+      prefs.fromMap(settings);
+    }
+
+    var dataToImport = Map<String, List<ToMappable>>();
+
+    var subscriptions = data.subscriptions;
+    if (subscriptions != null) {
+      dataToImport[TABLE_SUBSCRIPTION] = subscriptions;
+    }
+
+    var subscriptionGroups = data.subscriptionGroups;
+    if (subscriptionGroups != null) {
+      dataToImport[TABLE_SUBSCRIPTION_GROUP] = subscriptionGroups;
+    }
+
+    var subscriptionGroupMembers = data.subscriptionGroupMembers;
+    if (subscriptionGroupMembers != null) {
+      dataToImport[TABLE_SUBSCRIPTION_GROUP_MEMBER] = subscriptionGroupMembers;
+    }
+
+    var tweets = data.tweets;
+    if (tweets != null) {
+      dataToImport[TABLE_SAVED_TWEET] = tweets;
+    }
+
+    await model.importData(dataToImport);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Data imported successfully'),
+    ));
   }
 
   Future _sendPing() async {
@@ -193,7 +238,72 @@ class _OptionsScreenState extends State<OptionsScreen> {
           leading: Icon(Icons.import_export),
           title: Text('Import'),
           subtitle: Text('Import data from another device'),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsImportScreen())),
+          onTap: () async {
+            var isLegacy = await isLegacyAndroid();
+            if (isLegacy) {
+              showDialog(context: context, builder: (context) {
+                return AlertDialog(
+                  title: Text('Legacy Android Import'),
+                  actions: [
+                    TextButton(
+                      child: Text('Cancel'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: Text('Import'),
+                      onPressed: () async {
+                        var file = File(await getLegacyExportPath());
+                        if (await file.exists()) {
+                          try {
+                            await _importFromFile(file);
+                          } catch (e, stackTrace) {
+                            log('Unable to import the file on a legacy Android device', error: e, stackTrace: stackTrace);
+
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('$e'),
+                            ));
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('The file does not exist. Please ensure it is located at ${file.path}'),
+                          ));
+                        }
+
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                  content: FutureBuilder<String>(
+                    future: getLegacyExportPath(),
+                    builder: (context, snapshot) {
+                      var legacyExportPath = snapshot.data;
+                      if (legacyExportPath == null) {
+                        return CircularProgressIndicator();
+                      }
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
+                              textAlign: TextAlign.left),
+                          SizedBox(height: 16),
+                          Text(legacyExportPath,
+                              textAlign: TextAlign.left),
+                          SizedBox(height: 16),
+                          Text('Please make sure the data you wish to import is located there, then press the import button below.',
+                              textAlign: TextAlign.left)
+                        ],
+                      );
+                    },
+                  ),
+                );
+              });
+            } else {
+              await FilePickerWritable().openFile((fileInfo, file) async {
+                await _importFromFile(file);
+              });
+            }
+          },
         ),
         PrefLabel(
           leading: Icon(Icons.save),

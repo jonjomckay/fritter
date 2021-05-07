@@ -1,3 +1,4 @@
+import 'package:device_info/device_info.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as p;
@@ -9,6 +10,15 @@ Future<String> getLegacyExportPath() async {
   }
 
   return path.join(externalStorageDirectory.path, 'fritter.json');
+}
+
+Future<bool> isLegacyAndroid() async {
+  var deviceInfo = await DeviceInfoPlugin().androidInfo;
+  if (deviceInfo != null && deviceInfo.version.sdkInt < 19) {
+    return true;
+  }
+
+  return false;
 }
 
 class SettingsData {
