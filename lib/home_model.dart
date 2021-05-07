@@ -116,8 +116,8 @@ class HomeModel extends ChangeNotifier {
     var database = await Repository.readOnly();
 
     var orderByDirection = orderByAscending
-      ? 'ASC'
-      : 'DESC';
+      ? 'COLLATE NOCASE ASC'
+      : 'COLLATE NOCASE DESC';
 
     return (await database.query(TABLE_SUBSCRIPTION, orderBy: '$orderBy $orderByDirection'))
         .map((e) => Subscription.fromMap(e))
