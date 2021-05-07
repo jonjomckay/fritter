@@ -5,6 +5,7 @@
 * Added a more detailed message when the Twitter API token cannot be refreshed
 * Added option to toggle all subscriptions when creating a group.
 * Now displaying the number of subscriptions in total, and per group.
+* Now displaying tweet media inside a carousel for better UX
 * Fixed inconsistent padding to improve tweet, media and reaction UX
 * Fixed some tweet URLs not launching the app correctly
 * Fixed some user mentions cutting off the start of replies
