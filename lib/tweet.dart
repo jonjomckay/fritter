@@ -15,7 +15,7 @@ import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 
-import 'profile/profile.dart';
+import 'profile.dart';
 
 class TweetMedia extends StatefulWidget {
   final List<Media> media;
