@@ -1,3 +1,4 @@
+* Added support for importing and exporting subscriptions, groups, tweets and settings
 * Added support for saving tweets locally
 * Added support for sharing links to tweets, and sharing tweet content
 * Added opt-in button to submit a one-time non-identifying ping to help future development
