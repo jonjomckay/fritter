@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
@@ -14,7 +15,73 @@ import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 
-import 'profile.dart';
+import 'profile/profile.dart';
+
+class TweetMedia extends StatefulWidget {
+  final List<Media> media;
+
+  const TweetMedia({Key? key, required this.media}) : super(key: key);
+
+  @override
+  _TweetMediaState createState() => _TweetMediaState();
+}
+
+class _TweetMediaState extends State<TweetMedia> {
+  final PageController _controller = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    var largestAspectRatio = widget.media
+      .map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1))
+      .reduce(math.max);
+
+    return Container(
+      margin: EdgeInsets.only(top: 8, left: 16, right: 16),
+      child: AspectRatio(
+        aspectRatio: largestAspectRatio,
+        child: PageView.builder(
+          controller: _controller,
+          scrollDirection: Axis.horizontal,
+          itemCount: widget.media.length,
+          itemBuilder: (context, index) {
+            Widget media;
+
+            var item = widget.media[index];
+            if (item.type == 'animated_gif') {
+              media = TweetVideo(media: item, loop: true);
+            } else if (item.type == 'video') {
+              media = TweetVideo(media: item, loop: false);
+            } else if (item.type == 'photo') {
+              media = ExtendedImage.network(item.mediaUrlHttps!, cache: true);
+            } else {
+              media = Text('Unknown');
+            }
+
+            if (widget.media.length == 1) {
+              return media;
+            }
+
+            return Stack(
+              children: [
+                Center(child: media),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    color: Colors.black38,
+                    margin: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8),
+                    child: Text('${++index} / ${widget.media.length}'),
+                  ),
+                )
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
 
 
 class TweetVideo extends StatefulWidget {
@@ -152,21 +219,10 @@ class TweetTile extends StatelessWidget {
       ? this.tweet!
       : this.tweet!.retweetedStatusWithCard!;
 
-    var attachments = (tweet.extendedEntities?.media ?? []).map((e) {
-      if (e.type == 'animated_gif') {
-        return TweetVideo(media: e, loop: true);
-      }
-
-      if (e.type == 'video') {
-        return TweetVideo(media: e, loop: false);
-      }
-
-      if (e.type == 'photo') {
-        return ExtendedImage.network(e.mediaUrlHttps!, cache: true);
-      }
-
-      return Text('Unknown');
-    });
+    Widget media = Container();
+    if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
+      media = TweetMedia(media: tweet.extendedEntities!.media!);
+    }
 
     Widget retweetBanner = Container();
     if (this.tweet!.retweetedStatusWithCard != null) {
@@ -281,15 +337,7 @@ class TweetTile extends StatelessWidget {
                         child: TweetContent(tweet: tweet),
                       ),
                     ),
-                    if (attachments.isNotEmpty)
-                      Container(
-                        margin: EdgeInsets.only(top: 8, left: 16, right: 16),
-                        child: Column(
-                          children: [
-                            ...attachments
-                          ],
-                        ),
-                      ),
+                    media,
                     quotedTweet,
                     TweetCard(tweet: tweet, card: tweet.card),
                   ],
