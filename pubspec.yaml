@@ -32,6 +32,7 @@ dependencies:
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
   flex_color_scheme: ^2.1.1
+  file_picker_writable: ^2.0.0
   html_unescape: ^2.0.0
   http: ^0.13.1
   intl: ^0.17.0
@@ -50,6 +51,7 @@ dependencies:
   timeago: ^3.0.2
   uni_links2: ^0.6.0+2
   url_launcher: ^6.0.3
+  uuid: ^3.0.4
   video_player: ^2.1.1
 
   # The following adds the Cupertino Icons font to your application.

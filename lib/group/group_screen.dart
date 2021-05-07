@@ -7,7 +7,7 @@ import 'package:fritter/tweet.dart';
 import 'package:pagination_view/pagination_view.dart';
 
 class SubscriptionGroupScreen extends StatefulWidget {
-  final int id;
+  final String id;
 
   const SubscriptionGroupScreen({Key? key, required this.id}) : super(key: key);
 
@@ -18,15 +18,15 @@ class SubscriptionGroupScreen extends StatefulWidget {
 class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
   String? _maxId;
 
-  Future<SubscriptionGroupGet> _findSubscriptionGroup(int id) async {
+  Future<SubscriptionGroupGet> _findSubscriptionGroup(String id) async {
     var database = await Repository.readOnly();
 
-    if (id == -1) {
+    if (id == '-1') {
       var subscriptions = (await database.query(TABLE_SUBSCRIPTION))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: -1, name: 'All', subscriptions: subscriptions);
+      return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
     } else {
       var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
           .first;
@@ -35,7 +35,7 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: group['id'] as int, name: group['name'] as String, subscriptions: subscriptions);
+      return SubscriptionGroupGet(id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions);
     }
   }
 

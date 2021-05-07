@@ -40,7 +40,7 @@ if (keystoreFile != null && !keystoreFile.isEmpty()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'

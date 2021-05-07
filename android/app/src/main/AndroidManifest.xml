@@ -1,6 +1,14 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     package="com.jonjomckay.fritter">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Force usage of the file picker library even on SDKs < 19, as we handle it at runtime -->
+    <uses-sdk tools:overrideLibrary="codeux.design.filepicker.file_picker_writable" />
+
+    <!-- Required for importing and exporting on older versions of Android (<19?) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
