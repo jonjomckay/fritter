@@ -273,6 +273,12 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
           return FutureBuilder<List<SubscriptionGroup>>(
             future: model.listSubscriptionGroups(),
             builder: (context, snapshot) {
+              var error = snapshot.error;
+              if (error != null) {
+                log('Unable to list the user\'s subscriptions groups', error: error);
+                return Center(child: Text('Unable to list the subscriptions groups: $error'));
+              }
+
               var groups = snapshot.data;
               if (groups == null) {
                 return Center(child: CircularProgressIndicator());
