@@ -29,13 +29,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.5"
-  bloc:
-    dependency: transitive
-    description:
-      name: bloc
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -181,13 +174,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bloc:
-    dependency: transitive
-    description:
-      name: flutter_bloc
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.0.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -247,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  infinite_scroll_pagination:
+    dependency: "direct main"
+    description:
+      name: infinite_scroll_pagination
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   intl:
     dependency: "direct main"
     description:
@@ -317,15 +310,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  pagination_view:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: af4662c
-      resolved-ref: af4662cf32735e73ef56259b2a84092ccbb97f4b
-      url: "git://github.com/jonjomckay/pagination_view.git"
-    source: git
-    version: "2.0.0-nullsafety.0"
   path:
     dependency: transitive
     description:
@@ -513,6 +497,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_tools:
+    dependency: transitive
+    description:
+      name: sliver_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.2"
   source_span:
     dependency: transitive
     description:
