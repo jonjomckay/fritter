@@ -319,7 +319,7 @@ class TweetTile extends StatelessWidget {
                       },
                       title: Text(tweet.user!.name!,
                           style: TextStyle(fontWeight: FontWeight.w500)),
-                      subtitle: Text(tweet.user!.screenName!),
+                      subtitle: Text('@${tweet.user!.screenName!}'),
                       leading: CircleAvatar(
                         radius: 24,
                         backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
