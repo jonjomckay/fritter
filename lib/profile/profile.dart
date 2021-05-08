@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/user.dart';
-import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String? id;
@@ -35,12 +34,8 @@ class ProfileScreenBody extends StatefulWidget {
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   late TabController _tabController;
-  final _scrollController = ScrollController();
 
   User? _profile;
-
-
-  StreamSubscription? _sub;
 
   @override
   void initState() {
@@ -83,8 +78,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    var numberFormat = NumberFormat.compact();
-
     // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
     var deviceSize = MediaQuery.of(context).size;
     var appBarHeight = deviceSize.width * (500 / 1500);
@@ -122,6 +115,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               expandedHeight: appBarHeight,
               floating: true,
               pinned: true,
+              snap: false,
+              forceElevated: innerBoxIsScrolled,
               actions: [
                 FollowButton(id: profile.idStr!,
                     name: profile.name!,
@@ -170,11 +165,5 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _sub?.cancel();
   }
 }

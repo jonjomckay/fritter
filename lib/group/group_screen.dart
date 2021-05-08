@@ -1,10 +1,97 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/tweet.dart';
-import 'package:pagination_view/pagination_view.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+class SubscriptionGroupFeed extends StatefulWidget {
+  final SubscriptionGroupGet group;
+  final List<String> users;
+
+  const SubscriptionGroupFeed({Key? key, required this.group, required this.users}) : super(key: key);
+
+  @override
+  _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
+}
+
+class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
+  late PagingController<String?, TweetWithCard> _pagingController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pagingController = PagingController(firstPageKey: null);
+    _pagingController.addPageRequestListener((cursor) {
+      _listTweets(cursor);
+    });
+  }
+
+  Future _listTweets(String? cursor) async {
+    List<Future<List<TweetWithCard>>> futures = [];
+
+    // TODO: Split into groups, and have a max_id per group
+
+    var query = '';
+    for (var user in widget.users) {
+      var queryToAdd = 'from:$user';
+
+      // If we can add this user to the query and still be less than 500 characters, do so
+      if (query.length + queryToAdd.length < 100) {
+        if (query.length > 0) {
+          query += '+OR+';
+        }
+
+        query += queryToAdd;
+      } else {
+        // Otherwise, add the search future and start a new one
+        futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+
+        query = queryToAdd;
+      }
+    }
+
+    // Add any remaining query as a search future too
+    futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+
+    var result = (await Future.wait(futures))
+        .expand((element) => element)
+        .where((element) => element.idStr != cursor)
+        .toList();
+
+    result.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+    if (result.isNotEmpty) {
+      _pagingController.appendPage(result, result.last.idStr);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Nesting the scaffold looks weird on the device when loading
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.group.name),
+      ),
+      body: PagedListView<String?, TweetWithCard>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate(
+          itemBuilder: (context, tweet, index) {
+            return TweetTile(tweet: tweet, clickable: true);
+          },
+          // TODO
+          newPageErrorIndicatorBuilder: (context) => Text('Some error occurred'),
+          firstPageErrorIndicatorBuilder: (context) => Text('Some error occurred'),
+          noItemsFoundIndicatorBuilder: (context) => Center(
+            child: Text('Couldn\'t find any tweets from the last 7 days!'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class SubscriptionGroupScreen extends StatefulWidget {
   final String id;
@@ -16,8 +103,6 @@ class SubscriptionGroupScreen extends StatefulWidget {
 }
 
 class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
-  String? _maxId;
-
   Future<SubscriptionGroupGet> _findSubscriptionGroup(String id) async {
     var database = await Repository.readOnly();
 
@@ -39,49 +124,6 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
     }
   }
 
-  Future<List<TweetWithCard>> _listTweets(List<String> users) async {
-    List<Future<List<TweetWithCard>>> futures = [];
-
-    // TODO: Split into groups, and have a max_id per group
-
-    var query = '';
-    for (var user in users) {
-      var queryToAdd = 'from:$user';
-
-      // If we can add this user to the query and still be less than 500 characters, do so
-      if (query.length + queryToAdd.length < 100) {
-        if (query.length > 0) {
-          query += '+OR+';
-        }
-
-        query += queryToAdd;
-      } else {
-        // Otherwise, add the search future and start a new one
-        futures.add(Twitter.searchTweets(query, limit: 100, maxId: _maxId));
-
-        query = queryToAdd;
-      }
-    }
-
-    // Add any remaining query as a search future too
-    futures.add(Twitter.searchTweets(query, limit: 100, maxId: _maxId));
-
-    var result = (await Future.wait(futures))
-      .expand((element) => element)
-      .where((element) => element.idStr != _maxId)
-      .toList();
-
-    result.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-
-    if (result.isNotEmpty) {
-      setState(() {
-        _maxId = result.last.idStr;
-      });
-    }
-
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SubscriptionGroupGet>(
@@ -94,33 +136,9 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
 
         var users = group.subscriptions.map((e) => e.screenName).toList();
 
-        // TODO: Nesting the scaffold looks weird on the device when loading
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(group.name),
-          ),
-          body: PaginationView<TweetWithCard>(
-            itemBuilder: (BuildContext context, TweetWithCard tweet, int index) {
-              return TweetTile(tweet: tweet, clickable: true);
-            },
-            paginationViewType: PaginationViewType.listView,
-            pageFetch: (currentListSize) async {
-              return _listTweets(users);
-            },
-            onError: (dynamic error) => Center(
-              // TODO
-              child: Text('Some error occurred'),
-            ),
-            onEmpty: Center(
-              child: Text('Couldn\'t find any tweets from the last 7 days!'),
-            ),
-            bottomLoader: Center(
-              child: CircularProgressIndicator(),
-            ),
-            initialLoader: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+        return SubscriptionGroupFeed(
+            group: group,
+            users: users,
         );
       },
     );
