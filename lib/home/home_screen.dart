@@ -6,9 +6,7 @@ import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home/_trends.dart';
-import 'package:fritter/home_model.dart';
 import 'package:fritter/options.dart';
-import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class _Tab {
@@ -25,8 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final List<_Tab> _tabs = [
-    _Tab('Trending', Icons.trending_up),
     _Tab('Subscriptions', Icons.people),
+    _Tab('Trending', Icons.trending_up),
     _Tab('Saved', Icons.bookmark),
   ];
   
@@ -86,8 +84,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: TabBarView(
         controller: _tabController,
         children: [
-          TrendsContent(),
           SubscriptionsContent(),
+          TrendsContent(),
           SavedContent(),
         ],
       ),
