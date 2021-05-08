@@ -2,7 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home/_search.dart';
-import 'package:fritter/profile.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
 

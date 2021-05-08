@@ -4,11 +4,11 @@ import 'dart:math' as math;
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
@@ -16,8 +16,6 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
-
-import 'profile.dart';
 
 class TweetMedia extends StatefulWidget {
   final List<Media> media;

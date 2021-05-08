@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database/repository.dart';
-import 'profile.dart';
+import 'profile/profile.dart';
 
 class UserTile extends StatelessWidget {
   final String id;
