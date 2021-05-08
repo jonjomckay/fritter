@@ -192,9 +192,10 @@ class Twitter {
       id: 1
     );
 
-  static Future<TweetList> getTweets(String id, { int count = 10, String? cursor }) async {
+  static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
     var query = {
       ...defaultParams,
+      'include_tweet_replies': includeReplies ? '1' : '0',
       'count': count.toString(),
     };
 

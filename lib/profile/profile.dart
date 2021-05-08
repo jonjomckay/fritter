@@ -5,11 +5,9 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/profile/_tweets.dart';
+import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
-import 'package:pagination_view/pagination_view.dart';
-
-import 'user.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String? id;
@@ -35,18 +33,21 @@ class ProfileScreenBody extends StatefulWidget {
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
 }
 
-class _ProfileScreenBodyState extends State<ProfileScreenBody> {
+class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
+  late TabController _tabController;
   final _scrollController = ScrollController();
 
   User? _profile;
-  String? _cursor;
-  int _pageSize = 10;
+
 
   StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
+
+    _tabController = TabController(length: 4, vsync: this);
+
     fetchProfile(widget.id, widget.username);
   }
 
@@ -69,21 +70,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
         _profile = profile;
       });
     });
-  }
-
-  Future<List<TweetWithCard>> _loadTweets() async {
-    try {
-      var result = await Twitter.getTweets(_profile!.idStr!, cursor: _cursor, count: _pageSize);
-
-      setState(() {
-        this._cursor = result.cursorBottom;
-      });
-
-      return result.tweets;
-    } catch (e, stackTrace) {
-      onError(e, stackTrace);
-      return Future.error(e);
-    }
   }
 
   @override
@@ -113,50 +99,28 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
         ? Container()
         : ExtendedImage.network(banner, fit: BoxFit.cover, height: appBarHeight, cache: true);
 
-    return Scaffold(
-        body: DefaultTabController(
-          length: 3,
-          child: PaginationView<TweetWithCard>(
-            itemBuilder: (BuildContext context, TweetWithCard tweet, int index) {
-              return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
-            },
-            paginationViewType: PaginationViewType.listView,
-            pageFetch: (currentListSize) async {
-              return _loadTweets();
-            },
-            onError: (dynamic error) {
-              onError(error);
+    var comingSoon = Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('🙈', style: TextStyle(
+            fontSize: 32
+        )),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          child: Text('Coming soon!', style: TextStyle(
+              color: Theme.of(context).hintColor
+          )),
+        )
+      ],
+    ));
 
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Unable to load the profile 😢', style: TextStyle(
-                        fontSize: 22
-                    )),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      child: Text(error.toString(), style: TextStyle(
-                          color: Theme.of(context).hintColor
-                      )),
-                    )
-                  ])
-              );
-            },
-            onEmpty: Center(
-              child: Text('Couldn\'t find any tweets from the last 7 days!'),
-            ),
-            bottomLoader: Center(
-              child: CircularProgressIndicator(),
-            ),
-            initialLoader: Center(
-              child: CircularProgressIndicator(),
-            ),
-            scrollController: _scrollController,
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            header: SliverAppBar(
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
               expandedHeight: appBarHeight,
+              floating: true,
               pinned: true,
               actions: [
                 FollowButton(id: profile.idStr!,
@@ -165,43 +129,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                     imageUri: profile.profileImageUrlHttps)
               ],
               bottom: TabBar(
+                controller: _tabController,
                 tabs: [
-                  Tab(child: Column(
-                    children: [
-                      Text('Tweets', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .subtitle2),
-                      Text('${numberFormat.format(profile.statusesCount)}', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .headline6),
-                    ],
-                  )),
-                  Tab(child: Column(
-                    children: [
-                      Text('Following', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .subtitle2),
-                      Text('${numberFormat.format(profile.friendsCount)}', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .headline6),
-                    ],
-                  )),
-                  Tab(child: Column(
-                    children: [
-                      Text('Followers', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .subtitle2),
-                      Text('${numberFormat.format(profile.followersCount)}', style: Theme
-                          .of(context)
-                          .primaryTextTheme
-                          .headline6),
-                    ],
-                  )),
+                  Tab(child: Text('Tweets', textAlign: TextAlign.center)),
+                  Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
+                  Tab(child: Text('Following', textAlign: TextAlign.center)),
+                  Tab(child: Text('Followers', textAlign: TextAlign.center)),
                 ],
               ),
               title: Text(profile.name!),
@@ -222,9 +155,19 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                   ],
                 ),
               ),
-            ),
-          ),
-        )
+            )
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            ProfileTweets(user: _profile, username: widget.username, includeReplies: false),
+            ProfileTweets(user: _profile, username: widget.username, includeReplies: true),
+            comingSoon,
+            comingSoon,
+          ],
+        ),
+      ),
     );
   }
 
