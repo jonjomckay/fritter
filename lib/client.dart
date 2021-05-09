@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
+import 'package:ffcache/ffcache.dart';
 import 'package:http/http.dart' as http;
 
 const Duration _defaultTimeout = Duration(seconds: 10);
@@ -113,6 +114,8 @@ class _FritterTwitterClient extends TwitterClient {
 class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
+  static FFCache _cache = FFCache();
+
   static Map<String, String> defaultParams = {
     'include_profile_interstitial_type': '0',
     'include_blocking': '0',
@@ -204,9 +207,45 @@ class Twitter {
       q: query,
     );
 
-  static Future<List<Trends>> getTrends() async => await _twitterApi.trendsService.place(
-      id: 1
+  static Future<List<TrendLocation>> getTrendLocations() async {
+    if (await _cache.has('trends.locations')) {
+      log('Loading trend locations from the cache');
+
+      var cached = List.from(jsonDecode(await _cache.getJSON('trends.locations')));
+
+      return cached.map((e) => TrendLocation.fromJson(e)).toList();
+    }
+
+    log('Loading trend locations from the network');
+
+    var result = await _twitterApi.trendsService.available();
+
+    await _cache.setJSONWithTimeout('trends.locations', jsonEncode(result.map((e) => e.toJson()).toList()), Duration(days: 1));
+
+    return result;
+  }
+
+  static Future<List<Trends>> getTrends(int location) async {
+    var key = 'trends.$location';
+
+    if (await _cache.has(key)) {
+      log('Loading trends for $location from the cache');
+
+      var cached = List.from(jsonDecode(await _cache.getJSON(key)));
+
+      return cached.map((e) => Trends.fromJson(e)).toList();
+    }
+
+    log('Loading trends for $location from the network');
+
+    var result = await _twitterApi.trendsService.place(
+      id: location
     );
+
+    await _cache.setJSONWithTimeout(key, jsonEncode(result.map((e) => e.toJson()).toList()), Duration(minutes: 2));
+
+    return result;
+  }
 
   static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
     var query = {

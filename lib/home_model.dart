@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:pref/pref.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,8 +58,8 @@ class HomeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Trends>> loadTrends() async {
-    return Twitter.getTrends();
+  Future<List<Trends>> loadTrends(int location) async {
+    return Twitter.getTrends(location);
   }
 
   Future<List<SubscriptionGroup>> listSubscriptionGroups() async {
@@ -177,5 +178,12 @@ class HomeModel extends ChangeNotifier {
     }
 
     await batch.commit();
+  }
+
+  Future setTrendLocation(BasePrefService prefs, TrendLocation item) async {
+    prefs.set('trends.location.id', item.woeid);
+    prefs.set('trends.location.name', item.name);
+
+    notifyListeners();
   }
 }
