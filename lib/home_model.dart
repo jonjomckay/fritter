@@ -178,4 +178,28 @@ class HomeModel extends ChangeNotifier {
 
     await batch.commit();
   }
+
+  Future toggleSubscriptionGroupIncludeReplies(String id, bool value) async {
+    var database = await Repository.writable();
+
+    await database.rawUpdate('UPDATE $TABLE_SUBSCRIPTION_GROUP SET include_replies = ? WHERE id = ?', [value, id]);
+
+    notifyListeners();
+  }
+
+  Future toggleSubscriptionGroupIncludeRetweets(String id, bool value) async {
+    var database = await Repository.writable();
+
+    await database.rawUpdate('UPDATE $TABLE_SUBSCRIPTION_GROUP SET include_retweets = ? WHERE id = ?', [value, id]);
+
+    notifyListeners();
+  }
+
+  Future<SubscriptionGroupSettings> loadSubscriptionGroupSettings(String id) async {
+    var database = await Repository.readOnly();
+
+    return (await database.rawQuery('SELECT include_replies, include_retweets FROM $TABLE_SUBSCRIPTION_GROUP WHERE id = ?', [id]))
+        .map((e) => SubscriptionGroupSettings(includeReplies: e['include_replies'] == 1, includeRetweets: e['include_retweets'] == 1))
+        .first;
+  }
 }

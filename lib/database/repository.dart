@@ -99,11 +99,16 @@ class Repository {
         // Drop the old subscription group tables now that we've replaced the IDs
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP}_old'),
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+      ],
+      11: [
+        // Add columns for the subscription group settings
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_replies BOOLEAN DEFAULT true'),
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_retweets BOOLEAN DEFAULT true')
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 10,
+        version: 11,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan
