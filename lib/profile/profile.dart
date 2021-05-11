@@ -124,7 +124,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                     imageUri: profile.profileImageUrlHttps)
               ],
               bottom: TabBar(
-                isScrollable: true,
                 controller: _tabController,
                 isScrollable: true,
                 tabs: [
