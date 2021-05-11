@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile.dart';
-import 'package:fritter/status.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -169,8 +168,6 @@ class TweetContent extends StatelessWidget {
       TextSpan(
         children: parts
       ),
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!))),
     );
   }
 }

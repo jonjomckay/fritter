@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
@@ -347,7 +348,10 @@ class TweetTile extends StatelessWidget {
                   buttonPadding: EdgeInsets.symmetric(horizontal: 0),
                   children: [
                     if (tweet.replyCount != null)
-                      _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount)),
+                      _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
+                      }),
                     if (tweet.retweetCount != null)
                       _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                     if (tweet.quoteCount != null)
@@ -363,16 +367,16 @@ class TweetTile extends StatelessWidget {
                         }
 
                         if (saved) {
-                          return _createFooterIconButton(Icons.bookmark, actionColour, () async {
+                          return _createFooterIconButton(Icons.bookmark, null, () async {
                             await model.deleteSavedTweet(tweet.idStr!);
                           });
                         } else {
-                          return _createFooterIconButton(Icons.bookmark_outline, actionColour, () async {
+                          return _createFooterIconButton(Icons.bookmark_outline, null, () async {
                             await model.saveTweet(tweet.idStr!, tweet.toJson());
                           });
                         }},
                     ),
-                    _createFooterIconButton(Icons.share, actionColour, () async {
+                    _createFooterIconButton(Icons.share, null, () async {
                       var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 8),
