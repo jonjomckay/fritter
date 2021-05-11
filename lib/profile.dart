@@ -165,6 +165,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> {
                     imageUri: profile.profileImageUrlHttps)
               ],
               bottom: TabBar(
+                isScrollable: true,
                 tabs: [
                   Tab(child: Column(
                     children: [

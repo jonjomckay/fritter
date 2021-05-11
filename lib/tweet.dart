@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
@@ -180,11 +181,12 @@ class _TweetVideoState extends State<TweetVideo> {
 }
 
 class TweetTile extends StatelessWidget {
+  final ScrollController scrollController = ScrollController();
   final bool clickable;
   final String? currentUsername;
   final TweetWithCard? tweet;
 
-  const TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
+  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet}) : super(key: key);
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -306,6 +308,7 @@ class TweetTile extends StatelessWidget {
               child: retweetBanner,
             ),
             Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,61 +346,72 @@ class TweetTile extends StatelessWidget {
                     TweetCard(tweet: tweet, card: tweet.card),
                   ],
                 ),
-                ButtonBar(
-                  buttonTextTheme: ButtonTextTheme.accent,
-                  buttonPadding: EdgeInsets.symmetric(horizontal: 0),
-                  children: [
-                    if (tweet.replyCount != null)
-                      _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
-                      }),
-                    if (tweet.retweetCount != null)
-                      _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
-                    if (tweet.quoteCount != null)
-                      _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
-                    if (tweet.favoriteCount != null)
-                      _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                    FutureBuilder<bool>(
-                      future: model.isTweetSaved(tweet.idStr!),
-                      builder: (context, snapshot) {
-                        var saved = snapshot.data;
-                        if (saved == null) {
-                          return _createFooterIconButton(Icons.bookmark_outline);
-                        }
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 8),
+                  child: Scrollbar(
+                    controller: scrollController,
+                    isAlwaysShown: true,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: ButtonBar(
+                        buttonTextTheme: ButtonTextTheme.accent,
+                        buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                        children: [
+                          if (tweet.replyCount != null)
+                            _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
+                            }),
+                          if (tweet.retweetCount != null)
+                            _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
+                          if (tweet.quoteCount != null)
+                            _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
+                          if (tweet.favoriteCount != null)
+                            _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                          FutureBuilder<bool>(
+                            future: model.isTweetSaved(tweet.idStr!),
+                            builder: (context, snapshot) {
+                              var saved = snapshot.data;
+                              if (saved == null) {
+                                return _createFooterIconButton(Icons.bookmark_outline);
+                              }
 
-                        if (saved) {
-                          return _createFooterIconButton(Icons.bookmark, null, () async {
-                            await model.deleteSavedTweet(tweet.idStr!);
-                          });
-                        } else {
-                          return _createFooterIconButton(Icons.bookmark_outline, null, () async {
-                            await model.saveTweet(tweet.idStr!, tweet.toJson());
-                          });
-                        }},
+                              if (saved) {
+                                return _createFooterIconButton(Icons.bookmark, null, () async {
+                                  await model.deleteSavedTweet(tweet.idStr!);
+                                });
+                              } else {
+                                return _createFooterIconButton(Icons.bookmark_outline, null, () async {
+                                  await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                });
+                              }},
+                          ),
+                          _createFooterIconButton(Icons.share, null, () async {
+                            var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                child: Text(text, style: TextStyle(
+                                    fontSize: 16
+                                )),
+                              ),
+                              onPressed: () => Share.share(shareContent),
+                            );
+
+                            showDialog(context: context, builder: (context) {
+                              return SimpleDialog(
+                                contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                children: [
+                                  createShareDialogItem('Share tweet content', tweetText),
+                                  createShareDialogItem('Share tweet link', 'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}'),
+                                ],
+                              );
+                            });
+                          })
+                        ],
+                      ),
                     ),
-                    _createFooterIconButton(Icons.share, null, () async {
-                      var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          child: Text(text, style: TextStyle(
-                              fontSize: 16
-                          )),
-                        ),
-                        onPressed: () => Share.share(shareContent),
-                      );
-
-                      showDialog(context: context, builder: (context) {
-                        return SimpleDialog(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8),
-                          children: [
-                            createShareDialogItem('Share tweet content', tweetText),
-                            createShareDialogItem('Share tweet link', 'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}'),
-                          ],
-                        );
-                      });
-                    })
-                  ],
+                  ),
                 )
               ],
             ))
