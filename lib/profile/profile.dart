@@ -126,6 +126,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               bottom: TabBar(
                 isScrollable: true,
                 controller: _tabController,
+                isScrollable: true,
                 tabs: [
                   Tab(child: Text('Tweets', textAlign: TextAlign.center)),
                   Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),

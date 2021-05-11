@@ -297,6 +297,20 @@ class TweetTile extends StatelessWidget {
       );
     }
 
+    // Only create the tweet content if the tweet contains text
+    Widget content = Container();
+    if (tweet.displayTextRange![1] != 0) {
+      content = Container(
+        // Fill the width so both RTL and LTR text are displayed correctly
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: AutoDirection(
+          text: tweetText,
+          child: TweetContent(tweet: tweet),
+        ),
+      );
+    }
+
     return Consumer<HomeModel>(builder: (context, model, child) => Card(
       child: IntrinsicHeight(
         child: Row(
@@ -308,42 +322,29 @@ class TweetTile extends StatelessWidget {
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      onTap: () {
-                        // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                        if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
-                          return null;
-                        }
+                ListTile(
+                  onTap: () {
+                    // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
+                    if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
+                      return null;
+                    }
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
-                      },
-                      title: Text(tweet.user!.name!,
-                          style: TextStyle(fontWeight: FontWeight.w500)),
-                      subtitle: Text('@${tweet.user!.screenName!}'),
-                      leading: CircleAvatar(
-                        radius: 24,
-                        backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
-                      ),
-                      trailing: Text(timeago.format(tweet.createdAt!),
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Container(
-                      // Fill the width so both RTL and LTR text are displayed correctly
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: AutoDirection(
-                        text: tweetText,
-                        child: TweetContent(tweet: tweet),
-                      ),
-                    ),
-                    media,
-                    quotedTweet,
-                    TweetCard(tweet: tweet, card: tweet.card),
-                  ],
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
+                  },
+                  title: Text(tweet.user!.name!,
+                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  subtitle: Text('@${tweet.user!.screenName!}'),
+                  leading: CircleAvatar(
+                    radius: 24,
+                    backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
+                  ),
+                  trailing: Text(timeago.format(tweet.createdAt!),
+                      style: Theme.of(context).textTheme.caption),
                 ),
+                content,
+                media,
+                quotedTweet,
+                TweetCard(tweet: tweet, card: tweet.card),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 8),
                   child: Scrollbar(
