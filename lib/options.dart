@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
@@ -205,6 +206,15 @@ class _OptionsScreenState extends State<OptionsScreen> {
           title: Text('Say Hello'),
           subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
           onTap: _sendPing,
+        ),
+        PrefDropdown(
+          fullWidth: false,
+          title: Text('Default Tab'),
+          subtitle: Text('Which tab is shown when the app opens'),
+          pref: OPTION_HOME_INITIAL_TAB,
+          items: homeTabs
+              .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
+              .toList()
         ),
 
         PrefTitle(

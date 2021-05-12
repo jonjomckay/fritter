@@ -1,19 +1,28 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home/_trends.dart';
 import 'package:fritter/options.dart';
+import 'package:pref/pref.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class _Tab {
+  final String id;
   final String title;
   final IconData icon;
 
-  _Tab(this.title, this.icon);
+  _Tab(this.id, this.title, this.icon);
 }
+
+final List<_Tab> homeTabs = [
+  _Tab('subscriptions', 'Subscriptions', Icons.people),
+  _Tab('trending', 'Trending', Icons.trending_up),
+  _Tab('saved', 'Saved', Icons.bookmark),
+];
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,27 +30,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  final List<_Tab> _tabs = [
-    _Tab('Subscriptions', Icons.people),
-    _Tab('Trending', Icons.trending_up),
-    _Tab('Saved', Icons.bookmark),
-  ];
-  
   late TabController _tabController;
-  late int _currentTabIndex;
 
   @override
   void initState() {
     super.initState();
 
-    _currentTabIndex = 0;
+    int initialIndex = 0;
 
-    _tabController = TabController(vsync: this, length: _tabs.length);
-    _tabController.addListener(() {
-      setState(() {
-        _currentTabIndex = _tabController.index;
-      });
-    });
+    // If we have an initial tab set, use it as the initial index
+    var prefs = PrefService.of(context, listen: false);
+    if (prefs.getKeys().contains(OPTION_HOME_INITIAL_TAB)) {
+      initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(OPTION_HOME_INITIAL_TAB));
+    }
+
+    _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
   }
 
  @override
@@ -54,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tabs[_currentTabIndex].title),
+        title: Text(homeTabs[_tabController.index].title),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -74,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            ..._tabs.map((e) => Tab(
+            ...homeTabs.map((e) => Tab(
               icon: Icon(e.icon),
             ))
           ]
