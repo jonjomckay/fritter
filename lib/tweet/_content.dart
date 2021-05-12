@@ -99,7 +99,7 @@ class TweetContent extends StatelessWidget {
             delegate: TweetSearchDelegate(
               initialTab: 1
             ),
-            query: Uri.decodeQueryComponent('#${hashtag.text}')
+            query: '#${hashtag.text}'
         );
       }));
     }
