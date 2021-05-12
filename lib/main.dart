@@ -1,24 +1,74 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/status.dart';
+import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links2/uni_links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'constants.dart';
 import 'database/repository.dart';
+
+Future checkForUpdates() async {
+  log('Checking for updates');
+
+  var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
+  if (response.statusCode == 200) {
+    var package = await PackageInfo.fromPlatform();
+    var result = jsonDecode(response.body);
+    var release = result['versions']['github']['stable'];
+    var latest = release['versionCode'];
+
+    log('The latest version is $latest, and we are on ${package.buildNumber}');
+
+    if (int.parse(package.buildNumber) < latest) {
+      var details = NotificationDetails(android: AndroidNotificationDetails(
+          'updates', 'Updates', 'When a new app update is available',
+          importance: Importance.max,
+          largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+          priority: Priority.high,
+          showWhen: false
+      ));
+
+      await FlutterLocalNotificationsPlugin().show(
+          0, 'An update for Fritter is available! 🚀', 'Tap to download ${release['version']}', details,
+          payload: release['apk']);
+    }
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Repository connection = Repository();
   connection.migrate();
+
+  if (Platform.isAndroid) {
+    FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+
+    final InitializationSettings settings = InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/launcher_icon')
+    );
+
+    await notifications.initialize(settings, onSelectNotification: (payload) async {
+      if (payload != null && payload.startsWith('https://')) {
+        await launch(payload);
+      }
+    });
+
+    checkForUpdates();
+  }
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     OPTION_THEME_MODE: 'system',
