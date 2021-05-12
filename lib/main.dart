@@ -29,7 +29,12 @@ Future checkForUpdates() async {
       var package = await PackageInfo.fromPlatform();
       var result = jsonDecode(response.body);
 
-      const flavor = String.fromEnvironment('app.flavor');
+      const appFlavor = String.fromEnvironment('app.flavor');
+
+      var flavor = appFlavor == ''
+        ? 'fdroid'
+        : appFlavor;
+
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
 
