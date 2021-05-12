@@ -134,8 +134,7 @@ class TweetContent extends StatelessWidget {
     List<InlineSpan> parts = [];
     var index = 0;
 
-    // Don't use the starting text range, as it might be a mention and I haven't figured out how to not mangle that text
-    var runes = tweetText.getRange(0, displayTextRange[1]);
+    var runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
 
     entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
@@ -151,14 +150,21 @@ class TweetContent extends StatelessWidget {
     };
 
     entities.forEach((part) {
-      // First, add any text between the last entity's end and the start of this one
-      addText(index, part.getEntityStart());
+      // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
+      var start = part.getEntityStart() - displayTextRange![0];
+      var end = part.getEntityEnd() - displayTextRange[0];
 
-      // Then add the actual entity
-      parts.add(part.getContent());
+      // Only add entities that are after the displayTextRange's start index
+      if (start >= 0) {
+        // First, add any text between the last entity's end and the start of this one
+        addText(index, start);
 
-      // Then set our index in the tweet text as the end of our entity
-      index = part.getEntityEnd();
+        // Then add the actual entity
+        parts.add(part.getContent());
+
+        // Then set our index in the tweet text as the end of our entity
+        index = end;
+      }
     });
 
     // Finally, add any remaining tweet text

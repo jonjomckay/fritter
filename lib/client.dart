@@ -176,7 +176,9 @@ class Twitter {
         .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
         .toList(growable: false);
 
-    return TweetStatus(tweet: _createTweets('tweet', result).last, replies: replies);
+    var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
+
+    return TweetStatus(tweet: tweet, replies: replies);
   }
 
   static Future<List<TweetWithCard>> searchTweets(String query, {int limit = 25, String? maxId}) async {
@@ -254,6 +256,7 @@ class Twitter {
 
 class TweetWithCard extends Tweet {
   Map<String, dynamic>? card;
+  TweetWithCard? inReplyToWithCard;
   TweetWithCard? quotedStatusWithCard;
   TweetWithCard? retweetedStatusWithCard;
 
@@ -262,6 +265,7 @@ class TweetWithCard extends Tweet {
   Map<String, dynamic> toJson() {
     var json = super.toJson();
     json['card'] = card;
+    json['inReplyToWithCard'] = inReplyToWithCard?.toJson();
     json['quotedStatusWithCard'] = quotedStatusWithCard?.toJson();
     json['retweetedStatusWithCard'] = retweetedStatusWithCard?.toJson();
 
@@ -284,6 +288,7 @@ class TweetWithCard extends Tweet {
     tweetWithCard.inReplyToScreenName = tweet.inReplyToScreenName;
     tweetWithCard.inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
     tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
+    tweetWithCard.inReplyToWithCard = e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
     tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
     tweetWithCard.lang = tweet.lang;
     tweetWithCard.quoteCount = tweet.quoteCount;
@@ -344,6 +349,13 @@ class TweetWithCard extends Tweet {
 
       tweet.quotedStatus = quotedStatus;
       tweet.quotedStatusWithCard = quotedStatus;
+    }
+
+    var inReplyToId = e['in_reply_to_status_id_str'];
+    if (inReplyToId != null && tweets[inReplyToId] != null) {
+      var inReplyTo = TweetWithCard.fromCardJson(tweets, users, tweets[inReplyToId]);
+
+      tweet.inReplyToWithCard = inReplyTo;
     }
 
     tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)

@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:auto_direction/auto_direction.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
@@ -297,6 +298,37 @@ class TweetTile extends StatelessWidget {
       );
     }
 
+    Widget replyToTile = Container();
+
+    var replyTo = tweet.inReplyToScreenName;
+    if (replyTo != null) {
+      replyToTile = Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+        child: RichText(
+          text: TextSpan(
+              children: [
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: Icon(Icons.reply, size: 14, color: Theme.of(context).primaryColorDark),
+                ),
+                WidgetSpan(
+                  child: SizedBox(width: 4)
+                ),
+                TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
+                TextSpan(
+                    text: '@$replyTo',
+                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()..onTap = () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.inReplyToUserIdStr, username: replyTo)));
+                    }
+                )
+              ]
+          ),
+        ),
+      );
+    }
+
     // Only create the tweet content if the tweet contains text
     Widget content = Container();
     if (tweet.displayTextRange![1] != 0) {
@@ -341,6 +373,7 @@ class TweetTile extends StatelessWidget {
                   trailing: Text(timeago.format(tweet.createdAt!),
                       style: Theme.of(context).textTheme.caption),
                 ),
+                replyToTile,
                 content,
                 media,
                 quotedTweet,
