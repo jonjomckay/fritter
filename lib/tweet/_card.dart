@@ -4,6 +4,8 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
 class TweetCard extends StatelessWidget {
@@ -103,6 +105,73 @@ class TweetCard extends StatelessWidget {
     );
   }
 
+  _createVoteBar(Map<String, dynamic> card, double total, int choiceIndex) {
+    var choiceCount = double.parse(card['binding_values']['choice${choiceIndex}_count']['string_value']);
+    var choicePercent = (100 / total) * choiceCount;
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Stack(alignment: Alignment.center, children: [
+        SizedBox(
+          height: 24,
+          child: LinearProgressIndicator(value: choicePercent / 100),
+        ),
+        Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            child: RichText(
+              text: TextSpan(
+                  children: [
+                    TextSpan(text: '${choicePercent.toStringAsFixed(1)}% ', style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    )),
+                    TextSpan(text: card['binding_values']['choice${choiceIndex}_label']['string_value'])
+                  ]
+              ),
+            )
+        ),
+      ]),
+    );
+  }
+
+  _createVoteCard(Map<String, dynamic> card, int numberOfChoices) {
+    var numberFormat = NumberFormat.decimalPattern();
+
+    var total = List.generate(numberOfChoices, (index) => double.parse(card['binding_values']['choice${++index}_count']['string_value']))
+      .reduce((value, element) => value + element);
+
+    String endsAtText;
+
+    var endsAt = DateTime.parse(card['binding_values']['end_datetime_utc']['string_value']);
+    if (endsAt.isBefore(DateTime.now())) {
+      endsAtText = 'Ended ${timeago.format(endsAt, allowFromNow: true)}';
+    } else {
+      endsAtText = 'Ends ${timeago.format(endsAt, allowFromNow: true)}';
+    }
+
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            ...List.generate(numberOfChoices, (index) => _createVoteBar(card, total, ++index)),
+            Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.only(top: 8),
+              child: RichText(
+                text: TextSpan(
+                    children: [
+                      TextSpan(text: '${numberFormat.format(total)} votes'),
+                      TextSpan(text: ' • '),
+                      TextSpan(text: endsAtText)
+                    ]
+                ),
+              ),
+            )
+          ],
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var card = this.card;
@@ -143,6 +212,12 @@ class TweetCard extends StatelessWidget {
             Expanded(flex: 4, child: _createListTile(context, card))
           ],
         ));
+      case 'poll2choice_text_only':
+        return _createVoteCard(card, 2);
+      case 'poll3choice_text_only':
+        return _createVoteCard(card, 3);
+      case 'poll4choice_text_only':
+        return _createVoteCard(card, 4);
       default:
         log('Unknown card type ${card['name']} was encountered');
         return Container();
