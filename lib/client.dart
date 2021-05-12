@@ -96,7 +96,8 @@ class _FritterTwitterClient extends TwitterClient {
     var headerRateLimitLimit = response.headers['x-rate-limit-limit'];
 
     if (headerRateLimitReset == null || headerRateLimitRemaining == null || headerRateLimitLimit == null) {
-      throw new Exception('One or more of the rate limit headers are missing');
+      // If the rate limit headers are missing, the endpoint probably doesn't send them back
+      return response;
     }
 
     // Update our token's rate limit counters
@@ -138,10 +139,23 @@ class Twitter {
     'ext': 'mediaStats',
     'include_quote_count': 'true'
   };
-  
-  static Future<User> getProfile(String username) async => await _twitterApi.userService.usersShow(
-      screenName: username
-    );
+
+  static Future<User> getProfile(String username) async {
+    var uri = Uri.https('twitter.com', '/i/api/graphql/Vf8si2dfZ1zmah8ePYPjDQ/UserByScreenNameWithoutResults', {
+      'variables': jsonEncode({
+        'screen_name': username,
+        'withHighlightedLabel': true
+      })
+    });
+
+    var response = await _twitterApi.client.get(uri);
+    var content = jsonDecode(response.body);
+
+    return User.fromJson({
+      ...content['data']['user']['legacy'],
+      'id_str': content['data']['user']['rest_id']
+    });
+  }
 
   static Future<TweetStatus> getTweet(String id) async {
     var response = await _twitterApi.client.get(
