@@ -1,1 +1,0 @@
-* Fixed tapping on usernames in tweets opening two screens. Replies are now viewable by tapping the replies icon underneath a tweet
