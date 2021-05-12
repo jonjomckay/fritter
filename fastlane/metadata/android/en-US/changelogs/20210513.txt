@@ -1,0 +1,1 @@
+* Fixed profiles not loading after Twitter disabled an endpoint
