@@ -114,12 +114,10 @@ class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
   static Map<String, String> defaultParams = {
-    'include_tweet_replies': '1',
     'include_profile_interstitial_type': '0',
     'include_blocking': '0',
     'include_blocked_by': '0',
     'include_followed_by': '0',
-    'include_want_retweets': '0',
     'include_mute_edge': '0',
     'include_can_dm': '0',
     'include_can_media_tag': '1',
@@ -160,7 +158,9 @@ class Twitter {
   static Future<TweetStatus> getTweet(String id) async {
     var response = await _twitterApi.client.get(
         Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', {
-          ...defaultParams
+          ...defaultParams,
+          'include_tweet_replies': '1',
+          'include_want_retweets': '1',
         })
     );
 
@@ -212,6 +212,7 @@ class Twitter {
     var query = {
       ...defaultParams,
       'include_tweet_replies': includeReplies ? '1' : '0',
+      'include_want_retweets': '1',
       'count': count.toString(),
     };
 
