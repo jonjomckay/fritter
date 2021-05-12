@@ -1,2 +1,3 @@
 * Now displaying subscriptions as the first page instead of trends
+* Now notifying the user when an update to the app is available
 * Added "Tweets" and "Tweets & Replies" tabs to profiles
