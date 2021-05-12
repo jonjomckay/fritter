@@ -23,28 +23,45 @@ import 'database/repository.dart';
 Future checkForUpdates() async {
   log('Checking for updates');
 
-  var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
-  if (response.statusCode == 200) {
-    var package = await PackageInfo.fromPlatform();
-    var result = jsonDecode(response.body);
-    var release = result['versions']['github']['stable'];
-    var latest = release['versionCode'];
+  try {
+    var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
+    if (response.statusCode == 200) {
+      var package = await PackageInfo.fromPlatform();
+      var result = jsonDecode(response.body);
 
-    log('The latest version is $latest, and we are on ${package.buildNumber}');
+      const flavor = String.fromEnvironment('app.flavor');
+      var release = result['versions'][flavor]['stable'];
+      var latest = release['versionCode'];
 
-    if (int.parse(package.buildNumber) < latest) {
-      var details = NotificationDetails(android: AndroidNotificationDetails(
-          'updates', 'Updates', 'When a new app update is available',
-          importance: Importance.max,
-          largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
-          priority: Priority.high,
-          showWhen: false
-      ));
+      log('The latest version is $latest, and we are on ${package.buildNumber}');
 
-      await FlutterLocalNotificationsPlugin().show(
-          0, 'An update for Fritter is available! 🚀', 'Tap to download ${release['version']}', details,
-          payload: release['apk']);
+      if (int.parse(package.buildNumber) < latest) {
+        var details = NotificationDetails(android: AndroidNotificationDetails(
+            'updates', 'Updates', 'When a new app update is available',
+            importance: Importance.max,
+            largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+            priority: Priority.high,
+            showWhen: false
+        ));
+
+        if (flavor == 'github') {
+          await FlutterLocalNotificationsPlugin().show(
+              0, 'An update for Fritter is available! 🚀',
+              'Tap to download ${release['version']}', details,
+              payload: release['apk']);
+        } else {
+          await FlutterLocalNotificationsPlugin().show(
+              0, 'An update for Fritter is available! 🚀',
+              'Update to ${release['version']} through your F-Droid client', details,
+              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/'
+          );
+        }
+      }
+    } else {
+      log('Unable to check for updates: ${response.body}');
     }
+  } catch (e, stackTrace) {
+    log('Unable to check for updates', error: e, stackTrace: stackTrace);
   }
 }
 
