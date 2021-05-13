@@ -217,17 +217,13 @@ class _OptionsScreenState extends State<OptionsScreen> {
               .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
               .toList()
         ),
-        PrefCheckbox(
-          pref: OPTION_MEDIA_ENABLE,
-          title: Text('Display media'),
-          subtitle: Text('Whether to automatically display media'),
-        ),
         PrefDropdown(
           fullWidth: false,
           title: Text('Media size'),
           subtitle: Text('Save bandwidth using smaller images'),
           pref: OPTION_MEDIA_SIZE,
           items: [
+            DropdownMenuItem(child: Text('Disabled'), value: 'disabled'),
             DropdownMenuItem(child: Text('Thumbnail'), value: 'thumb'),
             DropdownMenuItem(child: Text('Small'), value: 'small'),
             DropdownMenuItem(child: Text('Medium'), value: 'medium'),

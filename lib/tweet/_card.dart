@@ -38,18 +38,26 @@ class TweetCard extends StatelessWidget {
     );
   }
 
-  _createImage(Map<String, dynamic>? image, BoxFit fit, { double? aspectRatio }) {
+  _createImage(String size, Map<String, dynamic>? image, BoxFit fit, { double? aspectRatio }) {
     if (image == null) {
       return Container();
     }
 
-    return AspectRatio(
-      aspectRatio: aspectRatio ?? image['width'] / image['height'],
-      child: ExtendedImage.network(
+    Widget child;
+
+    if (size == 'disabled') {
+      child = Container();
+    } else {
+      child = ExtendedImage.network(
         image['url'],
         cache: true,
         fit: fit,
-      ),
+      );
+    }
+
+    return AspectRatio(
+      aspectRatio: aspectRatio ?? image['width'] / image['height'],
+      child: child,
     );
   }
 
@@ -197,7 +205,8 @@ class TweetCard extends StatelessWidget {
 
         return _createCard(card, Row(
           children: [
-            Expanded(flex: 1, child: _createImage(image, BoxFit.contain)),
+            if (imageSize != 'disabled')
+              Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.contain)),
             Expanded(flex: 4, child: _createListTile(context, card))
           ],
         ));
@@ -208,7 +217,8 @@ class TweetCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _createImage(image, BoxFit.contain),
+            if (imageSize != 'disabled')
+              _createImage(imageSize, image, BoxFit.contain),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: _createListTile(context, card),
@@ -220,7 +230,7 @@ class TweetCard extends StatelessWidget {
 
         return _createCard(card, Row(
           children: [
-            Expanded(flex: 1, child: _createImage(image, BoxFit.cover, aspectRatio: 1)),
+            Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.cover, aspectRatio: 1)),
             Expanded(flex: 4, child: _createListTile(context, card))
           ],
         ));

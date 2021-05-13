@@ -38,19 +38,19 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   void initState() {
     super.initState();
 
-    var isMediaEnabled = PrefService.of(context, listen: false)
-      .get(OPTION_MEDIA_ENABLE);
+    var mediaSize = PrefService.of(context, listen: false)
+      .get(OPTION_MEDIA_SIZE);
 
-    if (isMediaEnabled) {
-      setState(() {
-        _showMedia = true;
-      });
-    } else {
+    if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
       cachedImageExists(widget.media.mediaUrlHttps!)
           .then((value) => setState(() {
             _showMedia = value;
           }));
+    } else {
+      setState(() {
+        _showMedia = true;
+      });
     }
   }
 
@@ -154,7 +154,10 @@ class TweetPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE) ?? 'medium';
+    var size = prefs.get(OPTION_MEDIA_SIZE);
+    if (size == 'disabled') {
+      size = 'medium';
+    }
 
     return ExtendedImage.network('$uri:$size',
         cache: true,
