@@ -2,6 +2,8 @@ const OPTION_HELLO_LAST_BUILD = 'hello.last_build';
 
 const OPTION_HOME_INITIAL_TAB = 'home.initial_tab';
 
+const OPTION_MEDIA_SIZE = 'media.size';
+
 const OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING = 'subscription.order_by.ascending';
 const OPTION_SUBSCRIPTION_ORDER_BY_FIELD = 'subscription.order_by.field';
 

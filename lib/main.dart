@@ -93,6 +93,7 @@ Future<void> main() async {
   }
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    OPTION_MEDIA_SIZE: 'medium',
     OPTION_THEME_MODE: 'system',
     OPTION_THEME_TRUE_BLACK: false
   });
