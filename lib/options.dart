@@ -198,18 +198,19 @@ class _OptionsScreenState extends State<OptionsScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: PrefPage(children: [
-        PrefTitle(
-          title: Text('General'),
-        ),
         PrefButton(
           child: Text('👋 Hello'),
           title: Text('Say Hello'),
           subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
           onTap: _sendPing,
         ),
+
+        PrefTitle(
+          title: Text('General'),
+        ),
         PrefDropdown(
           fullWidth: false,
-          title: Text('Default Tab'),
+          title: Text('Default tab'),
           subtitle: Text('Which tab is shown when the app opens'),
           pref: OPTION_HOME_INITIAL_TAB,
           items: homeTabs
@@ -220,20 +221,15 @@ class _OptionsScreenState extends State<OptionsScreen> {
         PrefTitle(
             title: Text('Theme')
         ),
-        PrefRadio(
-          title: Text('System Theme'),
-          value: 'system',
+        PrefDropdown(
+          fullWidth: false,
+          title: Text('Theme'),
           pref: OPTION_THEME_MODE,
-        ),
-        PrefRadio(
-          title: Text('Light Theme'),
-          value: 'light',
-          pref: OPTION_THEME_MODE,
-        ),
-        PrefRadio(
-          title: Text('Dark Theme'),
-          value: 'dark',
-          pref: OPTION_THEME_MODE,
+          items: [
+            DropdownMenuItem(child: Text('System'), value: 'system'),
+            DropdownMenuItem(child: Text('Light'), value: 'light'),
+            DropdownMenuItem(child: Text('Dark'), value: 'dark'),
+          ]
         ),
         PrefSwitch(
           title: Text('True Black?'),
