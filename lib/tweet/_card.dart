@@ -4,7 +4,9 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:pref/pref.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -179,9 +181,19 @@ class TweetCard extends StatelessWidget {
       return Container();
     }
 
+    var imageKey = '';
+    var imageSize = PrefService.of(context, listen: false).get(OPTION_MEDIA_SIZE);
+    if (imageSize == 'thumb') {
+      imageKey = '_small';
+    } else if (imageSize == 'medium') {
+      imageKey = '_large';
+    } else if (imageSize == 'large') {
+      imageKey = '_x_large';
+    }
+
     switch (card['name']) {
       case 'summary':
-        var image = card['binding_values']['thumbnail_image_large']?['image_value'];
+        var image = card['binding_values']['thumbnail_image$imageKey']?['image_value'];
 
         return _createCard(card, Row(
           children: [
@@ -190,7 +202,7 @@ class TweetCard extends StatelessWidget {
           ],
         ));
       case 'summary_large_image':
-        var image = card['binding_values']['summary_photo_image']?['image_value'];
+        var image = card['binding_values']['thumbnail_image$imageKey']?['image_value'];
 
         return _createCard(card, Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +216,7 @@ class TweetCard extends StatelessWidget {
           ],
         ));
       case 'player':
-        var image = card['binding_values']['player_image']?['image_value'];
+        var image = card['binding_values']['player_image$imageKey']?['image_value'];
 
         return _createCard(card, Row(
           children: [
