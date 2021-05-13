@@ -1,0 +1,6 @@
+* Ajout d'un support pour le chargement de tous les tweets sur les profils
+* Le contenu des tweets peut être sélectionné
+* Correction des comptes manquants sous les tweets (réponses, retweets, citations et favoris).
+* Correction des liens vers les ressources des sous-tweets (photos, médias) pour ouvrir le tweet au lieu de l'écran des tendances.
+* Correction des réponses aux tweets qui ne pouvaient pas être ouvertes.
+* Correction des rapports d'aspect invalides pour certaines vidéos

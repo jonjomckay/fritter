@@ -1,0 +1,8 @@
+* Abonnements et groupes locaux, style Newpipe, y compris une vue du flux.
+* Sauvegarde des tweets sur l'appareil, permettant une lecture hors ligne.
+* Affichage des profils
+* Affichage des tweets et des réponses
+* Affichage des images, vidéos et GIFs dans les tweets
+* Recherche de tweets et d'utilisateurs
+* Prise en charge de l'ouverture directe des liens twitter.com
+* Prise en charge du contenu RTL

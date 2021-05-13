@@ -1,0 +1,2 @@
+* Correction des tweets qui ne s'ouvraient pas lorsqu'on les touchait.
+* Suppression des URL de t.co qui s'affichaient à la fin des tweets contenant des médias ou des liens

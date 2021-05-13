@@ -1,0 +1,2 @@
+* Correction des réponses n'apparaissant pas sur l'écran de profil.
+* Correction de l'ordre des abonnements, en ajoutant la possibilité de les trier manuellement
