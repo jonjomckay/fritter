@@ -1,0 +1,8 @@
+* lokale Abonnements und Gruppen im Newpipe-Stil, einschließlich einer Feed-Ansicht
+* lokales Speichern von Tweets, um sie offline lesen zu können
+* Anzeigen von Profilen
+* Anzeigen von Tweets und Antworten
+* Anzeigen von Bildern, Videos und GIFs in Tweets
+* Suche nach Tweets und Benutzern
+* Unterstützt das direkte Öffnen von twitter.com-Links
+* Unterstützt RTL-Inhalte
