@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
+import 'package:ffcache/ffcache.dart';
+import 'package:fritter/utils/cache.dart';
 import 'package:http/http.dart' as http;
 
 const Duration _defaultTimeout = Duration(seconds: 10);
@@ -96,7 +98,8 @@ class _FritterTwitterClient extends TwitterClient {
     var headerRateLimitLimit = response.headers['x-rate-limit-limit'];
 
     if (headerRateLimitReset == null || headerRateLimitRemaining == null || headerRateLimitLimit == null) {
-      throw new Exception('One or more of the rate limit headers are missing');
+      // If the rate limit headers are missing, the endpoint probably doesn't send them back
+      return response;
     }
 
     // Update our token's rate limit counters
@@ -111,6 +114,8 @@ class _FritterTwitterClient extends TwitterClient {
 
 class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
+
+  static FFCache _cache = FFCache();
 
   static Map<String, String> defaultParams = {
     'include_profile_interstitial_type': '0',
@@ -136,10 +141,23 @@ class Twitter {
     'ext': 'mediaStats',
     'include_quote_count': 'true'
   };
-  
-  static Future<User> getProfile(String username) async => await _twitterApi.userService.usersShow(
-      screenName: username
-    );
+
+  static Future<User> getProfile(String username) async {
+    var uri = Uri.https('twitter.com', '/i/api/graphql/Vf8si2dfZ1zmah8ePYPjDQ/UserByScreenNameWithoutResults', {
+      'variables': jsonEncode({
+        'screen_name': username,
+        'withHighlightedLabel': true
+      })
+    });
+
+    var response = await _twitterApi.client.get(uri);
+    var content = jsonDecode(response.body);
+
+    return User.fromJson({
+      ...content['data']['user']['legacy'],
+      'id_str': content['data']['user']['rest_id']
+    });
+  }
 
   static Future<TweetStatus> getTweet(String id) async {
     var response = await _twitterApi.client.get(
@@ -162,7 +180,9 @@ class Twitter {
         .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
         .toList(growable: false);
 
-    return TweetStatus(tweet: _createTweets('tweet', result).last, replies: replies);
+    var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
+
+    return TweetStatus(tweet: tweet, replies: replies);
   }
 
   static Future<List<TweetWithCard>> searchTweets(String query, {int limit = 25, String? maxId}) async {
@@ -188,9 +208,31 @@ class Twitter {
       q: query,
     );
 
-  static Future<List<Trends>> getTrends() async => await _twitterApi.trendsService.place(
-      id: 1
-    );
+  static Future<List<TrendLocation>> getTrendLocations() async {
+    var result = await _cache.getOrCreateAsJSON('trends.locations', Duration(days: 2), () async {
+      var locations = await _twitterApi.trendsService.available();
+
+      return jsonEncode(locations.map((e) => e.toJson()).toList());
+    });
+
+    return List.from(jsonDecode(result))
+        .map((e) => TrendLocation.fromJson(e))
+        .toList(growable: false);
+  }
+
+  static Future<List<Trends>> getTrends(int location) async {
+    var result = await _cache.getOrCreateAsJSON('trends.$location', Duration(minutes: 2), () async {
+      var trends = await _twitterApi.trendsService.place(
+          id: location
+      );
+
+      return jsonEncode(trends.map((e) => e.toJson()).toList());
+    });
+
+    return List.from(jsonDecode(result))
+      .map((e) => Trends.fromJson(e))
+      .toList(growable: false);
+  }
 
   static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
     var query = {
@@ -241,6 +283,7 @@ class Twitter {
 
 class TweetWithCard extends Tweet {
   Map<String, dynamic>? card;
+  TweetWithCard? inReplyToWithCard;
   TweetWithCard? quotedStatusWithCard;
   TweetWithCard? retweetedStatusWithCard;
 
@@ -249,6 +292,7 @@ class TweetWithCard extends Tweet {
   Map<String, dynamic> toJson() {
     var json = super.toJson();
     json['card'] = card;
+    json['inReplyToWithCard'] = inReplyToWithCard?.toJson();
     json['quotedStatusWithCard'] = quotedStatusWithCard?.toJson();
     json['retweetedStatusWithCard'] = retweetedStatusWithCard?.toJson();
 
@@ -271,6 +315,7 @@ class TweetWithCard extends Tweet {
     tweetWithCard.inReplyToScreenName = tweet.inReplyToScreenName;
     tweetWithCard.inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
     tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
+    tweetWithCard.inReplyToWithCard = e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
     tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
     tweetWithCard.lang = tweet.lang;
     tweetWithCard.quoteCount = tweet.quoteCount;
@@ -331,6 +376,13 @@ class TweetWithCard extends Tweet {
 
       tweet.quotedStatus = quotedStatus;
       tweet.quotedStatusWithCard = quotedStatus;
+    }
+
+    var inReplyToId = e['in_reply_to_status_id_str'];
+    if (inReplyToId != null && tweets[inReplyToId] != null) {
+      var inReplyTo = TweetWithCard.fromCardJson(tweets, users, tweets[inReplyToId]);
+
+      tweet.inReplyToWithCard = inReplyTo;
     }
 
     tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)

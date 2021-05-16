@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/user.dart';
+import 'package:http/http.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String? id;
@@ -36,6 +37,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   late TabController _tabController;
 
   User? _profile;
+  dynamic? _error;
 
   @override
   void initState() {
@@ -49,8 +51,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   Future onError(Object e, [StackTrace? stackTrace]) async {
     log('Unable to load the profile', error: e, stackTrace: stackTrace);
 
+    var error = e is Response
+      ? e.body
+      : e;
+
+    setState(() {
+      _error = error;
+    });
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Something went wrong loading the profile! The error was: $e'),
+      content: Text('Something went wrong loading the profile!'),
       duration: Duration(days: 1),
       action: SnackBarAction(
         label: 'Retry',
@@ -62,6 +72,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   void fetchProfile(String? id, String username) {
     Twitter.getProfile(username).catchError(onError).then((profile) {
       setState(() {
+        _error = null;
         _profile = profile;
       });
     });
@@ -81,6 +92,28 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
     var deviceSize = MediaQuery.of(context).size;
     var appBarHeight = deviceSize.width * (500 / 1500);
+
+    var error = _error;
+    if (error != null) {
+      return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Oops! Something went wrong 🥲', style: TextStyle(
+                fontSize: 18
+            )),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              child: Text('$error', textAlign: TextAlign.center, style: TextStyle(
+                  color: Theme.of(context).hintColor
+              )),
+            )
+          ],
+        ),
+      );
+    }
 
     var profile = _profile;
     if (profile == null) {
@@ -125,6 +158,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               ],
               bottom: TabBar(
                 controller: _tabController,
+                isScrollable: true,
                 tabs: [
                   Tab(child: Text('Tweets', textAlign: TextAlign.center)),
                   Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),

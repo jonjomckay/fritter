@@ -1,2 +1,6 @@
-* Now displaying subscriptions as the first page instead of trends
-* Added "Tweets" and "Tweets & Replies" tabs to profiles
+* Added support for selecting a location for trends
+* Added support for selecting the default tab when the app opens
+* Added support for selecting the media size
+* Now showing who a tweet is in reply to
+* Fixed not being able to select non-Latin hashtags
+* Fixed search tabs not being visible in light mode

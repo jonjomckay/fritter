@@ -25,7 +25,7 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
-      - name: Install and set up FLutter
+      - name: Install and set up Flutter
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.0.4'
@@ -35,7 +35,7 @@ jobs:
           flutter config --no-analytics
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk
+          flutter build apk --dart-define=app.flavor=github
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}

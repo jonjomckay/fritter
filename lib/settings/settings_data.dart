@@ -33,10 +33,10 @@ class SettingsData {
   factory SettingsData.fromJson(Map<String, dynamic> json) {
     return SettingsData(
         settings: json['settings'],
-        subscriptions: List.from(json['subscriptions']).map((e) => Subscription.fromMap(e)).toList(),
-        subscriptionGroups: List.from(json['subscriptionGroups']).map((e) => SubscriptionGroup.fromMap(e)).toList(),
-        subscriptionGroupMembers: List.from(json['subscriptionGroupMembers']).map((e) => SubscriptionGroupMember.fromMap(e)).toList(),
-        tweets: List.from(json['tweets']).map((e) => SavedTweet.fromMap(e)).toList()
+        subscriptions: json['subscriptions'] != null ? List.from(json['subscriptions']).map((e) => Subscription.fromMap(e)).toList() : null,
+        subscriptionGroups: json['subscriptionGroups'] != null ? List.from(json['subscriptionGroups']).map((e) => SubscriptionGroup.fromMap(e)).toList() : null,
+        subscriptionGroupMembers: json['subscriptionGroupMembers'] != null ? List.from(json['subscriptionGroupMembers']).map((e) => SubscriptionGroupMember.fromMap(e)).toList() : null,
+        tweets: json['tweets'] != null ? List.from(json['tweets']).map((e) => SavedTweet.fromMap(e)).toList() : null
     );
   }
 

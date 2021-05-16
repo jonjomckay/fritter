@@ -1,0 +1,4 @@
+* Fixed tapping on usernames in tweets opening two screens
+    * Replies are now viewable by tapping the replies icon underneath a tweet
+* Fixed the tweet footer and profile tab bar overflowing on smaller screens.
+    * They are now both scrollable horizontally

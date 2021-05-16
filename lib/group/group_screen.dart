@@ -31,7 +31,6 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     });
   }
 
-
   @override
   void didUpdateWidget(SubscriptionGroupFeed oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -161,7 +160,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
             child: Text('Couldn\'t find any tweets from the last 7 days!'),
           ),
         ),
-      )
+      ),
     );
   }
 }

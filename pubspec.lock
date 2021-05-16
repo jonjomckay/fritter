@@ -141,6 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0-rc.2"
+  ffcache:
+    dependency: "direct main"
+    description:
+      name: ffcache
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   ffi:
     dependency: transitive
     description:
@@ -158,9 +165,11 @@ packages:
   file_picker_writable:
     dependency: "direct main"
     description:
-      name: file_picker_writable
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "45b55f13266de97e7f02fb05b49dbccfb492c4cc"
+      resolved-ref: "45b55f13266de97e7f02fb05b49dbccfb492c4cc"
+      url: "https://github.com/jonjomckay/file_picker_writable.git"
+    source: git
     version: "2.0.0"
   flex_color_scheme:
     dependency: "direct main"
@@ -181,6 +190,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
+  flutter_local_notifications:
+    dependency: "direct main"
+    description:
+      name: flutter_local_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0+4"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   flutter_oss_licenses:
     dependency: "direct dev"
     description:
@@ -581,6 +604,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   typed_data:
     dependency: transitive
     description:
