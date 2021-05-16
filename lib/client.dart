@@ -6,6 +6,7 @@ import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
+import 'package:fritter/utils/cache.dart';
 import 'package:http/http.dart' as http;
 
 const Duration _defaultTimeout = Duration(seconds: 10);
@@ -208,43 +209,29 @@ class Twitter {
     );
 
   static Future<List<TrendLocation>> getTrendLocations() async {
-    if (await _cache.has('trends.locations')) {
-      log('Loading trend locations from the cache');
+    var result = await _cache.getOrCreateAsJSON('trends.locations', Duration(days: 2), () async {
+      var locations = await _twitterApi.trendsService.available();
 
-      var cached = List.from(jsonDecode(await _cache.getJSON('trends.locations')));
+      return jsonEncode(locations.map((e) => e.toJson()).toList());
+    });
 
-      return cached.map((e) => TrendLocation.fromJson(e)).toList();
-    }
-
-    log('Loading trend locations from the network');
-
-    var result = await _twitterApi.trendsService.available();
-
-    await _cache.setJSONWithTimeout('trends.locations', jsonEncode(result.map((e) => e.toJson()).toList()), Duration(days: 1));
-
-    return result;
+    return List.from(jsonDecode(result))
+        .map((e) => TrendLocation.fromJson(e))
+        .toList(growable: false);
   }
 
   static Future<List<Trends>> getTrends(int location) async {
-    var key = 'trends.$location';
+    var result = await _cache.getOrCreateAsJSON('trends.$location', Duration(minutes: 2), () async {
+      var trends = await _twitterApi.trendsService.place(
+          id: location
+      );
 
-    if (await _cache.has(key)) {
-      log('Loading trends for $location from the cache');
+      return jsonEncode(trends.map((e) => e.toJson()).toList());
+    });
 
-      var cached = List.from(jsonDecode(await _cache.getJSON(key)));
-
-      return cached.map((e) => Trends.fromJson(e)).toList();
-    }
-
-    log('Loading trends for $location from the network');
-
-    var result = await _twitterApi.trendsService.place(
-      id: location
-    );
-
-    await _cache.setJSONWithTimeout(key, jsonEncode(result.map((e) => e.toJson()).toList()), Duration(minutes: 2));
-
-    return result;
+    return List.from(jsonDecode(result))
+      .map((e) => Trends.fromJson(e))
+      .toList(growable: false);
   }
 
   static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {

@@ -24,44 +24,48 @@ class _TrendsSettingsState extends State<TrendsSettings> {
     var prefs = PrefService.of(context);
     var model = context.read<HomeModel>();
 
-    return FutureBuilder<List<TrendLocation>>(
-      future: Twitter.getTrendLocations(),
-      builder: (context, snapshot) {
-        var data = snapshot.data;
-        if (data == null) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return FutureBuilderWrapper<List<TrendLocation>>(
+        future: Twitter.getTrendLocations(),
+        onError: (error, stackTrace) {
+          return Center(
+            child: Text('$error'),
+          );
+        },
+        onReady: (data) {
+          if (data == null) {
+            return Text('There were no trend locations returned. This is unexpected! Please report as a bug, if possible.');
+          }
 
-        data.sort((a, b) => a.name!.compareTo(b.name!));
+          data.sort((a, b) => a.name!.compareTo(b.name!));
 
-        var place = TrendLocation.fromJson(jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
+          var place = TrendLocation.fromJson(jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
 
-        return AlertDialog(
-          content: Container(
-            width: double.maxFinite,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                var item = data[index];
+          return AlertDialog(
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  var item = data[index];
 
-                return RadioListTile<int?>(
-                    title: Text(item.name!),
-                    subtitle: Text(item.country!),
-                    value: item.woeid,
-                    selected: place.woeid == item.woeid,
-                    groupValue: place.woeid,
-                    onChanged: (value) async {
-                      await model.setTrendLocation(prefs, item);
+                  return RadioListTile<int?>(
+                      title: Text(item.name!),
+                      subtitle: Text(item.country!),
+                      value: item.woeid,
+                      selected: place.woeid == item.woeid,
+                      groupValue: place.woeid,
+                      onChanged: (value) async {
+                        await model.setTrendLocation(prefs, item);
 
-                      Navigator.pop(context);
-                    }
-                );
-              },
+                        Navigator.pop(context);
+                      }
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      },
+          );
+        }
     );
   }
 }
