@@ -11,8 +11,9 @@ class SubscriptionGroupFeed extends StatefulWidget {
   final SubscriptionGroupGet group;
   final List<String> users;
   final bool includeReplies;
+  final bool includeRetweets;
 
-  const SubscriptionGroupFeed({Key? key, required this.group, required this.users, required this.includeReplies}) : super(key: key);
+  const SubscriptionGroupFeed({Key? key, required this.group, required this.users, required this.includeReplies, required this.includeRetweets}) : super(key: key);
 
   @override
   _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
@@ -35,7 +36,8 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
   void didUpdateWidget(SubscriptionGroupFeed oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.includeReplies != widget.includeReplies) {
+    if (oldWidget.includeReplies != widget.includeReplies ||
+        oldWidget.includeRetweets != widget.includeRetweets) {
       _pagingController.refresh();
     }
   }
@@ -48,6 +50,10 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     var query = '';
     if (!widget.includeReplies) {
       query += '-filter:replies ';
+    }
+
+    if (!widget.includeRetweets) {
+      query += '-filter:retweets ';
     }
 
     var remainingLength = 500 - query.length;
@@ -97,7 +103,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                 var theme = Theme.of(context);
 
                 return Container(
-                  height: 150,
+                  height: 220,
                   child: Container(
                     decoration: BoxDecoration(
                       color: theme.canvasColor,
@@ -133,6 +139,9 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                                 children: [
                                   CheckboxListTile(title: Text('Include replies'), value: settings.includeReplies, onChanged: (value) async {
                                     await model.toggleSubscriptionGroupIncludeReplies(widget.group.id, value ?? false);
+                                  }),
+                                  CheckboxListTile(title: Text('Include retweets'), value: settings.includeRetweets, onChanged: (value) async {
+                                    await model.toggleSubscriptionGroupIncludeRetweets(widget.group.id, value ?? false);
                                   }),
                                 ],
                               );
@@ -222,6 +231,7 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
                 group: group,
                 users: users,
                 includeReplies: settings.includeReplies,
+                includeRetweets: settings.includeRetweets,
               );
             },
           );
