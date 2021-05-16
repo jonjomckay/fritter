@@ -87,7 +87,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
               : null;
 
           var subscriptionGroups = _exportSubscriptionGroups
-              ? await model.listSubscriptionGroups()
+              ? await model.listSubscriptionGroups(orderBy: 'id', orderByAscending: true)
               : null;
 
           var subscriptionGroupMembers = _exportSubscriptionGroupMembers

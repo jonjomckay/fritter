@@ -13,16 +13,18 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class SubscriptionsContent extends StatefulWidget {
+class SubscriptionGroupFragment extends StatefulWidget {
+  final ScrollController controller;
+
+  const SubscriptionGroupFragment({Key? key, required this.controller}) : super(key: key);
+
   @override
-  _SubscriptionsContentState createState() => _SubscriptionsContentState();
+  _SubscriptionGroupFragmentState createState() => _SubscriptionGroupFragmentState();
 }
 
-class _SubscriptionsContentState extends State<SubscriptionsContent> {
-  final _refreshController = RefreshController(initialRefresh: false);
-
-  late String _orderSubscriptionsByField;
-  late bool _orderSubscriptionsAscending;
+class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
+  late String _orderSubscriptionGroupsByField;
+  late bool _orderSubscriptionGroupsAscending;
 
   @override
   void didChangeDependencies() {
@@ -31,40 +33,30 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
     var prefs = PrefService.of(context);
 
     setState(() {
-      _orderSubscriptionsAscending = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING) ?? true;
-      _orderSubscriptionsByField = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD) ?? 'name';
+      _orderSubscriptionGroupsAscending = prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING) ?? true;
+      _orderSubscriptionGroupsByField = prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD) ?? 'name';
     });
   }
 
-  void _onChangeOrderSubscriptionsBy(String? value) {
+  void _onChangeOrderSubscriptionGroupsBy(String? value) {
     var prefs = PrefService.of(context);
 
-    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value);
+    prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD, value);
 
     setState(() {
-      this._orderSubscriptionsByField = value ?? 'name';
+      this._orderSubscriptionGroupsByField = value ?? 'name';
     });
   }
 
-  void _onToggleOrderSubscriptionsAscending() {
+  void _onToggleOrderSubscriptionGroupsAscending() {
     var prefs = PrefService.of(context);
-    var value = !_orderSubscriptionsAscending;
+    var value = !_orderSubscriptionGroupsAscending;
 
-    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, value);
+    prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING, value);
 
     setState(() {
-      this._orderSubscriptionsAscending = value;
+      this._orderSubscriptionGroupsAscending = value;
     });
-  }
-
-  Future _onRefresh() async {
-    try {
-      await Future.delayed(Duration(milliseconds: 400));
-
-      await context.read<HomeModel>().refresh();
-    } finally {
-      _refreshController.refreshCompleted();
-    }
   }
 
   void openDeleteSubscriptionGroupDialog(String id, String name) {
@@ -164,14 +156,14 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                         var selectedSubscriptions = (form.control('subscriptions').value as List<bool?>)
                             .asMap().entries
                             .map((e) {
-                              var index = e.key;
-                              var value = e.value;
-                              if (value != null && value == true) {
-                                return edit.allSubscriptions[index];
-                              }
+                          var index = e.key;
+                          var value = e.value;
+                          if (value != null && value == true) {
+                            return edit.allSubscriptions[index];
+                          }
 
-                              return null;
-                            })
+                          return null;
+                        })
                             .where((element) => element != null)
                             .cast<Subscription>()
                             .toList(growable: false);
@@ -226,8 +218,8 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
 
   Widget _createGroupCard(IconData icon, String id, String name, int? numberOfMembers, void Function()? onLongPress) {
     var title = numberOfMembers == null
-      ? name
-      : '$name ($numberOfMembers)';
+        ? name
+        : '$name ($numberOfMembers)';
 
     return Card(
       child: InkWell(
@@ -267,11 +259,35 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Consumer<HomeModel>(
-        builder: (context, model, child) {
-          return FutureBuilder<List<SubscriptionGroup>>(
-            future: model.listSubscriptionGroups(),
+    var model = context.read<HomeModel>();
+
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        title: Text('Groups', style: TextStyle(
+            fontWeight: FontWeight.bold
+        )),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PopupMenuButton<String>(
+              icon: Icon(Icons.sort),
+              itemBuilder: (context) => [
+                const PopupMenuItem(child: Text('Name'), value: 'name'),
+                const PopupMenuItem(child: Text('Date Created'), value: 'created_at'),
+              ],
+              onSelected: (value) => _onChangeOrderSubscriptionGroupsBy(value),
+            ),
+            IconButton(
+              icon: Icon(Icons.sort_by_alpha),
+              onPressed: () => _onToggleOrderSubscriptionGroupsAscending(),
+            )
+          ],
+        ),
+        children: [
+          FutureBuilder<List<SubscriptionGroup>>(
+            future: model.listSubscriptionGroups(orderBy: _orderSubscriptionGroupsByField, orderByAscending: _orderSubscriptionGroupsAscending),
             builder: (context, snapshot) {
               var error = snapshot.error;
               if (error != null) {
@@ -284,142 +300,211 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              return Column(
-                children: [
-                  Theme(
-                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      title: Text('Groups', style: TextStyle(
-                          fontWeight: FontWeight.bold
-                      )),
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          child: GridView.extent(
-                              maxCrossAxisExtent: 120,
-                              childAspectRatio: 200 / 125,
-                              shrinkWrap: true,
-                              children: [
-                                _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
-                                ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
-                                Card(
-                                  child: InkWell(
-                                    onTap: () {
-                                      openSubscriptionGroupDialog(null, '');
-                                    },
-                                    child: DottedBorder(
-                                      color: Theme.of(context).textTheme.caption!.color!,
-                                      child: Container(
-                                        width: double.infinity,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              // color: Colors.white10,
-                                              // width: double.infinity,
-                                              child: Icon(Icons.add, size: 16),
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text('New', style: TextStyle(
-                                              fontSize: 11,
-                                            ))
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                child: GridView.extent(
+                    controller: widget.controller,
+                    maxCrossAxisExtent: 120,
+                    childAspectRatio: 200 / 125,
+                    shrinkWrap: true,
+                    children: [
+                      _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
+                      ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
+                      Card(
+                        child: InkWell(
+                          onTap: () {
+                            openSubscriptionGroupDialog(null, '');
+                          },
+                          child: DottedBorder(
+                            color: Theme.of(context).textTheme.caption!.color!,
+                            child: Container(
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    // color: Colors.white10,
+                                    // width: double.infinity,
+                                    child: Icon(Icons.add, size: 16),
                                   ),
-                                )
-                              ]),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(child: FutureBuilder<List<Subscription>>(
-                    future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
-                    builder: (context, snapshot) {
-                      var error = snapshot.error;
-                      if (error != null) {
-                        log('Unable to list the user\'s subscriptions', error: error);
-                        return Center(child: Text('Unable to list the subscriptions: $error'));
-                      }
-
-                      var data = snapshot.data;
-                      if (data == null) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      if (data.isEmpty) {
-                        return Center(child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('¯\\_(ツ)_/¯', style: TextStyle(
-                                  fontSize: 32
-                              )),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 16),
-                                child: Text('Try searching for some users to follow!', style: TextStyle(
-                                    color: Theme.of(context).hintColor
-                                )),
-                              )
-                            ])
-                        );
-                      }
-
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text('Subscriptions (${data.length})', style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            )),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                PopupMenuButton<String>(
-                                  icon: Icon(Icons.sort),
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem(child: Text('Name'), value: 'name'),
-                                    const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
-                                    const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
-                                  ],
-                                  onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.sort_by_alpha),
-                                  onPressed: () => _onToggleOrderSubscriptionsAscending(),
-                                )
-                              ],
+                                  SizedBox(height: 4),
+                                  Text('New', style: TextStyle(
+                                    fontSize: 11,
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
-                          Expanded(child: SmartRefresher(
-                            controller: _refreshController,
-                            enablePullDown: true,
-                            enablePullUp: false,
-                            onRefresh: _onRefresh,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: data.length,
-                              itemBuilder: (context, index) {
-                                var user = data[index];
-
-                                return UserTile(
-                                  id: user.id.toString(),
-                                  name: user.name,
-                                  screenName: user.screenName,
-                                  imageUri: user.profileImageUrlHttps,
-                                );
-                              },
-                            ),
-                          ))
-                        ],
-                      );
-                    },
-                  )),
-                ],
+                        ),
+                      )
+                    ]),
               );
             },
-          );
-        },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SubscriptionListFragment extends StatefulWidget {
+  final ScrollController controller;
+
+  const SubscriptionListFragment({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  _SubscriptionListFragmentState createState() => _SubscriptionListFragmentState();
+}
+
+class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
+  late String _orderSubscriptionsByField;
+  late bool _orderSubscriptionsAscending;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var prefs = PrefService.of(context);
+
+    setState(() {
+      _orderSubscriptionsAscending = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING) ?? true;
+      _orderSubscriptionsByField = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD) ?? 'name';
+    });
+  }
+
+  void _onChangeOrderSubscriptionsBy(String? value) {
+    var prefs = PrefService.of(context);
+
+    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value);
+
+    setState(() {
+      this._orderSubscriptionsByField = value ?? 'name';
+    });
+  }
+
+  void _onToggleOrderSubscriptionsAscending() {
+    var prefs = PrefService.of(context);
+    var value = !_orderSubscriptionsAscending;
+
+    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, value);
+
+    setState(() {
+      this._orderSubscriptionsAscending = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var model = context.read<HomeModel>();
+
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        title: Text('Subscriptions', style: TextStyle(
+            fontWeight: FontWeight.bold
+        )),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PopupMenuButton<String>(
+              icon: Icon(Icons.sort),
+              itemBuilder: (context) => [
+                const PopupMenuItem(child: Text('Name'), value: 'name'),
+                const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
+                const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
+              ],
+              onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
+            ),
+            IconButton(
+              icon: Icon(Icons.sort_by_alpha),
+              onPressed: () => _onToggleOrderSubscriptionsAscending(),
+            )
+          ],
+        ),
+        children: [
+          FutureBuilder<List<Subscription>>(
+            future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
+            builder: (context, snapshot) {
+              var error = snapshot.error;
+              if (error != null) {
+                log('Unable to list the user\'s subscriptions', error: error);
+                return Center(child: Text('Unable to list the subscriptions: $error'));
+              }
+
+              var data = snapshot.data;
+              if (data == null) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (data.isEmpty) {
+                return Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('¯\\_(ツ)_/¯', style: TextStyle(
+                          fontSize: 32
+                      )),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 16),
+                        child: Text('Try searching for some users to follow!', style: TextStyle(
+                            color: Theme.of(context).hintColor
+                        )),
+                      )
+                    ])
+                );
+              }
+
+              return ListView.builder(
+                controller: widget.controller,
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  var user = data[index];
+
+                  return UserTile(
+                    id: user.id.toString(),
+                    name: user.name,
+                    screenName: user.screenName,
+                    imageUri: user.profileImageUrlHttps,
+                  );
+                },
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SubscriptionsContent extends StatefulWidget {
+  @override
+  _SubscriptionsContentState createState() => _SubscriptionsContentState();
+}
+
+class _SubscriptionsContentState extends State<SubscriptionsContent> {
+  final _scrollController = ScrollController();
+  final _refreshController = RefreshController(initialRefresh: false);
+
+  Future _onRefresh() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 400));
+
+      await context.read<HomeModel>().refresh();
+    } finally {
+      _refreshController.refreshCompleted();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Column(
+        children: [
+          SubscriptionGroupFragment(controller: _scrollController),
+          SubscriptionListFragment(controller: _scrollController,),
+        ],
       ),
     );
   }
