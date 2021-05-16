@@ -3,5 +3,7 @@
 * Added support for selecting the media size
 * Added support for filtering replies and retweets from groups
 * Now showing who a tweet is in reply to
+* Now displaying errors in more places instead of silently failing
+* Tidied up the settings screen
 * Fixed not being able to select non-Latin hashtags
 * Fixed search tabs not being visible in light mode
