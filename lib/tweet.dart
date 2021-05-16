@@ -107,7 +107,6 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   }
 }
 
-
 class TweetMedia extends StatefulWidget {
   final List<Media> media;
 

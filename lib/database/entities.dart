@@ -114,3 +114,10 @@ class SubscriptionGroupMember with ToMappable {
     };
   }
 }
+
+class SubscriptionGroupSettings {
+  final bool includeReplies;
+  final bool includeRetweets;
+
+  SubscriptionGroupSettings({required this.includeReplies, required this.includeRetweets});
+}
