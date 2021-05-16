@@ -52,10 +52,13 @@ class TweetSearchDelegate extends SearchDelegate {
         child: Column(
           children: [
             Container(
-              child: TabBar(tabs: [
-                Tab(icon: Icon(Icons.person)),
-                Tab(icon: Icon(Icons.comment)),
-              ]),
+              child: Material(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                child: TabBar(tabs: [
+                  Tab(icon: Icon(Icons.person)),
+                  Tab(icon: Icon(Icons.comment)),
+                ]),
+              ),
             ),
             Container(
               child: Expanded(child: TabBarView(children: [

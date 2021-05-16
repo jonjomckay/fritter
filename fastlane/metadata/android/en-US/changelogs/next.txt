@@ -2,3 +2,4 @@
 * Added support for selecting the media size
 * Now showing who a tweet is in reply to
 * Fixed not being able to select non-Latin hashtags
+* Fixed search tabs not being visible in light mode
