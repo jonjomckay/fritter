@@ -126,6 +126,13 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                               tileColor: theme.colorScheme.primary,
                             )
                         ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
+                          child: Text('Note: Due to a Twitter limitation, not all tweets may be included', style: TextStyle(
+                            color: Theme.of(context).disabledColor
+                          ))
+                        ),
                         Consumer<HomeModel>(builder: (context, model, child) {
                           return FutureBuilder<SubscriptionGroupSettings>(
                             future: model.loadSubscriptionGroupSettings(widget.group.id),
