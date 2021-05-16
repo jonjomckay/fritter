@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
+import 'package:ffcache/ffcache.dart';
+import 'package:fritter/utils/cache.dart';
 import 'package:http/http.dart' as http;
 
 const Duration _defaultTimeout = Duration(seconds: 10);
@@ -113,6 +115,8 @@ class _FritterTwitterClient extends TwitterClient {
 class Twitter {
   static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
+  static FFCache _cache = FFCache();
+
   static Map<String, String> defaultParams = {
     'include_profile_interstitial_type': '0',
     'include_blocking': '0',
@@ -204,9 +208,31 @@ class Twitter {
       q: query,
     );
 
-  static Future<List<Trends>> getTrends() async => await _twitterApi.trendsService.place(
-      id: 1
-    );
+  static Future<List<TrendLocation>> getTrendLocations() async {
+    var result = await _cache.getOrCreateAsJSON('trends.locations', Duration(days: 2), () async {
+      var locations = await _twitterApi.trendsService.available();
+
+      return jsonEncode(locations.map((e) => e.toJson()).toList());
+    });
+
+    return List.from(jsonDecode(result))
+        .map((e) => TrendLocation.fromJson(e))
+        .toList(growable: false);
+  }
+
+  static Future<List<Trends>> getTrends(int location) async {
+    var result = await _cache.getOrCreateAsJSON('trends.$location', Duration(minutes: 2), () async {
+      var trends = await _twitterApi.trendsService.place(
+          id: location
+      );
+
+      return jsonEncode(trends.map((e) => e.toJson()).toList());
+    });
+
+    return List.from(jsonDecode(result))
+      .map((e) => Trends.fromJson(e))
+      .toList(growable: false);
+  }
 
   static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
     var query = {

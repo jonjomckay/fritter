@@ -9,3 +9,5 @@ const OPTION_SUBSCRIPTION_ORDER_BY_FIELD = 'subscription.order_by.field';
 
 const OPTION_THEME_MODE = 'theme.mode';
 const OPTION_THEME_TRUE_BLACK = 'theme.true_black';
+
+const OPTION_TRENDS_LOCATION = 'trends.location';

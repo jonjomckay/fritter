@@ -31,6 +31,7 @@ dependencies:
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
+  ffcache: ^1.0.0
   flex_color_scheme: ^2.1.1
   file_picker_writable:
     git:
