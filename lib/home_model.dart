@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:pref/pref.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
@@ -181,8 +182,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future setTrendLocation(BasePrefService prefs, TrendLocation item) async {
-    prefs.set('trends.location.id', item.woeid);
-    prefs.set('trends.location.name', item.name);
+    prefs.set(OPTION_TRENDS_LOCATION, jsonEncode(item.toJson()));
 
     notifyListeners();
   }
