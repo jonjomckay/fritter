@@ -246,7 +246,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
             ),
             Expanded(child: Container(
               alignment: Alignment.center,
-              color: Colors.white24,
+              color: Theme.of(context).highlightColor,
               width: double.infinity,
               padding: EdgeInsets.all(4),
               child: Text(title,
@@ -309,7 +309,7 @@ class _SubscriptionsContentState extends State<SubscriptionsContent> {
                                       openSubscriptionGroupDialog(null, '');
                                     },
                                     child: DottedBorder(
-                                      color: Colors.white,
+                                      color: Theme.of(context).textTheme.caption!.color!,
                                       child: Container(
                                         width: double.infinity,
                                         child: Column(
