@@ -271,7 +271,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     TextButton(
                       child: Text('Import'),
                       onPressed: () async {
-                        var file = File(await getLegacyExportPath());
+                        var file = File(await getLegacyPath(legacyExportFileName));
                         if (await file.exists()) {
                           try {
                             await _importFromFile(file);
@@ -293,7 +293,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     )
                   ],
                   content: FutureBuilder<String>(
-                    future: getLegacyExportPath(),
+                    future: getLegacyPath(legacyExportFileName),
                     builder: (context, snapshot) {
                       var legacyExportPath = snapshot.data;
                       if (legacyExportPath == null) {

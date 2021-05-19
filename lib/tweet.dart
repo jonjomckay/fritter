@@ -1,266 +1,21 @@
 import 'dart:developer';
-import 'dart:math' as math;
 
 import 'package:auto_direction/auto_direction.dart';
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/constants.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:intl/intl.dart';
-import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:video_player/video_player.dart';
 
-class TweetMediaItem extends StatefulWidget {
-  final int index;
-  final int total;
-  final Media media;
-
-  const TweetMediaItem({Key? key, required this.index, required this.total, required this.media}) : super(key: key);
-
-  @override
-  _TweetMediaItemState createState() => _TweetMediaItemState();
-}
-
-class _TweetMediaItemState extends State<TweetMediaItem> {
-  bool _showMedia = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    var mediaSize = PrefService.of(context, listen: false)
-      .get(OPTION_MEDIA_SIZE);
-
-    if (mediaSize == 'disabled') {
-      // If the image is cached already, show the media
-      cachedImageExists(widget.media.mediaUrlHttps!)
-          .then((value) => setState(() {
-            _showMedia = value;
-          }));
-    } else {
-      setState(() {
-        _showMedia = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget media;
-
-    var item = widget.media;
-
-    if (_showMedia) {
-      if (item.type == 'animated_gif') {
-        media = TweetVideo(media: item, loop: true);
-      } else if (item.type == 'video') {
-        media = TweetVideo(media: item, loop: false);
-      } else if (item.type == 'photo') {
-        media = TweetPhoto(uri: item.mediaUrlHttps!);
-      } else {
-        media = Text('Unknown');
-      }
-    } else {
-      media = GestureDetector(
-        child: Container(
-          color: Colors.black26,
-          child: Center(
-            child: Text('Tap to show media'),
-          ),
-        ),
-        onTap: () => setState(() {
-            _showMedia = true;
-          }),
-      );
-    }
-
-    // If there's only one item in this media collection, don't show the page counter
-    if (widget.total == 1) {
-      return media;
-    }
-
-    return Stack(
-      children: [
-        Center(child: media),
-        Positioned(
-          right: 0,
-          child: Container(
-            alignment: Alignment.topRight,
-            color: Colors.black38,
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(8),
-            child: Text('${widget.index} / ${widget.total}'),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class TweetMedia extends StatefulWidget {
-  final List<Media> media;
-
-  const TweetMedia({Key? key, required this.media}) : super(key: key);
-
-  @override
-  _TweetMediaState createState() => _TweetMediaState();
-}
-
-class _TweetMediaState extends State<TweetMedia> {
-  final PageController _controller = PageController();
-
-  @override
-  Widget build(BuildContext context) {
-    var largestAspectRatio = widget.media
-      .map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1))
-      .reduce(math.max);
-
-    return Container(
-      margin: EdgeInsets.only(top: 8, left: 16, right: 16),
-      child: AspectRatio(
-        aspectRatio: largestAspectRatio,
-        child: PageView.builder(
-          controller: _controller,
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.media.length,
-          itemBuilder: (context, index) {
-            var item = widget.media[index];
-
-            return TweetMediaItem(media: item, index: ++index, total: widget.media.length);
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class TweetPhoto extends StatelessWidget {
-  final String uri;
-  final BoxFit fit;
-  
-  const TweetPhoto({Key? key, required this.uri, this.fit = BoxFit.fitWidth}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE);
-    if (size == 'disabled') {
-      size = 'medium';
-    }
-
-    return ExtendedImage.network('$uri:$size',
-        cache: true,
-        width: 5000,
-        height: 5000,
-        fit: fit
-    );
-  }
-}
-
-
-class TweetVideo extends StatefulWidget {
-  final bool loop;
-  final Media media;
-
-  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _TweetVideoState();
-}
-
-class _TweetVideoState extends State<TweetVideo> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = VideoPlayerController.network(widget.media.videoInfo!.variants![0].url!);
-    _controller.setLooping(widget.loop);
-    _controller.initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-  }
-
-  Widget _createControls() {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          reverseDuration: Duration(milliseconds: 200),
-          child: _controller.value.isPlaying
-              ? SizedBox.shrink()
-              : Container(
-            color: Colors.black26,
-            child: Center(
-              child: Icon(
-                Icons.play_arrow,
-                color: Colors.white,
-                size: 100.0,
-              ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          },
-        ),
-      ],
-    );
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-      ?  _controller.value.aspectRatio
-      : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _controller.value.isPlaying
-              ? _controller.pause()
-              : _controller.play();
-        });
-      },
-      child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            VideoPlayer(_controller),
-            _createControls(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-}
+import 'tweet/_media.dart';
 
 class TweetTile extends StatelessWidget {
   final ScrollController scrollController = ScrollController();
@@ -298,7 +53,6 @@ class TweetTile extends StatelessWidget {
     }
 
     var numberFormat = NumberFormat.compact();
-    var actionColour = Theme.of(context).disabledColor;
 
     TweetWithCard tweet = this.tweet!.retweetedStatusWithCard == null
       ? this.tweet!

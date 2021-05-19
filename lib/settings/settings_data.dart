@@ -3,13 +3,15 @@ import 'package:fritter/database/entities.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as p;
 
-Future<String> getLegacyExportPath() async {
+const String legacyExportFileName = 'fritter.json';
+
+Future<String> getLegacyPath(String filename) async {
   var externalStorageDirectory = await p.getExternalStorageDirectory();
   if (externalStorageDirectory == null) {
     throw new Exception('Unable to find the external storage directory');
   }
 
-  return path.join(externalStorageDirectory.path, 'fritter.json');
+  return path.join(externalStorageDirectory.path, filename);
 }
 
 Future<bool> isLegacyAndroid() async {
