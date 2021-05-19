@@ -200,8 +200,17 @@ class TweetTile extends StatelessWidget {
 
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
                   },
-                  title: Text(tweet.user!.name!,
-                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  title: Row(
+                    children: [
+                      Text(tweet.user!.name!, style: TextStyle(
+                          fontWeight: FontWeight.w500)
+                      ),
+                      if (tweet.user!.verified ?? false)
+                        SizedBox(width: 4),
+                      if (tweet.user!.verified ?? false)
+                        Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                    ],
+                  ),
                   subtitle: Text('@${tweet.user!.screenName!}'),
                   leading: CircleAvatar(
                     radius: 24,

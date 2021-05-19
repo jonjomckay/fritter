@@ -166,7 +166,15 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   Tab(child: Text('Followers', textAlign: TextAlign.center)),
                 ],
               ),
-              title: Text(profile.name!),
+              title: Row(
+                children: [
+                  Text(profile.name!),
+                  if (profile.verified ?? false)
+                    SizedBox(width: 6),
+                  if (profile.verified ?? false)
+                    Icon(Icons.verified, size: 24, color: Colors.white)
+                ],
+              ),
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(
                   fit: StackFit.expand,
