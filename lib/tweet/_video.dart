@@ -1,5 +1,11 @@
+import 'dart:developer';
+
+import 'package:chewie/chewie.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/tweet/_video_controls.dart';
+import 'package:fritter/utils/downloads.dart';
+import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 
 class TweetVideo extends StatefulWidget {
@@ -13,85 +19,80 @@ class TweetVideo extends StatefulWidget {
 }
 
 class _TweetVideoState extends State<TweetVideo> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController _videoController;
+  late ChewieController _chewieController;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.media.videoInfo!.variants![0].url!);
-    _controller.setLooping(widget.loop);
-    _controller.initialize().then((_) {
+    var url = widget.media.videoInfo!.variants![0].url!;
+
+    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
+        ?  _videoController.value.aspectRatio
+        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
+
+    _videoController = VideoPlayerController.network(url);
+    _videoController.initialize().then((_) {
       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
       setState(() {});
     });
 
-    _controller.addListener(() {
-      setState(() {});
-    });
-  }
+    _chewieController = ChewieController(
+      aspectRatio: aspectRatio,
+      customControls: VideoControls(
+        customControls: [
+          GestureDetector(
+            onTap: () async {
+              var fileName = path.basename(url);
 
-  Widget _createControls() {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
-          reverseDuration: Duration(milliseconds: 200),
-          child: _controller.value.isPlaying
-              ? SizedBox.shrink()
-              : Container(
-            color: Colors.black26,
-            child: Center(
-              child: Icon(
-                Icons.play_arrow,
-                color: Colors.white,
-                size: 100.0,
+              await downloadUriToPickedFile(url, fileName,
+                onError: (response) {
+                  log('Unable to save the media. The response was ${response.body}');
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
+                  ));
+                },
+                onStart: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Downloading media...'),
+                  ));
+                },
+                onSuccess: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Successfully saved the media!'),
+                  ));
+                },
+              );
+            },
+            child: ClipRect(
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                ),
+                child: Icon(Icons.download_sharp),
               ),
             ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          },
-        ),
-      ],
+          )
+        ],
+      ),
+      looping: widget.loop,
+      videoPlayerController: _videoController,
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
-    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-        ?  _controller.value.aspectRatio
-        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _controller.value.isPlaying
-              ? _controller.pause()
-              : _controller.play();
-        });
-      },
-      child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            VideoPlayer(_controller),
-            _createControls(),
-          ],
-        ),
-      ),
-    );
+    return Chewie(controller: _chewieController);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _videoController.dispose();
+    _chewieController.dispose();
   }
 }
