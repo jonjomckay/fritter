@@ -33,13 +33,9 @@ class _TweetVideoState extends State<TweetVideo> {
         : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
 
     _videoController = VideoPlayerController.network(url);
-    _videoController.initialize().then((_) {
-      // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-      setState(() {});
-    });
-
     _chewieController = ChewieController(
       aspectRatio: aspectRatio,
+      autoInitialize: true,
       customControls: VideoControls(
         customControls: [
           GestureDetector(
@@ -91,8 +87,8 @@ class _TweetVideoState extends State<TweetVideo> {
 
   @override
   void dispose() {
-    super.dispose();
     _videoController.dispose();
     _chewieController.dispose();
+    super.dispose();
   }
 }
