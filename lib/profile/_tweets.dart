@@ -83,6 +83,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
     return PagedListView<String?, TweetWithCard>(
       padding: EdgeInsets.zero,
       pagingController: _pagingController,
+      addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, tweet, index) {
           return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);

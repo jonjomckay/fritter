@@ -87,7 +87,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
               : null;
 
           var subscriptionGroups = _exportSubscriptionGroups
-              ? await model.listSubscriptionGroups()
+              ? await model.listSubscriptionGroups(orderBy: 'id', orderByAscending: true)
               : null;
 
           var subscriptionGroupMembers = _exportSubscriptionGroupMembers
@@ -111,7 +111,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           var isLegacy = await isLegacyAndroid();
           if (isLegacy) {
             // This platform is too old to support a directory picker, so we just save the file to a predefined location
-            var fullPath = await getLegacyExportPath();
+            var fullPath = await getLegacyPath(legacyExportFileName);
 
             await Directory(path.dirname(fullPath)).create(recursive: true);
             await File(fullPath).writeAsString(exportData);
@@ -147,7 +147,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           // Check if the platform is too old to support a directory picker or not
           if (isLegacy) {
             legacyAndroidMessage = FutureBuilder<String>(
-              future: getLegacyExportPath(),
+              future: getLegacyPath(legacyExportFileName),
               builder: (context, snapshot) {
                 var legacyExportPath = snapshot.data;
                 if (legacyExportPath == null) {
