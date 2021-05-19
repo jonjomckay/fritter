@@ -23,7 +23,7 @@
 * Device-local saving of tweets, allowing offline reading
 * Viewing profiles
 * Viewing tweets and replies
-* Viewing pictures, videos and GIFs in tweets
+* Viewing and downloading pictures, videos and GIFs in tweets
 * Searching for tweets and users
 * Viewing trending topics
 * Supports opening twitter.com links directly

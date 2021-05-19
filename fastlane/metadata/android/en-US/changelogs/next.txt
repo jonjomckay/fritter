@@ -1,1 +1,4 @@
 * Added support for sorting subscription groups
+* Added support for zooming and downloading photos
+* Added support for downloading videos and GIFs
+* Improvedg video controls, adding a progress bar and playback speed, volume and full screen controls
