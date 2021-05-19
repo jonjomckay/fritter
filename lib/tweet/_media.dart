@@ -1,16 +1,13 @@
 import 'dart:developer';
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
-import 'package:http/http.dart' as http;
+import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 
@@ -181,52 +178,28 @@ class _TweetMediaViewState extends State<TweetMediaView> {
           IconButton(
             icon: Icon(Icons.file_download),
             onPressed: () async {
-              var filename = path.basename(_media.mediaUrlHttps!);
+              var fileName = path.basename(_media.mediaUrlHttps!);
+              var uri = '${_media.mediaUrlHttps}:orig';
 
-              var downloadFile = () async {
-                var response = await http.get(Uri.parse('${_media.mediaUrlHttps}:orig'));
-                if (response.statusCode == 200) {
-                  return response.bodyBytes;
-                }
-
-                log('Unable to save the media. The response was ${response.body}');
-
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
-                ));
-
-                return null;
-              };
-
-              var isLegacy = await isLegacyAndroid();
-              if (isLegacy) {
-                // This platform is too old to support a directory picker, so we just save the file to a predefined location
-                var fullPath = await getLegacyPath(filename);
-
-                await Directory(path.dirname(fullPath)).create(recursive: true);
-
-                var response = await downloadFile();
-                if (response != null) {
-                  await File(fullPath).writeAsBytes(response);
+              await downloadUriToPickedFile(uri, fileName,
+                onError: (response) {
+                  log('Unable to save the media. The response was ${response.body}');
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Successfully saved the media to $fullPath'),
+                    content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
                   ));
-                }
-              } else {
-                var fileInfo = await FilePickerWritable().openFileForCreate(fileName: filename, writer: (file) async {
-                  var response = await downloadFile();
-                  if (response != null) {
-                    await file.writeAsBytes(response);
-                  }
-                });
-
-                if (fileInfo != null) {
+                },
+                onStart: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Downloading media...'),
+                  ));
+                },
+                onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('Successfully saved the media!'),
                   ));
-                }
-              }
+                },
+              );
             },
           )
         ],
