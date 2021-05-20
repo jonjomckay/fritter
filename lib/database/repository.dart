@@ -104,11 +104,15 @@ class Repository {
         // Add columns for the subscription group settings
         SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_replies BOOLEAN DEFAULT true'),
         SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_retweets BOOLEAN DEFAULT true')
+      ],
+      12: [
+        // Insert a dummy record for the "All" subscription group
+        SqlMigration("INSERT INTO $TABLE_SUBSCRIPTION_GROUP (id, name, icon) VALUES ('-1', 'All', 'rss_feed') ON CONFLICT DO NOTHING", reverseSql: "DELETE FROM $TABLE_SUBSCRIPTION_GROUP WHERE id = '-1'")
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 11,
+        version: 12,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan
