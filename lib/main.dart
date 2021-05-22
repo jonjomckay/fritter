@@ -73,8 +73,8 @@ Future checkForUpdates() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Repository connection = Repository();
-  connection.migrate();
+  // Run the database migrations
+  await Repository().migrate();
 
   if (Platform.isAndroid) {
     FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();

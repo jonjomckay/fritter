@@ -21,7 +21,7 @@ class Repository {
     return openDatabase(DATABASE_NAME);
   }
 
-  void migrate() async {
+  Future migrate() async {
     MigrationPlan myMigrationPlan = MigrationPlan({
       2: [
         SqlMigration('CREATE TABLE IF NOT EXISTS following (id INTEGER PRIMARY KEY, screen_name VARCHAR, name VARCHAR, profile_image_url_https VARCHAR, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
