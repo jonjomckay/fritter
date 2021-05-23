@@ -1,0 +1,1 @@
+* Fixed a blank screen, or errors about the database, appearing on some older Android versions
