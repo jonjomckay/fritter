@@ -107,7 +107,15 @@ class Repository {
       ],
       12: [
         // Insert a dummy record for the "All" subscription group
-        SqlMigration("INSERT INTO $TABLE_SUBSCRIPTION_GROUP (id, name, icon) VALUES ('-1', 'All', 'rss_feed') ON CONFLICT DO NOTHING", reverseSql: "DELETE FROM $TABLE_SUBSCRIPTION_GROUP WHERE id = '-1'")
+        Migration(Operation((db) async {
+          await db.insert(TABLE_SUBSCRIPTION_GROUP, {
+            'id': '-1',
+            'name': 'All',
+            'icon': 'rss_feed'
+          }, conflictAlgorithm: ConflictAlgorithm.replace);
+        }), reverse: Operation((db) async {
+          await db.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: ['-1']);
+        })),
       ]
     });
 
