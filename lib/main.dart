@@ -75,6 +75,8 @@ Future checkForUpdates() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // TODO: Only enable the dialog report mode if the setting is enabled
+
   CatcherOptions catcherOptions = CatcherOptions(DialogReportMode(), [
     ConsoleHandler(),
     EmailManualHandler(['support@fritter.cc'])
@@ -282,6 +284,7 @@ class _DefaultPageState extends State<DefaultPage> {
     // Run the database migrations
     return FutureBuilderWrapper<void>(
       future: Repository().migrate(),
+      onEmpty: () => Text('The migrations returned no result. This should never happen!'),
       onError: (error, stackTrace) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('$error')),

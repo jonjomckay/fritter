@@ -27,21 +27,18 @@ class _TrendsSettingsState extends State<TrendsSettings> {
 
     return FutureBuilderWrapper<List<TrendLocation>>(
         future: Twitter.getTrendLocations(),
+        onEmpty: () => Text('There were no trend locations returned. This is unexpected! Please report as a bug, if possible.'),
         onError: (error, stackTrace) {
           return Center(
             child: Text('$error'),
           );
         },
-        onReady: (data) {
-          if (data == null) {
-            return Text('There were no trend locations returned. This is unexpected! Please report as a bug, if possible.');
-          }
-
-          data.sort((a, b) => a.name!.compareTo(b.name!));
+        onReady: (trends) {
+          trends.sort((a, b) => a.name!.compareTo(b.name!));
 
           var place = TrendLocation.fromJson(jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
 
-          var countries = data
+          var countries = trends
               .sorted((a, b) => a.name!.compareTo(b.name!))
               .groupBy((e) => e.country);
 
@@ -139,13 +136,14 @@ class _TrendsContentState extends State<TrendsContent> {
                   ),
                   FutureBuilderWrapper<List<Trends>>(
                     future: model.loadTrends(place.woeid!),
+                    onEmpty: () => Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.'),
                     onError: (error, stackTrace) {
                       return Center(
                         child: Text('$error'),
                       );
                     },
                     onReady: (data) {
-                      var trends = data![0].trends;
+                      var trends = data[0].trends;
                       if (trends == null) {
                         return Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.');
                       }

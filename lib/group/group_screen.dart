@@ -135,25 +135,20 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                           ))
                         ),
                         Consumer<HomeModel>(builder: (context, model, child) {
-                          return FutureBuilder<SubscriptionGroupSettings>(
+                          return FutureBuilderWrapper<SubscriptionGroupSettings>(
                             future: model.loadSubscriptionGroupSettings(widget.group.id),
-                            builder: (context, snapshot) {
-                              var settings = snapshot.data;
-                              if (settings == null) {
-                                return Center(child: CircularProgressIndicator());
-                              }
-
-                              return Column(
-                                children: [
-                                  CheckboxListTile(title: Text('Include replies'), value: settings.includeReplies, onChanged: (value) async {
-                                    await model.toggleSubscriptionGroupIncludeReplies(widget.group.id, value ?? false);
-                                  }),
-                                  CheckboxListTile(title: Text('Include retweets'), value: settings.includeRetweets, onChanged: (value) async {
-                                    await model.toggleSubscriptionGroupIncludeRetweets(widget.group.id, value ?? false);
-                                  }),
-                                ],
-                              );
-                            },
+                            onEmpty: () => Text('No settings could be found for the group, which should never happen. Please report a bug, if possible!'),
+                            onError: (error, stackTrace) => Text('Unable to load the group settings. The error was $error'),
+                            onReady: (settings) => Column(
+                              children: [
+                                CheckboxListTile(title: Text('Include replies'), value: settings.includeReplies, onChanged: (value) async {
+                                  await model.toggleSubscriptionGroupIncludeReplies(widget.group.id, value ?? false);
+                                }),
+                                CheckboxListTile(title: Text('Include retweets'), value: settings.includeRetweets, onChanged: (value) async {
+                                  await model.toggleSubscriptionGroupIncludeRetweets(widget.group.id, value ?? false);
+                                }),
+                              ],
+                            ),
                           );
                         })
                       ],
@@ -216,30 +211,22 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SubscriptionGroupGet>(
+    return FutureBuilderWrapper<SubscriptionGroupGet>(
       future: _findSubscriptionGroup(widget.id),
-      builder: (context, snapshot) {
-        var group = snapshot.data;
-        if (group == null) {
-          return Center(child: CircularProgressIndicator());
-        }
-
+      onEmpty: () => Text('The group could not be found'),
+      onError: (error, stackTrace) => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text('$error')),
+      ),
+      onReady: (group) {
         var users = group.subscriptions.map((e) => e.screenName).toList();
 
         return Consumer<HomeModel>(builder: (context, model, child) {
           return FutureBuilderWrapper<SubscriptionGroupSettings>(
             future: model.loadSubscriptionGroupSettings(group.id),
-            onError: (error, stackTrace) {
-              return Scaffold(
-                appBar: AppBar(),
-                body: Center(child: Text('$error')),
-              );
-            },
+            onEmpty: () => Text('The group settings could not be found'),
+            onError: (error, stackTrace) => Text('$error'),
             onReady: (settings) {
-              if (settings == null) {
-                return Center(child: CircularProgressIndicator());
-              }
-
               return SubscriptionGroupFeed(
                 group: group,
                 users: users,

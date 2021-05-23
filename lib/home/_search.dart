@@ -2,6 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 
 class TweetSearchDelegate extends SearchDelegate {
@@ -62,29 +63,25 @@ class TweetSearchDelegate extends SearchDelegate {
             ),
             Container(
               child: Expanded(child: TabBarView(children: [
-                FutureBuilder<List<User>>(
-                  future: searchUsers(context, query),
-                  builder: (context, snapshot) {
-                    return TweetSearchResultList<User>(snapshot: snapshot, itemBuilder: (context, item) {
+                TweetSearchResultList<User>(
+                    future: searchUsers(context, query),
+                    itemBuilder: (context, item) {
                       return UserTile(
                           id: item.idStr!,
                           name: item.name!,
                           imageUri: item.profileImageUrlHttps!,
                           screenName: item.screenName!
                       );
-                    });
-                  },
+                    }
                 ),
-                FutureBuilder<List<TweetWithCard>>(
-                  future: searchTweets(context, query),
-                  builder: (context, snapshot) {
-                    return TweetSearchResultList<TweetWithCard>(snapshot: snapshot, itemBuilder: (context, item) {
+                TweetSearchResultList<TweetWithCard>(
+                    future: searchTweets(context, query),
+                    itemBuilder: (context, item) {
                       return TweetTile(
                           tweet: item,
                           clickable: true
                       );
-                    });
-                  },
+                    }
                 ),
               ])),
             )
@@ -103,50 +100,49 @@ typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 class TweetSearchResultList<T> extends StatelessWidget {
 
-  final AsyncSnapshot<List<T>> snapshot;
+  final Future<List<T>> future;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const TweetSearchResultList({Key? key, required this.snapshot, required this.itemBuilder}) : super(key: key);
+  const TweetSearchResultList({Key? key, required this.future, required this.itemBuilder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (snapshot.hasError) {
-      var error = snapshot.error as Exception;
-
-      return Container(
-        margin: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Oops! Something went wrong 🥲', style: TextStyle(
-                fontSize: 18
-            )),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              child: Text('$error', style: TextStyle(
-                  color: Theme.of(context).hintColor
+    return FutureBuilderWrapper<List<T>>(
+      future: future,
+      onEmpty: () => Text('No results were returned, which is unexpected. Please report a bug, if possible!'),
+      onError: (error, stackTrace) {
+        return Container(
+          margin: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Oops! Something went wrong 🥲', style: TextStyle(
+                  fontSize: 18
               )),
-            )
-          ],
-        ),
-      );
-    }
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: Text('$error', style: TextStyle(
+                    color: Theme.of(context).hintColor
+                )),
+              )
+            ],
+          ),
+        );
+      },
+      onReady: (items) {
+        if (items.isEmpty) {
+          return Center(child: Text('No results'));
+        }
 
-    var items = snapshot.data;
-    if (items == null) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    if (items.isEmpty) {
-      return Center(child: Text('No results'));
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return itemBuilder(context, items[index]);
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return itemBuilder(context, items[index]);
+          },
+        );
       },
     );
+
   }
 }

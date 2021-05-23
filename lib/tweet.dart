@@ -10,6 +10,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -247,14 +248,11 @@ class TweetTile extends StatelessWidget {
                             _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                           if (tweet.favoriteCount != null)
                             _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                          FutureBuilder<bool>(
+                          FutureBuilderWrapper<bool>(
                             future: model.isTweetSaved(tweet.idStr!),
-                            builder: (context, snapshot) {
-                              var saved = snapshot.data;
-                              if (saved == null) {
-                                return _createFooterIconButton(Icons.bookmark_outline);
-                              }
-
+                            onEmpty: () => Text('No saved tweet data was found, which should never happen. Please report a bug, if possible!'),
+                            onError: (error, stackTrace) => Text('Unable to find the saved tweet data. The error was $error'),
+                            onReady: (saved) {
                               if (saved) {
                                 return _createFooterIconButton(Icons.bookmark, null, () async {
                                   await model.deleteSavedTweet(tweet.idStr!);
@@ -263,7 +261,8 @@ class TweetTile extends StatelessWidget {
                                 return _createFooterIconButton(Icons.bookmark_outline, null, () async {
                                   await model.saveTweet(tweet.idStr!, tweet.toJson());
                                 });
-                              }},
+                              }
+                            },
                           ),
                           _createFooterIconButton(Icons.share, null, () async {
                             var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
