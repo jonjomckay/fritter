@@ -1,0 +1,5 @@
+* Se añadió la posibilidad de pulsar en las menciones
+* Es posible seleccionar qué ejemplar de Nitter utilizar
+* Se añadió compatibilidad con lenguas escritas de derecha a izquierda
+* Se puede elegir utilizar negro verdadero en el modo oscuro
+* Se arregló la imposibilidad de ver algunos vídeos en los tuits

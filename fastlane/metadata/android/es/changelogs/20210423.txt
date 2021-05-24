@@ -1,0 +1,1 @@
+* Solución para migraciones que no se aplicaban si se había instalado antes una versión preliminar
