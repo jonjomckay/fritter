@@ -4,6 +4,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ProfileTweets extends StatefulWidget {
@@ -32,15 +33,6 @@ class _ProfileTweetsState extends State<ProfileTweets> {
     });
   }
 
-  Future _onError(Object? e, [StackTrace? stackTrace]) async {
-    log('Unable to load the profile', error: e, stackTrace: stackTrace);
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Something went wrong loading the tweets! The error was: $e'),
-      duration: Duration(days: 1),
-    ));
-  }
-
   Future _loadTweets(String? cursor) async {
     try {
       var result = await Twitter.getTweets(
@@ -51,31 +43,9 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       );
 
       _pagingController.appendPage(result.tweets, result.cursorBottom);
-    } catch (e) {
-      _pagingController.error = e;
+    } catch (e, stackTrace) {
+      _pagingController.error = [e, stackTrace];
     }
-  }
-
-  Widget _createErrorWidget() {
-    var error = _pagingController.error;
-
-    _onError(error);
-
-    return Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Unable to load the profile 😢', style: TextStyle(
-                  fontSize: 22
-              )),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Text(error.toString(), style: TextStyle(
-                    color: Theme.of(context).hintColor
-                )),
-              )
-            ])
-    );
   }
 
   @override
@@ -88,8 +58,18 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         itemBuilder: (context, tweet, index) {
           return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
         },
-        firstPageErrorIndicatorBuilder: (context) => _createErrorWidget(),
-        newPageErrorIndicatorBuilder: (context) => _createErrorWidget(),
+        firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+          error: _pagingController.error[0],
+          stackTrace: _pagingController.error[1],
+          prefix: 'Unable to load the tweets',
+          onRetry: () => _loadTweets(_pagingController.firstPageKey),
+        ),
+        newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+          error: _pagingController.error[0],
+          stackTrace: _pagingController.error[1],
+          prefix: 'Unable to load the next page of tweets',
+          onRetry: () => _loadTweets(_pagingController.nextPageKey),
+        ),
         noItemsFoundIndicatorBuilder: (context) {
           return Center(
             child: Text('Couldn\'t find any tweets from the last 7 days!'),

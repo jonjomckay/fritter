@@ -159,7 +159,7 @@ class TweetTile extends StatelessWidget {
                     text: '@$replyTo',
                     style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.blue),
                     recognizer: TapGestureRecognizer()..onTap = () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.inReplyToUserIdStr, username: replyTo)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: replyTo)));
                     }
                 )
               ]
@@ -200,7 +200,7 @@ class TweetTile extends StatelessWidget {
                       return null;
                     }
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.user!.screenName!)));
                   },
                   title: Row(
                     children: [

@@ -10,10 +10,9 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final String? id;
   final String username;
 
-  const ProfileScreen({Key? key, this.id, required this.username}) : super(key: key);
+  const ProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();

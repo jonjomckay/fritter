@@ -21,6 +21,21 @@ class TrendsSettings extends StatefulWidget {
 }
 
 class _TrendsSettingsState extends State<TrendsSettings> {
+  late Future<List<TrendLocation>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchTrendLocations();
+  }
+
+  void fetchTrendLocations() {
+    setState(() {
+      _future = Twitter.getTrendLocations();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context);
@@ -28,8 +43,13 @@ class _TrendsSettingsState extends State<TrendsSettings> {
 
     return AlertDialog(
       content: FutureBuilderWrapper<List<TrendLocation>>(
-          future: Twitter.getTrendLocations(),
-          onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to find the available trend locations.'),
+          future: _future,
+          onError: (error, stackTrace) => FullPageErrorWidget(
+            error: error,
+            stackTrace: stackTrace,
+            prefix: 'Unable to find the available trend locations.',
+            onRetry: () => fetchTrendLocations()
+          ),
           onReady: (trends) {
             trends.sort((a, b) => a.name!.compareTo(b.name!));
 
@@ -91,6 +111,81 @@ class _TrendsSettingsState extends State<TrendsSettings> {
   }
 }
 
+class TrendsList extends StatefulWidget {
+  final TrendLocation place;
+
+  const TrendsList({Key? key, required this.place}) : super(key: key);
+
+  @override
+  _TrendsListState createState() => _TrendsListState();
+}
+
+class _TrendsListState extends State<TrendsList> {
+  late Future<List<Trends>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchTrends();
+  }
+
+  void fetchTrends() {
+    setState(() {
+      _future = context.read<HomeModel>().loadTrends(widget.place.woeid!);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilderWrapper<List<Trends>>(
+      future: _future,
+      onError: (error, stackTrace) => FullPageErrorWidget(
+        error: error,
+        stackTrace: stackTrace,
+        prefix: 'Unable to load the trends for ${widget.place.name}',
+        onRetry: () => fetchTrends(),
+      ),
+      onReady: (data) {
+        var trends = data[0].trends;
+        if (trends == null) {
+          return Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.');
+        }
+
+        var numberFormat = NumberFormat.compact();
+
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemCount: trends.length,
+          itemBuilder: (context, index) {
+            var trend = trends[index];
+
+            return ListTile(
+              dense: true,
+              leading: Text('${++index}'),
+              title: Text('${trend.name!}'),
+              subtitle: trend.tweetVolume == null
+                  ? null
+                  : Text('${numberFormat.format(trend.tweetVolume)} tweets'),
+              onTap: () async {
+                await showSearch(
+                    context: context,
+                    delegate: TweetSearchDelegate(
+                        initialTab: 1
+                    ),
+                    query: Uri.decodeQueryComponent(trend.query!)
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+
 class TrendsContent extends StatefulWidget {
   @override
   _TrendsContentState createState() => _TrendsContentState();
@@ -99,7 +194,6 @@ class TrendsContent extends StatefulWidget {
 class _TrendsContentState extends State<TrendsContent> {
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
     var prefs = PrefService.of(context);
 
     return SingleChildScrollView(
@@ -135,45 +229,7 @@ class _TrendsContentState extends State<TrendsContent> {
                         )
                     ),
                   ),
-                  FutureBuilderWrapper<List<Trends>>(
-                    future: model.loadTrends(place.woeid!),
-                    onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the trends for ${place.name}'),
-                    onReady: (data) {
-                      var trends = data[0].trends;
-                      if (trends == null) {
-                        return Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.');
-                      }
-
-                      var numberFormat = NumberFormat.compact();
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        itemCount: trends.length,
-                        itemBuilder: (context, index) {
-                          var trend = trends[index];
-
-                          return ListTile(
-                            dense: true,
-                            leading: Text('${++index}'),
-                            title: Text('${trend.name!}'),
-                            subtitle: trend.tweetVolume == null
-                                ? null
-                                : Text('${numberFormat.format(trend.tweetVolume)} tweets'),
-                            onTap: () async {
-                              await showSearch(
-                                  context: context,
-                                  delegate: TweetSearchDelegate(
-                                      initialTab: 1
-                                  ),
-                                  query: Uri.decodeQueryComponent(trend.query!)
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  TrendsList(place: place),
                 ],
               );
             default:

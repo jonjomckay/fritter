@@ -48,7 +48,7 @@ class UserTile extends StatelessWidget {
         child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: id, username: screenName)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: screenName)));
       },
     );
   }

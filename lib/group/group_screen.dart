@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/database/repository.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet.dart';
 import 'package:fritter/ui/errors.dart';
@@ -45,51 +45,55 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
   }
 
   Future _listTweets(String? cursor) async {
-    List<Future<List<TweetWithCard>>> futures = [];
+    try {
+      List<Future<List<TweetWithCard>>> futures = [];
 
-    // TODO: Split into groups, and have a max_id per group
+      // TODO: Split into groups, and have a max_id per group
 
-    var query = '';
-    if (!widget.includeReplies) {
-      query += '-filter:replies ';
-    }
-
-    if (!widget.includeRetweets) {
-      query += '-filter:retweets ';
-    }
-
-    var remainingLength = 500 - query.length;
-
-    for (var user in widget.users) {
-      var queryToAdd = 'from:$user';
-
-      // If we can add this user to the query and still be less than 500 characters, do so
-      if (query.length + queryToAdd.length < remainingLength) {
-        if (query.length > 0) {
-          query += '+OR+';
-        }
-
-        query += queryToAdd;
-      } else {
-        // Otherwise, add the search future and start a new one
-        futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
-
-        query = queryToAdd;
+      var query = '';
+      if (!widget.includeReplies) {
+        query += '-filter:replies ';
       }
-    }
 
-    // Add any remaining query as a search future too
-    futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+      if (!widget.includeRetweets) {
+        query += '-filter:retweets ';
+      }
 
-    var result = (await Future.wait(futures))
-        .expand((element) => element)
-        .where((element) => element.idStr != cursor)
-        .toList();
+      var remainingLength = 500 - query.length;
 
-    result.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      for (var user in widget.users) {
+        var queryToAdd = 'from:$user';
 
-    if (result.isNotEmpty) {
-      _pagingController.appendPage(result, result.last.idStr);
+        // If we can add this user to the query and still be less than 500 characters, do so
+        if (query.length + queryToAdd.length < remainingLength) {
+          if (query.length > 0) {
+            query += '+OR+';
+          }
+
+          query += queryToAdd;
+        } else {
+          // Otherwise, add the search future and start a new one
+          futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+
+          query = queryToAdd;
+        }
+      }
+
+      // Add any remaining query as a search future too
+      futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+
+      var result = (await Future.wait(futures))
+          .expand((element) => element)
+          .where((element) => element.idStr != cursor)
+          .toList();
+
+      result.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+      if (result.isNotEmpty) {
+        _pagingController.appendPage(result, result.last.idStr);
+      }
+    } catch (e, stackTrace) {
+      _pagingController.error = [e, stackTrace];
     }
   }
 
@@ -164,9 +168,18 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           itemBuilder: (context, tweet, index) {
             return TweetTile(tweet: tweet, clickable: true);
           },
-          // TODO
-          newPageErrorIndicatorBuilder: (context) => Text('Some error occurred'),
-          firstPageErrorIndicatorBuilder: (context) => Text('Some error occurred'),
+          newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the next page of tweets',
+            onRetry: () => _listTweets(_pagingController.firstPageKey),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the tweets for the feed',
+            onRetry: () => _listTweets(_pagingController.nextPageKey),
+          ),
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Text('Couldn\'t find any tweets from the last 7 days!'),
           ),

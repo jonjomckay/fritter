@@ -65,7 +65,7 @@ class TweetSearchDelegate extends SearchDelegate {
             Container(
               child: Expanded(child: TabBarView(children: [
                 TweetSearchResultList<User>(
-                    future: searchUsers(context, query),
+                    future: () => searchUsers(context, query),
                     itemBuilder: (context, item) {
                       return UserTile(
                           id: item.idStr!,
@@ -76,7 +76,7 @@ class TweetSearchDelegate extends SearchDelegate {
                     }
                 ),
                 TweetSearchResultList<TweetWithCard>(
-                    future: searchTweets(context, query),
+                    future: () => searchTweets(context, query),
                     itemBuilder: (context, item) {
                       return TweetTile(
                           tweet: item,
@@ -99,18 +99,43 @@ class TweetSearchDelegate extends SearchDelegate {
 
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
-class TweetSearchResultList<T> extends StatelessWidget {
+class TweetSearchResultList<T> extends StatefulWidget {
 
-  final Future<List<T>> future;
+  final Future<List<T>> Function() future;
   final ItemWidgetBuilder<T> itemBuilder;
 
   const TweetSearchResultList({Key? key, required this.future, required this.itemBuilder}) : super(key: key);
 
   @override
+  _TweetSearchResultListState<T> createState() => _TweetSearchResultListState<T>();
+}
+
+class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
+  late Future<List<T>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchResults();
+  }
+
+  void fetchResults() {
+    setState(() {
+      _future = widget.future();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilderWrapper<List<T>>(
-      future: future,
-      onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the search results.'),
+      future: _future,
+      onError: (error, stackTrace) => FullPageErrorWidget(
+        error: error,
+        stackTrace: stackTrace,
+        prefix: 'Unable to load the search results.',
+        onRetry: () => fetchResults(),
+      ),
       onReady: (items) {
         if (items.isEmpty) {
           return Center(child: Text('No results'));
@@ -120,11 +145,10 @@ class TweetSearchResultList<T> extends StatelessWidget {
           shrinkWrap: true,
           itemCount: items.length,
           itemBuilder: (context, index) {
-            return itemBuilder(context, items[index]);
+            return widget.itemBuilder(context, items[index]);
           },
         );
       },
     );
-
   }
 }
