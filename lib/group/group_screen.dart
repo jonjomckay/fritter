@@ -4,6 +4,7 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +108,6 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                   height: 220,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: theme.canvasColor,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(25),
                         topRight: const Radius.circular(25),
@@ -137,8 +137,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
                         Consumer<HomeModel>(builder: (context, model, child) {
                           return FutureBuilderWrapper<SubscriptionGroupSettings>(
                             future: model.loadSubscriptionGroupSettings(widget.group.id),
-                            onEmpty: () => Text('No settings could be found for the group, which should never happen. Please report a bug, if possible!'),
-                            onError: (error, stackTrace) => Text('Unable to load the group settings. The error was $error'),
+                            onError: (error, stackTrace) => InlineErrorWidget(error: error),
                             onReady: (settings) => Column(
                               children: [
                                 CheckboxListTile(title: Text('Include replies'), value: settings.includeReplies, onChanged: (value) async {
@@ -213,19 +212,14 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
   Widget build(BuildContext context) {
     return FutureBuilderWrapper<SubscriptionGroupGet>(
       future: _findSubscriptionGroup(widget.id),
-      onEmpty: () => Text('The group could not be found'),
-      onError: (error, stackTrace) => Scaffold(
-        appBar: AppBar(),
-        body: Center(child: Text('$error')),
-      ),
+      onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group'),
       onReady: (group) {
         var users = group.subscriptions.map((e) => e.screenName).toList();
 
         return Consumer<HomeModel>(builder: (context, model, child) {
           return FutureBuilderWrapper<SubscriptionGroupSettings>(
             future: model.loadSubscriptionGroupSettings(group.id),
-            onEmpty: () => Text('The group settings could not be found'),
-            onError: (error, stackTrace) => Text('$error'),
+            onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group settings'),
             onReady: (settings) {
               return SubscriptionGroupFeed(
                 group: group,

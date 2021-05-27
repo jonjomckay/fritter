@@ -1,16 +1,13 @@
-import 'dart:developer';
-
-import 'package:catcher/catcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/ui/errors.dart';
 
 class FutureBuilderWrapper<T> extends StatelessWidget {
   final Future<T>? future;
-  final Widget Function() onEmpty;
-  final Widget Function(Object? error, StackTrace? stackTrace) onError;
+  final FritterErrorWidget Function(Object? error, StackTrace? stackTrace) onError;
   final Widget Function(T data) onReady;
 
-  const FutureBuilderWrapper({Key? key, required this.future, required this.onEmpty, required this.onError, required this.onReady}) : super(key: key);
+  const FutureBuilderWrapper({Key? key, required this.future, required this.onError, required this.onReady}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +21,12 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           case ConnectionState.done:
             if (snapshot.hasError) {
-              // TODO: Should this be here? It stacks on things like lists...
-              Catcher.reportCheckedError(snapshot.error, snapshot.stackTrace);
-
-              return onError(snapshot.error, snapshot.stackTrace);
+              return Center(child: onError(snapshot.error, snapshot.stackTrace));
             }
 
             var data = snapshot.data;
             if (data == null) {
-              return Center(child: onEmpty());
+              return Center(child: Text('No data was returned, which should never happen. Please report a bug, if possible!'));
             }
 
             return onReady(data);

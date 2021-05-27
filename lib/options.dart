@@ -14,6 +14,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -200,8 +201,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
       appBar: AppBar(),
       body: FutureBuilderWrapper<PackageInfo>(
         future: PackageInfo.fromPlatform(),
-        onEmpty: () => Text('No package info was found, which should never happen. Please report a bug, if possible!'),
-        onError: (error, stackTrace) => Text("Unable to find the app's package info: $error"),
+        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: "Unable to find the app's package info"),
         onReady: (packageInfo) {
           var version = _createVersionString(packageInfo);
 
@@ -302,8 +302,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       ],
                       content: FutureBuilderWrapper<String>(
                         future: getLegacyPath(legacyExportFileName),
-                        onEmpty: () => Text('Unable to find the correct export path. Please report a bug, if possible!'),
-                        onError: (error, stackTrace) => Text('$error'),
+                        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'prefix'),
                         onReady: (legacyExportPath) => Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [

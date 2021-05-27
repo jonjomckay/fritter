@@ -5,6 +5,8 @@ import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
+import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
@@ -134,26 +136,18 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           }
         },
       ),
-      body: FutureBuilder<bool>(
+      body: FutureBuilderWrapper<bool>(
         future: isLegacyAndroid(),
-        builder: (context, snapshot) {
-          var isLegacy = snapshot.data;
-          if (isLegacy == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-
+        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to check if this is a legacy Android device.'),
+        onReady: (isLegacy) {
           Widget legacyAndroidMessage = Container();
 
           // Check if the platform is too old to support a directory picker or not
           if (isLegacy) {
-            legacyAndroidMessage = FutureBuilder<String>(
+            legacyAndroidMessage = FutureBuilderWrapper<String>(
               future: getLegacyPath(legacyExportFileName),
-              builder: (context, snapshot) {
-                var legacyExportPath = snapshot.data;
-                if (legacyExportPath == null) {
-                  return CircularProgressIndicator();
-                }
-
+              onError: (error, stackTrace) => InlineErrorWidget(error: error),
+              onReady: (legacyExportPath) {
                 return Container(
                   margin: EdgeInsets.all(8),
                   child: Column(

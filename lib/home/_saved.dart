@@ -5,6 +5,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +17,7 @@ class SavedContent extends StatelessWidget {
     return Container(
       child: FutureBuilderWrapper<List<SavedTweet>>(
         future: model.listSavedTweets(),
-        onEmpty: () => Text('No saved tweets could be found, which should never happen. Please report a bug, if possible!'),
-        onError: (error, stackTrace) => Text('Unable to find your saved tweets. The error was $error'),
+        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to find your saved tweets.'),
         onReady: (data) {
           if (data.isEmpty) {
             return Center(child: Text("You haven't saved any tweets yet!"));

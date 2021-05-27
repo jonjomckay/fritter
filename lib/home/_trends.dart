@@ -6,6 +6,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:intl/intl.dart';
@@ -27,12 +28,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
 
     return FutureBuilderWrapper<List<TrendLocation>>(
         future: Twitter.getTrendLocations(),
-        onEmpty: () => Text('There were no trend locations returned. This is unexpected! Please report as a bug, if possible.'),
-        onError: (error, stackTrace) {
-          return Center(
-            child: Text('$error'),
-          );
-        },
+        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to find the available trend locations.'),
         onReady: (trends) {
           trends.sort((a, b) => a.name!.compareTo(b.name!));
 
@@ -136,12 +132,7 @@ class _TrendsContentState extends State<TrendsContent> {
                   ),
                   FutureBuilderWrapper<List<Trends>>(
                     future: model.loadTrends(place.woeid!),
-                    onEmpty: () => Text('There were no trends returned. This is unexpected! Please report as a bug, if possible.'),
-                    onError: (error, stackTrace) {
-                      return Center(
-                        child: Text('$error'),
-                      );
-                    },
+                    onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the trends for ${place.name}'),
                     onReady: (data) {
                       var trends = data[0].trends;
                       if (trends == null) {

@@ -11,6 +11,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/status.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -82,8 +83,8 @@ Future<void> main() async {
     EmailManualHandler(['support@fritter.cc'])
   ], localizationOptions: [
     LocalizationOptions('en',
-      dialogReportModeDescription: 'Something broke in Fritter!\n\nA crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
-      dialogReportModeTitle: 'Uh-oh 😢',
+      dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+      dialogReportModeTitle: 'Send report',
       dialogReportModeAccept: 'Send',
       dialogReportModeCancel: "Don't send"
     )
@@ -208,12 +209,13 @@ class _MyAppState extends State<MyApp> {
       themeMode: themeMode,
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
-        Catcher.addDefaultErrorWidget(
-            showStacktrace: true,
-            title: 'Uh-oh 😢',
-            description: 'Something broke in Fritter.',
-            maxWidthForSmallMode: 150
-        );
+        ErrorWidget.builder = (FlutterErrorDetails details) {
+          log('Something broke in Fritter.', error: details.exception, stackTrace: details.stack);
+
+          return Scaffold(
+            body: FullPageErrorWidget(error: details.exception, stackTrace: details.stack, prefix: 'Something broke in Fritter.'),
+          );
+        };
 
         return child ?? Container();
       },
@@ -284,10 +286,10 @@ class _DefaultPageState extends State<DefaultPage> {
     // Run the database migrations
     return FutureBuilderWrapper<void>(
       future: Repository().migrate(),
-      onEmpty: () => Text('The migrations returned no result. This should never happen!'),
-      onError: (error, stackTrace) => Scaffold(
-        appBar: AppBar(),
-        body: Center(child: Text('$error')),
+      onError: (error, stackTrace) => ScaffoldErrorWidget(
+        error: error,
+        stackTrace: stackTrace,
+        prefix: 'Unable to run the database migrations',
       ),
       onReady: (data) {
         switch (_page) {

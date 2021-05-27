@@ -2,6 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 
@@ -109,26 +110,7 @@ class TweetSearchResultList<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilderWrapper<List<T>>(
       future: future,
-      onEmpty: () => Text('No results were returned, which is unexpected. Please report a bug, if possible!'),
-      onError: (error, stackTrace) {
-        return Container(
-          margin: EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Oops! Something went wrong 🥲', style: TextStyle(
-                  fontSize: 18
-              )),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Text('$error', style: TextStyle(
-                    color: Theme.of(context).hintColor
-                )),
-              )
-            ],
-          ),
-        );
-      },
+      onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the search results.'),
       onReady: (items) {
         if (items.isEmpty) {
           return Center(child: Text('No results'));

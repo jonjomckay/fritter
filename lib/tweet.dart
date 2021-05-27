@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_direction/auto_direction.dart';
+import 'package:catcher/catcher.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -250,8 +251,9 @@ class TweetTile extends StatelessWidget {
                             _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
                           FutureBuilderWrapper<bool>(
                             future: model.isTweetSaved(tweet.idStr!),
-                            onEmpty: () => Text('No saved tweet data was found, which should never happen. Please report a bug, if possible!'),
-                            onError: (error, stackTrace) => Text('Unable to find the saved tweet data. The error was $error'),
+                            onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
+                              Catcher.reportCheckedError(error, stackTrace);
+                            }),
                             onReady: (saved) {
                               if (saved) {
                                 return _createFooterIconButton(Icons.bookmark, null, () async {
