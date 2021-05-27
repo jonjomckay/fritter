@@ -68,11 +68,14 @@ class FullPageErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;
   final String prefix;
+  final Function? onRetry;
 
-  const FullPageErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
+  const FullPageErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var onRetry = this.onRetry;
+
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.all(16),
@@ -104,7 +107,15 @@ class FullPageErrorWidget extends FritterErrorWidget {
               child: Text('Report'),
               onPressed: () => Catcher.reportCheckedError(error, stackTrace),
             ),
-          )
+          ),
+          if (onRetry != null)
+            Container(
+              margin: EdgeInsets.only(top: 12),
+              child: ElevatedButton(
+                child: Text('Retry'),
+                onPressed: () => onRetry(),
+              ),
+            )
         ],
       ),
     );
