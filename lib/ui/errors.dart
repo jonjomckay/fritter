@@ -32,6 +32,21 @@ class InlineErrorWidget extends FritterErrorWidget {
   }
 }
 
+class AlertErrorWidget extends FritterErrorWidget {
+  final Object? error;
+  final StackTrace? stackTrace;
+  final String prefix;
+
+  const AlertErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace),
+    );
+  }
+}
+
 class ScaffoldErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;

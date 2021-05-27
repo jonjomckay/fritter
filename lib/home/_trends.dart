@@ -106,6 +106,11 @@ class _TrendsContentState extends State<TrendsContent> {
       child: StreamBuilder<String>(
         stream: prefs.stream(OPTION_TRENDS_LOCATION),
         builder: (context, snapshot) {
+          var error = snapshot.error;
+          if (error != null) {
+            return FullPageErrorWidget(error: error, stackTrace: snapshot.stackTrace, prefix: 'Unable to stream the trend location preference');
+          }
+
           switch (snapshot.connectionState) {
             case ConnectionState.active:
               var place = TrendLocation.fromJson(jsonDecode(snapshot.data!));
