@@ -1,0 +1,3 @@
+- Improved error handling all over the app
+- Added the ability to submit crash reports
+- Added the ability to retry failed requests to Twitter
