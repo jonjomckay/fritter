@@ -26,6 +26,7 @@ dependencies:
   provider: ^5.0.0
 
   auto_direction: ^0.0.5
+  catcher: ^0.6.6
   chewie: ^1.0.0
   dart_twitter_api: ^0.5.0
   device_info: ^2.0.0

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_direction/auto_direction.dart';
+import 'package:catcher/catcher.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -157,7 +159,7 @@ class TweetTile extends StatelessWidget {
                     text: '@$replyTo',
                     style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.blue),
                     recognizer: TapGestureRecognizer()..onTap = () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.inReplyToUserIdStr, username: replyTo)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: replyTo)));
                     }
                 )
               ]
@@ -198,7 +200,7 @@ class TweetTile extends StatelessWidget {
                       return null;
                     }
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: tweet.user!.idStr, username: tweet.user!.screenName!)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.user!.screenName!)));
                   },
                   title: Row(
                     children: [
@@ -247,14 +249,12 @@ class TweetTile extends StatelessWidget {
                             _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                           if (tweet.favoriteCount != null)
                             _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                          FutureBuilder<bool>(
+                          FutureBuilderWrapper<bool>(
                             future: model.isTweetSaved(tweet.idStr!),
-                            builder: (context, snapshot) {
-                              var saved = snapshot.data;
-                              if (saved == null) {
-                                return _createFooterIconButton(Icons.bookmark_outline);
-                              }
-
+                            onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
+                              Catcher.reportCheckedError(error, stackTrace);
+                            }),
+                            onReady: (saved) {
                               if (saved) {
                                 return _createFooterIconButton(Icons.bookmark, null, () async {
                                   await model.deleteSavedTweet(tweet.idStr!);
@@ -263,7 +263,8 @@ class TweetTile extends StatelessWidget {
                                 return _createFooterIconButton(Icons.bookmark_outline, null, () async {
                                   await model.saveTweet(tweet.idStr!, tweet.toJson());
                                 });
-                              }},
+                              }
+                            },
                           ),
                           _createFooterIconButton(Icons.share, null, () async {
                             var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(

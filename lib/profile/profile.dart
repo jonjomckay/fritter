@@ -1,33 +1,60 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/profile/_tweets.dart';
+import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
-import 'package:http/http.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final String? id;
+class ProfileScreen extends StatefulWidget {
   final String username;
 
-  const ProfileScreen({Key? key, this.id, required this.username}) : super(key: key);
+  const ProfileScreen({Key? key, required this.username}) : super(key: key);
 
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<User> _future;
+  
+  @override
+  void initState() {
+    super.initState();
+    
+    fetchProfile();
+  }
+
+  void fetchProfile() {
+    setState(() {
+      _future = Twitter.getProfile(widget.username);
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ProfileScreenBody(id: id, username: username),
+      body: FutureBuilderWrapper<User>(
+        future: _future,
+        onReady: (user) => ProfileScreenBody(user: user),
+        onError: (error, stackTrace) => FullPageErrorWidget(
+          error: error,
+          stackTrace: stackTrace,
+          prefix: 'Unable to load the profile',
+          onRetry: () => fetchProfile(),
+        ),
+      ),
     );
   }
 }
 
 class ProfileScreenBody extends StatefulWidget {
-  final String? id;
-  final String username;
+  final User user;
 
-  const ProfileScreenBody({Key? key, this.id, required this.username}) : super(key: key);
+  const ProfileScreenBody({Key? key, required this.user}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
@@ -36,55 +63,11 @@ class ProfileScreenBody extends StatefulWidget {
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   late TabController _tabController;
 
-  User? _profile;
-  dynamic? _error;
-
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 4, vsync: this);
-
-    fetchProfile(widget.id, widget.username);
-  }
-
-  Future onError(Object e, [StackTrace? stackTrace]) async {
-    log('Unable to load the profile', error: e, stackTrace: stackTrace);
-
-    var error = e is Response
-      ? e.body
-      : e;
-
-    setState(() {
-      _error = error;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Something went wrong loading the profile!'),
-      duration: Duration(days: 1),
-      action: SnackBarAction(
-        label: 'Retry',
-        onPressed: () => fetchProfile(widget.id, widget.username),
-      ),
-    ));
-  }
-
-  void fetchProfile(String? id, String username) {
-    Twitter.getProfile(username).catchError(onError).then((profile) {
-      setState(() {
-        _error = null;
-        _profile = profile;
-      });
-    });
-  }
-
-  @override
-  void didUpdateWidget(ProfileScreenBody oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.username != widget.username) {
-      fetchProfile(widget.id, widget.username);
-    }
   }
 
   @override
@@ -93,33 +76,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var deviceSize = MediaQuery.of(context).size;
     var appBarHeight = deviceSize.width * (500 / 1500);
 
-    var error = _error;
-    if (error != null) {
-      return Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Oops! Something went wrong 🥲', style: TextStyle(
-                fontSize: 18
-            )),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              child: Text('$error', textAlign: TextAlign.center, style: TextStyle(
-                  color: Theme.of(context).hintColor
-              )),
-            )
-          ],
-        ),
-      );
-    }
-
-    var profile = _profile;
-    if (profile == null) {
-      return Center(child: CircularProgressIndicator());
-    }
-
+    var profile = widget.user;
     var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
         ? Container()
@@ -198,8 +155,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         body: TabBarView(
           controller: _tabController,
           children: [
-            ProfileTweets(user: _profile, username: widget.username, includeReplies: false),
-            ProfileTweets(user: _profile, username: widget.username, includeReplies: true),
+            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: false),
+            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: true),
             comingSoon,
             comingSoon,
           ],

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:catcher/catcher.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,6 +11,8 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/status.dart';
+import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
@@ -73,42 +76,58 @@ Future checkForUpdates() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Run the database migrations
-  await Repository().migrate();
+  // TODO: Only enable the dialog report mode if the setting is enabled
 
-  if (Platform.isAndroid) {
-    FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+  CatcherOptions catcherOptions = CatcherOptions(DialogReportMode(), [
+    ConsoleHandler(),
+    EmailManualHandler(['support@fritter.cc'])
+  ], localizationOptions: [
+    LocalizationOptions('en',
+      dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+      dialogReportModeTitle: 'Send report',
+      dialogReportModeAccept: 'Send',
+      dialogReportModeCancel: "Don't send"
+    )
+  ]);
 
-    final InitializationSettings settings = InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/launcher_icon')
-    );
+  Catcher(
+    debugConfig: catcherOptions,
+    releaseConfig: catcherOptions,
+    runAppFunction: () async {
+      final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+        OPTION_MEDIA_SIZE: 'medium',
+        OPTION_THEME_MODE: 'system',
+        OPTION_THEME_TRUE_BLACK: false,
+        OPTION_TRENDS_LOCATION: jsonEncode({
+          'name': 'Worldwide',
+          'woeid': 1
+        }),
+      });
 
-    await notifications.initialize(settings, onSelectNotification: (payload) async {
-      if (payload != null && payload.startsWith('https://')) {
-        await launch(payload);
+      if (Platform.isAndroid) {
+        FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+
+        final InitializationSettings settings = InitializationSettings(
+            android: AndroidInitializationSettings('@mipmap/launcher_icon')
+        );
+
+        await notifications.initialize(settings, onSelectNotification: (payload) async {
+          if (payload != null && payload.startsWith('https://')) {
+            await launch(payload);
+          }
+        });
+
+        checkForUpdates();
       }
+
+      runApp(PrefService(
+          child: ChangeNotifierProvider(
+            create: (context) => HomeModel(),
+            child: MyApp(),
+          ),
+          service: prefService
+      ));
     });
-
-    checkForUpdates();
-  }
-
-  final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
-    OPTION_MEDIA_SIZE: 'medium',
-    OPTION_THEME_MODE: 'system',
-    OPTION_THEME_TRUE_BLACK: false,
-    OPTION_TRENDS_LOCATION: jsonEncode({
-      'name': 'Worldwide',
-      'woeid': 1
-    }),
-  });
-
-  runApp(PrefService(
-      child: ChangeNotifierProvider(
-        create: (context) => HomeModel(),
-        child: MyApp(),
-      ),
-      service: prefService
-  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -183,10 +202,23 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
+      navigatorKey: Catcher.navigatorKey,
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
       themeMode: themeMode,
+      builder: (context, child) {
+        // Replace the default red screen of death with a slightly friendlier one
+        ErrorWidget.builder = (FlutterErrorDetails details) {
+          log('Something broke in Fritter.', error: details.exception, stackTrace: details.stack);
+
+          return Scaffold(
+            body: FullPageErrorWidget(error: details.exception, stackTrace: details.stack, prefix: 'Something broke in Fritter.'),
+          );
+        };
+
+        return child ?? Container();
+      },
       home: DefaultPage(),
     );
   }
@@ -251,14 +283,25 @@ class _DefaultPageState extends State<DefaultPage> {
 
   @override
   Widget build(BuildContext context) {
-    switch (_page) {
-      case 'profile':
-        return ProfileScreen(username: _username);
-      case 'status':
-        return StatusScreen(username: _username, id: _statusId);
-      default:
-        return HomeScreen();
-    }
+    // Run the database migrations
+    return FutureBuilderWrapper<void>(
+      future: Repository().migrate(),
+      onError: (error, stackTrace) => ScaffoldErrorWidget(
+        error: error,
+        stackTrace: stackTrace,
+        prefix: 'Unable to run the database migrations',
+      ),
+      onReady: (data) {
+        switch (_page) {
+          case 'profile':
+            return ProfileScreen(username: _username);
+          case 'status':
+            return StatusScreen(username: _username, id: _statusId);
+          default:
+            return HomeScreen();
+        }
+      },
+    );
   }
 
   @override

@@ -14,6 +14,8 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
+import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
@@ -197,154 +199,144 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: PrefPage(children: [
-        PrefButton(
-          child: Text('👋 Hello'),
-          title: Text('Say Hello'),
-          subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
-          onTap: _sendPing,
-        ),
+      body: FutureBuilderWrapper<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: "Unable to find the app's package info"),
+        onReady: (packageInfo) {
+          var version = _createVersionString(packageInfo);
 
-        PrefTitle(
-          title: Text('General'),
-        ),
-        PrefDropdown(
-          fullWidth: false,
-          title: Text('Default tab'),
-          subtitle: Text('Which tab is shown when the app opens'),
-          pref: OPTION_HOME_INITIAL_TAB,
-          items: homeTabs
-              .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
-              .toList()
-        ),
-        PrefDropdown(
-          fullWidth: false,
-          title: Text('Media size'),
-          subtitle: Text('Save bandwidth using smaller images'),
-          pref: OPTION_MEDIA_SIZE,
-          items: [
-            DropdownMenuItem(child: Text('Disabled'), value: 'disabled'),
-            DropdownMenuItem(child: Text('Thumbnail'), value: 'thumb'),
-            DropdownMenuItem(child: Text('Small'), value: 'small'),
-            DropdownMenuItem(child: Text('Medium'), value: 'medium'),
-            DropdownMenuItem(child: Text('Large'), value: 'large'),
-          ]
-        ),
+          return PrefPage(children: [
+            PrefButton(
+              child: Text('👋 Hello'),
+              title: Text('Say Hello'),
+              subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
+              onTap: _sendPing,
+            ),
 
-        PrefTitle(
-            title: Text('Theme')
-        ),
-        PrefDropdown(
-          fullWidth: false,
-          title: Text('Theme'),
-          pref: OPTION_THEME_MODE,
-          items: [
-            DropdownMenuItem(child: Text('System'), value: 'system'),
-            DropdownMenuItem(child: Text('Light'), value: 'light'),
-            DropdownMenuItem(child: Text('Dark'), value: 'dark'),
-          ]
-        ),
-        PrefSwitch(
-          title: Text('True Black?'),
-          pref: OPTION_THEME_TRUE_BLACK,
-          subtitle: Text('Use true black for the dark mode theme'),
-        ),
+            PrefTitle(
+              title: Text('General'),
+            ),
+            PrefDropdown(
+                fullWidth: false,
+                title: Text('Default tab'),
+                subtitle: Text('Which tab is shown when the app opens'),
+                pref: OPTION_HOME_INITIAL_TAB,
+                items: homeTabs
+                    .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
+                    .toList()
+            ),
+            PrefDropdown(
+                fullWidth: false,
+                title: Text('Media size'),
+                subtitle: Text('Save bandwidth using smaller images'),
+                pref: OPTION_MEDIA_SIZE,
+                items: [
+                  DropdownMenuItem(child: Text('Disabled'), value: 'disabled'),
+                  DropdownMenuItem(child: Text('Thumbnail'), value: 'thumb'),
+                  DropdownMenuItem(child: Text('Small'), value: 'small'),
+                  DropdownMenuItem(child: Text('Medium'), value: 'medium'),
+                  DropdownMenuItem(child: Text('Large'), value: 'large'),
+                ]
+            ),
 
-        PrefTitle(
-          title: Text('Data'),
-        ),
-        PrefLabel(
-          leading: Icon(Icons.import_export),
-          title: Text('Import'),
-          subtitle: Text('Import data from another device'),
-          onTap: () async {
-            var isLegacy = await isLegacyAndroid();
-            if (isLegacy) {
-              showDialog(context: context, builder: (context) {
-                return AlertDialog(
-                  title: Text('Legacy Android Import'),
-                  actions: [
-                    TextButton(
-                      child: Text('Cancel'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    TextButton(
-                      child: Text('Import'),
-                      onPressed: () async {
-                        var file = File(await getLegacyPath(legacyExportFileName));
-                        if (await file.exists()) {
-                          try {
-                            await _importFromFile(file);
-                          } catch (e, stackTrace) {
-                            log('Unable to import the file on a legacy Android device', error: e, stackTrace: stackTrace);
+            PrefTitle(
+                title: Text('Theme')
+            ),
+            PrefDropdown(
+                fullWidth: false,
+                title: Text('Theme'),
+                pref: OPTION_THEME_MODE,
+                items: [
+                  DropdownMenuItem(child: Text('System'), value: 'system'),
+                  DropdownMenuItem(child: Text('Light'), value: 'light'),
+                  DropdownMenuItem(child: Text('Dark'), value: 'dark'),
+                ]
+            ),
+            PrefSwitch(
+              title: Text('True Black?'),
+              pref: OPTION_THEME_TRUE_BLACK,
+              subtitle: Text('Use true black for the dark mode theme'),
+            ),
 
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('$e'),
-                            ));
-                          }
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('The file does not exist. Please ensure it is located at ${file.path}'),
-                          ));
-                        }
+            PrefTitle(
+              title: Text('Data'),
+            ),
+            PrefLabel(
+              leading: Icon(Icons.import_export),
+              title: Text('Import'),
+              subtitle: Text('Import data from another device'),
+              onTap: () async {
+                var isLegacy = await isLegacyAndroid();
+                if (isLegacy) {
+                  showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      title: Text('Legacy Android Import'),
+                      actions: [
+                        TextButton(
+                          child: Text('Cancel'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text('Import'),
+                          onPressed: () async {
+                            var file = File(await getLegacyPath(legacyExportFileName));
+                            if (await file.exists()) {
+                              try {
+                                await _importFromFile(file);
+                              } catch (e, stackTrace) {
+                                log('Unable to import the file on a legacy Android device', error: e, stackTrace: stackTrace);
 
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                  content: FutureBuilder<String>(
-                    future: getLegacyPath(legacyExportFileName),
-                    builder: (context, snapshot) {
-                      var legacyExportPath = snapshot.data;
-                      if (legacyExportPath == null) {
-                        return CircularProgressIndicator();
-                      }
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('$e'),
+                                ));
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('The file does not exist. Please ensure it is located at ${file.path}'),
+                              ));
+                            }
 
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
-                              textAlign: TextAlign.left),
-                          SizedBox(height: 16),
-                          Text(legacyExportPath,
-                              textAlign: TextAlign.left),
-                          SizedBox(height: 16),
-                          Text('Please make sure the data you wish to import is located there, then press the import button below.',
-                              textAlign: TextAlign.left)
-                        ],
-                      );
-                    },
-                  ),
-                );
-              });
-            } else {
-              await FilePickerWritable().openFile((fileInfo, file) async {
-                await _importFromFile(file);
-              });
-            }
-          },
-        ),
-        PrefLabel(
-          leading: Icon(Icons.save),
-          title: Text('Export'),
-          subtitle: Text('Export your data'),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsExportScreen())),
-        ),
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                      content: FutureBuilderWrapper<String>(
+                        future: getLegacyPath(legacyExportFileName),
+                        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'prefix'),
+                        onReady: (legacyExportPath) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
+                                textAlign: TextAlign.left),
+                            SizedBox(height: 16),
+                            Text(legacyExportPath,
+                                textAlign: TextAlign.left),
+                            SizedBox(height: 16),
+                            Text('Please make sure the data you wish to import is located there, then press the import button below.',
+                                textAlign: TextAlign.left)
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                } else {
+                  await FilePickerWritable().openFile((fileInfo, file) async {
+                    await _importFromFile(file);
+                  });
+                }
+              },
+            ),
+            PrefLabel(
+              leading: Icon(Icons.save),
+              title: Text('Export'),
+              subtitle: Text('Export your data'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsExportScreen())),
+            ),
 
-        PrefTitle(
-          title: Text('About')
-        ),
-        FutureBuilder<PackageInfo>(
-          future: PackageInfo.fromPlatform(),
-          builder: (context, snapshot) {
-            var data = snapshot.data;
-            if (data == null) {
-              return Text('');
-            }
-
-            var version = _createVersionString(data);
-
-            return PrefLabel(
+            PrefTitle(
+                title: Text('About')
+            ),
+            PrefLabel(
               leading: Icon(Icons.info),
               title: Text('Version'),
               subtitle: Text(version),
@@ -355,104 +347,92 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   content: Text('Copied version to clipboard'),
                 ));
               },
-            );
-          },
-        ),
-        PrefLabel(
-          leading: Icon(Icons.favorite),
-          title: Text('Contribute'),
-          subtitle: Text('Help make Fritter even better'),
-          onTap: () => launch('https://github.com/jonjomckay/fritter'),
-        ),
-        PrefLabel(
-          leading: Icon(Icons.bug_report),
-          title: Text('Report a bug'),
-          subtitle: Text('Let the developers know if something\'s broken'),
-          onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
-        ),
-        PrefLabel(
-          leading: Icon(Icons.attach_money),
-          title: Text('Donate'),
-          subtitle: Text('Help support Fritter\'s future'),
-          onTap: () => showDialog(context: context, builder: (context) {
-            return SimpleDialog(
+            ),
+            PrefLabel(
+              leading: Icon(Icons.favorite),
+              title: Text('Contribute'),
+              subtitle: Text('Help make Fritter even better'),
+              onTap: () => launch('https://github.com/jonjomckay/fritter'),
+            ),
+            PrefLabel(
+              leading: Icon(Icons.bug_report),
+              title: Text('Report a bug'),
+              subtitle: Text('Let the developers know if something\'s broken'),
+              onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
+            ),
+            PrefLabel(
+              leading: Icon(Icons.attach_money),
               title: Text('Donate'),
-              children: [
-                SimpleDialogOption(
-                  child: ListTile(
-                    leading: Icon(SimpleIcons.bitcoin),
-                    title: Text('Bitcoin'),
-                  ),
-                  onPressed: () async {
-                    await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+              subtitle: Text('Help support Fritter\'s future'),
+              onTap: () => showDialog(context: context, builder: (context) {
+                return SimpleDialog(
+                  title: Text('Donate'),
+                  children: [
+                    SimpleDialogOption(
+                      child: ListTile(
+                        leading: Icon(SimpleIcons.bitcoin),
+                        title: Text('Bitcoin'),
+                      ),
+                      onPressed: () async {
+                        await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                    Navigator.pop(context);
+                        Navigator.pop(context);
 
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Copied address to clipboard'),
-                    ));
-                  },
-                ),
-                SimpleDialogOption(
-                  child: ListTile(
-                    leading: Icon(SimpleIcons.github),
-                    title: Text('GitHub'),
-                  ),
-                  onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
-                ),
-                SimpleDialogOption(
-                  child: ListTile(
-                    leading: Icon(SimpleIcons.liberapay),
-                    title: Text('Liberapay'),
-                  ),
-                  onPressed: () => launch('https://liberapay.com/jonjomckay'),
-                ),
-                SimpleDialogOption(
-                  child: ListTile(
-                    leading: Icon(SimpleIcons.paypal),
-                    title: Text('PayPal'),
-                  ),
-                  onPressed: () => launch('https://paypal.me/jonjomckay'),
-                )
-              ],
-            );
-          }),
-        ),
-        FutureBuilder<PackageInfo>(
-          future: PackageInfo.fromPlatform(),
-          builder: (context, snapshot) {
-            var data = snapshot.data;
-            if (data == null) {
-              return Text('');
-            }
-
-            var version = _createVersionString(data);
-
-            return PrefLabel(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Copied address to clipboard'),
+                        ));
+                      },
+                    ),
+                    SimpleDialogOption(
+                      child: ListTile(
+                        leading: Icon(SimpleIcons.github),
+                        title: Text('GitHub'),
+                      ),
+                      onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
+                    ),
+                    SimpleDialogOption(
+                      child: ListTile(
+                        leading: Icon(SimpleIcons.liberapay),
+                        title: Text('Liberapay'),
+                      ),
+                      onPressed: () => launch('https://liberapay.com/jonjomckay'),
+                    ),
+                    SimpleDialogOption(
+                      child: ListTile(
+                        leading: Icon(SimpleIcons.paypal),
+                        title: Text('PayPal'),
+                      ),
+                      onPressed: () => launch('https://paypal.me/jonjomckay'),
+                    )
+                  ],
+                );
+              }),
+            ),
+            PrefLabel(
               leading: Icon(Icons.copyright),
               title: Text('Licenses'),
               subtitle: Text('All the great software used by Fritter'),
               onTap: () => showLicensePage(
-                context: context,
-                applicationName: 'Fritter',
-                applicationVersion: version,
-                applicationLegalese: 'Released under the MIT License',
-                applicationIcon: Container(
-                  margin: EdgeInsets.all(12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(48.0),
-                    child: Image.asset(
-                      'assets/icon.png',
-                      height: 48.0,
-                      width: 48.0,
+                  context: context,
+                  applicationName: 'Fritter',
+                  applicationVersion: version,
+                  applicationLegalese: 'Released under the MIT License',
+                  applicationIcon: Container(
+                    margin: EdgeInsets.all(12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(48.0),
+                      child: Image.asset(
+                        'assets/icon.png',
+                        height: 48.0,
+                        width: 48.0,
+                      ),
                     ),
-                  ),
-                )
+                  )
               ),
-            );
-          },
-        ),
-      ]),
+            ),
+          ]);
+        },
+      ),
     );
   }
 }

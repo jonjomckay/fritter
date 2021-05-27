@@ -7,6 +7,8 @@ import 'package:fritter/database/entities.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
@@ -89,21 +91,10 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
     var model = context.read<HomeModel>();
 
     showDialog(context: context, builder: (context) {
-      return FutureBuilder<SubscriptionGroupEdit>(
+      return FutureBuilderWrapper<SubscriptionGroupEdit>(
         future: model.loadSubscriptionGroupEdit(id),
-        builder: (context, snapshot) {
-          var error = snapshot.error;
-          if (error != null) {
-            // TODO
-            log('Unable to load the subscription group', error: error);
-          }
-
-          var edit = snapshot.data;
-          if (edit == null) {
-            // TODO: Alert
-            return Center(child: CircularProgressIndicator());
-          }
-
+        onError: (error, stackTrace) => AlertErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the subscription group'),
+        onReady: (edit) {
           final form = FormGroup({
             'name': FormControl<String>(
                 value: name,
@@ -286,21 +277,10 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
           ],
         ),
         children: [
-          FutureBuilder<List<SubscriptionGroup>>(
+          FutureBuilderWrapper<List<SubscriptionGroup>>(
             future: model.listSubscriptionGroups(orderBy: _orderSubscriptionGroupsByField, orderByAscending: _orderSubscriptionGroupsAscending),
-            builder: (context, snapshot) {
-              var error = snapshot.error;
-              if (error != null) {
-                log('Unable to list the user\'s subscriptions groups', error: error);
-                return Center(child: Text('Unable to list the subscriptions groups: $error'));
-              }
-
-              var groups = snapshot.data;
-              if (groups == null) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              return Container(
+            onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscription groups'),
+            onReady: (groups) => Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: GridView.extent(
                     controller: widget.controller,
@@ -338,8 +318,7 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
                         ),
                       )
                     ]),
-              );
-            },
+              ),
           )
         ],
       ),
@@ -423,20 +402,10 @@ class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
           ],
         ),
         children: [
-          FutureBuilder<List<Subscription>>(
+          FutureBuilderWrapper<List<Subscription>>(
             future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
-            builder: (context, snapshot) {
-              var error = snapshot.error;
-              if (error != null) {
-                log('Unable to list the user\'s subscriptions', error: error);
-                return Center(child: Text('Unable to list the subscriptions: $error'));
-              }
-
-              var data = snapshot.data;
-              if (data == null) {
-                return Center(child: CircularProgressIndicator());
-              }
-
+            onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscriptions'),
+            onReady: (data) {
               if (data.isEmpty) {
                 return Center(child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -107,7 +107,7 @@ class TweetContent extends StatelessWidget {
     var mentions = tweet.entities?.userMentions ?? [];
     for (var mention in mentions) {
       entities.add(TweetUserMention(mention, () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(id: mention.idStr, username: mention.screenName!)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: mention.screenName!)));
       }));
     }
 
