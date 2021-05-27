@@ -1,0 +1,5 @@
+* Ajout de la possibilité de cliquer sur les mentions
+* Ajout de la possibilité de sélectionner les instances de Nitter à utiliser
+* Ajout d'un support pour les langues RTL
+* Ajout de la possibilité d'utiliser le noir véritable en mode sombre.
+* Correction de l'impossibilité d'afficher certaines vidéos dans les tweets

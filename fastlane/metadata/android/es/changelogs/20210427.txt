@@ -1,0 +1,2 @@
+* Arreglado un problema por el que los tuits no se abrían al tocarlos
+* Desaparecen los URL t.co al final de los tuits con multimedia o enlaces

@@ -1,0 +1,2 @@
+* Corrección para respuestas que no aparecían en la pantalla de perfil
+* Arreglado el orden de las suscripciones al añadir la posibilidad de ordenarlas manualmente

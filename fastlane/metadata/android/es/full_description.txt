@@ -1,0 +1,8 @@
+* Suscripciones y grupos locales del dispositivo, al estilo Newpipe, con una vista de suministros
+* Guardado local de tuits, lo que permite la lectura sin conexión
+* Visualización de perfiles
+* Visualización de tuits y respuestas
+* Visualización de imágenes, vídeos y GIF en los tuits
+* Búsqueda de tuits y usuarios
+* Admite la apertura directa de enlaces de twitter.com
+* Admite contenido en escrituras de derecha a izquierda

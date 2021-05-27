@@ -1,0 +1,6 @@
+* Permite cargar todos los tuits en los perfiles
+* El contenido de los tuits es seleccionable
+* Ya no faltan los recuentos bajo los tuits (respuestas, retuits, citas y favoritos)
+* Los enlaces a recursos de subtuit (fotos, multimedia) abren el tuit en vez de la pantalla de tendencias
+* Se abren con normalidad las respuestas a los tuits
+* Determinados vídeos ya no tienen la relación de aspecto incorrecta

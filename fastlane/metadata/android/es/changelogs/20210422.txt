@@ -1,0 +1,5 @@
+* Añadida una opción para seleccionar manualmente el tema de la aplicación
+* Permite abrir etiquetas, menciones y URL
+* Mejor rendimiento con los adjuntos fotográficos y de vídeo
+* Arreglada la visualización de retuits en las cronologías
+* Solución a errores en perfiles por tuits de cuentas suspendidas

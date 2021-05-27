@@ -1,0 +1,5 @@
+* Ajout d'une option permettant de sélectionner manuellement le thème de l'application.
+* Ajout d'un support pour l'ouverture des hashtags, des mentions et des URLs
+* Amélioration des performances des pièces jointes photo et vidéo
+* Correction de l'affichage des retweets dans les lignes de temps
+* Correction de la rupture des profils de certains tweets provenant de comptes suspendus
