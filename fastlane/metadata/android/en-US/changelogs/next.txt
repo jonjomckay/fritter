@@ -1,0 +1,2 @@
+- Fixed the "All" group not working when the group was manually deleted
+- Now preventing the "All" group from being deleted, and showing twice

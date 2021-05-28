@@ -116,11 +116,23 @@ class Repository {
         }), reverse: Operation((db) async {
           await db.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: ['-1']);
         })),
+      ],
+      13: [
+        // Duplicate migration 12, as some people had deleted the "All" group when it displayed twice in the groups list
+        Migration(Operation((db) async {
+          await db.insert(TABLE_SUBSCRIPTION_GROUP, {
+            'id': '-1',
+            'name': 'All',
+            'icon': 'rss_feed'
+          }, conflictAlgorithm: ConflictAlgorithm.replace);
+        }), reverse: Operation((db) async {
+          await db.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: ['-1']);
+        })),
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 12,
+        version: 13,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

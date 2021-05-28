@@ -64,13 +64,15 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future<List<SubscriptionGroup>> listSubscriptionGroups({ required String orderBy, required bool orderByAscending }) async {
+    log('Listing subscriptions groups');
+
     var database = await Repository.readOnly();
 
     var orderByDirection = orderByAscending
         ? 'COLLATE NOCASE ASC'
         : 'COLLATE NOCASE DESC';
 
-    var query = 'SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id GROUP BY gm.group_id ORDER BY $orderBy $orderByDirection';
+    var query = "SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderBy $orderByDirection";
 
     return (await database.rawQuery(query))
         .map((e) => SubscriptionGroup(id: e['id'] as String, name: e['name'] as String, icon: e['icon'] as String, numberOfMembers: e['number_of_members'] as int, createdAt: DateTime.parse(e['created_at'] as String)))
