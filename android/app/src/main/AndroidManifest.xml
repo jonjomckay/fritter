@@ -16,7 +16,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="com.jonjomckay.flitter.FritterApplication"
+        android:name="com.jonjomckay.fritter.FritterApplication"
         android:label="@string/app_name"
         android:icon="@mipmap/launcher_icon">
         <activity

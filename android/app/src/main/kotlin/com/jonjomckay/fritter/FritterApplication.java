@@ -1,4 +1,4 @@
-package com.jonjomckay.flitter;
+package com.jonjomckay.fritter;
 
 import android.content.Context;
 import androidx.multidex.MultiDex;
