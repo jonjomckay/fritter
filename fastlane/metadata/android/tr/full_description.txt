@@ -1,0 +1,8 @@
+* Aygıt üzerinde yerel abonelikler ve gruplar, akış görünümü dahil Newpipe tarzı
+* Çevrim dışı okumaya olanak tanıyan tweetlerin aygıt üzerinde yerel olarak kaydedilmesi
+* Profilleri görüntüleme
+* Tweetleri ve yanıtları görüntüleme
+* Tweetlerde resimleri, videoları ve GIF'leri görüntüleme
+* Tweet ve kullanıcı arama
+* twitter.com bağlantılarını doğrudan açmayı destekler
+* Sağdan sola (RTL) içeriği destekler
