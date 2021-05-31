@@ -1,4 +1,4 @@
-* lokale Abonnements und Gruppen im Newpipe-Stil, einschließlich einer Feed-Ansicht
+* lokale Abonnements und Gruppen im NewPipe-Stil, einschließlich einer Feed-Ansicht
 * lokales Speichern von Tweets, um sie offline lesen zu können
 * Anzeigen von Profilen
 * Anzeigen von Tweets und Antworten
