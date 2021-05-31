@@ -42,7 +42,11 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         includeReplies: widget.includeReplies
       );
 
-      _pagingController.appendPage(result.tweets, result.cursorBottom);
+      if (result.cursorBottom == _pagingController.nextPageKey) {
+        _pagingController.appendLastPage([]);
+      } else {
+        _pagingController.appendPage(result.tweets, result.cursorBottom);
+      }
     } catch (e, stackTrace) {
       _pagingController.error = [e, stackTrace];
     }
