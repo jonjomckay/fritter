@@ -1,4 +1,4 @@
-* Abonnements et groupes locaux, style Newpipe, y compris une vue du flux.
+* Abonnements et groupes locaux, style NewPipe, y compris une vue du flux.
 * Sauvegarde des tweets sur l'appareil, permettant une lecture hors ligne.
 * Affichage des profils
 * Affichage des tweets et des réponses
