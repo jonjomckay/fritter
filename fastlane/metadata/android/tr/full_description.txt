@@ -1,4 +1,4 @@
-* Aygıt üzerinde yerel abonelikler ve gruplar, akış görünümü dahil Newpipe tarzı
+* Aygıt üzerinde yerel abonelikler ve gruplar, akış görünümü dahil NewPipe tarzı
 * Çevrim dışı okumaya olanak tanıyan tweetlerin aygıt üzerinde yerel olarak kaydedilmesi
 * Profilleri görüntüleme
 * Tweetleri ve yanıtları görüntüleme
