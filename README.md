@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  A free, open-source Twitter client for Android and iOS.
+  Gratis, libre Twitter client for Android and iOS.
 </p>
 
 <p align="center">
@@ -19,14 +19,14 @@
 
 ## Features
 
-* Device-local subscriptions and groups, Newpipe-style, including a feed view
+* Device-local subscriptions and groups, NewPipe-style, including a feed view
 * Device-local saving of tweets, allowing offline reading
-* Viewing profiles
-* Viewing tweets and replies
-* Viewing and downloading pictures, videos and GIFs in tweets
-* Searching for tweets and users
-* Viewing trending topics
-* Supports opening twitter.com links directly
+* View profiles
+* View tweets and replies
+* View and download pictures, videos and GIFs in tweets
+* Search for tweets and users
+* View trending topics
+* Open twitter.com links directly
 
 ## Screenshots
 
@@ -35,3 +35,7 @@
 ## Acknowledgments
 
 Icons made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com).
+
+## Translation
+
+You can translate the project at [Hosted Weblate](https://hosted.weblate.org/projects/fritter/).
