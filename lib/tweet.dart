@@ -204,22 +204,33 @@ class TweetTile extends StatelessWidget {
                   },
                   title: Row(
                     children: [
-                      Text(tweet.user!.name!, style: TextStyle(
-                          fontWeight: FontWeight.w500)
-                      ),
+                      Flexible(child: Text(tweet.user!.name!,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500
+                        )
+                      )),
                       if (tweet.user!.verified ?? false)
                         SizedBox(width: 4),
                       if (tweet.user!.verified ?? false)
                         Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
                     ],
                   ),
-                  subtitle: Text('@${tweet.user!.screenName!}'),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(child: Text('@${tweet.user!.screenName!}',
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                      SizedBox(width: 4),
+                      Text(timeago.format(tweet.createdAt!),
+                          style: Theme.of(context).textTheme.caption)
+                    ],
+                  ),
                   leading: CircleAvatar(
                     radius: 24,
                     backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
                   ),
-                  trailing: Text(timeago.format(tweet.createdAt!),
-                      style: Theme.of(context).textTheme.caption),
                 ),
                 replyToTile,
                 content,
