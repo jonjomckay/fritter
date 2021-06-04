@@ -30,6 +30,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  final _children = [
+    SubscriptionsContent(),
+    TrendsContent(),
+    SavedContent(),
+  ];
+
   late TabController _tabController;
 
   @override
@@ -45,6 +51,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
 
     _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
  @override
@@ -85,11 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          SubscriptionsContent(),
-          TrendsContent(),
-          SavedContent(),
-        ],
+        children: _children,
       ),
     );
   }
