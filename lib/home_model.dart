@@ -121,6 +121,8 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future<List<Subscription>> listSubscriptions({ required String orderBy, required bool orderByAscending }) async {
+    log('Listing subscriptions');
+
     var database = await Repository.readOnly();
 
     var orderByDirection = orderByAscending
@@ -132,8 +134,29 @@ class HomeModel extends ChangeNotifier {
         .toList(growable: false);
   }
 
-  Future refresh() async {
+  Future<bool> refreshSubscriptionUsers() async {
+    var database = await Repository.writable();
+
+    var ids = (await database.query(TABLE_SUBSCRIPTION, columns: ['id']))
+      .map((e) => e['id'] as String)
+      .toList();
+
+    var users = await Twitter.getUsers(ids);
+
+    var batch = database.batch();
+    for (var user in users) {
+      batch.update(TABLE_SUBSCRIPTION, {
+        'screen_name': user.screenName,
+        'name': user.name,
+        'profile_image_url_https': user.profileImageUrlHttps
+      }, where: 'id = ?', whereArgs: [user.idStr]);
+    }
+
+    await batch.commit();
+
     notifyListeners();
+
+    return true;
   }
 
   Future saveSubscriptionGroup(String? id, String name, List<Subscription> subscriptions) async {

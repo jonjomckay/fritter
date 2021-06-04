@@ -1,1 +1,3 @@
+- Added button to manually refresh subscription info
 - Fixed the constant loader when no more profile tweets exist
+- Fixed profile pictures being blank after importing subscriptions

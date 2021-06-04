@@ -46,7 +46,7 @@ dependencies:
   intl: ^0.17.0
   package_info: ^2.0.0
   pref: ^2.0.2
-  pull_to_refresh: 1.6.4-nullsafety.0
+  quiver: ^3.0.1
   reactive_forms: ^10.1.0
   share: ^2.0.1
   simple_icons: ^4.22.0

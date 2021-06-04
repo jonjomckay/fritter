@@ -69,6 +69,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
     }
 
     await model.importData(dataToImport);
+    await model.refreshSubscriptionUsers();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Data imported successfully'),

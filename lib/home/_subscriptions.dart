@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:catcher/catcher.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
@@ -12,7 +11,6 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SubscriptionGroupFragment extends StatefulWidget {
@@ -328,8 +326,9 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
 
 class SubscriptionListFragment extends StatefulWidget {
   final ScrollController controller;
+  final Function onRefresh;
 
-  const SubscriptionListFragment({Key? key, required this.controller}) : super(key: key);
+  const SubscriptionListFragment({Key? key, required this.controller, required this.onRefresh}) : super(key: key);
 
   @override
   _SubscriptionListFragmentState createState() => _SubscriptionListFragmentState();
@@ -386,6 +385,10 @@ class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () => widget.onRefresh(),
+            ),
             PopupMenuButton<String>(
               icon: Icon(Icons.sort),
               itemBuilder: (context) => [
@@ -453,26 +456,41 @@ class SubscriptionsContent extends StatefulWidget {
 
 class _SubscriptionsContentState extends State<SubscriptionsContent> {
   final _scrollController = ScrollController();
-  final _refreshController = RefreshController(initialRefresh: false);
+
+  bool _isLoading = false;
 
   Future _onRefresh() async {
-    try {
-      await Future.delayed(Duration(milliseconds: 400));
+    setState(() {
+      _isLoading = true;
+    });
 
-      await context.read<HomeModel>().refresh();
+    try {
+      await context.read<HomeModel>().refreshSubscriptionUsers();
+    } catch (e, stackTrace) {
+      Catcher.reportCheckedError(e, stackTrace);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Unable to refresh the subscriptions. The error was $e'),
+      ));
     } finally {
-      _refreshController.refreshCompleted();
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return SingleChildScrollView(
       controller: _scrollController,
       child: Column(
         children: [
           SubscriptionGroupFragment(controller: _scrollController),
-          SubscriptionListFragment(controller: _scrollController,),
+          SubscriptionListFragment(controller: _scrollController, onRefresh: () => _onRefresh()),
         ],
       ),
     );

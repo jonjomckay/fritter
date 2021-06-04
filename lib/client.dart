@@ -8,6 +8,7 @@ import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
 import 'package:fritter/utils/cache.dart';
 import 'package:http/http.dart' as http;
+import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 10);
 const String _bearerToken = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
@@ -264,6 +265,32 @@ class Twitter {
         .toList(growable: false);
 
     return TweetList(tweets: tweets, cursorBottom: cursorBottom);
+  }
+
+  static Future<List<User>> getUsers(Iterable<String> ids) async {
+    // Split into groups of 100, as the API only supports that many at a time
+    List<Future<List<User>>> futures = [];
+
+    var groups = partition(ids, 100);
+    for (var group in groups) {
+      futures.add(_getUsersPage(group));
+    }
+
+    return (await Future.wait(futures))
+        .expand((element) => element)
+        .toList();
+  }
+
+  static Future<List<User>> _getUsersPage(Iterable<String> ids) async {
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/1.1/users/lookup.json', {
+      'user_id': ids.join(','),
+    }));
+
+    var result = json.decode(response.body);
+
+    return List.from(result)
+        .map((e) => User.fromJson(e))
+        .toList(growable: false);
   }
 
   static Iterable<TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
