@@ -99,6 +99,13 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.users.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text('This group contains no subscriptions!')),
+      );
+    }
+
     // TODO: Nesting the scaffold looks weird on the device when loading
     return Scaffold(
       appBar: AppBar(
