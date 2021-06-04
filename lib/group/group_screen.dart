@@ -223,26 +223,26 @@ class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var model = context.read<HomeModel>();
+
     return FutureBuilderWrapper<SubscriptionGroupGet>(
       future: _findSubscriptionGroup(widget.id),
       onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group'),
       onReady: (group) {
         var users = group.subscriptions.map((e) => e.screenName).toList();
 
-        return Consumer<HomeModel>(builder: (context, model, child) {
-          return FutureBuilderWrapper<SubscriptionGroupSettings>(
-            future: model.loadSubscriptionGroupSettings(group.id),
-            onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group settings'),
-            onReady: (settings) {
-              return SubscriptionGroupFeed(
-                group: group,
-                users: users,
-                includeReplies: settings.includeReplies,
-                includeRetweets: settings.includeRetweets,
-              );
-            },
-          );
-        });
+        return FutureBuilderWrapper<SubscriptionGroupSettings>(
+          future: model.loadSubscriptionGroupSettings(group.id),
+          onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group settings'),
+          onReady: (settings) {
+            return SubscriptionGroupFeed(
+              group: group,
+              users: users,
+              includeReplies: settings.includeReplies,
+              includeRetweets: settings.includeRetweets,
+            );
+          },
+        );
       },
     );
   }
