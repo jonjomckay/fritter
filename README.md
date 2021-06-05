@@ -30,7 +30,7 @@
 
 ## Screenshots
 
-| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="200"/> |
+| <img alt="Viewing groups and subscriptions" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="200"/> | <img alt="Viewing a profile" src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="200"/> | <img alt="Tweet cards" src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="200"/> | <img alt="Viewing trends" src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="200"/> | <img alt="Viewing saved tweets" src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="200"/> |
 
 ## Acknowledgments
 
