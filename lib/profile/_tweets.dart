@@ -2,28 +2,24 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/status.dart';
 import 'package:fritter/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:random_color/random_color.dart';
 
 class TweetConversation extends StatefulWidget {
   final String id;
-  final String username;
-  final bool showFullThreadButton;
+  final String? username;
+  final bool showFullThread;
   final List<TweetWithCard> tweets;
 
-  const TweetConversation({Key? key, required this.id, required this.username, required this.showFullThreadButton, required this.tweets}) : super(key: key);
+  const TweetConversation({Key? key, required this.id, required this.username, required this.showFullThread, required this.tweets}) : super(key: key);
 
   @override
   _TweetConversationState createState() => _TweetConversationState();
 }
 
 class _TweetConversationState extends State<TweetConversation> {
-  final Color _color = RandomColor().randomMaterialColor();
-
   @override
   Widget build(BuildContext context) {
     if (widget.tweets.length == 1) {
@@ -32,8 +28,12 @@ class _TweetConversationState extends State<TweetConversation> {
 
     List<TweetTile> tiles = [];
 
-    for (var tweet in widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!))) {
-      tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username));
+    if (widget.showFullThread) {
+      for (var tweet in widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!))) {
+        tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username));
+      }
+    } else {
+      tiles.add(TweetTile(clickable: true, tweet: widget.tweets[0], currentUsername: widget.username, thread: widget.id));
     }
 
     return Container(
@@ -41,28 +41,16 @@ class _TweetConversationState extends State<TweetConversation> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-              color: _color,
-              width: 4,
-            ),
             Expanded(child: Column(
               children: [
                 ...tiles,
-                if (widget.showFullThreadButton)
-                  GestureDetector(
-                    child: Card(
-                      margin: EdgeInsets.symmetric(vertical: 12),
-                      child: Text('View full thread', style: TextStyle(
-                          color: Theme.of(context).primaryColor
-                      )),
-                    ),
-                    onTap: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: widget.username, id: widget.id)));
-                    },
-                  )
               ],
-            ))
+            )),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                color: Colors.blue,
+                width: 4,
+              )
           ],
         ),
       ),
@@ -85,7 +73,7 @@ class ProfileTweets extends StatefulWidget {
 class _ProfileTweetsState extends State<ProfileTweets> {
   late PagingController<String?, TweetChain> _pagingController;
 
-  int _pageSize = 10;
+  int _pageSize = 50;
 
   @override
   void initState() {
@@ -125,7 +113,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, conversation, index) {
-          return TweetConversation(id: conversation.id, tweets: conversation.tweets, username: widget.user.screenName!, showFullThreadButton: true);
+          return TweetConversation(id: conversation.id, tweets: conversation.tweets, username: widget.user.screenName!, showFullThread: false);
         },
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],

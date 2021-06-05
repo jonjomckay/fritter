@@ -49,7 +49,6 @@ dependencies:
   package_info: ^2.0.0
   pref: ^2.0.2
   quiver: ^3.0.1
-  random_color: ^1.0.6-nullsafety
   reactive_forms: ^10.1.0
   sentry_flutter: ^5.1.0
   share: ^2.0.1

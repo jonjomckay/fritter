@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class SubscriptionGroupFeed extends StatefulWidget {
@@ -18,7 +19,7 @@ class SubscriptionGroupFeed extends StatefulWidget {
 }
 
 class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
-  late PagingController<String?, TweetWithCard> _pagingController;
+  late PagingController<String?, TweetChain> _pagingController;
 
   @override
   void initState() {
@@ -42,10 +43,9 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
   Future _listTweets(String? cursor) async {
     try {
-      List<Future<List<TweetWithCard>>> futures = [];
+      List<Future<TweetStatus>> futures = [];
 
       // TODO: Split into groups, and have a max_id per group
-
       var query = '';
       if (!widget.includeReplies) {
         query += '-filter:replies ';
@@ -69,24 +69,31 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           query += queryToAdd;
         } else {
           // Otherwise, add the search future and start a new one
-          futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+          futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor));
 
           query = queryToAdd;
         }
       }
 
       // Add any remaining query as a search future too
-      futures.add(Twitter.searchTweets(query, limit: 100, maxId: cursor));
+      futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor));
 
-      var result = (await Future.wait(futures))
+      var result = (await Future.wait(futures));
+      var threads = result
+          .map((e) => e.chains)
           .expand((element) => element)
-          .where((element) => element.idStr != cursor)
+          .sorted((a, b) => b.tweets[0].createdAt!.compareTo(a.tweets[0].createdAt!))
           .toList();
 
-      result.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-
-      if (result.isNotEmpty) {
-        _pagingController.appendPage(result, result.last.idStr);
+      if (result.isEmpty) {
+        _pagingController.appendLastPage([]);
+      } else {
+        // If this page is the same as the last page we received before, assume it's the last page
+        if (result.last.cursorBottom == _pagingController.nextPageKey) {
+          _pagingController.appendLastPage([]);
+        } else {
+          _pagingController.appendPage(threads, result.last.cursorBottom);
+        }
       }
     } catch (e, stackTrace) {
       _pagingController.error = [e, stackTrace];
@@ -102,11 +109,11 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       );
     }
 
-    return PagedListView<String?, TweetWithCard>(
+    return PagedListView<String?, TweetChain>(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, tweet, index) {
-          return TweetTile(tweet: tweet, clickable: true);
+        itemBuilder: (context, conversation, index) {
+          return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, showFullThread: false);
         },
         newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],

@@ -17,7 +17,12 @@ class TweetSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return [];
     } else {
-      return await Twitter.searchTweets(query);
+      // TODO: Is this right?
+      return (await Twitter.searchTweets(query))
+          .chains
+          .map((e) => e.tweets)
+          .expand((element) => element)
+          .toList();
     }
   }
 

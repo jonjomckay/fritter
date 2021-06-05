@@ -220,11 +220,12 @@ class Twitter {
     return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO');
   }
 
-  static Future<List<TweetWithCard>> searchTweets(String query, {int limit = 25, String? maxId}) async {
+  static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor}) async {
     var response = await _twitterApi.client.get(
         Uri.https('api.twitter.com', '/2/search/adaptive.json', {
           ...defaultParams,
           'count': limit.toString(),
+          'cursor': cursor,
           'max_id': maxId,
           'q': query,
           'query_source': 'typed_query',
@@ -235,8 +236,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return _createTweets('sq-I-t', result)
-        .toList(growable: false);
+    return _createUnconversationedChains(result, 'sq-I-t');
   }
 
   static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
@@ -287,15 +287,31 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    var entries = result['timeline']['instructions'][0]['addEntries']['entries'] as List<dynamic>;
+    return _createUnconversationedChains(result, 'tweet');
+  }
 
-    var cursorBottom = entries
-        .where((entry) => entry['entryId'].startsWith('cursor-bottom'))
-        .map((e) => e['content']['operation']['cursor']['value'])
-        .cast<String>()
-        .first;
+  static TweetStatus _createUnconversationedChains(dynamic result, String tweetIndicator) {
+    var addEntries = result['timeline']['instructions'][0]['addEntries']['entries'] as List<dynamic>;
 
-    var tweets = _createTweets('tweet', result);
+    String? cursorBottom;
+
+    var cursorBottomEntry = addEntries
+      .firstWhere((e) => e['entryId'].contains('cursor-bottom'), orElse: () => null);
+
+    if (cursorBottomEntry != null) {
+      cursorBottom = cursorBottomEntry['content']['operation']['cursor']['value'];
+    } else {
+      // Look for a "replaceEntry" with the cursor
+      var cursorBottomReplaceEntry = List.from(result['timeline']['instructions'])
+          .where((e) => e.containsKey('replaceEntry'))
+          .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-bottom'), orElse: () => null);
+
+      if (cursorBottomReplaceEntry != null) {
+        cursorBottom = cursorBottomReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+      }
+    }
+
+    var tweets = _createTweets(tweetIndicator, result);
 
     List<TweetChain> chains = [];
     List<String> threads = [];
@@ -304,23 +320,20 @@ class Twitter {
       if (threads.contains(tweet.idStr)) {
         continue;
       }
-      
+
       var thread = _threadFilter(tweets, threads, tweet);
       if (thread.length < 2) {
-
+        // Do nothing, for now
       } else {
         threads.addAll(thread.map((e) => e.idStr!));
       }
 
-      chains.add(TweetChain(id: tweet.idStr!, tweets: thread));
+      var chainTweets = thread
+          .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
+          .toList();
+
+      chains.add(TweetChain(id: chainTweets.first.idStr!, tweets: chainTweets));
     }
-
-
-    // var chains = tweets
-    //     .groupBy((e) => e.conversationIdStr)
-    //     .entries
-    //     .map((e) => TweetChain(id: e.key!, tweets: e.value))
-    //     .toList(growable: false);
 
     return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom);
   }
@@ -531,7 +544,7 @@ class TweetStatus {
   // final TweetChain after;
   // final TweetChain before;
   final TweetWithCard? tweet;
-  final String cursorBottom;
+  final String? cursorBottom;
   final List<TweetChain> chains;
 
   TweetStatus({required this.tweet, required this.chains, required this.cursorBottom});
