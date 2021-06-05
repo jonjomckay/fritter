@@ -63,6 +63,20 @@ class TweetTile extends StatelessWidget {
       ? this.tweet!
       : this.tweet!.retweetedStatusWithCard!;
 
+    if (tweet.isTombstone ?? false) {
+      return Container(
+        width: double.infinity,
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Text(tweet.text!, style: TextStyle(
+              fontStyle: FontStyle.italic
+            ))
+          ),
+        ),
+      );
+    }
+
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
       media = TweetMedia(media: tweet.extendedEntities!.media!);

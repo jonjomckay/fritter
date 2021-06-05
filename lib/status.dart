@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
@@ -64,12 +65,13 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
   Widget build(BuildContext context) {
     Iterable<Widget> comments = [];
 
-    var replies = widget.status.replies;
+    var replies = widget.status.chains;
     if (replies.isEmpty) {
       comments = [Text('No replies')];
     } else {
-      comments = replies.map((e) {
-        return TweetTile(clickable: true, currentUsername: widget.username, tweet: e);
+      comments = replies.map((chain) {
+        // TODO: Is widget.username correct here?
+        return TweetConversation(id: chain.id, username: widget.username, tweets: chain.tweets, showFullThreadButton: false);
       });
     }
 
@@ -78,7 +80,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         children: [
           TweetTile(currentUsername: widget.username, tweet: widget.status.tweet, clickable: false),
           Padding(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(12),
             child: Column(
               children: [...comments],
             ),
