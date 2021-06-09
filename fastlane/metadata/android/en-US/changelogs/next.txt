@@ -4,3 +4,4 @@
 - Fixed feeds having a refresh forced when a tweet is saved
 - Fixed title not changing on the home screen
 - Fixed long profile and screen names overflowing the tweet date
+- Fixed the error reporting dialog popping up too much

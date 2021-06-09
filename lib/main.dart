@@ -78,9 +78,8 @@ Future<void> main() async {
 
   // TODO: Only enable the dialog report mode if the setting is enabled
 
-  CatcherOptions catcherOptions = CatcherOptions(DialogReportMode(), [
+  CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
     ConsoleHandler(),
-    EmailManualHandler(['support@fritter.cc'])
   ], localizationOptions: [
     LocalizationOptions('en',
       dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
@@ -88,7 +87,9 @@ Future<void> main() async {
       dialogReportModeAccept: 'Send',
       dialogReportModeCancel: "Don't send"
     )
-  ]);
+  ], explicitExceptionHandlersMap: {
+    'ManuallyReported': EmailManualHandler(['support@fritter.cc'])
+  });
 
   Catcher(
     debugConfig: catcherOptions,

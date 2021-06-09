@@ -105,7 +105,10 @@ class FullPageErrorWidget extends FritterErrorWidget {
             margin: EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text('Report'),
-              onPressed: () => Catcher.reportCheckedError(error, stackTrace),
+              onPressed: () => Catcher.reportCheckedError(
+                  ManuallyReportedException(error, stackTrace),
+                  stackTrace
+              ),
             ),
           ),
           if (onRetry != null)
@@ -120,4 +123,11 @@ class FullPageErrorWidget extends FritterErrorWidget {
       ),
     );
   }
+}
+
+class ManuallyReportedException implements Exception {
+  final Object? error;
+  final Object? stackTrace;
+
+  ManuallyReportedException(this.error, this.stackTrace);
 }
