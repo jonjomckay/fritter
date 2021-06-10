@@ -36,45 +36,37 @@ class _TweetVideoState extends State<TweetVideo> {
     _chewieController = ChewieController(
       aspectRatio: aspectRatio,
       autoInitialize: true,
-      customControls: VideoControls(
-        customControls: [
-          GestureDetector(
-            onTap: () async {
-              var fileName = path.basename(url);
+      allowMuting: true,
+      customControls: MaterialDesktopControls(),
+      additionalOptions: (context) => [
+        OptionItem(
+          onTap: () async {
+            var fileName = path.basename(url);
 
-              await downloadUriToPickedFile(url, fileName,
-                onError: (response) {
-                  log('Unable to save the media. The response was ${response.body}');
+            await downloadUriToPickedFile(url, fileName,
+              onError: (response) {
+                log('Unable to save the media. The response was ${response.body}');
 
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
-                  ));
-                },
-                onStart: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Downloading media...'),
-                  ));
-                },
-                onSuccess: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Successfully saved the media!'),
-                  ));
-                },
-              );
-            },
-            child: ClipRect(
-              child: Container(
-                height: 48,
-                padding: const EdgeInsets.only(
-                  left: 8.0,
-                  right: 8.0,
-                ),
-                child: Icon(Icons.download_sharp),
-              ),
-            ),
-          )
-        ],
-      ),
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
+                ));
+              },
+              onStart: () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Downloading media...'),
+                ));
+              },
+              onSuccess: () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Successfully saved the media!'),
+                ));
+              },
+            );
+          },
+          iconData: Icons.download_sharp,
+          title: 'Download'
+        )
+      ],
       looping: widget.loop,
       videoPlayerController: _videoController,
     );
