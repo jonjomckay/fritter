@@ -198,6 +198,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const appFlavor = String.fromEnvironment('app.flavor');
+
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilderWrapper<PackageInfo>(
@@ -361,54 +363,55 @@ class _OptionsScreenState extends State<OptionsScreen> {
               subtitle: Text('Let the developers know if something\'s broken'),
               onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
             ),
-            PrefLabel(
-              leading: Icon(Icons.attach_money),
-              title: Text('Donate'),
-              subtitle: Text('Help support Fritter\'s future'),
-              onTap: () => showDialog(context: context, builder: (context) {
-                return SimpleDialog(
-                  title: Text('Donate'),
-                  children: [
-                    SimpleDialogOption(
-                      child: ListTile(
-                        leading: Icon(SimpleIcons.bitcoin),
-                        title: Text('Bitcoin'),
-                      ),
-                      onPressed: () async {
-                        await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+            if (appFlavor != 'play')
+              PrefLabel(
+                leading: Icon(Icons.attach_money),
+                title: Text('Donate'),
+                subtitle: Text('Help support Fritter\'s future'),
+                onTap: () => showDialog(context: context, builder: (context) {
+                  return SimpleDialog(
+                    title: Text('Donate'),
+                    children: [
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.bitcoin),
+                          title: Text('Bitcoin'),
+                        ),
+                        onPressed: () async {
+                          await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                        Navigator.pop(context);
+                          Navigator.pop(context);
 
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Copied address to clipboard'),
-                        ));
-                      },
-                    ),
-                    SimpleDialogOption(
-                      child: ListTile(
-                        leading: Icon(SimpleIcons.github),
-                        title: Text('GitHub'),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Copied address to clipboard'),
+                          ));
+                        },
                       ),
-                      onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
-                    ),
-                    SimpleDialogOption(
-                      child: ListTile(
-                        leading: Icon(SimpleIcons.liberapay),
-                        title: Text('Liberapay'),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.github),
+                          title: Text('GitHub'),
+                        ),
+                        onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
                       ),
-                      onPressed: () => launch('https://liberapay.com/jonjomckay'),
-                    ),
-                    SimpleDialogOption(
-                      child: ListTile(
-                        leading: Icon(SimpleIcons.paypal),
-                        title: Text('PayPal'),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.liberapay),
+                          title: Text('Liberapay'),
+                        ),
+                        onPressed: () => launch('https://liberapay.com/jonjomckay'),
                       ),
-                      onPressed: () => launch('https://paypal.me/jonjomckay'),
-                    )
-                  ],
-                );
-              }),
-            ),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.paypal),
+                          title: Text('PayPal'),
+                        ),
+                        onPressed: () => launch('https://paypal.me/jonjomckay'),
+                      )
+                    ],
+                  );
+                }),
+              ),
             PrefLabel(
               leading: Icon(Icons.copyright),
               title: Text('Licenses'),
