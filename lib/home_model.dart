@@ -87,6 +87,25 @@ class HomeModel extends ChangeNotifier {
         .toList(growable: false);
   }
 
+  Future saveUserGroupMembership(int user, List<String> memberships) async {
+    var database = await Repository.writable();
+
+    var batch = database.batch();
+
+    // First, clear all the memberships for the user
+    batch.delete(TABLE_SUBSCRIPTION_GROUP_MEMBER, where: 'profile_id = ?', whereArgs: [user]);
+
+    // Then add all the new memberships
+    for (var group in memberships) {
+      batch.insert(TABLE_SUBSCRIPTION_GROUP_MEMBER, {
+        'group_id': group,
+        'profile_id': user
+      });
+    }
+
+    await batch.commit();
+  }
+
   Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(String? id) async {
     var database = await Repository.readOnly();
 
