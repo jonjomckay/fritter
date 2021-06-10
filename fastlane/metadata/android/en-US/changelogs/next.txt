@@ -1,1 +1,2 @@
 - Fixed poll colors hiding text in light mode
+- Fixed tweets not opening when a profile, search, or tweet screen is already open
