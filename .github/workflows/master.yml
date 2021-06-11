@@ -55,31 +55,31 @@ jobs:
           name: apk-release
           path: build/app/outputs/flutter-apk/app-release.apk
 
-  ios:
-    runs-on: macos-latest
-    steps:
-      - name: Clone the repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Install and set up Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: '14.x'
-
-      - name: Install and set up Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '2.2.1'
-
-      - name: Build
-        run: |
-          flutter config --no-analytics
-          flutter pub get
-          flutter pub run flutter_oss_licenses:generate.dart
-          flutter build ipa --debug
-          flutter build ipa --release
+#  ios:
+#    runs-on: macos-latest
+#    steps:
+#      - name: Clone the repository
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Install and set up Java
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: '14.x'
+#
+#      - name: Install and set up Flutter
+#        uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: '2.2.1'
+#
+#      - name: Build
+#        run: |
+#          flutter config --no-analytics
+#          flutter pub get
+#          flutter pub run flutter_oss_licenses:generate.dart
+#          flutter build ipa --debug
+#          flutter build ipa --release
 
 #      - name: Archive debug APK
 #        uses: actions/upload-artifact@v2
