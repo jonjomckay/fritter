@@ -10,10 +10,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class TweetConversation extends StatefulWidget {
   final String id;
   final String? username;
+  final bool isPinned;
   final bool showFullThread;
   final List<TweetWithCard> tweets;
 
-  const TweetConversation({Key? key, required this.id, required this.username, required this.showFullThread, required this.tweets}) : super(key: key);
+  const TweetConversation({Key? key, required this.id, required this.username, required this.isPinned, required this.showFullThread, required this.tweets}) : super(key: key);
 
   @override
   _TweetConversationState createState() => _TweetConversationState();
@@ -23,17 +24,17 @@ class _TweetConversationState extends State<TweetConversation> {
   @override
   Widget build(BuildContext context) {
     if (widget.tweets.length == 1) {
-      return TweetTile(clickable: true, tweet: widget.tweets.first, currentUsername: widget.username);
+      return TweetTile(clickable: true, tweet: widget.tweets.first, currentUsername: widget.username, isPinned: widget.isPinned);
     }
 
     List<TweetTile> tiles = [];
 
     if (widget.showFullThread) {
       for (var tweet in widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!))) {
-        tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username));
+        tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username, isPinned: widget.isPinned));
       }
     } else {
-      tiles.add(TweetTile(clickable: true, tweet: widget.tweets[0], currentUsername: widget.username, thread: widget.id));
+      tiles.add(TweetTile(clickable: true, tweet: widget.tweets[0], currentUsername: widget.username, thread: widget.id, isPinned: widget.isPinned));
     }
 
     return Container(
@@ -73,7 +74,7 @@ class ProfileTweets extends StatefulWidget {
 class _ProfileTweetsState extends State<ProfileTweets> {
   late PagingController<String?, TweetChain> _pagingController;
 
-  int _pageSize = 50;
+  int _pageSize = 20;
 
   @override
   void initState() {
@@ -86,6 +87,10 @@ class _ProfileTweetsState extends State<ProfileTweets> {
   }
 
   Future _loadTweets(String? cursor) async {
+    if (cursor != null) {
+      return;
+    }
+
     try {
       var result = await Twitter.getTweets(
         widget.user.idStr!,
@@ -112,8 +117,8 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       pagingController: _pagingController,
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, conversation, index) {
-          return TweetConversation(id: conversation.id, tweets: conversation.tweets, username: widget.user.screenName!, showFullThread: false);
+        itemBuilder: (context, chain, index) {
+          return TweetConversation(id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, showFullThread: false, isPinned: chain.isPinned);
         },
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],

@@ -71,7 +71,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
     } else {
       comments = replies.map((chain) {
         // TODO: Is widget.username correct here?
-        return TweetConversation(id: chain.id, username: widget.username, tweets: chain.tweets, showFullThread: true);
+        return TweetConversation(id: chain.id, username: widget.username, tweets: chain.tweets, showFullThread: true, isPinned: false);
       });
     }
 

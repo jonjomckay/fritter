@@ -28,8 +28,9 @@ class TweetTile extends StatelessWidget {
   final String? currentUsername;
   final TweetWithCard? tweet;
   final String? thread;
+  final bool isPinned;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.thread}) : super(key: key);
+  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.thread, this.isPinned = false}) : super(key: key);
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -219,6 +220,28 @@ class TweetTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 retweetBanner,
+                if (isPinned)
+                  Container(
+                    margin: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 12),
+                    child: RichText(
+                      text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                                child: Icon(Icons.push_pin, size: 12),
+                                alignment: PlaceholderAlignment.middle
+                            ),
+                            WidgetSpan(
+                                child: SizedBox(width: 16)
+                            ),
+                            TextSpan(
+                                text: 'Pinned tweet'
+                            )
+                          ]
+                      ),
+                    ),
+                    width: double.infinity,
+                    height: 16,
+                  ),
                 ListTile(
                   onTap: () {
                     // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense

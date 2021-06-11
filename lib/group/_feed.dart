@@ -113,7 +113,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, conversation, index) {
-          return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, showFullThread: false);
+          return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, showFullThread: false, isPinned: conversation.isPinned);
         },
         newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],

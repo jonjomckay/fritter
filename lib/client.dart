@@ -192,7 +192,7 @@ class Twitter {
         }
 
         // TODO: There must be a better way of getting the conversation ID
-        replies.add(TweetChain(id: entryId.replaceFirst('conversationThread-', ''), tweets: tweets));
+        replies.add(TweetChain(id: entryId.replaceFirst('conversationThread-', ''), tweets: tweets, isPinned: false));
       }
     }
 
@@ -217,7 +217,7 @@ class Twitter {
     var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
     var chains = createTweetChains(globalTweets, globalUsers, instructions);
 
-    return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO');
+    return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO', cursorTop: 'TODO');
   }
 
   static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor}) async {
@@ -236,7 +236,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return _createUnconversationedChains(result, 'sq-I-t');
+    return createUnconversationedChains(result, 'sq-I-t', false);
   }
 
   static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
@@ -287,27 +287,50 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return _createUnconversationedChains(result, 'tweet');
+    return createUnconversationedChains(result, 'tweet', cursor == null);
   }
 
-  static TweetStatus _createUnconversationedChains(dynamic result, String tweetIndicator) {
-    var addEntries = result['timeline']['instructions'][0]['addEntries']['entries'] as List<dynamic>;
+  static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned) {
+    var instructions = List.from(result['timeline']['instructions']);
+
+    var addEntries = instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'] as List<dynamic>;
 
     String? cursorBottom;
+    String? cursorTop;
 
-    var cursorBottomEntry = addEntries
-      .firstWhere((e) => e['entryId'].contains('cursor-bottom'), orElse: () => null);
+    {
+      var cursorBottomEntry = addEntries
+        .firstWhere((e) => e['entryId'].contains('cursor-bottom'), orElse: () => null);
 
-    if (cursorBottomEntry != null) {
-      cursorBottom = cursorBottomEntry['content']['operation']['cursor']['value'];
-    } else {
-      // Look for a "replaceEntry" with the cursor
-      var cursorBottomReplaceEntry = List.from(result['timeline']['instructions'])
-          .where((e) => e.containsKey('replaceEntry'))
-          .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-bottom'), orElse: () => null);
+      if (cursorBottomEntry != null) {
+        cursorBottom = cursorBottomEntry['content']['operation']['cursor']['value'];
+      } else {
+        // Look for a "replaceEntry" with the cursor
+        var cursorBottomReplaceEntry = List.from(result['timeline']['instructions'])
+            .where((e) => e.containsKey('replaceEntry'))
+            .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-bottom'), orElse: () => null);
 
-      if (cursorBottomReplaceEntry != null) {
-        cursorBottom = cursorBottomReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+        if (cursorBottomReplaceEntry != null) {
+          cursorBottom = cursorBottomReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+        }
+      }
+    }
+
+    {
+      var cursorTopEntry = addEntries
+          .firstWhere((e) => e['entryId'].contains('cursor-top'), orElse: () => null);
+
+      if (cursorTopEntry != null) {
+        cursorTop = cursorTopEntry['content']['operation']['cursor']['value'];
+      } else {
+        // Look for a "replaceEntry" with the cursor
+        var cursorTopReplaceEntry = List.from(result['timeline']['instructions'])
+            .where((e) => e.containsKey('replaceEntry'))
+            .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-top'), orElse: () => null);
+
+        if (cursorTopReplaceEntry != null) {
+          cursorTop = cursorTopReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+        }
       }
     }
 
@@ -316,14 +339,35 @@ class Twitter {
     List<TweetChain> chains = [];
     List<String> threads = [];
 
-    for (var tweet in tweets) {
+    var tweetEntries = addEntries
+        .where((e) => e['entryId'].contains(tweetIndicator))
+        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
+        .map((e) => e['content']['item']['content']['tweet']['id'])
+        .cast<String>()
+        .toList();
+
+    // var conversations = tweets
+    //   .values
+    //   .map((e) => e.conversationIdStr!)
+    //   .toSet();
+    //
+    // var things = [];
+
+    for (var tweetEntry in tweetEntries) {
+      var tweet = tweets[tweetEntry];
+      if (tweet == null) {
+        log('Unable to find the tweet using the entry ID $tweetEntry');
+        continue;
+      }
+
       if (threads.contains(tweet.idStr)) {
         continue;
       }
 
-      var thread = _threadFilter(tweets, threads, tweet);
+      var thread = _buildThread(tweets.values, threads, tweet);
       if (thread.length < 2) {
         // Do nothing, for now
+        int i = 0;
       } else {
         threads.addAll(thread.map((e) => e.idStr!));
       }
@@ -332,13 +376,22 @@ class Twitter {
           .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
           .toList();
 
-      chains.add(TweetChain(id: chainTweets.first.idStr!, tweets: chainTweets));
+      chains.add(TweetChain(id: chainTweets.first.conversationIdStr!, tweets: chainTweets, isPinned: false));
     }
 
-    return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom);
+    if (showPinned) {
+      var pinEntry = instructions.firstWhere((e) => e.containsKey('pinEntry'), orElse: () => null);
+      if (pinEntry != null) {
+        var id = pinEntry['pinEntry']['entry']['content']['item']['content']['tweet']['id'] as String;
+
+        chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
+      }
+    }
+
+    return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
-  static List<TweetWithCard> _threadFilter(Iterable<TweetWithCard> tweets, List<String> threads, TweetWithCard tweet) {
+  static List<TweetWithCard> _buildThread(Iterable<TweetWithCard> tweets, List<String> threads, TweetWithCard tweet) {
     List<TweetWithCard> result = [tweet];
 
     if (threads.contains(tweet.inReplyToStatusIdStr)) {
@@ -382,18 +435,26 @@ class Twitter {
         .toList(growable: false);
   }
 
-  static Iterable<TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
+  static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
-    var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
 
-    entries.sort((a, b) => b['sortIndex'].compareTo(a['sortIndex']));
+    var tweets = globalTweets.values
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
+        // .sorted((a, b) => b.createdAt!.compareTo(a.createdAt!))
+        .toList();
+    
+    return Map.fromIterable(tweets, key: (e) => e.idStr, value: (e) => e);
 
-    return entries
-        .where((entry) => entry['entryId'].startsWith(entryPrefix) as bool)
-        .where((entry) => globalTweets.containsKey(entry['content']['item']['content']['tweet']['id']))
-        .map<TweetWithCard>((entry) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[entry['content']['item']['content']['tweet']['id']]));
+    // var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
+
+    // entries.sort((a, b) => b['sortIndex'].compareTo(a['sortIndex']));
+
+    // return entries
+    //     .where((entry) => entry['entryId'].startsWith(entryPrefix) as bool)
+    //     .where((entry) => globalTweets.containsKey(entry['content']['item']['content']['tweet']['id']))
+    //     .map<TweetWithCard>((entry) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[entry['content']['item']['content']['tweet']['id']]));
   }
 }
 
@@ -536,8 +597,9 @@ class TweetWithCard extends Tweet {
 class TweetChain {
   final String id;
   final List<TweetWithCard> tweets;
+  final bool isPinned;
 
-  TweetChain({required this.id, required this.tweets});
+  TweetChain({required this.id, required this.tweets, required this.isPinned});
 }
 
 class TweetStatus {
@@ -545,7 +607,8 @@ class TweetStatus {
   // final TweetChain before;
   final TweetWithCard? tweet;
   final String? cursorBottom;
+  final String? cursorTop;
   final List<TweetChain> chains;
 
-  TweetStatus({required this.tweet, required this.chains, required this.cursorBottom});
+  TweetStatus({required this.tweet, required this.chains, required this.cursorBottom, required this.cursorTop});
 }
