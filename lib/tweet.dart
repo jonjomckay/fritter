@@ -66,28 +66,37 @@ class TweetTile extends StatelessWidget {
     }
 
     Widget retweetBanner = Container();
+    Widget retweetSidebar = Container();
     if (this.tweet!.retweetedStatusWithCard != null) {
-      retweetBanner = ColoredBox(
-          color: Theme.of(context).secondaryHeaderColor,
-          child: Center(
-            child: Padding(
-                padding: EdgeInsets.all(8),
-                child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorDark
-                      ),
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Icon(Icons.repeat, size: 14, color: Theme.of(context).primaryColorDark),
-                        ),
-                      ],
+      retweetBanner = Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 12),
+        child: Container(
+          child: RichText(
+            text: TextSpan(
+                children: [
+                  WidgetSpan(
+                      child: Icon(Icons.repeat, size: 12, color: Theme.of(context).hintColor),
+                      alignment: PlaceholderAlignment.middle
+                  ),
+                  WidgetSpan(
+                      child: SizedBox(width: 16)
+                  ),
+                  TextSpan(
+                      text: '${this.tweet!.user!.name!} retweeted',
+                    style: TextStyle(
+                        color: Theme.of(context).hintColor
                     )
-                )
+                  )
+                ]
             ),
-          )
+          ),
+        ),
+      );
+
+      retweetSidebar = Container(
+          color: Theme.of(context).secondaryHeaderColor,
+          width: 4
       );
     }
 
@@ -187,12 +196,11 @@ class TweetTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              child: retweetBanner,
-            ),
+            retweetSidebar,
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                retweetBanner,
                 ListTile(
                   onTap: () {
                     // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
