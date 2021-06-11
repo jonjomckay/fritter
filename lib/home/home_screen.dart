@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
@@ -19,6 +20,7 @@ class _Tab {
 }
 
 final List<_Tab> homeTabs = [
+  _Tab('feed', 'Feed', Icons.rss_feed),
   _Tab('subscriptions', 'Subscriptions', Icons.people),
   _Tab('trending', 'Trending', Icons.trending_up),
   _Tab('saved', 'Saved', Icons.bookmark),
@@ -31,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final _children = [
+    FeedContent(),
     SubscriptionsContent(),
     TrendsContent(),
     SavedContent(),
