@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  create_release:
+  android:
     runs-on: ubuntu-latest
     steps:
       - name: Clone the repository
@@ -19,16 +19,16 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '14.x'
-      
-      - name:
-        run: echo $SIGNING_KEY | base64 -d > android/app/key.jks
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
       - name: Install and set up Flutter
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.2.1'
+
+      - name:
+        run: echo $SIGNING_KEY | base64 -d > android/app/key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
       - name: Build
         run: |
@@ -54,3 +54,42 @@ jobs:
         with:
           name: apk-release
           path: build/app/outputs/flutter-apk/app-release.apk
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install and set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+
+      - name: Install and set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.2.1'
+
+      - name: Build
+        run: |
+          flutter config --no-analytics
+          flutter pub get
+          flutter pub run flutter_oss_licenses:generate.dart
+          flutter build ipa --debug
+          flutter build ipa --release
+
+#      - name: Archive debug APK
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: apk-debug
+#          path: build/app/outputs/flutter-apk/app-debug.apk
+#
+#      - name: Archive release APK
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: apk-release
+#          path: build/app/outputs/flutter-ipa/iphoneos/app.ipa
+#          path: build/app/outputs/flutter-apk/app-release.apk
