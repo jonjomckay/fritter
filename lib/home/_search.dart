@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -65,7 +67,8 @@ class TweetSearchDelegate extends SearchDelegate {
             Container(
               child: Expanded(child: TabBarView(children: [
                 TweetSearchResultList<User>(
-                    future: () => searchUsers(context, query),
+                  query: query,
+                    future: (q) => searchUsers(context, q),
                     itemBuilder: (context, item) {
                       return UserTile(
                           id: item.idStr!,
@@ -76,7 +79,8 @@ class TweetSearchDelegate extends SearchDelegate {
                     }
                 ),
                 TweetSearchResultList<TweetWithCard>(
-                    future: () => searchTweets(context, query),
+                    query: query,
+                    future: (q) => searchTweets(context, q),
                     itemBuilder: (context, item) {
                       return TweetTile(
                           tweet: item,
@@ -93,7 +97,7 @@ class TweetSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    return buildResults(context);
   }
 }
 
@@ -101,16 +105,18 @@ typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 class TweetSearchResultList<T> extends StatefulWidget {
 
-  final Future<List<T>> Function() future;
+  final String query;
+  final Future<List<T>> Function(String query) future;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const TweetSearchResultList({Key? key, required this.future, required this.itemBuilder}) : super(key: key);
+  const TweetSearchResultList({Key? key, required this.query, required this.future, required this.itemBuilder}) : super(key: key);
 
   @override
   _TweetSearchResultListState<T> createState() => _TweetSearchResultListState<T>();
 }
 
 class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
+  Timer? _debounce;
   late Future<List<T>> _future;
 
   @override
@@ -121,9 +127,28 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
   }
 
   void fetchResults() {
-    setState(() {
-      _future = widget.future();
-    });
+    if (this.mounted) {
+      setState(() {
+        _future = widget.future(widget.query);
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(TweetSearchResultList<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // If the current query is different from the last render's query, search
+    if (oldWidget.query != widget.query) {
+      if (_debounce?.isActive ?? false) {
+        _debounce?.cancel();
+      }
+
+      // Debounce the search, so we don't make a request per keystroke
+      _debounce = Timer(const Duration(milliseconds: 750), () {
+        fetchResults();
+      });
+    }
   }
 
   @override
