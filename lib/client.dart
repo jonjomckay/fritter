@@ -235,11 +235,11 @@ class Twitter {
       .toList(growable: false);
   }
 
-  static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
+  static Future<TweetList> getTweets(String id, String type, { int count = 10, String? cursor, bool includeReplies = true, bool includeRetweets = true }) async {
     var query = {
       ...defaultParams,
       'include_tweet_replies': includeReplies ? '1' : '0',
-      'include_want_retweets': '1',
+      'include_want_retweets': includeRetweets ? '1' : '0', // This may not actually do anything
       'count': count.toString(),
     };
 
@@ -248,7 +248,7 @@ class Twitter {
     }
 
     var response = await _twitterApi.client.get(
-      Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', query)
+      Uri.https('api.twitter.com', '/2/timeline/$type/$id.json', query)
     );
 
     var result = json.decode(response.body);

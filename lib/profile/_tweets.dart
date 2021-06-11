@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -8,11 +6,11 @@ import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ProfileTweets extends StatefulWidget {
-  final User? user;
-  final String username;
+  final User user;
+  final String type;
   final bool includeReplies;
 
-  const ProfileTweets({Key? key, required this.user, required this.username, required this.includeReplies}) : super(key: key);
+  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies}) : super(key: key);
 
   @override
   _ProfileTweetsState createState() => _ProfileTweetsState();
@@ -36,7 +34,8 @@ class _ProfileTweetsState extends State<ProfileTweets> {
   Future _loadTweets(String? cursor) async {
     try {
       var result = await Twitter.getTweets(
-        widget.user!.idStr!,
+        widget.user.idStr!,
+        widget.type,
         cursor: cursor,
         count: _pageSize,
         includeReplies: widget.includeReplies
@@ -60,7 +59,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, tweet, index) {
-          return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+          return TweetTile(currentUsername: widget.user.screenName, tweet: tweet, clickable: true);
         },
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
@@ -76,7 +75,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         ),
         noItemsFoundIndicatorBuilder: (context) {
           return Center(
-            child: Text('Couldn\'t find any tweets from the last 7 days!'),
+            child: Text('Couldn\'t find any tweets by this user!'),
           );
         },
       ),

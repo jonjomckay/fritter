@@ -67,7 +67,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -119,6 +119,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 tabs: [
                   Tab(child: Text('Tweets', textAlign: TextAlign.center)),
                   Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
+                  Tab(child: Text('Media', textAlign: TextAlign.center)),
                   Tab(child: Text('Following', textAlign: TextAlign.center)),
                   Tab(child: Text('Followers', textAlign: TextAlign.center)),
                 ],
@@ -155,8 +156,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         body: TabBarView(
           controller: _tabController,
           children: [
-            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: false),
-            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: true),
+            ProfileTweets(user: profile, type: 'profile', includeReplies: false),
+            ProfileTweets(user: profile, type: 'profile', includeReplies: true),
+            ProfileTweets(user: profile, type: 'media', includeReplies: false),
             comingSoon,
             comingSoon,
           ],
