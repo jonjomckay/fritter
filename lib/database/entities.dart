@@ -28,15 +28,17 @@ class Subscription with ToMappable {
   final String screenName;
   final String name;
   final String? profileImageUrlHttps;
+  final bool verified;
 
-  Subscription({ required this.id, required this.screenName, required this.name, required this.profileImageUrlHttps });
+  Subscription({ required this.id, required this.screenName, required this.name, required this.profileImageUrlHttps, required this.verified });
 
   factory Subscription.fromMap(Map<String, Object?> map) {
     return Subscription(
-        id: map['id'] as String,
-        screenName: map['screen_name'] as String,
-        name: map['name'] as String,
-        profileImageUrlHttps: map['profile_image_url_https'] as String?
+      id: map['id'] as String,
+      screenName: map['screen_name'] as String,
+      name: map['name'] as String,
+      profileImageUrlHttps: map['profile_image_url_https'] as String?,
+      verified: (map['verified'] as int) == 1
     );
   }
 
@@ -45,6 +47,7 @@ class Subscription with ToMappable {
       'id': id,
       'screen_name': screenName,
       'name': name,
+      'verified': verified
     };
   }
 }

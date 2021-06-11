@@ -167,7 +167,8 @@ class HomeModel extends ChangeNotifier {
       batch.update(TABLE_SUBSCRIPTION, {
         'screen_name': user.screenName,
         'name': user.name,
-        'profile_image_url_https': user.profileImageUrlHttps
+        'profile_image_url_https': user.profileImageUrlHttps,
+        'verified': user.verified
       }, where: 'id = ?', whereArgs: [user.idStr]);
     }
 

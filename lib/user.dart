@@ -15,8 +15,9 @@ class UserTile extends StatelessWidget {
   final String name;
   final String screenName;
   final String? imageUri;
+  final bool verified;
 
-  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri}) : super(key: key);
+  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,15 @@ class UserTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(64),
         child: image,
       ),
-      title: Text(name),
+      title: Row(
+        children: [
+          Text(name),
+          if (verified)
+            SizedBox(width: 6),
+          if (verified)
+            Icon(Icons.verified, size: 14, color: Colors.blue)
+        ],
+      ),
       subtitle: Text('@$screenName'),
       trailing: Container(
         width: 36,

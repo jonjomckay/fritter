@@ -128,11 +128,15 @@ class Repository {
         }), reverse: Operation((db) async {
           await db.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: ['-1']);
         })),
+      ],
+      14: [
+        // Add a "verified" column to the subscriptions table
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION ADD COLUMN verified BOOLEAN DEFAULT false', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION DROP COLUMN verified')
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 13,
+        version: 14,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

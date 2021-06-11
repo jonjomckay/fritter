@@ -71,10 +71,11 @@ class TweetSearchDelegate extends SearchDelegate {
                     future: (q) => searchUsers(context, q),
                     itemBuilder: (context, item) {
                       return UserTile(
-                          id: item.idStr!,
-                          name: item.name!,
-                          imageUri: item.profileImageUrlHttps!,
-                          screenName: item.screenName!
+                        id: item.idStr!,
+                        name: item.name!,
+                        imageUri: item.profileImageUrlHttps!,
+                        screenName: item.screenName!,
+                        verified: item.verified!,
                       );
                     }
                 ),

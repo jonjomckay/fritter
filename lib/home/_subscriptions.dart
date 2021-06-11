@@ -438,6 +438,7 @@ class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
                     name: user.name,
                     screenName: user.screenName,
                     imageUri: user.profileImageUrlHttps,
+                    verified: user.verified,
                   );
                 },
               );
