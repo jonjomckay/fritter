@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  A free, open-source Twitter client for Android and iOS.
+  A privacy-friendly Twitter frontend for mobile devices.
 </p>
 
 <p align="center">
