@@ -25,7 +25,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
       var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
           .first;
 
-      var subscriptions = (await database.rawQuery('SELECT s.id, s.name, s.screen_name, s.profile_image_url_https FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
+      var subscriptions = (await database.rawQuery('SELECT s.* FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
