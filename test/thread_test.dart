@@ -14,7 +14,7 @@ void main() {
     expect(tweets.cursorBottom, equals('HBaEwLDBmpX46yYAAA=='));
     expect(tweets.cursorTop, equals('HCaAgIDkneTC+SYAAA=='));
 
-    // expect(tweets.chains.length, equals(14));
+    expect(tweets.chains.length, equals(14));
 
     // TODO: Quoted tweets, cards
 
@@ -50,7 +50,7 @@ void main() {
     // 5b. I'm all for
     expect(tweets.chains[4].isPinned, equals(false));
     expect(tweets.chains[4].id, equals('1402046370501046277'));
-    // expect(tweets.chains[4].tweets.length, equals(2));
+    expect(tweets.chains[4].tweets.length, equals(2));
     expect(tweets.chains[4].tweets[0].fullText, contains('Bezos is definitely'));
     expect(tweets.chains[4].tweets[0].idStr, contains('1402046370501046277'));
     expect(tweets.chains[4].tweets[1].fullText, contains('I\'m all for people'));
@@ -76,7 +76,7 @@ void main() {
     // 8c. external image
     expect(tweets.chains[7].isPinned, equals(false));
     expect(tweets.chains[7].id, equals('1400930510671601666'));
-    // expect(tweets.chains[7].tweets.length, equals(3));
+    expect(tweets.chains[7].tweets.length, equals(3));
     expect(tweets.chains[7].tweets[0].fullText, contains('The vast majority'));
     expect(tweets.chains[7].tweets[0].idStr, contains('1400930510671601666'));
     expect(tweets.chains[7].tweets[1].fullText, contains('a good path'));
@@ -97,8 +97,8 @@ void main() {
     // 10c. postprocess. A "smart monitor"
     expect(tweets.chains[9].isPinned, equals(false));
     expect(tweets.chains[9].id, equals('1399949152545611778'));
-    // expect(tweets.chains[9].tweets.length, equals(3));
-    expect(tweets.chains[9].tweets[0].fullText, contains('Tiled based rasterization'));
+    expect(tweets.chains[9].tweets.length, equals(3));
+    expect(tweets.chains[9].tweets[0].fullText, contains('Tile based rasterization'));
     expect(tweets.chains[9].tweets[0].idStr, contains('1399949152545611778'));
     expect(tweets.chains[9].tweets[1].fullText, contains('getting into the datacenter'));
     expect(tweets.chains[9].tweets[1].idStr, contains('1399949153547993088'));
@@ -132,20 +132,5 @@ void main() {
     expect(tweets.chains[13].tweets.length, equals(1));
     expect(tweets.chains[13].tweets[0].fullText, contains('The flexibility to add'));
     expect(tweets.chains[13].tweets[0].idStr, contains('1399476356354805762'));
-
-    // Build our app and trigger a frame.
-    // await tester.pumpWidget(MyApp());
-    //
-    // // Verify that our counter starts at 0.
-    // expect(find.text('0'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
-    //
-    // // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-    //
-    // // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
   });
 }

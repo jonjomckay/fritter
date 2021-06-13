@@ -87,9 +87,6 @@ class _ProfileTweetsState extends State<ProfileTweets> {
   }
 
   Future _loadTweets(String? cursor) async {
-    if (cursor != null) {
-      return;
-    }
 
     try {
       var result = await Twitter.getTweets(

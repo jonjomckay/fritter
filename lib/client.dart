@@ -290,55 +290,41 @@ class Twitter {
     return createUnconversationedChains(result, 'tweet', cursor == null);
   }
 
+  static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
+    String? cursor;
+
+    var cursorEntry = addEntries
+        .firstWhere((e) => e['entryId'].contains(name), orElse: () => null);
+
+    if (cursorEntry != null) {
+      cursor = cursorEntry['content']['operation']['cursor']['value'];
+    } else {
+      // Look for a "replaceEntry" with the cursor
+      var cursorReplaceEntry = repEntries
+          .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(name), orElse: () => null);
+
+      if (cursorReplaceEntry != null) {
+        cursor = cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+      }
+    }
+
+    return cursor;
+  }
+
   static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned) {
     var instructions = List.from(result['timeline']['instructions']);
 
-    var addEntries = instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'] as List<dynamic>;
+    var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
+    var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
 
-    String? cursorBottom;
-    String? cursorTop;
-
-    {
-      var cursorBottomEntry = addEntries
-        .firstWhere((e) => e['entryId'].contains('cursor-bottom'), orElse: () => null);
-
-      if (cursorBottomEntry != null) {
-        cursorBottom = cursorBottomEntry['content']['operation']['cursor']['value'];
-      } else {
-        // Look for a "replaceEntry" with the cursor
-        var cursorBottomReplaceEntry = List.from(result['timeline']['instructions'])
-            .where((e) => e.containsKey('replaceEntry'))
-            .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-bottom'), orElse: () => null);
-
-        if (cursorBottomReplaceEntry != null) {
-          cursorBottom = cursorBottomReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
-        }
-      }
-    }
-
-    {
-      var cursorTopEntry = addEntries
-          .firstWhere((e) => e['entryId'].contains('cursor-top'), orElse: () => null);
-
-      if (cursorTopEntry != null) {
-        cursorTop = cursorTopEntry['content']['operation']['cursor']['value'];
-      } else {
-        // Look for a "replaceEntry" with the cursor
-        var cursorTopReplaceEntry = List.from(result['timeline']['instructions'])
-            .where((e) => e.containsKey('replaceEntry'))
-            .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains('cursor-top'), orElse: () => null);
-
-        if (cursorTopReplaceEntry != null) {
-          cursorTop = cursorTopReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
-        }
-      }
-    }
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
 
     var tweets = _createTweets(tweetIndicator, result);
 
     List<TweetChain> chains = [];
-    List<String> threads = [];
 
+    // First, get all the IDs of the tweets we need to display
     var tweetEntries = addEntries
         .where((e) => e['entryId'].contains(tweetIndicator))
         .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
@@ -346,39 +332,23 @@ class Twitter {
         .cast<String>()
         .toList();
 
-    // var conversations = tweets
-    //   .values
-    //   .map((e) => e.conversationIdStr!)
-    //   .toSet();
-    //
-    // var things = [];
+    // Then group the tweets-to-display by their conversation ID
+    var conversations = tweets
+      .values
+      .where((e) => tweetEntries.contains(e.idStr))
+      .groupBy((e) => e.conversationIdStr)
+      .cast<String, List<TweetWithCard>>();
 
-    for (var tweetEntry in tweetEntries) {
-      var tweet = tweets[tweetEntry];
-      if (tweet == null) {
-        log('Unable to find the tweet using the entry ID $tweetEntry');
-        continue;
-      }
-
-      if (threads.contains(tweet.idStr)) {
-        continue;
-      }
-
-      var thread = _buildThread(tweets.values, threads, tweet);
-      if (thread.length < 2) {
-        // Do nothing, for now
-        int i = 0;
-      } else {
-        threads.addAll(thread.map((e) => e.idStr!));
-      }
-
-      var chainTweets = thread
+    // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
+    for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
+      var chainTweets = conversation.value
           .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
           .toList();
 
-      chains.add(TweetChain(id: chainTweets.first.conversationIdStr!, tweets: chainTweets, isPinned: false));
+      chains.add(TweetChain(id: conversation.key, tweets: chainTweets, isPinned: false));
     }
 
+    // If we want to show pinned tweets, add them before the chains that we already have
     if (showPinned) {
       var pinEntry = instructions.firstWhere((e) => e.containsKey('pinEntry'), orElse: () => null);
       if (pinEntry != null) {
@@ -389,24 +359,6 @@ class Twitter {
     }
 
     return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
-  }
-
-  static List<TweetWithCard> _buildThread(Iterable<TweetWithCard> tweets, List<String> threads, TweetWithCard tweet) {
-    List<TweetWithCard> result = [tweet];
-
-    if (threads.contains(tweet.inReplyToStatusIdStr)) {
-      return result;
-    }
-
-    for (var t in tweets) {
-      if (t.idStr == result[0].inReplyToStatusIdStr) {
-        result.insert(0, t);
-      } else if (t.inReplyToStatusIdStr == result[0].idStr) {
-        result.add(t);
-      }
-    }
-
-    return result;
   }
 
   static Future<List<User>> getUsers(Iterable<String> ids) async {
