@@ -236,7 +236,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return createUnconversationedChains(result, 'sq-I-t', false);
+    return createUnconversationedChains(result, 'sq-I-t', false, true);
   }
 
   static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
@@ -287,7 +287,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return createUnconversationedChains(result, 'tweet', cursor == null);
+    return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false);
   }
 
   static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
@@ -311,7 +311,7 @@ class Twitter {
     return cursor;
   }
 
-  static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned) {
+  static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
     var instructions = List.from(result['timeline']['instructions']);
 
     var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
@@ -322,8 +322,6 @@ class Twitter {
 
     var tweets = _createTweets(tweetIndicator, result);
 
-    List<TweetChain> chains = [];
-
     // First, get all the IDs of the tweets we need to display
     var tweetEntries = addEntries
         .where((e) => e['entryId'].contains(tweetIndicator))
@@ -332,12 +330,21 @@ class Twitter {
         .cast<String>()
         .toList();
 
-    // Then group the tweets-to-display by their conversation ID
-    var conversations = tweets
-      .values
-      .where((e) => tweetEntries.contains(e.idStr))
-      .groupBy((e) => e.conversationIdStr)
-      .cast<String, List<TweetWithCard>>();
+    Map<String, List<TweetWithCard>> conversations = tweets
+        .values
+        .where((e) => tweetEntries.contains(e.idStr))
+        .groupBy((e) {
+          // TODO: I don't think a flag is the right way to handle this
+          if (mapToThreads) {
+            // Then group the tweets-to-display by their conversation ID
+            return e.conversationIdStr;
+          }
+
+          return e.idStr;
+        })
+        .cast<String, List<TweetWithCard>>();
+
+    List<TweetChain> chains = [];
 
     // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
     for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
@@ -389,24 +396,13 @@ class Twitter {
 
   static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
-    var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
 
     var tweets = globalTweets.values
         .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
-        // .sorted((a, b) => b.createdAt!.compareTo(a.createdAt!))
         .toList();
     
     return Map.fromIterable(tweets, key: (e) => e.idStr, value: (e) => e);
-
-    // var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
-
-    // entries.sort((a, b) => b['sortIndex'].compareTo(a['sortIndex']));
-
-    // return entries
-    //     .where((entry) => entry['entryId'].startsWith(entryPrefix) as bool)
-    //     .where((entry) => globalTweets.containsKey(entry['content']['item']['content']['tweet']['id']))
-    //     .map<TweetWithCard>((entry) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[entry['content']['item']['content']['tweet']['id']]));
   }
 }
 
