@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/options.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/ui/errors.dart';
@@ -32,11 +33,7 @@ Future checkForUpdates() async {
       var package = await PackageInfo.fromPlatform();
       var result = jsonDecode(response.body);
 
-      const appFlavor = String.fromEnvironment('app.flavor');
-
-      var flavor = appFlavor == ''
-        ? 'fdroid'
-        : appFlavor;
+      var flavor = getFlavor();
 
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
@@ -57,6 +54,8 @@ Future checkForUpdates() async {
               0, 'An update for Fritter is available! 🚀',
               'Tap to download ${release['version']}', details,
               payload: release['apk']);
+        } else if (flavor == 'play') {
+          // Don't check for updates for the Play Store build
         } else {
           await FlutterLocalNotificationsPlugin().show(
               0, 'An update for Fritter is available! 🚀',
