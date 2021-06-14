@@ -27,7 +27,7 @@
 * Device-local subscriptions and groups, Newpipe-style, including a feed view
 * Device-local saving of tweets, allowing offline reading
 * Viewing profiles
-* Viewing tweets and replies
+* Viewing tweets, and tweet replies, threads and conversations
 * Viewing and downloading pictures, videos and GIFs in tweets
 * Searching for tweets and users
 * Viewing trending topics
