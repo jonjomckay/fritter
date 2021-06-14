@@ -1,2 +1,0 @@
-- Added verified icon next to users in the search and subscriptions screens
-- Added build flavor to the "hello" message
