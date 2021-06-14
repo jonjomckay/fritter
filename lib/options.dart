@@ -158,6 +158,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       snackBar = SnackBar(
                         content: Text('Thanks for helping Fritter! 💖'),
                       );
+
+                      // Mark that we've said hello from this build version
+                      await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
                     } else if (response.statusCode == 403) {
                       snackBar = SnackBar(
                         content: Text('It looks like you\'ve already sent a ping recently 🤔'),
@@ -184,8 +187,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       content: Text('Unable to send the ping. ${e.toString()}'),
                     ));
                   }
-
-                  await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
 
                   Navigator.pop(context);
                 },
