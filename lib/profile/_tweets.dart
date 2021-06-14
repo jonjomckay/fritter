@@ -29,6 +29,7 @@ class _TweetConversationState extends State<TweetConversation> {
 
     List<TweetTile> tiles = [];
 
+    // TODO
     if (widget.showFullThread) {
       for (var tweet in widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!))) {
         tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username, isPinned: widget.isPinned));
