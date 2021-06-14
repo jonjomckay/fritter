@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
@@ -87,30 +86,14 @@ class TweetTile extends StatelessWidget {
     Widget retweetBanner = Container();
     Widget retweetSidebar = Container();
     if (this.tweet!.retweetedStatusWithCard != null) {
-      retweetBanner = Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 12),
-        child: Container(
-          child: RichText(
-            text: TextSpan(
-                children: [
-                  WidgetSpan(
-                      child: Icon(Icons.repeat, size: 12, color: Theme.of(context).hintColor),
-                      alignment: PlaceholderAlignment.middle
-                  ),
-                  WidgetSpan(
-                      child: SizedBox(width: 16)
-                  ),
-                  TextSpan(
-                      text: '${this.tweet!.user!.name!} retweeted',
-                    style: TextStyle(
-                        color: Theme.of(context).hintColor
-                    )
-                  )
-                ]
-            ),
-          ),
-        ),
+      retweetBanner = _TweetTileLeading(
+        icon: Icons.repeat,
+        children: [
+          TextSpan(
+              text: '${this.tweet!.user!.name!} retweeted',
+              style: Theme.of(context).textTheme.caption
+          )
+        ],
       );
 
       retweetSidebar = Container(
@@ -122,39 +105,20 @@ class TweetTile extends StatelessWidget {
     Widget replyToTile = Container();
     var replyTo = tweet.inReplyToScreenName;
     if (replyTo != null) {
-      replyToTile = Container(
-        margin: EdgeInsets.only(top: 16),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: replyTo, id: tweet.inReplyToStatusIdStr!)));
-          },
-          child: Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
-            child: Container(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    WidgetSpan(
-                        child: Icon(Icons.reply, size: 12, color: Theme.of(context).hintColor),
-                        alignment: PlaceholderAlignment.middle
-                    ),
-                    WidgetSpan(
-                        child: SizedBox(width: 16)
-                    ),
-                    TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
-                    TextSpan(
-                        text: '@$replyTo',
-                        style: Theme.of(context).textTheme.caption!.copyWith(
-                          fontWeight: FontWeight.bold
-                        )
-                    ),
-                  ]
-                ),
-              ),
-            ),
+      replyToTile = _TweetTileLeading(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: replyTo, id: tweet.inReplyToStatusIdStr!)));
+        },
+        icon: Icons.reply,
+        children: [
+          TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
+          TextSpan(
+              text: '@$replyTo',
+              style: Theme.of(context).textTheme.caption!.copyWith(
+                  fontWeight: FontWeight.bold
+              )
           ),
-        ),
+        ],
       );
     }
 
@@ -230,26 +194,14 @@ class TweetTile extends StatelessWidget {
                 retweetBanner,
                 replyToTile,
                 if (isPinned)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 12),
-                    child: RichText(
-                      text: TextSpan(
-                          children: [
-                            WidgetSpan(
-                                child: Icon(Icons.push_pin, size: 12),
-                                alignment: PlaceholderAlignment.middle
-                            ),
-                            WidgetSpan(
-                                child: SizedBox(width: 16)
-                            ),
-                            TextSpan(
-                                text: 'Pinned tweet'
-                            )
-                          ]
-                      ),
-                    ),
-                    width: double.infinity,
-                    height: 16,
+                  _TweetTileLeading(
+                    icon: Icons.push_pin,
+                    children: [
+                      TextSpan(
+                          text: 'Pinned tweet',
+                          style: Theme.of(context).textTheme.caption
+                      )
+                    ]
                   ),
                 ListTile(
                   onTap: () {
@@ -380,5 +332,43 @@ class TweetTile extends StatelessWidget {
         ),
       ),
     ));
+  }
+}
+
+class _TweetTileLeading extends StatelessWidget {
+  final Function()? onTap;
+  final IconData icon;
+  final Iterable<InlineSpan> children;
+
+  const _TweetTileLeading({Key? key, this.onTap, required this.icon, required this.children}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 16),
+      child: InkWell(
+        onTap: this.onTap,
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
+          child: Container(
+            child: RichText(
+              text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                        child: Icon(icon, size: 12, color: Theme.of(context).hintColor),
+                        alignment: PlaceholderAlignment.middle
+                    ),
+                    WidgetSpan(
+                        child: SizedBox(width: 16)
+                    ),
+                    ...children
+                  ]
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
