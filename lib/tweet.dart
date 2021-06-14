@@ -119,6 +119,45 @@ class TweetTile extends StatelessWidget {
       );
     }
 
+    Widget replyToTile = Container();
+    var replyTo = tweet.inReplyToScreenName;
+    if (replyTo != null) {
+      replyToTile = Container(
+        margin: EdgeInsets.only(top: 16),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: replyTo, id: tweet.inReplyToStatusIdStr!)));
+          },
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
+            child: Container(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                        child: Icon(Icons.reply, size: 12, color: Theme.of(context).hintColor),
+                        alignment: PlaceholderAlignment.middle
+                    ),
+                    WidgetSpan(
+                        child: SizedBox(width: 16)
+                    ),
+                    TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
+                    TextSpan(
+                        text: '@$replyTo',
+                        style: Theme.of(context).textTheme.caption!.copyWith(
+                          fontWeight: FontWeight.bold
+                        )
+                    ),
+                  ]
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     var tweetText = tweet.fullText == null
         ? tweet.text
         : tweet.fullText;
@@ -165,37 +204,6 @@ class TweetTile extends StatelessWidget {
       );
     }
 
-    Widget replyToTile = Container();
-
-    var replyTo = tweet.inReplyToScreenName;
-    if (replyTo != null) {
-      replyToTile = Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-        child: RichText(
-          text: TextSpan(
-              children: [
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: Icon(Icons.reply, size: 14, color: Theme.of(context).primaryColorDark),
-                ),
-                WidgetSpan(
-                  child: SizedBox(width: 4)
-                ),
-                TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
-                TextSpan(
-                    text: '@$replyTo',
-                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.blue),
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: replyTo)));
-                    }
-                )
-              ]
-          ),
-        ),
-      );
-    }
-
     // Only create the tweet content if the tweet contains text
     Widget content = Container();
     if (tweet.displayTextRange![1] != 0) {
@@ -220,6 +228,7 @@ class TweetTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 retweetBanner,
+                replyToTile,
                 if (isPinned)
                   Container(
                     margin: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 12),
@@ -281,7 +290,6 @@ class TweetTile extends StatelessWidget {
                     backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
                   ),
                 ),
-                replyToTile,
                 content,
                 media,
                 quotedTweet,
