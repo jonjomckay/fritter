@@ -1,3 +1,5 @@
+const OPTION_ERRORS_SENTRY_ENABLED = 'errors.sentry_enabled';
+
 const OPTION_HELLO_LAST_BUILD = 'hello.last_build';
 
 const OPTION_HOME_INITIAL_TAB = 'home.initial_tab';

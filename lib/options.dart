@@ -350,6 +350,15 @@ class _OptionsScreenState extends State<OptionsScreen> {
             ),
 
             PrefTitle(
+              title: Text('Logging')
+            ),
+            PrefCheckbox(
+              title: Text('Enable Sentry?'),
+              subtitle: Text('Whether errors should be reported to Sentry'),
+              pref: OPTION_ERRORS_SENTRY_ENABLED,
+            ),
+
+            PrefTitle(
                 title: Text('About')
             ),
             PrefLabel(

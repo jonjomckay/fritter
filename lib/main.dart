@@ -6,6 +6,7 @@ import 'package:catcher/catcher.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/home/home_screen.dart';
@@ -20,6 +21,7 @@ import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -74,10 +76,30 @@ Future checkForUpdates() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // TODO: Only enable the dialog report mode if the setting is enabled
+  final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    OPTION_MEDIA_SIZE: 'medium',
+    OPTION_THEME_MODE: 'system',
+    OPTION_THEME_TRUE_BLACK: false,
+    OPTION_TRENDS_LOCATION: jsonEncode({
+      'name': 'Worldwide',
+      'woeid': 1
+    }),
+  });
+
+  var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
+  sentryOptions.sendDefaultPii = false;
+  sentryOptions.attachStacktrace = true;
+
+  var sentryClient = SentryClient(sentryOptions);
+  var sentryHub = Hub(sentryOptions);
+  sentryHub.bindClient(sentryClient);
 
   CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
     ConsoleHandler(),
+    FritterSentryHandler(
+      sentryHub: sentryHub,
+      sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
+    )
   ], localizationOptions: [
     LocalizationOptions('en',
       dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
@@ -85,8 +107,8 @@ Future<void> main() async {
       dialogReportModeAccept: 'Send',
       dialogReportModeCancel: "Don't send"
     )
-  ], explicitExceptionHandlersMap: {
-    'ManuallyReported': EmailManualHandler(['support@fritter.cc'])
+  ], customParameters: {
+    'flavor': getFlavor()
   });
 
   Catcher(
@@ -94,14 +116,10 @@ Future<void> main() async {
     releaseConfig: catcherOptions,
     enableLogger: false,
     runAppFunction: () async {
-      final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
-        OPTION_MEDIA_SIZE: 'medium',
-        OPTION_THEME_MODE: 'system',
-        OPTION_THEME_TRUE_BLACK: false,
-        OPTION_TRENDS_LOCATION: jsonEncode({
-          'name': 'Worldwide',
-          'woeid': 1
-        }),
+      Logger.root.onRecord.listen((event) async {
+        if (event.level.value >= 900) {
+          Catcher.reportCheckedError(event.error, event.stackTrace);
+        }
       });
 
       if (Platform.isAndroid) {
@@ -123,7 +141,7 @@ Future<void> main() async {
       runApp(PrefService(
           child: ChangeNotifierProvider(
             create: (context) => HomeModel(),
-            child: MyApp(),
+            child: MyApp(hub: sentryHub),
           ),
           service: prefService
       ));
@@ -131,6 +149,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
+  final Hub hub;
+
+  const MyApp({Key? key, required this.hub}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -205,6 +227,9 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       navigatorKey: Catcher.navigatorKey,
+      navigatorObservers: [
+        SentryNavigatorObserver(hub: widget.hub)
+      ],
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,

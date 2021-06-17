@@ -50,6 +50,7 @@ dependencies:
   pref: ^2.0.2
   quiver: ^3.0.1
   reactive_forms: ^10.1.0
+  sentry_flutter: ^5.1.0
   share: ^2.0.1
   simple_icons: ^4.22.0
   sqflite: ^2.0.0+3
