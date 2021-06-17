@@ -13,6 +13,7 @@ import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -20,6 +21,8 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'tweet/_media.dart';
 
 class TweetTile extends StatelessWidget {
+  static final log = Logger('TweetTile');
+
   final ScrollController scrollController = ScrollController();
   final bool clickable;
   final String? currentUsername;
@@ -107,7 +110,7 @@ class TweetTile extends StatelessWidget {
     if (tweetText == null) {
       var message = 'The tweet did not contain any text. This is unexpected';
 
-      log(message);
+      log.severe(message);
 
       return Container(child: Text(
           'The tweet did not contain any text. This is unexpected'

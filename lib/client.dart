@@ -8,12 +8,15 @@ import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
 import 'package:fritter/utils/cache.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 10);
 const String _bearerToken = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 
 class _FritterTwitterClient extends TwitterClient {
+  static final log = Logger('_FritterTwitterClient');
+
   _FritterTwitterClient() : super(
     consumerKey: '',
     consumerSecret: '',
@@ -63,7 +66,7 @@ class _FritterTwitterClient extends TwitterClient {
     _tokenRemaining = -1;
     _expiresAt = -1;
 
-    log('Refreshing the Twitter token');
+    log.info('Refreshing the Twitter token');
 
     var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
       'authorization': _bearerToken,
@@ -79,12 +82,12 @@ class _FritterTwitterClient extends TwitterClient {
     }
 
     var message = 'Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body;
-    log(message);
+    log.severe(message);
     throw new Exception(message);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
-    log('Fetching $uri');
+    log.info('Fetching $uri');
 
     var response = await http.get(uri, headers: {
       ...?headers,

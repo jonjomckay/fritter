@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fritter/constants.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/options.dart';
@@ -15,17 +16,15 @@ import 'package:fritter/status.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'constants.dart';
-import 'database/repository.dart';
-
 Future checkForUpdates() async {
-  log('Checking for updates');
+  Logger.root.info('Checking for updates');
 
   try {
     var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
@@ -38,7 +37,7 @@ Future checkForUpdates() async {
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
 
-      log('The latest version is $latest, and we are on ${package.buildNumber}');
+      Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
       if (int.parse(package.buildNumber) < latest) {
         var details = NotificationDetails(android: AndroidNotificationDetails(
@@ -65,10 +64,10 @@ Future checkForUpdates() async {
         }
       }
     } else {
-      log('Unable to check for updates: ${response.body}');
+      Logger.root.severe('Unable to check for updates: ${response.body}');
     }
   } catch (e, stackTrace) {
-    log('Unable to check for updates', error: e, stackTrace: stackTrace);
+    Logger.root.severe('Unable to check for updates', e, stackTrace);
   }
 }
 
@@ -93,6 +92,7 @@ Future<void> main() async {
   Catcher(
     debugConfig: catcherOptions,
     releaseConfig: catcherOptions,
+    enableLogger: false,
     runAppFunction: () async {
       final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
         OPTION_MEDIA_SIZE: 'medium',
@@ -136,6 +136,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static final log = Logger('_MyAppState');
+
   String _themeMode = 'system';
   bool _trueBlack = false;
 
@@ -196,7 +198,7 @@ class _MyAppState extends State<MyApp> {
         themeMode = ThemeMode.system;
         break;
       default:
-        log('Unknown theme mode preference: '+ _themeMode);
+        log.warning('Unknown theme mode preference: '+ _themeMode);
         themeMode = ThemeMode.system;
         break;
     }
@@ -210,7 +212,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
-          log('Something broke in Fritter.', error: details.exception, stackTrace: details.stack);
+          log.severe('Something broke in Fritter.', details.exception, details.stack);
 
           return Scaffold(
             body: FullPageErrorWidget(error: details.exception, stackTrace: details.stack, prefix: 'Something broke in Fritter.'),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration_plan/migration/sql.dart';
 import 'package:sqflite_migration_plan/sqflite_migration_plan.dart';
@@ -13,6 +14,8 @@ const String TABLE_SUBSCRIPTION_GROUP = 'subscription_group';
 const String TABLE_SUBSCRIPTION_GROUP_MEMBER = 'subscription_group_member';
 
 class Repository {
+  static final log = Logger('Repository');
+
   static Future<Database> readOnly() async {
     return openDatabase(DATABASE_NAME, readOnly: true, singleInstance: false);
   }
@@ -142,7 +145,7 @@ class Repository {
         onDowngrade: myMigrationPlan
     );
 
-    log('Finished migrating database');
+    log.info('Finished migrating database');
 
     return true;
   }

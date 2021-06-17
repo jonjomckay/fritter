@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
 class TweetCard extends StatelessWidget {
+  static final log = Logger('TweetCard');
+
   final TweetWithCard tweet;
   final Map<String, dynamic>? card;
 
@@ -254,7 +257,7 @@ class TweetCard extends StatelessWidget {
       case 'poll4choice_text_only':
         return _createVoteCard(context, card, 4);
       default:
-        log('Unknown card type ${card['name']} was encountered');
+        log.warning('Unknown card type ${card['name']} was encountered');
         return Container();
     }
   }

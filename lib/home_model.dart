@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
@@ -13,6 +14,8 @@ import 'database/repository.dart';
 import 'database/entities.dart';
 
 class HomeModel extends ChangeNotifier {
+  static final log = Logger('HomeModel');
+
   Future deleteSubscriptionGroup(String id) async {
     var database = await Repository.writable();
 
@@ -39,7 +42,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future<List<SavedTweet>> listSavedTweets() async {
-    log('Listing saved tweets');
+    log.info('Listing saved tweets');
 
     var database = await Repository.readOnly();
 
@@ -64,7 +67,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future<List<SubscriptionGroup>> listSubscriptionGroups({ required String orderBy, required bool orderByAscending }) async {
-    log('Listing subscriptions groups');
+    log.info('Listing subscriptions groups');
 
     var database = await Repository.readOnly();
 
@@ -140,7 +143,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future<List<Subscription>> listSubscriptions({ required String orderBy, required bool orderByAscending }) async {
-    log('Listing subscriptions');
+    log.info('Listing subscriptions');
 
     var database = await Repository.readOnly();
 
@@ -224,7 +227,7 @@ class HomeModel extends ChangeNotifier {
         batch.insert(pair.key, datum.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       }
 
-      log('Imported data into ${pair.key}');
+      log.info('Imported data into ${pair.key}');
     }
 
     await batch.commit();
