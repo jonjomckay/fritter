@@ -8,25 +8,16 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+3. See error
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Device (please complete the following information):**
- - Model: [e.g. Pixel 4a]
- - OS: [e.g. Android 11]
- - App version: [e.g. v2.9.0]
-
-**Additional context**
-Add any other context about the problem here.
+**Device**
+Your device model, OS version and Fritter version.
