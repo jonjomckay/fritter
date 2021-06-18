@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration_plan/migration/sql.dart';
@@ -135,11 +133,16 @@ class Repository {
       14: [
         // Add a "verified" column to the subscriptions table
         SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION ADD COLUMN verified BOOLEAN DEFAULT false', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION DROP COLUMN verified')
+      ],
+      15: [
+        // Re-apply migration 14, as it looks like it didn't apply for some people
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION DROP COLUMN verified'),
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION ADD COLUMN verified BOOLEAN DEFAULT false', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION DROP COLUMN verified')
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 14,
+        version: 15,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan
