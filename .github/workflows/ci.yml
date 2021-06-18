@@ -35,19 +35,12 @@ jobs:
           flutter config --no-analytics
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk --dart-define=app.flavor=github --debug
           flutter build apk --dart-define=app.flavor=github --release
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PATH: key.jks
-
-      - name: Archive debug APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: apk-debug
-          path: build/app/outputs/flutter-apk/app-debug.apk
 
       - name: Archive release APK
         uses: actions/upload-artifact@v2
