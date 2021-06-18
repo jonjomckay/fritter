@@ -72,6 +72,21 @@ class _TweetVideoState extends State<TweetVideo> {
       ],
       looping: widget.loop,
       videoPlayerController: _videoController,
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.white,
+                size: 42,
+              ),
+              Text(errorMessage)
+            ],
+          ),
+        );
+      },
     );
   }
 
