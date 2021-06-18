@@ -11,10 +11,9 @@ class TweetConversation extends StatefulWidget {
   final String id;
   final String? username;
   final bool isPinned;
-  final bool showFullThread;
   final List<TweetWithCard> tweets;
 
-  const TweetConversation({Key? key, required this.id, required this.username, required this.isPinned, required this.showFullThread, required this.tweets}) : super(key: key);
+  const TweetConversation({Key? key, required this.id, required this.username, required this.isPinned, required this.tweets}) : super(key: key);
 
   @override
   _TweetConversationState createState() => _TweetConversationState();
@@ -27,16 +26,10 @@ class _TweetConversationState extends State<TweetConversation> {
       return TweetTile(clickable: true, tweet: widget.tweets.first, currentUsername: widget.username, isPinned: widget.isPinned);
     }
 
-    List<TweetTile> tiles = [];
-
-    // TODO
-    if (widget.showFullThread) {
-      for (var tweet in widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!))) {
-        tiles.add(TweetTile(clickable: true, tweet: tweet, currentUsername: widget.username, isPinned: widget.isPinned));
-      }
-    } else {
-      tiles.add(TweetTile(clickable: true, tweet: widget.tweets[0], currentUsername: widget.username, thread: widget.id, isPinned: widget.isPinned));
-    }
+    var tiles = widget.tweets
+      .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
+      .map((e) => TweetTile(clickable: true, tweet: e, currentUsername: widget.username, isPinned: widget.isPinned))
+      .toList(growable: false);
 
     return Container(
       child: IntrinsicHeight(
@@ -116,7 +109,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, chain, index) {
-          return TweetConversation(id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, showFullThread: false, isPinned: chain.isPinned);
+          return TweetConversation(id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, isPinned: chain.isPinned);
         },
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
