@@ -1,0 +1,1 @@
+* Fixed migration incompatible with older SQLite versions (#165)
