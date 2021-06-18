@@ -1,0 +1,3433 @@
+{
+  "globalObjects": {
+    "tweets": {
+      "1404490362329047046": {
+        "created_at": "Mon Jun 14 17:26:11 +0000 2021",
+        "id_str": "1404490362329047046",
+        "full_text": "Carmack\u2019s App Reviews are back. In his first review in his new series, @ID_AA_Carmack shares his feedback on Space Shooter, an arcade shooting game that recently launched on App Lab: https:\/\/t.co\/twBFDmmnD5 https:\/\/t.co\/5SmKXX5zzW",
+        "display_text_range": [
+          0,
+          206
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "ID_AA_Carmack",
+              "name": "John Carmack",
+              "id_str": "175624200",
+              "indices": [
+                71,
+                85
+              ]
+            }
+          ],
+          "urls": [
+            {
+              "url": "https:\/\/t.co\/twBFDmmnD5",
+              "expanded_url": "http:\/\/ocul.us\/SpaceShooter",
+              "display_url": "ocul.us\/SpaceShooter",
+              "indices": [
+                183,
+                206
+              ]
+            }
+          ],
+          "media": [
+            {
+              "id_str": "1404490322650943493",
+              "indices": [
+                207,
+                230
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/media\/E33AgdQVUAU5CN7.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/media\/E33AgdQVUAU5CN7.jpg",
+              "url": "https:\/\/t.co\/5SmKXX5zzW",
+              "display_url": "pic.twitter.com\/5SmKXX5zzW",
+              "expanded_url": "https:\/\/twitter.com\/Oculus_Dev\/status\/1404490362329047046\/photo\/1",
+              "type": "photo",
+              "original_info": {
+                "width": 2994,
+                "height": 1606,
+                "focus_rects": [
+                  {
+                    "x": 126,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 2868
+                  },
+                  {
+                    "x": 1213,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 1606
+                  },
+                  {
+                    "x": 1312,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 1409
+                  },
+                  {
+                    "x": 1615,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 803
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 2994
+                  }
+                ]
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 2048,
+                  "h": 1099,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 680,
+                  "h": 365,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 1200,
+                  "h": 644,
+                  "resize": "fit"
+                }
+              }
+            }
+          ]
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "id_str": "1404490322650943493",
+              "indices": [
+                207,
+                230
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/media\/E33AgdQVUAU5CN7.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/media\/E33AgdQVUAU5CN7.jpg",
+              "url": "https:\/\/t.co\/5SmKXX5zzW",
+              "display_url": "pic.twitter.com\/5SmKXX5zzW",
+              "expanded_url": "https:\/\/twitter.com\/Oculus_Dev\/status\/1404490362329047046\/photo\/1",
+              "type": "photo",
+              "original_info": {
+                "width": 2994,
+                "height": 1606,
+                "focus_rects": [
+                  {
+                    "x": 126,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 2868
+                  },
+                  {
+                    "x": 1213,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 1606
+                  },
+                  {
+                    "x": 1312,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 1409
+                  },
+                  {
+                    "x": 1615,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 803
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 1606,
+                    "w": 2994
+                  }
+                ]
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 2048,
+                  "h": 1099,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 680,
+                  "h": 365,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 1200,
+                  "h": 644,
+                  "resize": "fit"
+                }
+              },
+              "media_key": "3_1404490322650943493",
+              "ext_media_availability": {
+                "status": "available"
+              },
+              "ext_alt_text": null,
+              "ext": {
+                "mediaStats": {
+                  "r": "Missing",
+                  "ttl": -1
+                }
+              }
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "863103045378260992",
+        "retweet_count": 13,
+        "favorite_count": 104,
+        "reply_count": 10,
+        "quote_count": 7,
+        "conversation_id_str": "1404490362329047046",
+        "possibly_sensitive_editable": true,
+        "lang": "en"
+      },
+      "1404309950386610181": {
+        "created_at": "Mon Jun 14 05:29:17 +0000 2021",
+        "id_str": "1404309950386610181",
+        "full_text": "A number of VR developers are still small enough that they don't wind up with a left handed person continuously involved in the development process, resulting in fragile or non-existent support for left handed play. 10% of the population is left handed.",
+        "display_text_range": [
+          0,
+          253
+        ],
+        "entities": {},
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "retweet_count": 97,
+        "favorite_count": 1007,
+        "reply_count": 65,
+        "quote_count": 20,
+        "conversation_id_str": "1404309950386610181",
+        "lang": "en"
+      },
+      "1403201368165425158": {
+        "created_at": "Fri Jun 11 04:04:11 +0000 2021",
+        "id_str": "1403201368165425158",
+        "full_text": "Flawless graphics is not the appeal of Minecraft, but the pixel cracks and depth fighting on held items bugs me. Not sure if they both derive from a mesh optimization issue, or if there is also a failure to use invariant calculations for multi-pass. https:\/\/t.co\/bXu1tHATq7",
+        "display_text_range": [
+          0,
+          249
+        ],
+        "entities": {
+          "media": [
+            {
+              "id_str": "1403201291329970176",
+              "indices": [
+                250,
+                273
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/media\/E3ksI9YXoAAlOxD.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/media\/E3ksI9YXoAAlOxD.jpg",
+              "url": "https:\/\/t.co\/bXu1tHATq7",
+              "display_url": "pic.twitter.com\/bXu1tHATq7",
+              "expanded_url": "https:\/\/twitter.com\/ID_AA_Carmack\/status\/1403201368165425158\/photo\/1",
+              "type": "photo",
+              "original_info": {
+                "width": 912,
+                "height": 914,
+                "focus_rects": [
+                  {
+                    "x": 0,
+                    "y": 403,
+                    "h": 511,
+                    "w": 912
+                  },
+                  {
+                    "x": 0,
+                    "y": 2,
+                    "h": 912,
+                    "w": 912
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 802
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 457
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 912
+                  }
+                ]
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 912,
+                  "h": 914,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 679,
+                  "h": 680,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 912,
+                  "h": 914,
+                  "resize": "fit"
+                }
+              }
+            }
+          ]
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "id_str": "1403201291329970176",
+              "indices": [
+                250,
+                273
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/media\/E3ksI9YXoAAlOxD.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/media\/E3ksI9YXoAAlOxD.jpg",
+              "url": "https:\/\/t.co\/bXu1tHATq7",
+              "display_url": "pic.twitter.com\/bXu1tHATq7",
+              "expanded_url": "https:\/\/twitter.com\/ID_AA_Carmack\/status\/1403201368165425158\/photo\/1",
+              "type": "photo",
+              "original_info": {
+                "width": 912,
+                "height": 914,
+                "focus_rects": [
+                  {
+                    "x": 0,
+                    "y": 403,
+                    "h": 511,
+                    "w": 912
+                  },
+                  {
+                    "x": 0,
+                    "y": 2,
+                    "h": 912,
+                    "w": 912
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 802
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 457
+                  },
+                  {
+                    "x": 0,
+                    "y": 0,
+                    "h": 914,
+                    "w": 912
+                  }
+                ]
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 912,
+                  "h": 914,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 679,
+                  "h": 680,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 912,
+                  "h": 914,
+                  "resize": "fit"
+                }
+              },
+              "media_key": "3_1403201291329970176",
+              "ext_media_availability": {
+                "status": "available"
+              },
+              "ext_alt_text": null,
+              "ext": {
+                "mediaStats": {
+                  "r": "Missing",
+                  "ttl": -1
+                }
+              }
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "retweet_count": 35,
+        "favorite_count": 612,
+        "reply_count": 46,
+        "quote_count": 5,
+        "conversation_id_str": "1403201368165425158",
+        "possibly_sensitive_editable": true,
+        "lang": "en"
+      },
+      "1404482835663183872": {
+        "created_at": "Mon Jun 14 16:56:16 +0000 2021",
+        "id_str": "1404482835663183872",
+        "full_text": "1\/2 A Reddit user found out Valve reused the code for flickering lights in Alyx 22 years after the release of the original Half-Life:\n\nhttps:\/\/t.co\/2rrYt2guEO\n\n#valve #halflife #HalfLifeAlyx #gamedev #gamedevelopment #lighting https:\/\/t.co\/2fJPPRjpb8",
+        "display_text_range": [
+          0,
+          226
+        ],
+        "entities": {
+          "hashtags": [
+            {
+              "text": "valve",
+              "indices": [
+                160,
+                166
+              ]
+            },
+            {
+              "text": "halflife",
+              "indices": [
+                167,
+                176
+              ]
+            },
+            {
+              "text": "HalfLifeAlyx",
+              "indices": [
+                177,
+                190
+              ]
+            },
+            {
+              "text": "gamedev",
+              "indices": [
+                191,
+                199
+              ]
+            },
+            {
+              "text": "gamedevelopment",
+              "indices": [
+                200,
+                216
+              ]
+            },
+            {
+              "text": "lighting",
+              "indices": [
+                217,
+                226
+              ]
+            }
+          ],
+          "urls": [
+            {
+              "url": "https:\/\/t.co\/2rrYt2guEO",
+              "expanded_url": "https:\/\/80.lv\/articles\/valve-reused-the-code-for-flickering-lights-in-alyx-22-years-later\/",
+              "display_url": "80.lv\/articles\/valve\u2026",
+              "indices": [
+                135,
+                158
+              ]
+            }
+          ],
+          "media": [
+            {
+              "id_str": "1404482733481598987",
+              "indices": [
+                227,
+                250
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1404482733481598987\/pu\/img\/uPFwxwXK4tM-N2Xl.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1404482733481598987\/pu\/img\/uPFwxwXK4tM-N2Xl.jpg",
+              "url": "https:\/\/t.co\/2fJPPRjpb8",
+              "display_url": "pic.twitter.com\/2fJPPRjpb8",
+              "expanded_url": "https:\/\/twitter.com\/80Level\/status\/1404482835663183872\/video\/1",
+              "type": "photo",
+              "original_info": {
+                "width": 960,
+                "height": 1080
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 960,
+                  "h": 1080,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 960,
+                  "h": 1080,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 604,
+                  "h": 680,
+                  "resize": "fit"
+                }
+              }
+            }
+          ]
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "id_str": "1404482733481598987",
+              "indices": [
+                227,
+                250
+              ],
+              "media_url": "http:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1404482733481598987\/pu\/img\/uPFwxwXK4tM-N2Xl.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/ext_tw_video_thumb\/1404482733481598987\/pu\/img\/uPFwxwXK4tM-N2Xl.jpg",
+              "url": "https:\/\/t.co\/2fJPPRjpb8",
+              "display_url": "pic.twitter.com\/2fJPPRjpb8",
+              "expanded_url": "https:\/\/twitter.com\/80Level\/status\/1404482835663183872\/video\/1",
+              "type": "video",
+              "original_info": {
+                "width": 960,
+                "height": 1080
+              },
+              "sizes": {
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 960,
+                  "h": 1080,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 960,
+                  "h": 1080,
+                  "resize": "fit"
+                },
+                "small": {
+                  "w": 604,
+                  "h": 680,
+                  "resize": "fit"
+                }
+              },
+              "video_info": {
+                "aspect_ratio": [
+                  8,
+                  9
+                ],
+                "duration_millis": 14967,
+                "variants": [
+                  {
+                    "bitrate": 632000,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/1404482733481598987\/pu\/vid\/320x360\/PwjHRsQ9Zrunx1A1.mp4?tag=12"
+                  },
+                  {
+                    "bitrate": 2176000,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/1404482733481598987\/pu\/vid\/720x810\/Jt-m9oQrwMejPCN2.mp4?tag=12"
+                  },
+                  {
+                    "bitrate": 950000,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/1404482733481598987\/pu\/vid\/480x540\/DjdG5H-BvK1ENnSe.mp4?tag=12"
+                  },
+                  {
+                    "content_type": "application\/x-mpegURL",
+                    "url": "https:\/\/video.twimg.com\/ext_tw_video\/1404482733481598987\/pu\/pl\/aodVPxXhb9AyvOiZ.m3u8?tag=12&container=fmp4"
+                  }
+                ]
+              },
+              "media_key": "7_1404482733481598987",
+              "ext_media_availability": {
+                "status": "available"
+              },
+              "ext_alt_text": null,
+              "ext": {
+                "mediaStats": {
+                  "r": {
+                    "ok": {
+                      "viewCount": "26303"
+                    }
+                  },
+                  "ttl": -1
+                }
+              },
+              "additional_media_info": {
+                "monetizable": false
+              }
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "2913699628",
+        "retweet_count": 365,
+        "favorite_count": 1632,
+        "reply_count": 31,
+        "quote_count": 54,
+        "conversation_id_str": "1404482835663183872",
+        "possibly_sensitive_editable": true,
+        "lang": "en",
+        "self_thread": {
+          "id_str": "1404482835663183872"
+        }
+      },
+      "1403378126751678464": {
+        "created_at": "Fri Jun 11 15:46:33 +0000 2021",
+        "id_str": "1403378126751678464",
+        "full_text": "@Xilefian @atorstling Is it rendering one giant sprite for the entire \"face\" of the weapon, then separate quads for the sides?  If so, the transparent overdraw is very likely slower than the geometry would be.",
+        "display_text_range": [
+          22,
+          209
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "Xilefian",
+              "name": "Felix \"Xilefian\"",
+              "id_str": "199272119",
+              "indices": [
+                0,
+                9
+              ]
+            },
+            {
+              "screen_name": "atorstling",
+              "name": "Alexander Torstling",
+              "id_str": "491431191",
+              "indices": [
+                10,
+                21
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403277405284864000",
+        "in_reply_to_user_id_str": "199272119",
+        "in_reply_to_screen_name": "Xilefian",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 6,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1403201368165425158",
+        "lang": "en"
+      },
+      "1403247773252734978": {
+        "created_at": "Fri Jun 11 07:08:34 +0000 2021",
+        "id_str": "1403247773252734978",
+        "full_text": "@atorstling Yes",
+        "display_text_range": [
+          12,
+          15
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "atorstling",
+              "name": "Alexander Torstling",
+              "id_str": "491431191",
+              "indices": [
+                0,
+                11
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/#!\/download\/ipad\" rel=\"nofollow\"\u003eTwitter for iPad\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403246355208888323",
+        "in_reply_to_user_id_str": "491431191",
+        "in_reply_to_screen_name": "atorstling",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 10,
+        "reply_count": 2,
+        "quote_count": 0,
+        "conversation_id_str": "1403201368165425158",
+        "lang": "und"
+      },
+      "1404500144691859459": {
+        "created_at": "Mon Jun 14 18:05:03 +0000 2021",
+        "id_str": "1404500144691859459",
+        "full_text": "@hmltn I'm rather fond of @boztank calling me the \"Consulting CTO\", but \"Executive Advisor\" is the more accurate description.  Note that I never did have any executive authority even when I was formally the CTO of Oculus, because I didn't actually have direct reports (by choice).",
+        "display_text_range": [
+          7,
+          280
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "hmltn",
+              "name": "Ian Hamilton",
+              "id_str": "54501212",
+              "indices": [
+                0,
+                6
+              ]
+            },
+            {
+              "screen_name": "boztank",
+              "name": "Boz",
+              "id_str": "20643907",
+              "indices": [
+                26,
+                34
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1404498584616128522",
+        "in_reply_to_user_id_str": "54501212",
+        "in_reply_to_screen_name": "hmltn",
+        "user_id_str": "175624200",
+        "retweet_count": 2,
+        "favorite_count": 21,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1404498584616128522",
+        "lang": "en"
+      },
+      "1404496541969268737": {
+        "created_at": "Mon Jun 14 17:50:44 +0000 2021",
+        "id_str": "1404496541969268737",
+        "full_text": "2021 App Review #1",
+        "display_text_range": [
+          0,
+          18
+        ],
+        "entities": {},
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "is_quote_status": true,
+        "quoted_status_id_str": "1404490362329047046",
+        "quoted_status_permalink": {
+          "url": "https:\/\/t.co\/RLh0qL7fkz",
+          "expanded": "https:\/\/twitter.com\/Oculus_Dev\/status\/1404490362329047046",
+          "display": "twitter.com\/Oculus_Dev\/sta\u2026"
+        },
+        "retweet_count": 11,
+        "favorite_count": 184,
+        "reply_count": 5,
+        "quote_count": 1,
+        "conversation_id_str": "1404496541969268737",
+        "lang": "en"
+      },
+      "1403248024361517057": {
+        "created_at": "Fri Jun 11 07:09:34 +0000 2021",
+        "id_str": "1403248024361517057",
+        "full_text": "@martens_samuel So what was the previous culprit?",
+        "display_text_range": [
+          16,
+          49
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                0,
+                15
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/#!\/download\/ipad\" rel=\"nofollow\"\u003eTwitter for iPad\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403245857911164928",
+        "in_reply_to_user_id_str": "3769514477",
+        "in_reply_to_screen_name": "martens_samuel",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 97,
+        "reply_count": 3,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1404469358269767682": {
+        "created_at": "Mon Jun 14 16:02:43 +0000 2021",
+        "id_str": "1404469358269767682",
+        "full_text": "@BattleAxeVR I am generally opposed to platform requirements, even when well intentioned.  Strong guidelines, sure, but individual developers should be the best judge of tradeoffs if they are well informed.",
+        "display_text_range": [
+          13,
+          206
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "BattleAxeVR",
+              "name": "BattleAxeVR",
+              "id_str": "925815838594207744",
+              "indices": [
+                0,
+                12
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1404426104853647366",
+        "in_reply_to_user_id_str": "925815838594207744",
+        "in_reply_to_screen_name": "BattleAxeVR",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 6,
+        "reply_count": 2,
+        "quote_count": 0,
+        "conversation_id_str": "1404309950386610181",
+        "lang": "en"
+      },
+      "1403527704473972744": {
+        "created_at": "Sat Jun 12 01:40:55 +0000 2021",
+        "id_str": "1403527704473972744",
+        "full_text": "@SeargeDP @FeerQuinte @martens_samuel The \u201cinvariant\u201d qualifier on position in vertex shaders will fix this for multi-pass.  How about the cracks? I can see T-junctions causing sub-pixel cracks along mismatched edges, but If all the cube corners are integer values, single cubes should be perfect.",
+        "display_text_range": [
+          38,
+          297
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "SeargeDP",
+              "name": "Searge",
+              "id_str": "381007605",
+              "indices": [
+                0,
+                9
+              ]
+            },
+            {
+              "screen_name": "FeerQuinte",
+              "name": "Fernando Quinteros",
+              "id_str": "488569991",
+              "indices": [
+                10,
+                21
+              ]
+            },
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                22,
+                37
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/#!\/download\/ipad\" rel=\"nofollow\"\u003eTwitter for iPad\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403520845952212992",
+        "in_reply_to_user_id_str": "381007605",
+        "in_reply_to_screen_name": "SeargeDP",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 5,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1403376751863123969": {
+        "created_at": "Fri Jun 11 15:41:05 +0000 2021",
+        "id_str": "1403376751863123969",
+        "full_text": "@martens_samuel That's not the best solution -- you want to use the \"invariant\" qualifier on position outputs from the vertex shaders.",
+        "display_text_range": [
+          16,
+          134
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                0,
+                15
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403358580338692104",
+        "in_reply_to_user_id_str": "3769514477",
+        "in_reply_to_screen_name": "martens_samuel",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 16,
+        "reply_count": 2,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1403554973300973569": {
+        "created_at": "Sat Jun 12 03:29:17 +0000 2021",
+        "id_str": "1403554973300973569",
+        "full_text": "@SeargeDP @_tomcc @FeerQuinte @martens_samuel You need invariant on position in every shader that could be used together, so both the base surface and all the effects. Not a bad idea to just put it on every position. The actual matrix multiply also has to be identical code, of course.",
+        "display_text_range": [
+          46,
+          285
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "SeargeDP",
+              "name": "Searge",
+              "id_str": "381007605",
+              "indices": [
+                0,
+                9
+              ]
+            },
+            {
+              "screen_name": "_tomcc",
+              "name": "Tommaso Checchi",
+              "id_str": "248414574",
+              "indices": [
+                10,
+                17
+              ]
+            },
+            {
+              "screen_name": "FeerQuinte",
+              "name": "Fernando Quinteros",
+              "id_str": "488569991",
+              "indices": [
+                18,
+                29
+              ]
+            },
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                30,
+                45
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403553953321820161",
+        "in_reply_to_user_id_str": "381007605",
+        "in_reply_to_screen_name": "SeargeDP",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 4,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1404500471012855808": {
+        "created_at": "Mon Jun 14 18:06:21 +0000 2021",
+        "id_str": "1404500471012855808",
+        "full_text": "@iNCEPTIONALNEWS I generally agree, which is why I am opposed to most platform mandates -- let each developer, given all the available information, choose their own market.",
+        "display_text_range": [
+          17,
+          172
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "iNCEPTIONALNEWS",
+              "name": "iNCEPTIONAL",
+              "id_str": "707369274",
+              "indices": [
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1404499384113508371",
+        "in_reply_to_user_id_str": "707369274",
+        "in_reply_to_screen_name": "iNCEPTIONALNEWS",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 3,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1404309950386610181",
+        "lang": "en"
+      },
+      "1403422554040279049": {
+        "created_at": "Fri Jun 11 18:43:05 +0000 2021",
+        "id_str": "1403422554040279049",
+        "full_text": "@Xilefian @atorstling Better to be wildly successful than flawlessly implemented!",
+        "display_text_range": [
+          22,
+          81
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "Xilefian",
+              "name": "Felix \"Xilefian\"",
+              "id_str": "199272119",
+              "indices": [
+                0,
+                9
+              ]
+            },
+            {
+              "screen_name": "atorstling",
+              "name": "Alexander Torstling",
+              "id_str": "491431191",
+              "indices": [
+                10,
+                21
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403387457706598406",
+        "in_reply_to_user_id_str": "199272119",
+        "in_reply_to_screen_name": "Xilefian",
+        "user_id_str": "175624200",
+        "retweet_count": 3,
+        "favorite_count": 32,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1403201368165425158",
+        "lang": "en"
+      },
+      "1404513382238232577": {
+        "created_at": "Mon Jun 14 18:57:39 +0000 2021",
+        "id_str": "1404513382238232577",
+        "full_text": "RT @80Level: 1\/2 A Reddit user found out Valve reused the code for flickering lights in Alyx 22 years after the release of the original Hal\u2026",
+        "display_text_range": [
+          0,
+          140
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "80Level",
+              "name": "80 LEVEL",
+              "id_str": "2913699628",
+              "indices": [
+                3,
+                11
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/#!\/download\/ipad\" rel=\"nofollow\"\u003eTwitter for iPad\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "retweeted_status_id_str": "1404482835663183872",
+        "retweet_count": 365,
+        "favorite_count": 0,
+        "reply_count": 0,
+        "quote_count": 0,
+        "conversation_id_str": "1404513382238232577",
+        "lang": "en"
+      },
+      "1403427901438107653": {
+        "created_at": "Fri Jun 11 19:04:20 +0000 2021",
+        "id_str": "1403427901438107653",
+        "full_text": "@FeerQuinte @martens_samuel It should only make a difference when the shaders differ, but drivers might make optimized versions of shaders for particular texture \/ blend \/ enables behind your back.  *Something* is certainly different to get the depth fighting. Maybe multiple matrix math paths?",
+        "display_text_range": [
+          28,
+          294
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "FeerQuinte",
+              "name": "Fernando Quinteros",
+              "id_str": "488569991",
+              "indices": [
+                0,
+                11
+              ]
+            },
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                12,
+                27
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403426111724437509",
+        "in_reply_to_user_id_str": "488569991",
+        "in_reply_to_screen_name": "FeerQuinte",
+        "user_id_str": "175624200",
+        "retweet_count": 1,
+        "favorite_count": 8,
+        "reply_count": 2,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1403513985912164353": {
+        "created_at": "Sat Jun 12 00:46:24 +0000 2021",
+        "id_str": "1403513985912164353",
+        "full_text": "Relative raw mouse movement is often convenient and better than anything window clamped, but it doesn\u2019t play well when there might be multiple callers to a retrieval function. Unclamped accumulated values play nicer in that case.",
+        "display_text_range": [
+          0,
+          229
+        ],
+        "entities": {},
+        "source": "\u003ca href=\"http:\/\/twitter.com\/#!\/download\/ipad\" rel=\"nofollow\"\u003eTwitter for iPad\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "retweet_count": 6,
+        "favorite_count": 147,
+        "reply_count": 13,
+        "quote_count": 6,
+        "conversation_id_str": "1403513985912164353",
+        "lang": "en"
+      },
+      "1404496150045016072": {
+        "created_at": "Mon Jun 14 17:49:11 +0000 2021",
+        "id_str": "1404496150045016072",
+        "full_text": "My public app reviews are back!  I'm going to try to do one of these a month, so submit your app if you want to be considered for a review. I'm open to reviewing everything from App-Lab to Beat Saber.",
+        "display_text_range": [
+          0,
+          200
+        ],
+        "entities": {},
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "is_quote_status": true,
+        "quoted_status_id_str": "1404490074578853894",
+        "quoted_status_permalink": {
+          "url": "https:\/\/t.co\/SvF04Wzk8C",
+          "expanded": "https:\/\/twitter.com\/Oculus_Dev\/status\/1404490074578853894",
+          "display": "twitter.com\/Oculus_Dev\/sta\u2026"
+        },
+        "retweet_count": 17,
+        "favorite_count": 129,
+        "reply_count": 6,
+        "quote_count": 1,
+        "conversation_id_str": "1404496150045016072",
+        "lang": "en"
+      },
+      "1403555349190352897": {
+        "created_at": "Sat Jun 12 03:30:46 +0000 2021",
+        "id_str": "1403555349190352897",
+        "full_text": "@SeargeDP @FeerQuinte @martens_samuel That will give t-junction cracks for sure, but those should be smaller and more subtle than what is there, and it wouldn\u2019t account for the single cube issues. I might pull a renderdoc if I get motivated.",
+        "display_text_range": [
+          38,
+          241
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "SeargeDP",
+              "name": "Searge",
+              "id_str": "381007605",
+              "indices": [
+                0,
+                9
+              ]
+            },
+            {
+              "screen_name": "FeerQuinte",
+              "name": "Fernando Quinteros",
+              "id_str": "488569991",
+              "indices": [
+                10,
+                21
+              ]
+            },
+            {
+              "screen_name": "martens_samuel",
+              "name": "Sam Martens",
+              "id_str": "3769514477",
+              "indices": [
+                22,
+                37
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+        "in_reply_to_status_id_str": "1403536214771261449",
+        "in_reply_to_user_id_str": "381007605",
+        "in_reply_to_screen_name": "SeargeDP",
+        "user_id_str": "175624200",
+        "retweet_count": 0,
+        "favorite_count": 4,
+        "reply_count": 1,
+        "quote_count": 0,
+        "conversation_id_str": "1403245857911164928",
+        "lang": "en"
+      },
+      "1296180686215417856": {
+        "created_at": "Wed Aug 19 20:22:12 +0000 2020",
+        "id_str": "1296180686215417856",
+        "full_text": "I still feel pretty good about the commencement speech I gave a few years ago: https:\/\/t.co\/Oy0W7K1Bqt",
+        "display_text_range": [
+          0,
+          102
+        ],
+        "entities": {
+          "urls": [
+            {
+              "url": "https:\/\/t.co\/Oy0W7K1Bqt",
+              "expanded_url": "https:\/\/youtu.be\/YOZnqjHkULc?t=138",
+              "display_url": "youtu.be\/YOZnqjHkULc?t=\u2026",
+              "indices": [
+                79,
+                102
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "175624200",
+        "retweet_count": 109,
+        "favorite_count": 1097,
+        "reply_count": 90,
+        "quote_count": 27,
+        "conversation_id_str": "1296180686215417856",
+        "possibly_sensitive_editable": true,
+        "card": {
+          "name": "player",
+          "url": "https:\/\/t.co\/Oy0W7K1Bqt",
+          "card_type_url": "http:\/\/card-type-url-is-deprecated.invalid",
+          "binding_values": {
+            "vanity_url": {
+              "type": "STRING",
+              "string_value": "youtube.com",
+              "scribe_key": "vanity_url"
+            },
+            "player_url": {
+              "type": "STRING",
+              "string_value": "https:\/\/www.youtube.com\/embed\/YOZnqjHkULc?start=138"
+            },
+            "app_is_free": {
+              "type": "STRING",
+              "string_value": "true"
+            },
+            "app_price_currency": {
+              "type": "STRING",
+              "string_value": "USD"
+            },
+            "app_price_amount": {
+              "type": "STRING",
+              "string_value": "0.0"
+            },
+            "domain": {
+              "type": "STRING",
+              "string_value": "www.youtube.com"
+            },
+            "app_num_ratings": {
+              "type": "STRING",
+              "string_value": "20,877,001"
+            },
+            "app_star_rating": {
+              "type": "STRING",
+              "string_value": "4.6905"
+            },
+            "app_name": {
+              "type": "STRING",
+              "string_value": "YouTube: Watch, Listen, Stream"
+            },
+            "player_width": {
+              "type": "STRING",
+              "string_value": "1280"
+            },
+            "player_height": {
+              "type": "STRING",
+              "string_value": "720"
+            },
+            "site": {
+              "type": "USER",
+              "user_value": {
+                "id_str": "10228272",
+                "path": []
+              },
+              "scribe_key": "publisher_id"
+            },
+            "title": {
+              "type": "STRING",
+              "string_value": "John Carmack Receives Honorary Degree"
+            },
+            "player_image_small": {
+              "type": "IMAGE",
+              "image_value": {
+                "url": "https:\/\/pbs.twimg.com\/card_img\/1402386392576106504\/RsOKbLrG?format=jpg&name=144x144",
+                "width": 144,
+                "height": 81
+              }
+            },
+            "player_image": {
+              "type": "IMAGE",
+              "image_value": {
+                "url": "https:\/\/pbs.twimg.com\/card_img\/1402386392576106504\/RsOKbLrG?format=jpg&name=280x280",
+                "width": 280,
+                "height": 158
+              }
+            },
+            "player_image_large": {
+              "type": "IMAGE",
+              "image_value": {
+                "url": "https:\/\/pbs.twimg.com\/card_img\/1402386392576106504\/RsOKbLrG?format=jpg&name=800x320_1",
+                "width": 569,
+                "height": 320
+              }
+            },
+            "player_image_x_large": {
+              "type": "IMAGE",
+              "image_value": {
+                "url": "https:\/\/pbs.twimg.com\/card_img\/1402386392576106504\/RsOKbLrG?format=png&name=2048x2048_2_exp",
+                "width": 1280,
+                "height": 720
+              }
+            },
+            "player_image_original": {
+              "type": "IMAGE",
+              "image_value": {
+                "url": "https:\/\/pbs.twimg.com\/card_img\/1402386392576106504\/RsOKbLrG?format=jpg&name=orig",
+                "width": 1280,
+                "height": 720
+              }
+            },
+            "card_url": {
+              "type": "STRING",
+              "string_value": "https:\/\/t.co\/Oy0W7K1Bqt",
+              "scribe_key": "card_url"
+            }
+          },
+          "users": {
+            "10228272": {
+              "id_str": "10228272",
+              "name": "YouTube",
+              "screen_name": "YouTube",
+              "location": "San Bruno, CA",
+              "description": "Like and subscribe.",
+              "url": "https:\/\/t.co\/qkVaJFk2CG",
+              "entities": {
+                "url": {
+                  "urls": [
+                    {
+                      "url": "https:\/\/t.co\/qkVaJFk2CG",
+                      "expanded_url": "https:\/\/www.youtube.com\/",
+                      "display_url": "youtube.com",
+                      "indices": [
+                        0,
+                        23
+                      ]
+                    }
+                  ]
+                },
+                "description": {}
+              },
+              "followers_count": 72825258,
+              "fast_followers_count": 0,
+              "normal_followers_count": 72825258,
+              "friends_count": 1203,
+              "listed_count": 79217,
+              "created_at": "Tue Nov 13 21:43:46 +0000 2007",
+              "favourites_count": 5584,
+              "verified": true,
+              "statuses_count": 33927,
+              "media_count": 12787,
+              "is_translation_enabled": true,
+              "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1398259947847233538\/JXNWY7iv_normal.jpg",
+              "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/10228272\/1622213815",
+              "profile_image_extensions_media_availability": null,
+              "profile_image_extensions_alt_text": null,
+              "profile_image_extensions": {
+                "mediaStats": {
+                  "r": {
+                    "missing": null
+                  },
+                  "ttl": -1
+                }
+              },
+              "profile_banner_extensions_media_availability": null,
+              "profile_banner_extensions_alt_text": null,
+              "profile_banner_extensions": {
+                "mediaStats": {
+                  "r": {
+                    "missing": null
+                  },
+                  "ttl": -1
+                }
+              },
+              "profile_link_color": "C9191D",
+              "pinned_tweet_ids": [],
+              "pinned_tweet_ids_str": [],
+              "has_custom_timelines": true,
+              "advertiser_account_type": "promotable_user",
+              "advertiser_account_service_levels": [
+                "dso",
+                "dso",
+                "dso",
+                "dso",
+                "dso"
+              ],
+              "business_profile_state": "none",
+              "translator_type": "regular",
+              "withheld_in_countries": []
+            }
+          },
+          "card_platform": {
+            "platform": {
+              "device": {
+                "name": "Swift",
+                "version": "12"
+              },
+              "audience": {
+                "name": "production"
+              }
+            }
+          }
+        },
+        "lang": "en"
+      },
+      "1404490074578853894": {
+        "created_at": "Mon Jun 14 17:25:02 +0000 2021",
+        "id_str": "1404490074578853894",
+        "full_text": "Don\u2019t call it a comeback. @ID_AA_Carmack is bringing back his signature app reviews in a new series of recorded videos and written posts. Learn more and submit your app for review: https:\/\/t.co\/HvYie8TQdh",
+        "display_text_range": [
+          0,
+          204
+        ],
+        "entities": {
+          "user_mentions": [
+            {
+              "screen_name": "ID_AA_Carmack",
+              "name": "John Carmack",
+              "id_str": "175624200",
+              "indices": [
+                26,
+                40
+              ]
+            }
+          ],
+          "urls": [
+            {
+              "url": "https:\/\/t.co\/HvYie8TQdh",
+              "expanded_url": "http:\/\/ocul.us\/CarmacksAppReviews",
+              "display_url": "ocul.us\/CarmacksAppRev\u2026",
+              "indices": [
+                181,
+                204
+              ]
+            }
+          ]
+        },
+        "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+        "user_id_str": "863103045378260992",
+        "retweet_count": 1,
+        "favorite_count": 28,
+        "reply_count": 2,
+        "quote_count": 1,
+        "conversation_id_str": "1404490074578853894",
+        "possibly_sensitive_editable": true,
+        "lang": "en"
+      }
+    },
+    "users": {
+      "175624200": {
+        "id_str": "175624200",
+        "name": "John Carmack",
+        "screen_name": "ID_AA_Carmack",
+        "location": "Dallas, TX",
+        "description": "Independent AI researcher,\nConsulting CTO Oculus VR,\nFounder Id Software and Armadillo Aerospace",
+        "url": "https:\/\/t.co\/c0ndp2bkKs",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "url": "https:\/\/t.co\/c0ndp2bkKs",
+                "expanded_url": "http:\/\/www.oculus.com",
+                "display_url": "oculus.com",
+                "indices": [
+                  0,
+                  23
+                ]
+              }
+            ]
+          },
+          "description": {}
+        },
+        "followers_count": 916045,
+        "fast_followers_count": 0,
+        "normal_followers_count": 916045,
+        "friends_count": 235,
+        "listed_count": 6208,
+        "created_at": "Sat Aug 07 03:40:11 +0000 2010",
+        "favourites_count": 3527,
+        "verified": true,
+        "statuses_count": 14789,
+        "media_count": 197,
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1106497789\/aa_icon_option_2_normal.jpg",
+        "profile_image_extensions_media_availability": null,
+        "profile_image_extensions_alt_text": null,
+        "profile_image_extensions": {
+          "mediaStats": {
+            "r": {
+              "missing": null
+            },
+            "ttl": -1
+          }
+        },
+        "profile_link_color": "1DA1F2",
+        "default_profile": true,
+        "pinned_tweet_ids": [
+          1296180686215417856
+        ],
+        "pinned_tweet_ids_str": [
+          "1296180686215417856"
+        ],
+        "advertiser_account_type": "promotable_user",
+        "advertiser_account_service_levels": [
+          "analytics"
+        ],
+        "business_profile_state": "none",
+        "translator_type": "none",
+        "withheld_in_countries": []
+      },
+      "2913699628": {
+        "id_str": "2913699628",
+        "name": "80 LEVEL",
+        "screen_name": "80Level",
+        "location": "Los Angeles",
+        "description": "https:\/\/t.co\/TxSqrhGe2F is the best place for game developers, digital artists, animators, video game enthusiasts, CGI and VFX talents.",
+        "url": "http:\/\/t.co\/TxSqrhGe2F",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "url": "http:\/\/t.co\/TxSqrhGe2F",
+                "expanded_url": "http:\/\/80.lv",
+                "display_url": "80.lv",
+                "indices": [
+                  0,
+                  22
+                ]
+              }
+            ]
+          },
+          "description": {
+            "urls": [
+              {
+                "url": "https:\/\/t.co\/TxSqrhGe2F",
+                "expanded_url": "http:\/\/80.lv",
+                "display_url": "80.lv",
+                "indices": [
+                  0,
+                  23
+                ]
+              }
+            ]
+          }
+        },
+        "followers_count": 79929,
+        "fast_followers_count": 0,
+        "normal_followers_count": 79929,
+        "friends_count": 1595,
+        "listed_count": 965,
+        "created_at": "Wed Dec 10 12:06:32 +0000 2014",
+        "favourites_count": 5721,
+        "geo_enabled": true,
+        "verified": true,
+        "statuses_count": 9831,
+        "media_count": 8001,
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1179033238792093698\/7iZDiQf2_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/2913699628\/1569917503",
+        "profile_image_extensions_media_availability": null,
+        "profile_image_extensions_alt_text": null,
+        "profile_image_extensions": {
+          "mediaStats": {
+            "r": {
+              "missing": null
+            },
+            "ttl": -1
+          }
+        },
+        "profile_banner_extensions_media_availability": null,
+        "profile_banner_extensions_alt_text": null,
+        "profile_banner_extensions": {
+          "mediaStats": {
+            "r": {
+              "missing": null
+            },
+            "ttl": -1
+          }
+        },
+        "profile_link_color": "94D487",
+        "pinned_tweet_ids": [
+          1404482835663183872
+        ],
+        "pinned_tweet_ids_str": [
+          "1404482835663183872"
+        ],
+        "has_custom_timelines": true,
+        "advertiser_account_type": "promotable_user",
+        "advertiser_account_service_levels": [
+          "smb"
+        ],
+        "business_profile_state": "none",
+        "translator_type": "none",
+        "withheld_in_countries": []
+      },
+      "863103045378260992": {
+        "id_str": "863103045378260992",
+        "name": "Oculus Developers",
+        "screen_name": "Oculus_Dev",
+        "location": "",
+        "description": "Oculus developer news and updates, tips and best practices that will assist you throughout your VR development cycle",
+        "url": "https:\/\/t.co\/moSB2AgtQe",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "url": "https:\/\/t.co\/moSB2AgtQe",
+                "expanded_url": "http:\/\/developer.oculus.com",
+                "display_url": "developer.oculus.com",
+                "indices": [
+                  0,
+                  23
+                ]
+              }
+            ]
+          },
+          "description": {}
+        },
+        "followers_count": 29101,
+        "fast_followers_count": 0,
+        "normal_followers_count": 29101,
+        "friends_count": 456,
+        "listed_count": 319,
+        "created_at": "Fri May 12 18:46:16 +0000 2017",
+        "favourites_count": 1497,
+        "geo_enabled": true,
+        "verified": true,
+        "statuses_count": 1764,
+        "media_count": 575,
+        "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1267881925538004992\/kzZkVCEf_normal.jpg",
+        "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/863103045378260992\/1604010321",
+        "profile_image_extensions_media_availability": null,
+        "profile_image_extensions_alt_text": null,
+        "profile_image_extensions": {
+          "mediaStats": {
+            "r": {
+              "missing": null
+            },
+            "ttl": -1
+          }
+        },
+        "profile_banner_extensions_media_availability": null,
+        "profile_banner_extensions_alt_text": null,
+        "profile_banner_extensions": {
+          "mediaStats": {
+            "r": {
+              "missing": null
+            },
+            "ttl": -1
+          }
+        },
+        "profile_link_color": "ABB8C2",
+        "pinned_tweet_ids": [
+          1377337396564422657
+        ],
+        "pinned_tweet_ids_str": [
+          "1377337396564422657"
+        ],
+        "has_custom_timelines": true,
+        "advertiser_account_type": "promotable_user",
+        "advertiser_account_service_levels": [
+          "dso",
+          "subscription"
+        ],
+        "business_profile_state": "none",
+        "translator_type": "none",
+        "withheld_in_countries": []
+      }
+    },
+    "moments": {},
+    "cards": {},
+    "places": {},
+    "media": {},
+    "broadcasts": {},
+    "topics": {
+      "731226219002265600": {
+        "id": "731226219002265600",
+        "name": "Liverpool FC",
+        "following": false,
+        "description": "Football team",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_10.png"
+      },
+      "854701577994616832": {
+        "id": "854701577994616832",
+        "name": "Formula 1",
+        "following": false,
+        "description": "Racing league",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      },
+      "898262889378619392": {
+        "id": "898262889378619392",
+        "name": "Artificial intelligence",
+        "following": false,
+        "description": "Technology",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_07.png"
+      },
+      "1291344241956855808": {
+        "id": "1291344241956855808",
+        "name": "Massachusetts Institute of Technology",
+        "following": false,
+        "description": "Research university",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_16.png"
+      },
+      "1300480431905673216": {
+        "id": "1300480431905673216",
+        "name": "Carnegie Mellon University",
+        "following": false,
+        "description": "Research university",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_02.png"
+      },
+      "847900493514891265": {
+        "id": "847900493514891265",
+        "name": "Sports",
+        "following": false,
+        "description": "All about sports",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      },
+      "898672147031146496": {
+        "id": "898672147031146496",
+        "name": "Augmented reality",
+        "following": false,
+        "description": "Technology",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      },
+      "731226241894752257": {
+        "id": "731226241894752257",
+        "name": "Arsenal",
+        "following": false,
+        "description": "Football team",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_06.png"
+      },
+      "1070028159964262400": {
+        "id": "1070028159964262400",
+        "name": "Video games",
+        "following": false,
+        "description": "Gaming",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_14.png"
+      },
+      "733756536430809088": {
+        "id": "733756536430809088",
+        "name": "Football",
+        "following": false,
+        "description": "Sport",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_11.png"
+      },
+      "1220854205558034432": {
+        "id": "1220854205558034432",
+        "name": "Oculus",
+        "following": false,
+        "description": "Gaming console",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_06.png"
+      },
+      "849075881653846016": {
+        "id": "849075881653846016",
+        "name": "Startups",
+        "following": false,
+        "description": "Business & finance",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_10.png"
+      },
+      "1100397500890996736": {
+        "id": "1100397500890996736",
+        "name": "Men's national football teams",
+        "following": false,
+        "description": "Soccer",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      },
+      "988798454049652736": {
+        "id": "988798454049652736",
+        "name": "Valve Corporation",
+        "following": false,
+        "description": "Video game publisher",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_01.png"
+      },
+      "898670051594649601": {
+        "id": "898670051594649601",
+        "name": "Virtual reality",
+        "following": false,
+        "description": "Technology and computing",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_06.png"
+      },
+      "849075430715936768": {
+        "id": "849075430715936768",
+        "name": "Open source",
+        "following": false,
+        "description": "Technology",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_06.png"
+      },
+      "898661583827615744": {
+        "id": "898661583827615744",
+        "name": "Machine learning",
+        "following": false,
+        "description": "Technology",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_08.png"
+      },
+      "731226163788402688": {
+        "id": "731226163788402688",
+        "name": "England",
+        "following": false,
+        "description": "Men's national soccer team",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_02.png"
+      },
+      "1007360414114435072": {
+        "id": "1007360414114435072",
+        "name": "Bitcoin cryptocurrency",
+        "following": false,
+        "description": "Cryptocurrency",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_09.png"
+      },
+      "1237094778463858688": {
+        "id": "1237094778463858688",
+        "name": "FinTech",
+        "following": false,
+        "description": "Business & finance",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      },
+      "733756526872006656": {
+        "id": "733756526872006656",
+        "name": "Premier League",
+        "following": false,
+        "description": "Soccer league",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_17.png"
+      },
+      "898648511855550464": {
+        "id": "898648511855550464",
+        "name": "Cloud platforms",
+        "following": false,
+        "description": "Technology",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_01.png"
+      },
+      "1301079398305558529": {
+        "id": "1301079398305558529",
+        "name": "No man's sky",
+        "following": false,
+        "description": "Video game",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_12.png"
+      },
+      "847894353708068864": {
+        "id": "847894353708068864",
+        "name": "Investing",
+        "following": false,
+        "description": "Business & finance",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_05.png"
+      },
+      "10045326731": {
+        "id": "10045326731",
+        "name": "DOOM",
+        "following": false,
+        "description": "Video game",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_12.png"
+      },
+      "731226183572934657": {
+        "id": "731226183572934657",
+        "name": "Manchester United",
+        "following": false,
+        "description": "Football team",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_07.png"
+      },
+      "1164893579346452483": {
+        "id": "1164893579346452483",
+        "name": "Men's boxing",
+        "following": false,
+        "description": "Sport",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_16.png"
+      },
+      "1046567715022856192": {
+        "id": "1046567715022856192",
+        "name": "Venture capital",
+        "following": false,
+        "description": "Business & finance",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_17.png"
+      },
+      "1291673117010534401": {
+        "id": "1291673117010534401",
+        "name": "Funny Tweets",
+        "following": false,
+        "description": "Tweets making people laugh",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_08.png"
+      },
+      "731226204225708033": {
+        "id": "731226204225708033",
+        "name": "Chelsea",
+        "following": false,
+        "description": "Football team",
+        "not_interested": false,
+        "icon_url": "https:\/\/ton.twimg.com\/topics\/topic_icon\/default_v3_13.png"
+      }
+    },
+    "lists": {}
+  },
+  "timeline": {
+    "id": "ProfileAll-175624200",
+    "instructions": [
+      {
+        "addEntries": {
+          "entries": [
+            {
+              "entryId": "tweet-1404513382238232577",
+              "sortIndex": "1404513382238232577",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404513382238232577",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404500471012855808",
+              "sortIndex": "1404500471012855808",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404500471012855808",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404500144691859459",
+              "sortIndex": "1404500144691859459",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404500144691859459",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404496541969268737",
+              "sortIndex": "1404496541969268737",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404496541969268737",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404496150045016072",
+              "sortIndex": "1404496150045016072",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404496150045016072",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "TopicsModule-1404496150045016071",
+              "sortIndex": "1404496150045016071",
+              "content": {
+                "timelineModule": {
+                  "items": [
+                    {
+                      "entryId": "1070028159964262400",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1070028159964262400",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAAAAAAAKAAIO2YDxNlWwAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "1873180131"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "898670051594649601",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "898670051594649601",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAAAAAAAKAAIMeLemi5TAAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "1201833728"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1220854205558034432",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1220854205558034432",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIQ8VhufNQQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1997357653"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "733756536430809088",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "733756536430809088",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKLtOuqZRQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1705860764"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "847900493514891265",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "847900493514891265",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAILxFkBqNVgAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1380434504"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "898672147031146496",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "898672147031146496",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIMeLmObVRAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1896949979"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1046567715022856192",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1046567715022856192",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIOhifKt1RgAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "935966287"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1291673117010534401",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1291673117010534401",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIR7PHbOVWgAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "306205287"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1291344241956855808",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1291344241956855808",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIR68a/CJWgAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-2120497719"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "731226163788402688",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "731226163788402688",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKJdZSXxRQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1727926307"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1301079398305558529",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1301079398305558529",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAISDlzRwJTwAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1102295470"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1100397500890996736",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1100397500890996736",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIPRWWyaFXgAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1061548516"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "849075881653846016",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "849075881653846016",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAILyIYECVRAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1928365984"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "849075430715936768",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "849075430715936768",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAILyIWbC1XQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "984739231"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "731226183572934657",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "731226183572934657",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKJdZW+lRQAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "1409041390"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "988798454049652736",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "988798454049652736",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAINuOr0gBXAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "1117731496"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1007360414114435072",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1007360414114435072",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIN+tz1nBTQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-69557615"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "898661583827615744",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "898661583827615744",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIMeK/y/VXAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "350597429"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "733756526872006656",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "733756526872006656",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKLtOsb9SQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "911793610"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1237094778463858688",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1237094778463858688",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIRKwslh9QwAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "694238984"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "854701577994616832",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "854701577994616832",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIL3IKOiVXAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1850786315"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "10045326731",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "10045326731",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIAAAACVr+FiwoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-919270680"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "731226219002265600",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "731226219002265600",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKJdZfOhUAAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-815937283"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "898648511855550464",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "898648511855550464",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIMeKQPbxVgAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1346370287"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "731226241894752257",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "731226241894752257",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKJdZkjpSgAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-862734977"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1300480431905673216",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1300480431905673216",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAISDDwQBRWQAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "1712944677"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "731226204225708033",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "731226204225708033",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIKJdZbyVSgAQoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1460394955"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "847894353708068864",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "847894353708068864",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAILxFNsH9QwAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-950349671"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "898262889378619392",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "898262889378619392",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAABAAAAAAKAAIMd0VWtFQgAAoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "-1927471410"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "1164893579346452483",
+                      "item": {
+                        "content": {
+                          "topic": {
+                            "topicId": "1164893579346452483",
+                            "topicFunctionalityType": "Recommendation",
+                            "topicDisplayType": "Pill"
+                          }
+                        },
+                        "clientEventInfo": {
+                          "component": "suggest_topics_module",
+                          "element": "topic",
+                          "details": {
+                            "timelinesDetails": {
+                              "controllerData": "DAACDAAHDAABCgABAAAAAgAAAAAKAAIQKoiJ3hQgAwoAA/ZnJhpMe7egAAAAAA=="
+                            }
+                          }
+                        },
+                        "feedbackInfo": {
+                          "feedbackKeys": [
+                            "287709570"
+                          ],
+                          "feedbackMetadata": "FcQBOQwA"
+                        }
+                      }
+                    }
+                  ],
+                  "displayType": "GridCarousel",
+                  "header": {
+                    "text": "Topics to follow",
+                    "sticky": false,
+                    "socialContext": {
+                      "generalContext": {
+                        "contextType": "Topic",
+                        "text": "Sign up to get Tweets about the Topics you follow in your Home timeline."
+                      }
+                    }
+                  },
+                  "clientEventInfo": {
+                    "component": "suggest_topics_module"
+                  },
+                  "metadata": {
+                    "gridCarouselMetadata": {
+                      "numRows": 3
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404469358269767682",
+              "sortIndex": "1404469358269767682",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404469358269767682",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1404309950386610181",
+              "sortIndex": "1404309950386610181",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1404309950386610181",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403555349190352897",
+              "sortIndex": "1403555349190352897",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403555349190352897",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403554973300973569",
+              "sortIndex": "1403554973300973569",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403554973300973569",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403527704473972744",
+              "sortIndex": "1403527704473972744",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403527704473972744",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403513985912164353",
+              "sortIndex": "1403513985912164353",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403513985912164353",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403427901438107653",
+              "sortIndex": "1403427901438107653",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403427901438107653",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403422554040279049",
+              "sortIndex": "1403422554040279049",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403422554040279049",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403378126751678464",
+              "sortIndex": "1403378126751678464",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403378126751678464",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403376751863123969",
+              "sortIndex": "1403376751863123969",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403376751863123969",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403248024361517057",
+              "sortIndex": "1403248024361517057",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403248024361517057",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403247773252734978",
+              "sortIndex": "1403247773252734978",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403247773252734978",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "tweet-1403201368165425158",
+              "sortIndex": "1403201368165425158",
+              "content": {
+                "item": {
+                  "content": {
+                    "tweet": {
+                      "id": "1403201368165425158",
+                      "displayType": "Tweet"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "cursor-top-1404555177297444865",
+              "sortIndex": "1404555177297444865",
+              "content": {
+                "operation": {
+                  "cursor": {
+                    "value": "HCaAgICkv9/9/SYAAA==",
+                    "cursorType": "Top"
+                  }
+                }
+              }
+            },
+            {
+              "entryId": "cursor-bottom-1403201368165425157",
+              "sortIndex": "1403201368165425157",
+              "content": {
+                "operation": {
+                  "cursor": {
+                    "value": "HBaMgL2dt42W+SYAAA==",
+                    "cursorType": "Bottom",
+                    "stopOnEmptyResponse": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pinEntry": {
+          "entry": {
+            "entryId": "tweet-1296180686215417856",
+            "sortIndex": "1404555177293250560",
+            "content": {
+              "item": {
+                "content": {
+                  "tweet": {
+                    "id": "1296180686215417856",
+                    "displayType": "Tweet",
+                    "socialContext": {
+                      "generalContext": {
+                        "contextType": "Pin",
+                        "text": "Pinned Tweet"
+                      }
+                    }
+                  }
+                },
+                "clientEventInfo": {
+                  "component": "suggest_pinned_tweet",
+                  "details": {
+                    "timelinesDetails": {
+                      "injectionType": "PinnedTweet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "responseObjects": {
+      "feedbackActions": {
+        "911793610": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "733756526872006656"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1460394955": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "731226204225708033"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "1873180131": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1070028159964262400"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1061548516": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1100397500890996736"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "1712944677": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1300480431905673216"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "984739231": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "849075430715936768"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "350597429": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "898661583827615744"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "287709570": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1164893579346452483"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1927471410": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "898262889378619392"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1102295470": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1301079398305558529"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "1117731496": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "988798454049652736"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "694238984": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1237094778463858688"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1346370287": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "898648511855550464"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "1409041390": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "731226183572934657"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-919270680": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "10045326731"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1896949979": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "898672147031146496"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "306205287": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1291673117010534401"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "935966287": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1046567715022856192"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "1201833728": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "898670051594649601"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-69557615": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1007360414114435072"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1705860764": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "733756536430809088"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-815937283": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "731226219002265600"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1727926307": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "731226163788402688"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-862734977": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "731226241894752257"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1928365984": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "849075881653846016"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-950349671": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "847894353708068864"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-2120497719": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1291344241956855808"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1997357653": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "1220854205558034432"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1850786315": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "854701577994616832"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        },
+        "-1380434504": {
+          "feedbackType": "RichBehavior",
+          "feedbackUrl": "/2/timeline/feedback.json?feedback_type=RichBehavior&action_metadata=FcQBOQwA",
+          "hasUndoAction": true,
+          "richBehavior": {
+            "markNotInterestedTopic": {
+              "topicId": "847900493514891265"
+            }
+          },
+          "encodedFeedbackRequest": "LBUeHBXEATkMAAAA"
+        }
+      }
+    }
+  }
+}
