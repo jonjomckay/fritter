@@ -36,16 +36,16 @@ class _TweetConversationState extends State<TweetConversation> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              color: Colors.white,
+              width: 4,
+            ),
             Expanded(child: Column(
               children: [
                 ...tiles,
               ],
             )),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-                color: Colors.blue,
-                width: 4,
-              )
           ],
         ),
       ),
