@@ -1,2 +1,3 @@
 * Added Sentry as the opt-in error reporting location
 * Fixed the subscription screen not refreshing when a group is modified (#163)
+* Fixed "Add to group" dialog text being invisible on light mode devices (#164)

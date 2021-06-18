@@ -188,13 +188,17 @@ class _FollowButtonState extends State<FollowButton> {
                   var groups = data[0] as List<SubscriptionGroup>;
                   var existing = data[1] as List<String>;
 
-                  return  MultiSelectDialog(
-                    itemsTextStyle: Theme.of(context).primaryTextTheme.bodyText1,
-                    selectedColor: Theme.of(context).accentColor,
-                    unselectedColor: Theme.of(context).brightness == Brightness.dark
+                  var color = Theme.of(context).brightness == Brightness.dark
                       ? Colors.white70
-                      : Colors.black54,
-                    selectedItemsTextStyle: Theme.of(context).primaryTextTheme.bodyText1,
+                      : Colors.black54;
+
+                  return MultiSelectDialog(
+                    searchIcon: Icon(Icons.search, color: color),
+                    closeSearchIcon: Icon(Icons.close, color: color),
+                    itemsTextStyle: Theme.of(context).textTheme.bodyText1,
+                    selectedColor: Theme.of(context).accentColor,
+                    unselectedColor: color,
+                    selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
                     items: groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
                     initialValue: existing,
                     onConfirm: (List<String> memberships) async {
