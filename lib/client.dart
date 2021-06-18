@@ -220,7 +220,7 @@ class Twitter {
     return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO', cursorTop: 'TODO');
   }
 
-  static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor}) async {
+  static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
     var response = await _twitterApi.client.get(
         Uri.https('api.twitter.com', '/2/search/adaptive.json', {
           ...defaultParams,
@@ -230,6 +230,7 @@ class Twitter {
           'q': query,
           'query_source': 'typed_query',
           'pc': '1',
+          'tweet_search_mode': mode,
           'spelling_corrections': '1',
         })
     );

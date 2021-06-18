@@ -69,14 +69,14 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           query += queryToAdd;
         } else {
           // Otherwise, add the search future and start a new one
-          futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor));
+          futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
 
           query = queryToAdd;
         }
       }
 
       // Add any remaining query as a search future too
-      futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor));
+      futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
 
       var result = (await Future.wait(futures));
       var threads = result
