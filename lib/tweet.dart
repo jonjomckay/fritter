@@ -26,11 +26,10 @@ class TweetTile extends StatelessWidget {
   final bool clickable;
   final String? currentUsername;
   final TweetWithCard? tweet;
-  final String? thread;
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.thread, this.isPinned = false, this.isThread = false}) : super(key: key);
+  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super(key: key);
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -323,20 +322,6 @@ class TweetTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (this.thread != null)
-                  RawMaterialButton(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    onPressed: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: currentUsername, id: this.thread!)));
-                    },
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: double.infinity,
-                      child: Text('View full thread', style: TextStyle(
-                        color: Theme.of(context).primaryColor
-                      )),
-                    ),
-                  ),
               ],
             ))
           ],
