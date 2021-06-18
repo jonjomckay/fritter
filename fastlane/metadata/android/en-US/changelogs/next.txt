@@ -1,1 +1,2 @@
 * Added Sentry as the opt-in error reporting location
+* Fixed the subscription screen not refreshing when a group is modified (#163)

@@ -248,8 +248,6 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
-
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -275,10 +273,11 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
           ],
         ),
         children: [
-          FutureBuilderWrapper<List<SubscriptionGroup>>(
-            future: model.listSubscriptionGroups(orderBy: _orderSubscriptionGroupsByField, orderByAscending: _orderSubscriptionGroupsAscending),
-            onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscription groups'),
-            onReady: (groups) => Container(
+          Consumer<HomeModel>(builder: (context, model, child) {
+            return FutureBuilderWrapper<List<SubscriptionGroup>>(
+              future: model.listSubscriptionGroups(orderBy: _orderSubscriptionGroupsByField, orderByAscending: _orderSubscriptionGroupsAscending),
+              onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscription groups'),
+              onReady: (groups) => Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: GridView.extent(
                     controller: widget.controller,
@@ -317,7 +316,8 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
                       )
                     ]),
               ),
-          )
+            );
+          })
         ],
       ),
     );
