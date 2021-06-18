@@ -6,7 +6,7 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 
 class StatusScreen extends StatefulWidget {
-  final String username;
+  final String? username;
   final String id;
 
   const StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
@@ -50,7 +50,7 @@ class _StatusScreenState extends State<StatusScreen> {
 }
 
 class StatusScreenBody extends StatefulWidget {
-  final String username;
+  final String? username;
   final TweetStatus status;
 
   const StatusScreenBody({Key? key, required this.username, required this.status}) : super(key: key);

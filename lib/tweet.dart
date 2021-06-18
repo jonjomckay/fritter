@@ -316,7 +316,7 @@ class TweetTile extends StatelessWidget {
                   RawMaterialButton(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     onPressed: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: currentUsername!, id: this.thread!)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: currentUsername, id: this.thread!)));
                     },
                     child: Container(
                       alignment: Alignment.centerLeft,
