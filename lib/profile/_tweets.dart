@@ -26,10 +26,13 @@ class _TweetConversationState extends State<TweetConversation> {
       return TweetTile(clickable: true, tweet: widget.tweets.first, currentUsername: widget.username, isPinned: widget.isPinned);
     }
 
-    var tiles = widget.tweets
-      .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
-      .map((e) => TweetTile(clickable: true, tweet: e, currentUsername: widget.username, isPinned: widget.isPinned))
-      .toList(growable: false);
+    var tiles = [];
+    var tweets = widget.tweets.sorted((a, b) => a.idStr!.compareTo(b.idStr!)).toList(growable: false);
+
+    // We need to do a simple for loop so we can mark the first item as the thread start
+    for (var i = 0; i < tweets.length; i++) {
+      tiles.add(TweetTile(clickable: true, tweet: tweets[i], currentUsername: widget.username, isPinned: widget.isPinned, isThread: i == 0));
+    }
 
     return Container(
       child: IntrinsicHeight(

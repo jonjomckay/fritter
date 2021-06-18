@@ -28,8 +28,9 @@ class TweetTile extends StatelessWidget {
   final TweetWithCard? tweet;
   final String? thread;
   final bool isPinned;
+  final bool isThread;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.thread, this.isPinned = false}) : super(key: key);
+  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.thread, this.isPinned = false, this.isThread = false}) : super(key: key);
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -199,6 +200,16 @@ class TweetTile extends StatelessWidget {
                     children: [
                       TextSpan(
                           text: 'Pinned tweet',
+                          style: Theme.of(context).textTheme.caption
+                      )
+                    ]
+                  ),
+                if (isThread)
+                  _TweetTileLeading(
+                    icon: Icons.forum,
+                    children: [
+                      TextSpan(
+                          text: 'Thread',
                           style: Theme.of(context).textTheme.caption
                       )
                     ]
