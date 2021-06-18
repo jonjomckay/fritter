@@ -138,7 +138,7 @@ class Repository {
         // Re-apply migration 14 in a different way, as it looks like it didn't apply for some people
         SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION RENAME TO ${TABLE_SUBSCRIPTION}_old'),
         SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION (id VARCHAR PRIMARY KEY, screen_name VARCHAR, name VARCHAR, profile_image_url_https VARCHAR, verified BOOLEAN DEFAULT false, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
-        SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION (id, screen_name, name, profile_image_url_https, verified, created_at) SELECT id, screen_name, name, profile_image_url_https, false, created_at FROM ${TABLE_SUBSCRIPTION}_old'),
+        SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION (id, screen_name, name, profile_image_url_https, created_at) SELECT id, screen_name, name, profile_image_url_https, created_at FROM ${TABLE_SUBSCRIPTION}_old'),
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION}_old'),
       ]
     });
