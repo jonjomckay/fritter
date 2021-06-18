@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
@@ -117,6 +118,8 @@ Future<void> main() async {
     enableLogger: false,
     runAppFunction: () async {
       Logger.root.onRecord.listen((event) async {
+        log(event.message, error: event.error, stackTrace: event.stackTrace);
+
         if (event.level.value >= 900) {
           Catcher.reportCheckedError(event.error, event.stackTrace);
         }
