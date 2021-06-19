@@ -109,9 +109,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               forceElevated: innerBoxIsScrolled,
               actions: [
                 FollowButton(id: profile.idStr!,
-                    name: profile.name!,
-                    screenName: profile.screenName!,
-                    imageUri: profile.profileImageUrlHttps)
+                  name: profile.name!,
+                  screenName: profile.screenName!,
+                  imageUri: profile.profileImageUrlHttps,
+                  verified: profile.verified!,
+                )
               ],
               bottom: TabBar(
                 controller: _tabController,

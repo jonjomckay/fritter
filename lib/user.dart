@@ -59,7 +59,7 @@ class UserTile extends StatelessWidget {
       subtitle: Text('@$screenName'),
       trailing: Container(
         width: 36,
-        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri),
+        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, verified: verified),
       ),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: screenName)));
@@ -76,8 +76,9 @@ class FollowButton extends StatefulWidget {
   final String name;
   final String screenName;
   final String? imageUri;
+  final bool verified;
 
-  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri}) : super(key: key);
+  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
 
   @override
   _FollowButtonState createState() => _FollowButtonState();
@@ -137,7 +138,8 @@ class _FollowButtonState extends State<FollowButton> {
         'id': id,
         'screen_name': widget.screenName,
         'name': widget.name,
-        'profile_image_url_https': widget.imageUri
+        'profile_image_url_https': widget.imageUri,
+        'verified': widget.verified
       });
     }
 

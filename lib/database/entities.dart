@@ -35,13 +35,17 @@ class Subscription with ToMappable {
   factory Subscription.fromMap(Map<String, Object?> map) {
     // TODO: Remove this after a while, as it's to handle broken exports from v2.10.0
     var verifiedIsBool = map['verified'] is bool;
+    var verifiedIsInt = map['verified'] is int;
 
     return Subscription(
       id: map['id'] as String,
       screenName: map['screen_name'] as String,
       name: map['name'] as String,
       profileImageUrlHttps: map['profile_image_url_https'] as String?,
-      verified: verifiedIsBool ? verifiedIsBool : (map['verified'] as int) == 1
+      verified:
+        verifiedIsBool ? map['verified'] as bool :
+        verifiedIsInt ? map['verified'] == 1 :
+        false
     );
   }
 
