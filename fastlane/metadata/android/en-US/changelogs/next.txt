@@ -1,1 +1,0 @@
-* Fixed some errors for some users with broken metadata from v2.10.0 (#167, #170)
