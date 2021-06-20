@@ -36,6 +36,10 @@ Future checkForUpdates() async {
       var result = jsonDecode(response.body);
 
       var flavor = getFlavor();
+      if (flavor == 'play') {
+        // Don't check for updates for the Play Store build
+        return;
+      }
 
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
@@ -56,8 +60,6 @@ Future checkForUpdates() async {
               0, 'An update for Fritter is available! 🚀',
               'Tap to download ${release['version']}', details,
               payload: release['apk']);
-        } else if (flavor == 'play') {
-          // Don't check for updates for the Play Store build
         } else {
           await FlutterLocalNotificationsPlugin().show(
               0, 'An update for Fritter is available! 🚀',
