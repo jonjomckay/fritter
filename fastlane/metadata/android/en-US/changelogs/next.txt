@@ -1,0 +1,1 @@
+- Fixed a logging error that occurred on startup for some users

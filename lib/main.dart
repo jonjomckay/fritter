@@ -121,7 +121,10 @@ Future<void> main() async {
         log(event.message, error: event.error, stackTrace: event.stackTrace);
 
         if (event.level.value >= 900) {
-          Catcher.reportCheckedError(event.error, event.stackTrace);
+          // Don't report internal Catcher errors, as it'll cause a loop
+          if (event.loggerName != 'Catcher') {
+            Catcher.reportCheckedError(event.error, event.stackTrace);
+          }
         }
       });
 
