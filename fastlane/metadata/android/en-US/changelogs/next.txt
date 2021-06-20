@@ -1,1 +1,2 @@
 - Fixed a logging error that occurred on startup for some users
+- Fixed profiles that have a pinned tweet that no longer exists (#173)

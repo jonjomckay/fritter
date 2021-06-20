@@ -362,7 +362,10 @@ class Twitter {
       if (pinEntry != null) {
         var id = pinEntry['pinEntry']['entry']['content']['item']['content']['tweet']['id'] as String;
 
-        chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
+        // It's possible for the pinned tweet to either not exist, or not be returned, so handle that
+        if (tweets.containsKey(id)) {
+          chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
+        }
       }
     }
 
