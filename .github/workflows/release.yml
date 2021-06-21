@@ -68,4 +68,17 @@ jobs:
           asset_name: fritter-${{ steps.get_tag.outputs.VERSION }}.apk
           asset_content_type: application/vnd.android.package-archive
           
+      - name: Generate hashes
+        uses: MCJack123/ghaction-generate-release-hashes@v1
+        with:
+          hash-type: sha256
+          file-name: hash-sha256.txt
 
+      - name: Uploaded hashes as release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: hash-sha256.txt
+          asset_name: fritter-${{ steps.get_tag.outputs.VERSION }}.sha256
