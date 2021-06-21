@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/home_model.dart';
@@ -11,6 +8,7 @@ import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
 import 'package:fritter/ui/futures.dart';
+import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -247,9 +245,9 @@ class TweetTile extends StatelessWidget {
                           style: Theme.of(context).textTheme.caption)
                     ],
                   ),
-                  leading: CircleAvatar(
-                    radius: 24,
-                    backgroundImage: ExtendedNetworkImageProvider(tweet.user!.profileImageUrlHttps!.replaceAll('normal', '200x200'), cache: true),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(64),
+                    child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
                   ),
                 ),
                 content,
