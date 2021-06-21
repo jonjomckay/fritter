@@ -9,6 +9,7 @@ on:
 jobs:
   android:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - name: Clone the repository
         uses: actions/checkout@v2
