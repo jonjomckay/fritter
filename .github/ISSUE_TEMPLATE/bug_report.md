@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+> Please make sure you've tried the [latest version](https://github.com/jonjomckay/fritter/releases) of Fritter first, as the F-Droid version is sometimes out of date!
+
 **Describe the bug**
 A clear description of what the bug is.
 
