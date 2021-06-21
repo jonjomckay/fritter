@@ -7,6 +7,51 @@ abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
+class EmojiErrorWidget extends FritterErrorWidget {
+  final String emoji;
+  final String message;
+  final String errorMessage;
+
+  const EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 16),
+              child: Text(emoji, style: TextStyle(
+                  fontSize: 36
+              )),
+            ),
+            Text(message, textAlign: TextAlign.center, style: TextStyle(
+                fontSize: 18
+            )),
+            Container(
+              margin: EdgeInsets.only(top: 12),
+              child: Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(
+                  color: Theme.of(context).hintColor
+              )),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 12),
+              child: ElevatedButton(
+                child: Text('Back'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class InlineErrorWidget extends FritterErrorWidget {
   final Object? error;
 

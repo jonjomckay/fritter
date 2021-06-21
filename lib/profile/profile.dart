@@ -8,6 +8,7 @@ import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:logging/logging.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String username;
@@ -19,6 +20,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  static final log = Logger('_ProfileScreenState');
+
   late Future<User> _future;
   
   @override
@@ -40,12 +43,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: FutureBuilderWrapper<User>(
         future: _future,
         onReady: (user) => ProfileScreenBody(user: user),
-        onError: (error, stackTrace) => FullPageErrorWidget(
-          error: error,
-          stackTrace: stackTrace,
-          prefix: 'Unable to load the profile',
-          onRetry: () => fetchProfile(),
-        ),
+        onError: (error, stackTrace) {
+          if (error is TwitterError) {
+            String emoji;
+            String message;
+
+            switch (error.code) {
+              case 50:
+                emoji = '🕵️';
+                message = 'User not found';
+                break;
+              case 63:
+                emoji = '👮';
+                message = 'Account suspended';
+                break;
+              default:
+                log.warning('Unsupported Twitter error code: ${error.code}', error.message);
+                emoji = '💥';
+                message = 'Catastrophic failure';
+                break;
+            }
+
+            return EmojiErrorWidget(
+              emoji: emoji,
+              message: message,
+              errorMessage: error.message
+            );
+          }
+
+          return FullPageErrorWidget(
+            error: error,
+            stackTrace: stackTrace,
+            prefix: 'Unable to load the profile',
+            onRetry: () => fetchProfile(),
+          );
+        },
       ),
     );
   }

@@ -156,7 +156,17 @@ class Twitter {
     });
 
     var response = await _twitterApi.client.get(uri);
-    var content = jsonDecode(response.body);
+    var content = jsonDecode(response.body) as Map<String, dynamic>;
+
+    var hasErrors = content.containsKey('errors');
+    if (hasErrors && content['errors'] != null) {
+      var errors = List.from(content['errors']);
+      if (errors.isEmpty) {
+        throw TwitterError(code: 0, message: 'Unknown error');
+      } else {
+        throw TwitterError(code: errors.first['code'], message: errors.first['message']);
+      }
+    }
 
     return User.fromJson({
       ...content['data']['user']['legacy'],
@@ -563,4 +573,11 @@ class TweetStatus {
   final List<TweetChain> chains;
 
   TweetStatus({required this.tweet, required this.chains, required this.cursorBottom, required this.cursorTop});
+}
+
+class TwitterError {
+  final int code;
+  final String message;
+
+  TwitterError({ required this.code, required this.message });
 }
