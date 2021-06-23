@@ -4,6 +4,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
@@ -126,21 +127,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         ? Container()
         : ExtendedImage.network(banner, fit: BoxFit.cover, height: appBarHeight, cache: true);
 
-    var comingSoon = Center(child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('🙈', style: TextStyle(
-            fontSize: 32
-        )),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
-          child: Text('Coming soon!', style: TextStyle(
-              color: Theme.of(context).hintColor
-          )),
-        )
-      ],
-    ));
-
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -205,8 +191,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
             ProfileTweets(user: profile, type: 'profile', includeReplies: false),
             ProfileTweets(user: profile, type: 'profile', includeReplies: true),
             ProfileTweets(user: profile, type: 'media', includeReplies: false),
-            comingSoon,
-            comingSoon,
+            ProfileFollows(user: profile, type: 'following'),
+            ProfileFollows(user: profile, type: 'followers'),
           ],
         ),
       ),

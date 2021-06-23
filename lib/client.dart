@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
@@ -172,6 +171,18 @@ class Twitter {
       ...content['data']['user']['legacy'],
       'id_str': content['data']['user']['rest_id']
     });
+  }
+
+  static Future<Follows> getProfileFollows(String id, String type, { int? cursor, int? count = 200 }) async {
+    var response = type == 'following'
+      ? await _twitterApi.userService.friendsList(userId: id, cursor: cursor, count: count, skipStatus: true)
+      : await _twitterApi.userService.followersList(userId: id, cursor: cursor, count: count, skipStatus: true);
+
+    return Follows(
+      cursorBottom: int.parse(response.nextCursorStr ?? '-1'),
+      cursorTop: int.parse(response.previousCursorStr ?? '-1'),
+      users: response.users ?? []
+    );
   }
 
   static List<TweetChain> createTweetChains(dynamic globalTweets, dynamic globalUsers, dynamic instructions) {
@@ -562,6 +573,14 @@ class TweetChain {
   final bool isPinned;
 
   TweetChain({required this.id, required this.tweets, required this.isPinned});
+}
+
+class Follows {
+  final int? cursorBottom;
+  final int? cursorTop;
+  final List<User> users;
+
+  Follows({required this.cursorBottom, required this.cursorTop, required this.users});
 }
 
 class TweetStatus {

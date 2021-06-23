@@ -1,3 +1,4 @@
+- Added the ability to view a user's following and follower lists (#64)
 - Added a dedicated widget for socket errors to help users diagnose
 - Fixed a logging error that occurred on startup for some users
 - Fixed profiles that have a pinned tweet that no longer exists (#173)
