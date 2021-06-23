@@ -7,6 +7,24 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
+class GroupScreenArguments {
+  final String id;
+  final String name;
+
+  GroupScreenArguments({required this.id, required this.name});
+}
+
+class GroupScreen extends StatelessWidget {
+  const GroupScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
+
+    return _SubscriptionGroupScreen(id: args.id, name: args.name);
+  }
+}
+
 class SubscriptionGroupScreenContent extends StatelessWidget {
   final String id;
 
@@ -61,17 +79,17 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
 }
 
 
-class SubscriptionGroupScreen extends StatefulWidget {
+class _SubscriptionGroupScreen extends StatefulWidget {
   final String id;
   final String name;
 
-  const SubscriptionGroupScreen({Key? key, required this.id, required this.name}) : super(key: key);
+  const _SubscriptionGroupScreen({Key? key, required this.id, required this.name}) : super(key: key);
 
   @override
   _SubscriptionGroupScreenState createState() => _SubscriptionGroupScreenState();
 }
 
-class _SubscriptionGroupScreenState extends State<SubscriptionGroupScreen> {
+class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

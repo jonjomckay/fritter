@@ -6,7 +6,7 @@ import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/_subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home/_trends.dart';
-import 'package:fritter/options.dart';
+import 'package:fritter/settings/settings.dart';
 import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => OptionsScreen()));
+              Navigator.pushNamed(context, ROUTE_SETTINGS);
             },
           )
         ],

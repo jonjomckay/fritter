@@ -1,6 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:html_unescape/html_unescape_small.dart';
@@ -107,7 +108,7 @@ class TweetContent extends StatelessWidget {
     var mentions = tweet.entities?.userMentions ?? [];
     for (var mention in mentions) {
       entities.add(TweetUserMention(mention, () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: mention.screenName!)));
+        Navigator.pushNamed(context, ROUTE_PROFILE, arguments: mention.screenName!);
       }));
     }
 

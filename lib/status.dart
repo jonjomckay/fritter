@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/profile/_tweets.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 
-class StatusScreen extends StatefulWidget {
+class StatusScreenArguments {
+  final String id;
+  final String? username;
+
+  StatusScreenArguments({required this.id, required this.username});
+}
+
+class StatusScreen extends StatelessWidget {
+  const StatusScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as StatusScreenArguments;
+
+    return _StatusScreen(username: args.username, id: args.id);
+  }
+}
+
+
+class _StatusScreen extends StatefulWidget {
   final String? username;
   final String id;
 
-  const StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
+  const _StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
 
   @override
   _StatusScreenState createState() => _StatusScreenState();
 }
 
-class _StatusScreenState extends State<StatusScreen> {
+class _StatusScreenState extends State<_StatusScreen> {
   late Future<TweetStatus> _future;
 
   @override

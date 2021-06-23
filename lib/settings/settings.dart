@@ -33,12 +33,12 @@ String getFlavor() {
   return flavor;
 }
 
-class OptionsScreen extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _OptionsScreenState();
+  State<StatefulWidget> createState() => _SettingsScreenState();
 }
 
-class _OptionsScreenState extends State<OptionsScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   static final log = Logger('_OptionsScreenState');
 
   String _createVersionString(PackageInfo packageInfo) {
@@ -346,7 +346,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
               leading: Icon(Icons.save),
               title: Text('Export'),
               subtitle: Text('Export your data'),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsExportScreen())),
+              onTap: () => Navigator.pushNamed(context, ROUTE_SETTINGS_EXPORT),
             ),
 
             PrefTitle(

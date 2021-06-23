@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
@@ -72,7 +73,7 @@ class UserTile extends StatelessWidget {
         child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, verified: verified),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: screenName)));
+        Navigator.pushNamed(context, ROUTE_PROFILE, arguments: screenName);
       },
     );
   }

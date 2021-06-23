@@ -2,6 +2,7 @@ import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/profile/profile.dart';
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'tweet/_media.dart';
+import '_media.dart';
 
 class TweetTile extends StatelessWidget {
   static final log = Logger('TweetTile');
@@ -105,7 +106,10 @@ class TweetTile extends StatelessWidget {
     if (replyTo != null) {
       replyToTile = _TweetTileLeading(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: replyTo, id: tweet.inReplyToStatusIdStr!)));
+          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+            id: tweet.inReplyToStatusIdStr!,
+            username: replyTo
+          ));
         },
         icon: Icons.reply,
         children: [
@@ -218,7 +222,7 @@ class TweetTile extends StatelessWidget {
                       return null;
                     }
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: tweet.user!.screenName!)));
+                    Navigator.pushNamed(context, ROUTE_PROFILE, arguments: tweet.user!.screenName!);
                   },
                   title: Row(
                     children: [
@@ -268,8 +272,10 @@ class TweetTile extends StatelessWidget {
                         children: [
                           if (tweet.replyCount != null)
                             _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => StatusScreen(username: tweet.user!.screenName!, id: tweet.idStr!)));
+                              Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+                                  id: tweet.idStr!,
+                                  username: tweet.user!.screenName!
+                              ));
                             }),
                           if (tweet.retweetCount != null)
                             _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),

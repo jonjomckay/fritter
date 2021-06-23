@@ -15,3 +15,9 @@ const OPTION_THEME_MODE = 'theme.mode';
 const OPTION_THEME_TRUE_BLACK = 'theme.true_black';
 
 const OPTION_TRENDS_LOCATION = 'trends.location';
+
+const ROUTE_GROUP = '/group';
+const ROUTE_PROFILE = '/profile';
+const ROUTE_SETTINGS = '/settings';
+const ROUTE_SETTINGS_EXPORT = '/settings/export';
+const ROUTE_STATUS = '/status';

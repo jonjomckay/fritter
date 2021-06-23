@@ -214,7 +214,10 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
       child: InkWell(
         onTap: () {
           // Open page with the group's feed
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionGroupScreen(id: id, name: name)));
+          Navigator.pushNamed(context, ROUTE_GROUP, arguments: GroupScreenArguments(
+            id: id,
+            name: name
+          ));
         },
         onLongPress: onLongPress,
         child: Column(

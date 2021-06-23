@@ -10,16 +10,28 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:logging/logging.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final username = ModalRoute.of(context)!.settings.arguments as String;
+
+    return _ProfileScreen(username: username);
+  }
+}
+
+
+class _ProfileScreen extends StatefulWidget {
   final String username;
 
-  const ProfileScreen({Key? key, required this.username}) : super(key: key);
+  const _ProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<_ProfileScreen> {
   static final log = Logger('_ProfileScreenState');
 
   late Future<User> _future;

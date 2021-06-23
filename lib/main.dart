@@ -10,10 +10,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
-import 'package:fritter/options.dart';
+import 'package:fritter/settings/settings.dart';
 import 'package:fritter/profile/profile.dart';
+import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
@@ -242,6 +244,15 @@ class _MyAppState extends State<MyApp> {
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
       themeMode: themeMode,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => DefaultPage(),
+        ROUTE_GROUP: (context) => GroupScreen(),
+        ROUTE_PROFILE: (context) => ProfileScreen(),
+        ROUTE_SETTINGS: (context) => SettingsScreen(),
+        ROUTE_SETTINGS_EXPORT: (context) => SettingsExportScreen(),
+        ROUTE_STATUS: (context) => StatusScreen()
+      },
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -254,7 +265,6 @@ class _MyAppState extends State<MyApp> {
 
         return child ?? Container();
       },
-      home: DefaultPage(),
     );
   }
 }
@@ -270,7 +280,7 @@ class _DefaultPageState extends State<DefaultPage> {
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: link.pathSegments.first)));
+      Navigator.pushNamed(context, ROUTE_PROFILE, arguments: link.pathSegments.first);
       return;
     }
 
@@ -280,7 +290,10 @@ class _DefaultPageState extends State<DefaultPage> {
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StatusScreen(username: username, id: statusId)));
+        Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+          id: statusId,
+          username: username,
+        ));
         return;
       }
     }
