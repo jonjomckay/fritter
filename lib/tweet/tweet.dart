@@ -106,10 +106,17 @@ class TweetTile extends StatelessWidget {
     if (replyTo != null) {
       replyToTile = _TweetTileLeading(
         onTap: () {
-          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-            id: tweet.inReplyToStatusIdStr!,
-            username: replyTo
-          ));
+          var replyToId = tweet.inReplyToStatusIdStr;
+          if (replyToId == null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Sorry, the replied tweet could not be found!'),
+            ));
+          } else {
+            Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+                id: replyToId,
+                username: replyTo
+            ));
+          }
         },
         icon: Icons.reply,
         children: [
