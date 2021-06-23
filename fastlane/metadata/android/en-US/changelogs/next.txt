@@ -1,0 +1,1 @@
+- Added support for importing subscriptions from an existing Twitter account (beta, #143)

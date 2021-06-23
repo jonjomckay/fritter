@@ -70,6 +70,10 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+              icon: Icon(Icons.import_export),
+              onPressed: () => Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
+            ),
+            IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () => widget.onRefresh(),
             ),

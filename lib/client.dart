@@ -173,10 +173,10 @@ class Twitter {
     });
   }
 
-  static Future<Follows> getProfileFollows(String id, String type, { int? cursor, int? count = 200 }) async {
+  static Future<Follows> getProfileFollows(String screenName, String type, { int? cursor, int? count = 200 }) async {
     var response = type == 'following'
-      ? await _twitterApi.userService.friendsList(userId: id, cursor: cursor, count: count, skipStatus: true)
-      : await _twitterApi.userService.followersList(userId: id, cursor: cursor, count: count, skipStatus: true);
+      ? await _twitterApi.userService.friendsList(screenName: screenName, cursor: cursor, count: count, skipStatus: true)
+      : await _twitterApi.userService.followersList(screenName: screenName, cursor: cursor, count: count, skipStatus: true);
 
     return Follows(
       cursorBottom: int.parse(response.nextCursorStr ?? '-1'),

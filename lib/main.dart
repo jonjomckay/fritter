@@ -18,6 +18,7 @@ import 'package:fritter/settings/settings.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
+import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
@@ -254,7 +255,8 @@ class _MyAppState extends State<MyApp> {
         ROUTE_PROFILE: (context) => ProfileScreen(),
         ROUTE_SETTINGS: (context) => SettingsScreen(),
         ROUTE_SETTINGS_EXPORT: (context) => SettingsExportScreen(),
-        ROUTE_STATUS: (context) => StatusScreen()
+        ROUTE_STATUS: (context) => StatusScreen(),
+        ROUTE_SUBSCRIPTIONS_IMPORT: (context) => SubscriptionImportScreen()
       },
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
