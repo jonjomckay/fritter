@@ -7,6 +7,7 @@ import 'package:catcher/catcher.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
@@ -112,7 +113,9 @@ Future<void> main() async {
       dialogReportModeAccept: 'Send',
       dialogReportModeCancel: "Don't send"
     )
-  ], customParameters: {
+  ], explicitExceptionHandlersMap: {
+    'SocketException': NullHandler()
+  }, customParameters: {
     'flavor': getFlavor()
   });
 
