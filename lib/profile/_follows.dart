@@ -34,7 +34,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
 
     try {
       var result = await Twitter.getProfileFollows(
-          widget.user.idStr!,
+          widget.user.screenName!,
           widget.type,
           cursor: cursor,
           count: _pageSize,

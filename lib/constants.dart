@@ -21,3 +21,4 @@ const ROUTE_PROFILE = '/profile';
 const ROUTE_SETTINGS = '/settings';
 const ROUTE_SETTINGS_EXPORT = '/settings/export';
 const ROUTE_STATUS = '/status';
+const ROUTE_SUBSCRIPTIONS_IMPORT = '/subscriptions/import';
