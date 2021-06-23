@@ -3,9 +3,9 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_saved.dart';
-import 'package:fritter/home/_subscriptions.dart';
+import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
-import 'package:fritter/home/_trends.dart';
+import 'package:fritter/trends/trends.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
@@ -33,10 +33,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final _children = [
-    FeedContent(),
-    SubscriptionsContent(),
-    TrendsContent(),
-    SavedContent(),
+    FeedScreen(),
+    SubscriptionsScreen(),
+    TrendsScreen(),
+    SavedScreen(),
   ];
 
   late TabController _tabController;

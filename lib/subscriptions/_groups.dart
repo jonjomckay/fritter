@@ -1,4 +1,3 @@
-import 'package:catcher/catcher.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
@@ -8,21 +7,20 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
-import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class SubscriptionGroupFragment extends StatefulWidget {
+class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
 
-  const SubscriptionGroupFragment({Key? key, required this.controller}) : super(key: key);
+  const SubscriptionGroups({Key? key, required this.controller}) : super(key: key);
 
   @override
-  _SubscriptionGroupFragmentState createState() => _SubscriptionGroupFragmentState();
+  _SubscriptionGroupsState createState() => _SubscriptionGroupsState();
 }
 
-class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
+class _SubscriptionGroupsState extends State<SubscriptionGroups> {
   late String _orderSubscriptionGroupsByField;
   late bool _orderSubscriptionGroupsAscending;
 
@@ -215,8 +213,8 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
         onTap: () {
           // Open page with the group's feed
           Navigator.pushNamed(context, ROUTE_GROUP, arguments: GroupScreenArguments(
-            id: id,
-            name: name
+              id: id,
+              name: name
           ));
         },
         onLongPress: onLongPress,
@@ -321,180 +319,6 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
               ),
             );
           })
-        ],
-      ),
-    );
-  }
-}
-
-class SubscriptionListFragment extends StatefulWidget {
-  final ScrollController controller;
-  final Function onRefresh;
-
-  const SubscriptionListFragment({Key? key, required this.controller, required this.onRefresh}) : super(key: key);
-
-  @override
-  _SubscriptionListFragmentState createState() => _SubscriptionListFragmentState();
-}
-
-class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
-  late String _orderSubscriptionsByField;
-  late bool _orderSubscriptionsAscending;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    var prefs = PrefService.of(context);
-
-    setState(() {
-      _orderSubscriptionsAscending = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING) ?? true;
-      _orderSubscriptionsByField = prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD) ?? 'name';
-    });
-  }
-
-  void _onChangeOrderSubscriptionsBy(String? value) {
-    var prefs = PrefService.of(context);
-
-    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value);
-
-    setState(() {
-      this._orderSubscriptionsByField = value ?? 'name';
-    });
-  }
-
-  void _onToggleOrderSubscriptionsAscending() {
-    var prefs = PrefService.of(context);
-    var value = !_orderSubscriptionsAscending;
-
-    prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, value);
-
-    setState(() {
-      this._orderSubscriptionsAscending = value;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
-
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text('Subscriptions', style: TextStyle(
-            fontWeight: FontWeight.bold
-        )),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () => widget.onRefresh(),
-            ),
-            PopupMenuButton<String>(
-              icon: Icon(Icons.sort),
-              itemBuilder: (context) => [
-                const PopupMenuItem(child: Text('Name'), value: 'name'),
-                const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
-                const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
-              ],
-              onSelected: (value) => _onChangeOrderSubscriptionsBy(value),
-            ),
-            IconButton(
-              icon: Icon(Icons.sort_by_alpha),
-              onPressed: () => _onToggleOrderSubscriptionsAscending(),
-            )
-          ],
-        ),
-        children: [
-          FutureBuilderWrapper<List<Subscription>>(
-            future: model.listSubscriptions(orderBy: _orderSubscriptionsByField, orderByAscending: _orderSubscriptionsAscending),
-            onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscriptions'),
-            onReady: (data) {
-              if (data.isEmpty) {
-                return Center(child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('¯\\_(ツ)_/¯', style: TextStyle(
-                          fontSize: 32
-                      )),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        child: Text('Try searching for some users to follow!', style: TextStyle(
-                            color: Theme.of(context).hintColor
-                        )),
-                      )
-                    ])
-                );
-              }
-
-              return ListView.builder(
-                controller: widget.controller,
-                shrinkWrap: true,
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  var user = data[index];
-
-                  return UserTile(
-                    id: user.id.toString(),
-                    name: user.name,
-                    screenName: user.screenName,
-                    imageUri: user.profileImageUrlHttps,
-                    verified: user.verified,
-                  );
-                },
-              );
-            },
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SubscriptionsContent extends StatefulWidget {
-  @override
-  _SubscriptionsContentState createState() => _SubscriptionsContentState();
-}
-
-class _SubscriptionsContentState extends State<SubscriptionsContent> {
-  final _scrollController = ScrollController();
-
-  bool _isLoading = false;
-
-  Future _onRefresh() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await context.read<HomeModel>().refreshSubscriptionUsers();
-    } catch (e, stackTrace) {
-      Catcher.reportCheckedError(e, stackTrace);
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Unable to refresh the subscriptions. The error was $e'),
-      ));
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: Column(
-        children: [
-          SubscriptionGroupFragment(controller: _scrollController),
-          SubscriptionListFragment(controller: _scrollController, onRefresh: () => _onRefresh()),
         ],
       ),
     );

@@ -9,7 +9,7 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
-class SavedContent extends StatelessWidget {
+class SavedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var model = context.read<HomeModel>();
