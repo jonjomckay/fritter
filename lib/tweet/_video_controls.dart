@@ -83,10 +83,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
           child: Stack(
             children: [
               if (_latestValue.isBuffering)
-                const Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                const Center(
+                  child: CircularProgressIndicator(),
                 )
               else
                 _buildHitArea(),
@@ -235,7 +233,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Text(
-          currentSubtitle.first!.text,
+          currentSubtitle.first!.text.toString(),
           style: const TextStyle(
             fontSize: 18,
           ),
