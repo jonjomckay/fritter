@@ -171,7 +171,7 @@ class HomeModel extends ChangeNotifier {
         'screen_name': user.screenName,
         'name': user.name,
         'profile_image_url_https': user.profileImageUrlHttps,
-        'verified': user.verified
+        'verified': (user.verified ?? false) ? 1 : 0
       }, where: 'id = ?', whereArgs: [user.idStr]);
     }
 
