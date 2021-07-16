@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/utils/cache.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,7 @@ class _FritterTwitterClient extends TwitterClient {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        return Future.error(response);
+        return Future.error(HttpException(response));
       }
     });
   }

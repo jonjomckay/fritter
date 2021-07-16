@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:catcher/catcher.dart';
 import 'package:catcher/model/platform_type.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
 import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -27,6 +28,10 @@ class FritterSentryHandler extends ReportHandler {
   Future<bool> handle(Report error, BuildContext? context) async {
     // Whether we should send the error report this time, or not, as we have 4 outcomes
     bool sendThisTime = _isSentryEnabled ?? false;
+    if (!sendThisTime) {
+      // If the user clicked the manual report button, ignore any stored preference
+      sendThisTime = error.error is ManuallyReportedException;
+    }
 
     // If we have a UI context, and the user hasn't configured if Sentry should be used
     if (context != null && _isSentryEnabled == null) {
@@ -102,6 +107,11 @@ class FritterSentryHandler extends ReportHandler {
     }
 
     try {
+      var nestedError = error.error;
+      if (nestedError is ManuallyReportedException) {
+        error = Report(nestedError.exception, error.stackTrace, error.dateTime, error.deviceParameters, error.applicationParameters, error.customParameters, error.errorDetails, error.platformType, error.screenshot);
+      }
+
       final tags = <String, dynamic>{};
       tags.addAll(error.applicationParameters);
       tags.addAll(error.customParameters);

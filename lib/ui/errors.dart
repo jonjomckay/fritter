@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/catcher/exceptions.dart';
 
 abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
@@ -141,6 +143,11 @@ class FullPageErrorWidget extends FritterErrorWidget {
       );
     }
 
+    var message = error;
+    if (message is HttpException) {
+      message = JsonEncoder.withIndent(' ' * 2).convert(jsonDecode(message.body));
+    }
+
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.all(16),
@@ -161,8 +168,9 @@ class FullPageErrorWidget extends FritterErrorWidget {
             )),
           ),
           Container(
+            alignment: Alignment.center,
             margin: EdgeInsets.only(top: 12),
-            child: Text('$error', textAlign: TextAlign.center, style: TextStyle(
+            child: Text('$message', textAlign: TextAlign.left, style: TextStyle(
                 color: Theme.of(context).hintColor
             )),
           ),
@@ -170,7 +178,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
             margin: EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text('Report'),
-              onPressed: () => Catcher.reportCheckedError(error, stackTrace),
+              onPressed: () => Catcher.reportCheckedError(ManuallyReportedException(error), stackTrace),
             ),
           ),
           if (onRetry != null)

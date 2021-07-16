@@ -1,1 +1,2 @@
 - Added support for importing subscriptions from an existing Twitter account (beta, #143)
+- Improved handling of unexpected responses from Twitter
