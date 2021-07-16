@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
-import 'package:fritter/profile/_tweets.dart';
+import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -29,6 +29,12 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     _pagingController.addPageRequestListener((cursor) {
       _listTweets(cursor);
     });
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -111,6 +117,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
     return PagedListView<String?, TweetChain>(
       pagingController: _pagingController,
+      addAutomaticKeepAlives: true,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, conversation, index) {
           return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);

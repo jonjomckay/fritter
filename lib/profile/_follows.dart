@@ -30,6 +30,12 @@ class _ProfileFollowsState extends State<ProfileFollows> {
     });
   }
 
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   Future _loadFollows(int? cursor) async {
 
     try {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/profile/_tweets.dart';
+import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
