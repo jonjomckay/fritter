@@ -25,7 +25,7 @@ class _FritterTwitterClient extends TwitterClient {
     secret: ''
   );
 
-  static String? _token;
+  static Object? _token;
   static int _expiresAt = -1;
   static int _tokenLimit = -1;
   static int _tokenRemaining = -1;
@@ -43,7 +43,7 @@ class _FritterTwitterClient extends TwitterClient {
     });
   }
 
-  static Future<String> getToken() async {
+  static Future<Object> getToken() async {
     if (_token != null) {
       // If we don't have an expiry or limit, it's probably because we haven't made a request yet, so assume they're OK
       if (_expiresAt == -1 && _tokenLimit == -1 && _tokenRemaining == -1) {
@@ -93,7 +93,7 @@ class _FritterTwitterClient extends TwitterClient {
     var response = await http.get(uri, headers: {
       ...?headers,
       'authorization': _bearerToken,
-      'x-guest-token': await getToken(),
+      'x-guest-token': (await getToken()).toString(),
       'x-twitter-active-user': 'yes',
       'user-agent': faker.internet.userAgent()
     });
