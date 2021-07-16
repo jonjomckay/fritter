@@ -52,10 +52,4 @@ class _TweetConversationState extends State<TweetConversation> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    log('disposing');
-    super.dispose();
-  }
 }
