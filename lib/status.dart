@@ -10,6 +10,11 @@ class StatusScreenArguments {
   final String? username;
 
   StatusScreenArguments({required this.id, required this.username});
+
+  @override
+  String toString() {
+    return 'StatusScreenArguments{id: $id, username: $username}';
+  }
 }
 
 class StatusScreen extends StatelessWidget {
