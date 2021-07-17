@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
-class SavedContent extends StatelessWidget {
+class SavedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var model = context.read<HomeModel>();

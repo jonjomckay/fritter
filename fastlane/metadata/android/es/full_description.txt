@@ -1,4 +1,4 @@
-* Suscripciones y grupos locales del dispositivo, al estilo Newpipe, con una vista de suministros
+* Suscripciones y grupos locales del dispositivo, al estilo NewPipe, con una vista de suministros
 * Guardado local de tuits, lo que permite la lectura sin conexión
 * Visualización de perfiles
 * Visualización de tuits y respuestas

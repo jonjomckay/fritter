@@ -1,27 +1,26 @@
-import 'dart:developer';
-
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ProfileTweets extends StatefulWidget {
-  final User? user;
-  final String username;
+  final User user;
+  final String type;
   final bool includeReplies;
 
-  const ProfileTweets({Key? key, required this.user, required this.username, required this.includeReplies}) : super(key: key);
+  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies}) : super(key: key);
 
   @override
   _ProfileTweetsState createState() => _ProfileTweetsState();
 }
 
 class _ProfileTweetsState extends State<ProfileTweets> {
-  late PagingController<String?, TweetWithCard> _pagingController;
+  late PagingController<String?, TweetChain> _pagingController;
 
-  int _pageSize = 10;
+  int _pageSize = 20;
 
   @override
   void initState() {
@@ -33,10 +32,18 @@ class _ProfileTweetsState extends State<ProfileTweets> {
     });
   }
 
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   Future _loadTweets(String? cursor) async {
+
     try {
       var result = await Twitter.getTweets(
-        widget.user!.idStr!,
+        widget.user.idStr!,
+        widget.type,
         cursor: cursor,
         count: _pageSize,
         includeReplies: widget.includeReplies
@@ -45,7 +52,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
       } else {
-        _pagingController.appendPage(result.tweets, result.cursorBottom);
+        _pagingController.appendPage(result.chains, result.cursorBottom);
       }
     } catch (e, stackTrace) {
       _pagingController.error = [e, stackTrace];
@@ -54,13 +61,13 @@ class _ProfileTweetsState extends State<ProfileTweets> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<String?, TweetWithCard>(
+    return PagedListView<String?, TweetChain>(
       padding: EdgeInsets.zero,
       pagingController: _pagingController,
-      addAutomaticKeepAlives: false,
+      addAutomaticKeepAlives: true,
       builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, tweet, index) {
-          return TweetTile(currentUsername: widget.username, tweet: tweet, clickable: true);
+        itemBuilder: (context, chain, index) {
+          return TweetConversation(id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, isPinned: chain.isPinned);
         },
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
@@ -76,7 +83,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         ),
         noItemsFoundIndicatorBuilder: (context) {
           return Center(
-            child: Text('Couldn\'t find any tweets from the last 7 days!'),
+            child: Text('Couldn\'t find any tweets by this user!'),
           );
         },
       ),

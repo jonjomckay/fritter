@@ -28,7 +28,7 @@ jobs:
       - name: Install and set up Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.0.4'
+          flutter-version: '2.2.1'
 
       - name: Build APKs
         run: |
@@ -50,7 +50,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          draft: false
+          draft: true
           prerelease: false
       
       - name: Get the tag
@@ -67,5 +67,10 @@ jobs:
           asset_path: build/app/outputs/apk/release/app-release.apk
           asset_name: fritter-${{ steps.get_tag.outputs.VERSION }}.apk
           asset_content_type: application/vnd.android.package-archive
-          
 
+      - name: Publish the release
+        uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}

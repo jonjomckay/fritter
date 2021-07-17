@@ -1,0 +1,7 @@
+- Added button to manually refresh subscription info
+- Fixed the constant loader when no more profile tweets exist
+- Fixed profile pictures being blank after importing subscriptions
+- Fixed feeds having a refresh forced when a tweet is saved
+- Fixed title not changing on the home screen
+- Fixed long profile and screen names overflowing the tweet date
+- Fixed the error reporting dialog popping up too much

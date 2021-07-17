@@ -4,21 +4,37 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:logging/logging.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final username = ModalRoute.of(context)!.settings.arguments as String;
+
+    return _ProfileScreen(username: username);
+  }
+}
+
+
+class _ProfileScreen extends StatefulWidget {
   final String username;
 
-  const ProfileScreen({Key? key, required this.username}) : super(key: key);
+  const _ProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<_ProfileScreen> {
+  static final log = Logger('_ProfileScreenState');
+
   late Future<User> _future;
   
   @override
@@ -40,12 +56,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: FutureBuilderWrapper<User>(
         future: _future,
         onReady: (user) => ProfileScreenBody(user: user),
-        onError: (error, stackTrace) => FullPageErrorWidget(
-          error: error,
-          stackTrace: stackTrace,
-          prefix: 'Unable to load the profile',
-          onRetry: () => fetchProfile(),
-        ),
+        onError: (error, stackTrace) {
+          if (error is TwitterError) {
+            String emoji;
+            String message;
+
+            switch (error.code) {
+              case 50:
+                emoji = '🕵️';
+                message = 'User not found';
+                break;
+              case 63:
+                emoji = '👮';
+                message = 'Account suspended';
+                break;
+              default:
+                log.warning('Unsupported Twitter error code: ${error.code}', error.message);
+                emoji = '💥';
+                message = 'Catastrophic failure';
+                break;
+            }
+
+            return EmojiErrorWidget(
+              emoji: emoji,
+              message: message,
+              errorMessage: error.message
+            );
+          }
+
+          return FullPageErrorWidget(
+            error: error,
+            stackTrace: stackTrace,
+            prefix: 'Unable to load the profile',
+            onRetry: () => fetchProfile(),
+          );
+        },
       ),
     );
   }
@@ -67,7 +112,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -82,21 +127,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         ? Container()
         : ExtendedImage.network(banner, fit: BoxFit.cover, height: appBarHeight, cache: true);
 
-    var comingSoon = Center(child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('🙈', style: TextStyle(
-            fontSize: 32
-        )),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
-          child: Text('Coming soon!', style: TextStyle(
-              color: Theme.of(context).hintColor
-          )),
-        )
-      ],
-    ));
-
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -109,9 +139,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               forceElevated: innerBoxIsScrolled,
               actions: [
                 FollowButton(id: profile.idStr!,
-                    name: profile.name!,
-                    screenName: profile.screenName!,
-                    imageUri: profile.profileImageUrlHttps)
+                  name: profile.name!,
+                  screenName: profile.screenName!,
+                  imageUri: profile.profileImageUrlHttps,
+                  verified: profile.verified!,
+                )
               ],
               bottom: TabBar(
                 controller: _tabController,
@@ -119,6 +151,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 tabs: [
                   Tab(child: Text('Tweets', textAlign: TextAlign.center)),
                   Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
+                  Tab(child: Text('Media', textAlign: TextAlign.center)),
                   Tab(child: Text('Following', textAlign: TextAlign.center)),
                   Tab(child: Text('Followers', textAlign: TextAlign.center)),
                 ],
@@ -155,10 +188,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         body: TabBarView(
           controller: _tabController,
           children: [
-            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: false),
-            ProfileTweets(user: profile, username: profile.screenName!, includeReplies: true),
-            comingSoon,
-            comingSoon,
+            ProfileTweets(user: profile, type: 'profile', includeReplies: false),
+            ProfileTweets(user: profile, type: 'profile', includeReplies: true),
+            ProfileTweets(user: profile, type: 'media', includeReplies: false),
+            ProfileFollows(user: profile, type: 'following'),
+            ProfileFollows(user: profile, type: 'followers'),
           ],
         ),
       ),

@@ -1,18 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/utils/cache.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
+import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 10);
 const String _bearerToken = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 
 class _FritterTwitterClient extends TwitterClient {
+  static final log = Logger('_FritterTwitterClient');
+
   _FritterTwitterClient() : super(
     consumerKey: '',
     consumerSecret: '',
@@ -20,7 +25,7 @@ class _FritterTwitterClient extends TwitterClient {
     secret: ''
   );
 
-  static String? _token;
+  static Object? _token;
   static int _expiresAt = -1;
   static int _tokenLimit = -1;
   static int _tokenRemaining = -1;
@@ -33,12 +38,12 @@ class _FritterTwitterClient extends TwitterClient {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        return Future.error(response);
+        return Future.error(HttpException(response));
       }
     });
   }
 
-  static Future<String> getToken() async {
+  static Future<Object> getToken() async {
     if (_token != null) {
       // If we don't have an expiry or limit, it's probably because we haven't made a request yet, so assume they're OK
       if (_expiresAt == -1 && _tokenLimit == -1 && _tokenRemaining == -1) {
@@ -62,7 +67,7 @@ class _FritterTwitterClient extends TwitterClient {
     _tokenRemaining = -1;
     _expiresAt = -1;
 
-    log('Refreshing the Twitter token');
+    log.info('Refreshing the Twitter token');
 
     var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
       'authorization': _bearerToken,
@@ -78,17 +83,17 @@ class _FritterTwitterClient extends TwitterClient {
     }
 
     var message = 'Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body;
-    log(message);
+    log.severe(message);
     throw new Exception(message);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
-    log('Fetching $uri');
+    log.info('Fetching $uri');
 
     var response = await http.get(uri, headers: {
       ...?headers,
       'authorization': _bearerToken,
-      'x-guest-token': await getToken(),
+      'x-guest-token': (await getToken()).toString(),
       'x-twitter-active-user': 'yes',
       'user-agent': faker.internet.userAgent()
     });
@@ -151,12 +156,69 @@ class Twitter {
     });
 
     var response = await _twitterApi.client.get(uri);
-    var content = jsonDecode(response.body);
+    var content = jsonDecode(response.body) as Map<String, dynamic>;
+
+    var hasErrors = content.containsKey('errors');
+    if (hasErrors && content['errors'] != null) {
+      var errors = List.from(content['errors']);
+      if (errors.isEmpty) {
+        throw TwitterError(code: 0, message: 'Unknown error');
+      } else {
+        throw TwitterError(code: errors.first['code'], message: errors.first['message']);
+      }
+    }
 
     return User.fromJson({
       ...content['data']['user']['legacy'],
       'id_str': content['data']['user']['rest_id']
     });
+  }
+
+  static Future<Follows> getProfileFollows(String screenName, String type, { int? cursor, int? count = 200 }) async {
+    var response = type == 'following'
+      ? await _twitterApi.userService.friendsList(screenName: screenName, cursor: cursor, count: count, skipStatus: true)
+      : await _twitterApi.userService.followersList(screenName: screenName, cursor: cursor, count: count, skipStatus: true);
+
+    return Follows(
+      cursorBottom: int.parse(response.nextCursorStr ?? '-1'),
+      cursorTop: int.parse(response.previousCursorStr ?? '-1'),
+      users: response.users ?? []
+    );
+  }
+
+  static List<TweetChain> createTweetChains(dynamic globalTweets, dynamic globalUsers, dynamic instructions) {
+    List<TweetChain> replies = [];
+
+    for (var entry in instructions[0]['addEntries']['entries']) {
+      var entryId = entry['entryId'] as String;
+      if (entryId.startsWith('tweet-')) {
+        // Ignore it, as it's just the main tweet, which we already have
+      }
+
+      if (entryId.startsWith('cursor-bottom') || entryId.startsWith('cursor-showMore')) {
+        // TODO: Use as the "next page" cursor
+      }
+
+      if (entryId.startsWith('conversationThread')) {
+        List<TweetWithCard> tweets = [];
+
+        for (var item in entry['content']['timelineModule']['items']) {
+          if (item['entryId'].startsWith('tweet')) {
+            var content = item['item']['content'] as Map<String, dynamic>;
+            if (content.containsKey('tombstone')) {
+              tweets.add(TweetWithCard.tombstone(content['tombstone']['tombstoneInfo']));
+            } else {
+              tweets.add(TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[content['tweet']['id']]));
+            }
+          }
+        }
+
+        // TODO: There must be a better way of getting the conversation ID
+        replies.add(TweetChain(id: entryId.replaceFirst('conversationThread-', ''), tweets: tweets, isPinned: false));
+      }
+    }
+
+    return replies;
   }
 
   static Future<TweetStatus> getTweet(String id) async {
@@ -174,34 +236,30 @@ class Twitter {
     var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
 
-    var replies = List.from(instructions[0]['addEntries']['entries'])
-        .where((entry) => entry['entryId'].startsWith('conversationThread') as bool)
-        .where((entry) => entry['content']?['timelineModule']?['items']?[0]?['item']?['content']?['tweet']?['id'] != null)
-        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[e['content']['timelineModule']['items'][0]['item']['content']['tweet']['id']]))
-        .toList(growable: false);
-
     var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
+    var chains = createTweetChains(globalTweets, globalUsers, instructions);
 
-    return TweetStatus(tweet: tweet, replies: replies);
+    return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO', cursorTop: 'TODO');
   }
 
-  static Future<List<TweetWithCard>> searchTweets(String query, {int limit = 25, String? maxId}) async {
+  static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
     var response = await _twitterApi.client.get(
         Uri.https('api.twitter.com', '/2/search/adaptive.json', {
           ...defaultParams,
           'count': limit.toString(),
+          'cursor': cursor,
           'max_id': maxId,
           'q': query,
           'query_source': 'typed_query',
           'pc': '1',
+          'tweet_search_mode': mode,
           'spelling_corrections': '1',
         })
     );
 
     var result = json.decode(response.body);
 
-    return _createTweets('sq-I-t', result)
-        .toList(growable: false);
+    return createUnconversationedChains(result, 'sq-I-t', false, true);
   }
 
   static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
@@ -234,11 +292,11 @@ class Twitter {
       .toList(growable: false);
   }
 
-  static Future<TweetList> getTweets(String id, { int count = 10, String? cursor, bool includeReplies = true }) async {
+  static Future<TweetStatus> getTweets(String id, String type, { int count = 10, String? cursor, bool includeReplies = true, bool includeRetweets = true }) async {
     var query = {
       ...defaultParams,
       'include_tweet_replies': includeReplies ? '1' : '0',
-      'include_want_retweets': '1',
+      'include_want_retweets': includeRetweets ? '1' : '0', // This may not actually do anything
       'count': count.toString(),
     };
 
@@ -247,56 +305,162 @@ class Twitter {
     }
 
     var response = await _twitterApi.client.get(
-      Uri.https('api.twitter.com', '/2/timeline/profile/$id.json', query)
+      Uri.https('api.twitter.com', '/2/timeline/$type/$id.json', query)
     );
 
     var result = json.decode(response.body);
 
-    var entries = result['timeline']['instructions'][0]['addEntries']['entries'] as List<dynamic>;
-
-    var cursorBottom = entries
-        .where((entry) => entry['entryId'].startsWith('cursor-bottom'))
-        .map((e) => e['content']['operation']['cursor']['value'])
-        .cast<String>()
-        .first;
-
-    var tweets = _createTweets('tweet', result)
-        .toList(growable: false);
-
-    return TweetList(tweets: tweets, cursorBottom: cursorBottom);
+    return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false);
   }
 
-  static Iterable<TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
+  static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
+    String? cursor;
+
+    var cursorEntry = addEntries
+        .firstWhere((e) => e['entryId'].contains(name), orElse: () => null);
+
+    if (cursorEntry != null) {
+      cursor = cursorEntry['content']['operation']['cursor']['value'];
+    } else {
+      // Look for a "replaceEntry" with the cursor
+      var cursorReplaceEntry = repEntries
+          .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(name), orElse: () => null);
+
+      if (cursorReplaceEntry != null) {
+        cursor = cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+      }
+    }
+
+    return cursor;
+  }
+
+  static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
+    var instructions = List.from(result['timeline']['instructions']);
+
+    var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
+    var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
+
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
+
+    var tweets = _createTweets(tweetIndicator, result);
+
+    // First, get all the IDs of the tweets we need to display
+    var tweetEntries = addEntries
+        .where((e) => e['entryId'].contains(tweetIndicator))
+        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
+        .map((e) => e['content']['item']['content']['tweet']['id'])
+        .cast<String>()
+        .toList();
+
+    Map<String, List<TweetWithCard>> conversations = tweets
+        .values
+        .where((e) => tweetEntries.contains(e.idStr))
+        .groupBy((e) {
+          // TODO: I don't think a flag is the right way to handle this
+          if (mapToThreads) {
+            // Then group the tweets-to-display by their conversation ID
+            return e.conversationIdStr;
+          }
+
+          return e.idStr;
+        })
+        .cast<String, List<TweetWithCard>>();
+
+    List<TweetChain> chains = [];
+
+    // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
+    for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
+      var chainTweets = conversation.value
+          .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
+          .toList();
+
+      chains.add(TweetChain(id: conversation.key, tweets: chainTweets, isPinned: false));
+    }
+
+    // If we want to show pinned tweets, add them before the chains that we already have
+    if (showPinned) {
+      var pinEntry = instructions.firstWhere((e) => e.containsKey('pinEntry'), orElse: () => null);
+      if (pinEntry != null) {
+        var id = pinEntry['pinEntry']['entry']['content']['item']['content']['tweet']['id'] as String;
+
+        // It's possible for the pinned tweet to either not exist, or not be returned, so handle that
+        if (tweets.containsKey(id)) {
+          chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
+        }
+      }
+    }
+
+    return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
+  }
+
+  static Future<List<User>> getUsers(Iterable<String> ids) async {
+    // Split into groups of 100, as the API only supports that many at a time
+    List<Future<List<User>>> futures = [];
+
+    var groups = partition(ids, 100);
+    for (var group in groups) {
+      futures.add(_getUsersPage(group));
+    }
+
+    return (await Future.wait(futures))
+        .expand((element) => element)
+        .toList();
+  }
+
+  static Future<List<User>> _getUsersPage(Iterable<String> ids) async {
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/1.1/users/lookup.json', {
+      'user_id': ids.join(','),
+    }));
+
+    var result = json.decode(response.body);
+
+    return List.from(result)
+        .map((e) => User.fromJson(e))
+        .toList(growable: false);
+  }
+
+  static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
-    var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
-    var entries = instructions[0]['addEntries']['entries'] as List<dynamic>;
 
-    entries.sort((a, b) => b['sortIndex'].compareTo(a['sortIndex']));
-
-    return entries
-        .where((entry) => entry['entryId'].startsWith(entryPrefix) as bool)
-        .where((entry) => globalTweets.containsKey(entry['content']['item']['content']['tweet']['id']))
-        .map<TweetWithCard>((entry) => TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[entry['content']['item']['content']['tweet']['id']]));
+    var tweets = globalTweets.values
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
+        .toList();
+    
+    return Map.fromIterable(tweets, key: (e) => e.idStr, value: (e) => e);
   }
 }
 
 class TweetWithCard extends Tweet {
   Map<String, dynamic>? card;
+  String? conversationIdStr;
   TweetWithCard? inReplyToWithCard;
   TweetWithCard? quotedStatusWithCard;
   TweetWithCard? retweetedStatusWithCard;
+  bool? isTombstone;
 
   TweetWithCard();
 
   Map<String, dynamic> toJson() {
     var json = super.toJson();
     json['card'] = card;
+    json['conversationIdStr'] = conversationIdStr;
     json['inReplyToWithCard'] = inReplyToWithCard?.toJson();
     json['quotedStatusWithCard'] = quotedStatusWithCard?.toJson();
     json['retweetedStatusWithCard'] = retweetedStatusWithCard?.toJson();
+    json['isTombstone'] = isTombstone;
 
     return json;
+  }
+
+  factory TweetWithCard.tombstone(dynamic e) {
+    var tweetWithCard = TweetWithCard();
+    tweetWithCard.idStr = '';
+    tweetWithCard.isTombstone = true;
+    tweetWithCard.text = ((e['richText']?['text'] ?? '') as String).replaceFirst(' Learn more', '');
+
+    return tweetWithCard;
   }
 
   factory TweetWithCard.fromJson(Map<String, dynamic> e) {
@@ -304,6 +468,7 @@ class TweetWithCard extends Tweet {
 
     var tweetWithCard = TweetWithCard();
     tweetWithCard.card = e['card'];
+    tweetWithCard.conversationIdStr = e['conversationIdStr'];
     tweetWithCard.createdAt = tweet.createdAt;
     tweetWithCard.entities = tweet.entities;
     tweetWithCard.displayTextRange = tweet.displayTextRange;
@@ -317,6 +482,7 @@ class TweetWithCard extends Tweet {
     tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
     tweetWithCard.inReplyToWithCard = e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
     tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
+    tweetWithCard.isTombstone = e['is_tombstone'];
     tweetWithCard.lang = tweet.lang;
     tweetWithCard.quoteCount = tweet.quoteCount;
     tweetWithCard.quotedStatusIdStr = tweet.quotedStatusIdStr;
@@ -343,6 +509,7 @@ class TweetWithCard extends Tweet {
   factory TweetWithCard.fromCardJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
     TweetWithCard tweet = TweetWithCard();
     tweet.card = e['card'];
+    tweet.conversationIdStr = e['conversation_id_str'];
     tweet.createdAt = convertTwitterDateTime(e['created_at']);
     tweet.entities = e['entities'] == null ? null : Entities.fromJson(e['entities']);
     tweet.extendedEntities = e['extended_entities'] == null ? null : Entities.fromJson(e['extended_entities']);
@@ -354,6 +521,7 @@ class TweetWithCard extends Tweet {
     tweet.inReplyToStatusIdStr = e['in_reply_to_status_id_str'] as String?;
     tweet.inReplyToUserIdStr = e['in_reply_to_user_id_str'] as String?;
     tweet.isQuoteStatus = e['is_quote_status'] as bool?;
+    tweet.isTombstone = e['is_tombstone'] as bool?;
     tweet.lang = e['lang'] as String?;
     tweet.quoteCount = e['quote_count'] as int?;
     tweet.quotedStatusIdStr = e['quoted_status_id_str'] as String?;
@@ -400,16 +568,36 @@ class TweetWithCard extends Tweet {
   }
 }
 
-class TweetList {
+class TweetChain {
+  final String id;
   final List<TweetWithCard> tweets;
-  final String? cursorBottom;
+  final bool isPinned;
 
-  TweetList({required this.tweets, required this.cursorBottom });
+  TweetChain({required this.id, required this.tweets, required this.isPinned});
+}
+
+class Follows {
+  final int? cursorBottom;
+  final int? cursorTop;
+  final List<User> users;
+
+  Follows({required this.cursorBottom, required this.cursorTop, required this.users});
 }
 
 class TweetStatus {
-  final TweetWithCard tweet;
-  final List<TweetWithCard> replies;
+  // final TweetChain after;
+  // final TweetChain before;
+  final TweetWithCard? tweet;
+  final String? cursorBottom;
+  final String? cursorTop;
+  final List<TweetChain> chains;
 
-  TweetStatus({ required this.tweet, required this.replies });
+  TweetStatus({required this.tweet, required this.chains, required this.cursorBottom, required this.cursorTop});
+}
+
+class TwitterError {
+  final int code;
+  final String message;
+
+  TwitterError({ required this.code, required this.message });
 }

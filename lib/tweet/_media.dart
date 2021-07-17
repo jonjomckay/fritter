@@ -8,6 +8,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/downloads.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 
@@ -155,6 +156,8 @@ class TweetMediaView extends StatefulWidget {
 }
 
 class _TweetMediaViewState extends State<TweetMediaView> {
+  static final log = Logger('_TweetMediaViewState');
+
   late Media _media;
 
   @override
@@ -183,7 +186,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
 
               await downloadUriToPickedFile(uri, fileName,
                 onError: (response) {
-                  log('Unable to save the media. The response was ${response.body}');
+                  log.severe('Unable to save the media. The response was ${response.body}');
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),

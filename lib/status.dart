@@ -1,20 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/tweet.dart';
+import 'package:fritter/tweet/conversation.dart';
+import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 
-class StatusScreen extends StatefulWidget {
-  final String username;
+class StatusScreenArguments {
+  final String id;
+  final String? username;
+
+  StatusScreenArguments({required this.id, required this.username});
+
+  @override
+  String toString() {
+    return 'StatusScreenArguments{id: $id, username: $username}';
+  }
+}
+
+class StatusScreen extends StatelessWidget {
+  const StatusScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as StatusScreenArguments;
+
+    return _StatusScreen(username: args.username, id: args.id);
+  }
+}
+
+
+class _StatusScreen extends StatefulWidget {
+  final String? username;
   final String id;
 
-  const StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
+  const _StatusScreen({Key? key, required this.username, required this.id}) : super(key: key);
 
   @override
   _StatusScreenState createState() => _StatusScreenState();
 }
 
-class _StatusScreenState extends State<StatusScreen> {
+class _StatusScreenState extends State<_StatusScreen> {
   late Future<TweetStatus> _future;
 
   @override
@@ -49,7 +74,7 @@ class _StatusScreenState extends State<StatusScreen> {
 }
 
 class StatusScreenBody extends StatefulWidget {
-  final String username;
+  final String? username;
   final TweetStatus status;
 
   const StatusScreenBody({Key? key, required this.username, required this.status}) : super(key: key);
@@ -64,12 +89,13 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
   Widget build(BuildContext context) {
     Iterable<Widget> comments = [];
 
-    var replies = widget.status.replies;
+    var replies = widget.status.chains;
     if (replies.isEmpty) {
       comments = [Text('No replies')];
     } else {
-      comments = replies.map((e) {
-        return TweetTile(clickable: true, currentUsername: widget.username, tweet: e);
+      comments = replies.map((chain) {
+        // TODO: Is widget.username correct here?
+        return TweetConversation(id: chain.id, username: widget.username, tweets: chain.tweets, isPinned: false);
       });
     }
 
@@ -78,7 +104,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
         children: [
           TweetTile(currentUsername: widget.username, tweet: widget.status.tweet, clickable: false),
           Padding(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(12),
             child: Column(
               children: [...comments],
             ),
