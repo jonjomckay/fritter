@@ -1,2 +1,3 @@
 - Moved save and share buttons into a context menu to save space
 - Fixed an overflow that was causing feeds to error for some users (#82, #193)
+- Added support for handling a few more types of errors

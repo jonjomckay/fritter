@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -192,6 +193,15 @@ class FullPageErrorWidget extends FritterErrorWidget {
       }
 
       message = JsonEncoder.withIndent(' ' * 2).convert(content);
+    }
+
+    if (message is TimeoutException) {
+      return EmojiErrorWidget(
+        emoji: '⏱️',
+        message: 'Timed out',
+        errorMessage: 'This took too long to load. Please check your network connection!',
+        onRetry: onRetry,
+      );
     }
 
     return Container(
