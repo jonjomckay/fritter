@@ -5,9 +5,9 @@ import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
-import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_content.dart';
+import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
@@ -16,12 +16,9 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '_media.dart';
-
 class TweetTile extends StatelessWidget {
   static final log = Logger('TweetTile');
 
-  final ScrollController scrollController = ScrollController();
   final bool clickable;
   final String? currentUsername;
   final TweetWithCard? tweet;
@@ -233,16 +230,76 @@ class TweetTile extends StatelessWidget {
                   },
                   title: Row(
                     children: [
-                      Flexible(child: Text(tweet.user!.name!,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500
-                        )
-                      )),
-                      if (tweet.user!.verified ?? false)
-                        SizedBox(width: 4),
-                      if (tweet.user!.verified ?? false)
-                        Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                      Flexible(
+                        child: Row(
+                          children: [
+                            Flexible(child: Text(tweet.user!.name!,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500
+                                )
+                            )),
+                            if (tweet.user!.verified ?? false)
+                              SizedBox(width: 4),
+                            if (tweet.user!.verified ?? false)
+                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.more_horiz),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 32),
+                        onPressed: () async {
+                          var createSheetButton = (title, icon, onTap) => ListTile(
+                            onTap: onTap,
+                            leading: Icon(icon),
+                            title: Text(title),
+                          );
+
+                          showModalBottomSheet(context: context, builder: (context) {
+                            return SafeArea(child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                FutureBuilderWrapper<bool>(
+                                  future: model.isTweetSaved(tweet.idStr!),
+                                  onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
+                                    Catcher.reportCheckedError(error, stackTrace);
+                                  }),
+                                  onReady: (saved) {
+                                    if (saved) {
+                                      return createSheetButton('Unsave', Icons.bookmark, () async {
+                                        await model.deleteSavedTweet(tweet.idStr!);
+                                        Navigator.pop(context);
+                                      });
+                                    } else {
+                                      return createSheetButton('Save', Icons.bookmark_outline, () async {
+                                        await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                  },
+                                ),
+                                createSheetButton('Share tweet content', Icons.share, () async {
+                                  Share.share(tweetText);
+                                  Navigator.pop(context);
+                                }),
+                                createSheetButton('Share tweet link', Icons.share, () async {
+                                  Share.share('https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                  Navigator.pop(context);
+                                }),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  child: Divider(
+                                    thickness: 1.0,
+                                  ),
+                                ),
+                                createSheetButton('Cancel', Icons.close, () => Navigator.pop(context))
+                              ],
+                            ));
+                          });
+                        },
+                      )
                     ],
                   ),
                   subtitle: Row(
@@ -267,70 +324,24 @@ class TweetTile extends StatelessWidget {
                 TweetCard(tweet: tweet, card: tweet.card),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: Scrollbar(
-                    controller: scrollController,
-                    isAlwaysShown: true,
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: ButtonBar(
-                        buttonTextTheme: ButtonTextTheme.accent,
-                        buttonPadding: EdgeInsets.symmetric(horizontal: 0),
-                        children: [
-                          if (tweet.replyCount != null)
-                            _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                              Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-                                  id: tweet.idStr!,
-                                  username: tweet.user!.screenName!
-                              ));
-                            }),
-                          if (tweet.retweetCount != null)
-                            _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
-                          if (tweet.quoteCount != null)
-                            _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
-                          if (tweet.favoriteCount != null)
-                            _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                          FutureBuilderWrapper<bool>(
-                            future: model.isTweetSaved(tweet.idStr!),
-                            onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
-                              Catcher.reportCheckedError(error, stackTrace);
-                            }),
-                            onReady: (saved) {
-                              if (saved) {
-                                return _createFooterIconButton(Icons.bookmark, null, () async {
-                                  await model.deleteSavedTweet(tweet.idStr!);
-                                });
-                              } else {
-                                return _createFooterIconButton(Icons.bookmark_outline, null, () async {
-                                  await model.saveTweet(tweet.idStr!, tweet.toJson());
-                                });
-                              }
-                            },
-                          ),
-                          _createFooterIconButton(Icons.share, null, () async {
-                            var createShareDialogItem = (String text, String shareContent) => SimpleDialogOption(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                child: Text(text, style: TextStyle(
-                                    fontSize: 16
-                                )),
-                              ),
-                              onPressed: () => Share.share(shareContent),
-                            );
-
-                            showDialog(context: context, builder: (context) {
-                              return SimpleDialog(
-                                contentPadding: EdgeInsets.symmetric(vertical: 8),
-                                children: [
-                                  createShareDialogItem('Share tweet content', tweetText),
-                                  createShareDialogItem('Share tweet link', 'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}'),
-                                ],
-                              );
-                            });
-                          })
-                        ],
-                      ),
-                    ),
+                  child: ButtonBar(
+                    buttonTextTheme: ButtonTextTheme.accent,
+                    buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                    children: [
+                      if (tweet.replyCount != null)
+                        _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+                              id: tweet.idStr!,
+                              username: tweet.user!.screenName!
+                          ));
+                        }),
+                      if (tweet.retweetCount != null)
+                        _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
+                      if (tweet.quoteCount != null)
+                        _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
+                      if (tweet.favoriteCount != null)
+                        _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                    ],
                   ),
                 ),
               ],
