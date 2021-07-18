@@ -336,6 +336,9 @@ class Twitter {
 
   static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
     var instructions = List.from(result['timeline']['instructions']);
+    if (instructions.isEmpty) {
+      return TweetStatus(tweet: null, chains: [], cursorBottom: null, cursorTop: null);
+    }
 
     var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
     var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
