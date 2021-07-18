@@ -12,7 +12,7 @@ abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
-EmojiErrorWidget createEmojiError(TwitterError error) {
+_EmojiErrorWidget createEmojiError(TwitterError error) {
   String emoji;
   String message;
 
@@ -36,20 +36,20 @@ EmojiErrorWidget createEmojiError(TwitterError error) {
       break;
   }
 
-  return EmojiErrorWidget(
+  return _EmojiErrorWidget(
       emoji: emoji,
       message: message,
       errorMessage: error.message
   );
 }
 
-class EmojiErrorWidget extends FritterErrorWidget {
+class _EmojiErrorWidget extends FritterErrorWidget {
   final String emoji;
   final String message;
   final String errorMessage;
   final Function? onRetry;
 
-  const EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
+  const _EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,6 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   }
 }
 
-
 class FullPageErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;
@@ -169,12 +168,16 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     var error = this.error;
     if (error is SocketException) {
-      return EmojiErrorWidget(
+      return _EmojiErrorWidget(
         emoji: '🔌',
         message: 'Could not contact Twitter',
         errorMessage: 'Please check your Internet connection.\n\n${error.message}',
         onRetry: onRetry,
       );
+    }
+
+    if (error is TwitterError) {
+      return createEmojiError(error);
     }
 
     var message = error;
@@ -196,7 +199,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
     }
 
     if (message is TimeoutException) {
-      return EmojiErrorWidget(
+      return _EmojiErrorWidget(
         emoji: '⏱️',
         message: 'Timed out',
         errorMessage: 'This took too long to load. Please check your network connection!',

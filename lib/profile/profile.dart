@@ -56,18 +56,12 @@ class _ProfileScreenState extends State<_ProfileScreen> {
       body: FutureBuilderWrapper<User>(
         future: _future,
         onReady: (user) => ProfileScreenBody(user: user),
-        onError: (error, stackTrace) {
-          if (error is TwitterError) {
-            return createEmojiError(error);
-          }
-
-          return FullPageErrorWidget(
-            error: error,
-            stackTrace: stackTrace,
-            prefix: 'Unable to load the profile',
-            onRetry: () => fetchProfile(),
-          );
-        },
+        onError: (error, stackTrace) => FullPageErrorWidget(
+          error: error,
+          stackTrace: stackTrace,
+          prefix: 'Unable to load the profile',
+          onRetry: () => fetchProfile(),
+        ),
       ),
     );
   }

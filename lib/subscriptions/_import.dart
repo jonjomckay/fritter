@@ -150,10 +150,10 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                   builder: (context, snapshot) {
                     var error = snapshot.error;
                     if (error != null) {
-                      return EmojiErrorWidget(
-                        emoji: '😢',
-                        message: 'Unable to import',
-                        errorMessage: error.toString()
+                      return FullPageErrorWidget(
+                        error: snapshot.error,
+                        stackTrace: snapshot.stackTrace,
+                        prefix: 'Unable to import'
                       );
                     }
 
