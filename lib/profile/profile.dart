@@ -58,30 +58,7 @@ class _ProfileScreenState extends State<_ProfileScreen> {
         onReady: (user) => ProfileScreenBody(user: user),
         onError: (error, stackTrace) {
           if (error is TwitterError) {
-            String emoji;
-            String message;
-
-            switch (error.code) {
-              case 50:
-                emoji = '🕵️';
-                message = 'User not found';
-                break;
-              case 63:
-                emoji = '👮';
-                message = 'Account suspended';
-                break;
-              default:
-                log.warning('Unsupported Twitter error code: ${error.code}', error.message);
-                emoji = '💥';
-                message = 'Catastrophic failure';
-                break;
-            }
-
-            return EmojiErrorWidget(
-              emoji: emoji,
-              message: message,
-              errorMessage: error.message
-            );
+            return createEmojiError(error);
           }
 
           return FullPageErrorWidget(

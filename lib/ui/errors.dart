@@ -4,9 +4,42 @@ import 'dart:io';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
+import 'package:fritter/client.dart';
+import 'package:logging/logging.dart';
 
 abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
+}
+
+EmojiErrorWidget createEmojiError(TwitterError error) {
+  String emoji;
+  String message;
+
+  switch (error.code) {
+    case 22:
+      emoji = '🔒';
+      message = 'Private profile';
+      break;
+    case 50:
+      emoji = '🕵️';
+      message = 'User not found';
+      break;
+    case 63:
+      emoji = '👮';
+      message = 'Account suspended';
+      break;
+    default:
+      Logger.root.warning('Unsupported Twitter error code: ${error.code}', error.message);
+      emoji = '💥';
+      message = 'Catastrophic failure';
+      break;
+  }
+
+  return EmojiErrorWidget(
+      emoji: emoji,
+      message: message,
+      errorMessage: error.message
+  );
 }
 
 class EmojiErrorWidget extends FritterErrorWidget {
@@ -145,7 +178,20 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     var message = error;
     if (message is HttpException) {
-      message = JsonEncoder.withIndent(' ' * 2).convert(jsonDecode(message.body));
+      var content = jsonDecode(message.body);
+
+      var hasErrors = content.containsKey('errors');
+      if (hasErrors && content['errors'] != null) {
+        var errors = List.from(content['errors']);
+        if (errors.isNotEmpty) {
+          return createEmojiError(TwitterError(
+            code: errors.first['code'],
+            message: errors.first['message']
+          ));
+        }
+      }
+
+      message = JsonEncoder.withIndent(' ' * 2).convert(content);
     }
 
     return Container(
