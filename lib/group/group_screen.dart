@@ -27,8 +27,9 @@ class GroupScreen extends StatelessWidget {
 
 class SubscriptionGroupScreenContent extends StatelessWidget {
   final String id;
+  final ScrollController scrollController;
 
-  const SubscriptionGroupScreenContent({Key? key, required this.id}) : super(key: key);
+  const SubscriptionGroupScreenContent({Key? key, required this.id, required this.scrollController}) : super(key: key);
 
   Future<SubscriptionGroupGet> _findSubscriptionGroup(String id) async {
     var database = await Repository.readOnly();
@@ -69,6 +70,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
                 users: users,
                 includeReplies: settings.includeReplies,
                 includeRetweets: settings.includeRetweets,
+                scrollController: scrollController,
               );
             },
           );
@@ -90,12 +92,17 @@ class _SubscriptionGroupScreen extends StatefulWidget {
 }
 
 class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.name),
           actions: [
+            IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
+              await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
+            }),
             IconButton(icon: Icon(Icons.more_vert), onPressed: () {
               showModalBottomSheet(context: context, builder: (context) {
                 var theme = Theme.of(context);
@@ -156,6 +163,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
       ),
       body: SubscriptionGroupScreenContent(
         id: widget.id,
+        scrollController: _scrollController,
       ),
     );
   }
