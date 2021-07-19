@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,22 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '_media.dart';
 
-class TweetTile extends StatelessWidget {
+class TweetTile extends StatefulWidget {
+  final bool clickable;
+  final String? currentUsername;
+  final TweetWithCard? tweet;
+  final bool isPinned;
+  final bool isThread;
+
+  TweetTile({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+
+  TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
+}
+
+class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
+
+  GlobalKey<TweetContentState> tweetContent = GlobalKey();
 
   final ScrollController scrollController = ScrollController();
   final bool clickable;
@@ -28,7 +44,7 @@ class TweetTile extends StatelessWidget {
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super(key: key);
+  TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -179,6 +195,7 @@ class TweetTile extends StatelessWidget {
 
     // Only create the tweet content if the tweet contains text
     Widget content = Container();
+
     if (tweet.displayTextRange![1] != 0) {
       content = Container(
         // Fill the width so both RTL and LTR text are displayed correctly
@@ -186,7 +203,7 @@ class TweetTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
-          child: TweetContent(tweet: tweet),
+          child: TweetContent(key: tweetContent, tweet: tweet,),
         ),
       );
     }
@@ -233,16 +250,47 @@ class TweetTile extends StatelessWidget {
                   },
                   title: Row(
                     children: [
-                      Flexible(child: Text(tweet.user!.name!,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                tweet.user!.name!,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500
+                                )
+                              )
+                            ),
+                            if (tweet.user!.verified ?? false)
+                              SizedBox(width: 4),
+                            if (tweet.user!.verified ?? false)
+                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          width: double.infinity
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              child: Icon(Icons.translate, size: 18),
+                            ),
+                            onTap: () {
+                              tweetContent.currentState?.setTranslate(true);
+                            },
+                          )
                         )
-                      )),
-                      if (tweet.user!.verified ?? false)
-                        SizedBox(width: 4),
-                      if (tweet.user!.verified ?? false)
-                        Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                      ),
                     ],
                   ),
                   subtitle: Row(
