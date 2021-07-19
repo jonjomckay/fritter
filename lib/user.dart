@@ -10,20 +10,21 @@ import 'package:provider/provider.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? uri;
+  final double size;
 
-  const UserAvatar({Key? key, required this.uri}) : super(key: key);
+  const UserAvatar({Key? key, required this.uri, this.size = 48}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var uri = this.uri;
     if (uri == null) {
-      return Container(width: 48, height: 48);
+      return Container(width: size, height: size);
     } else {
       return ExtendedImage.network(
         // TODO: This can error if the profile image has changed... use SWR-like
         uri.replaceAll('normal', '200x200'),
-        width: 48,
-        height: 48,
+        width: size,
+        height: size,
         loadStateChanged: (state) {
           switch (state.extendedImageLoadState) {
             case LoadState.failed:

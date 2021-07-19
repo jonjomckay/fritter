@@ -9,7 +9,9 @@ import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -88,9 +90,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
-    var deviceSize = MediaQuery.of(context).size;
-    var appBarHeight = deviceSize.width * (500 / 1500);
+    var appBarHeight = 240.0;
 
     var profile = widget.user;
     var banner = profile.profileBannerUrl;
@@ -146,13 +146,109 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                          colors: <Color>[Color(0xBB000000), Color(0x50000000)],
+                          colors: <Color>[Color(0xDD000000), Color(0x80000000)],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16, 72, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 16),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: new Border.all(
+                                      color: Colors.black12,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(64),
+                                    child: UserAvatar(
+                                      uri: profile.profileImageUrlHttps,
+                                      size: 72,
+                                    ),
+                                  )
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (profile.location != null && profile.location!.isNotEmpty)
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.place, size: 12, color: Theme.of(context).hintColor),
+                                            SizedBox(width: 4),
+                                            Text(profile.location!, style: Theme.of(context).textTheme.bodyText2),
+                                          ],
+                                        ),
+                                      ),
+                                    if (profile.url != null && profile.url!.isNotEmpty)
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.link, size: 12, color: Theme.of(context).hintColor),
+                                            SizedBox(width: 4),
+                                            Builder(builder: (context) {
+                                              var url = profile.entities?.url?.urls
+                                                  ?.firstWhere((element) => element.url == profile.url);
+
+                                              if (url == null) {
+                                                return Container();
+                                              }
+
+                                              return InkWell(
+                                                child: Text('${url.displayUrl!}', style: Theme.of(context).textTheme.bodyText2),
+                                                onTap: () => launch(url.expandedUrl!),
+                                              );
+                                            }),
+                                          ],
+                                        ),
+                                      ),
+                                    if (profile.createdAt != null)
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.calendar_today, size: 12, color: Theme.of(context).hintColor),
+                                            SizedBox(width: 4),
+                                            Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}', style: Theme.of(context).textTheme.bodyText2),
+                                          ],
+                                        ),
+                                      ),
+                                  ]
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.bodyText2,
+                                text: profile.description!,
+                                // children: addLinksToText(context, _profile.biography)
+                              )
+                            )
+                          )
+                        ],
+                      )
+                  ),
+                  ]
+                )
+              )
             )
           ];
         },
