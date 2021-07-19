@@ -103,6 +103,10 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
             IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
               await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
             }),
+            IconButton(icon: Icon(Icons.refresh), onPressed: () async {
+              // This is a dirty hack, and probably won't work if the child widgets ever become stateful
+              setState(() {});
+            }),
             IconButton(icon: Icon(Icons.more_vert), onPressed: () {
               showModalBottomSheet(context: context, builder: (context) {
                 var theme = Theme.of(context);

@@ -116,28 +116,33 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       );
     }
 
-    return PagedListView<String?, TweetChain>(
-      scrollController: widget.scrollController,
-      pagingController: _pagingController,
-      addAutomaticKeepAlives: true,
-      builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, conversation, index) {
-          return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
-        },
-        newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-          error: _pagingController.error[0],
-          stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the next page of tweets',
-          onRetry: () => _listTweets(_pagingController.firstPageKey),
-        ),
-        firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-          error: _pagingController.error[0],
-          stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the tweets for the feed',
-          onRetry: () => _listTweets(_pagingController.nextPageKey),
-        ),
-        noItemsFoundIndicatorBuilder: (context) => Center(
-          child: Text('Couldn\'t find any tweets from the last 7 days!'),
+    return RefreshIndicator(
+      onRefresh: () async {
+        _pagingController.refresh();
+      },
+      child: PagedListView<String?, TweetChain>(
+        scrollController: widget.scrollController,
+        pagingController: _pagingController,
+        addAutomaticKeepAlives: true,
+        builderDelegate: PagedChildBuilderDelegate(
+          itemBuilder: (context, conversation, index) {
+            return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
+          },
+          newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the next page of tweets',
+            onRetry: () => _listTweets(_pagingController.firstPageKey),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the tweets for the feed',
+            onRetry: () => _listTweets(_pagingController.nextPageKey),
+          ),
+          noItemsFoundIndicatorBuilder: (context) => Center(
+            child: Text('Couldn\'t find any tweets from the last 7 days!'),
+          ),
         ),
       ),
     );
