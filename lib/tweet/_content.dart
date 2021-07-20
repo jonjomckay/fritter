@@ -123,7 +123,7 @@ class TweetContentState extends State {
         queryParameters: {
           'q': text,
           'source': tweet.lang,
-          'target': Platform.localeName.split('_')[0]
+          'target': getShortSystemLocale()
         }
       ));
 
@@ -242,9 +242,7 @@ class TweetContentState extends State {
       else {
         List supportedLanguages = jsonDecode(res.body);
 
-        String systemLanguage = Platform.localeName.split('_')[0];
-
-        if(findInJSONArray(supportedLanguages, "code", systemLanguage) == false) {
+        if(findInJSONArray(supportedLanguages, "code", getShortSystemLocale()) == false) {
           this.translate = false;
           await Fluttertoast.showToast(msg: "Error: System language is not supported for translation", toastLength: Toast.LENGTH_LONG);
         }
