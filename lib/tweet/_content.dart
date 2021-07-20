@@ -1,13 +1,16 @@
 import 'dart:convert';
+import "dart:io";
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/home/_search.dart';
+import 'package:fritter/ui/misc.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 abstract class TweetEntity {
   List<int>? indices;
@@ -120,15 +123,40 @@ class TweetContentState extends State {
         queryParameters: {
           'q': text,
           'source': tweet.lang,
-          'target': "es" //Platform.localeName.split('_')[0]
+          'target': Platform.localeName.split('_')[0]
         }
       ));
 
-      if(res.statusCode != 200) {
-        throw("Failed to translate tweet!");
-      }
+      dynamic body = jsonDecode(res.body);
 
-      text = jsonDecode(res.body)["translatedText"];
+      if(res.statusCode == 200) {
+        text = body["translatedText"];
+      }
+      else {
+        String message = "";
+
+        switch(res.statusCode) {
+          case 400:
+            RegExp languageNotSupported = new RegExp(r"^\w+\ is\ not\ supported$");
+
+            message = (languageNotSupported.hasMatch(body["error"])
+              ? "Error: language "
+              : "Error: "
+            ) + body["error"];
+            break;
+          case 403:
+            message = "Error: Banned from translation API";
+            break;
+          case 429:
+            message = "Error: Sending too many frequent translation requests";
+            break;
+          case 500:
+            message = "Error: The translation API failed to translate the tweet";
+            break;
+        }
+
+        await Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_LONG);
+      }
     }
     
     parts.add(TextSpan(text: text, style: Theme.of(context).textTheme.bodyText2));
@@ -188,17 +216,40 @@ class TweetContentState extends State {
   }
 
   Future<SelectableText> _getTweetContentWidget() async {
-    var tweetText = Runes(tweet.fullText ?? tweet.text!);
+    Runes tweetText = Runes(tweet.fullText ?? tweet.text!);
 
     // If we're not given a text display range, we just display the entire text
     List<int> displayTextRange = tweet.displayTextRange ?? [0, tweetText.length];
 
-    var runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
+    Iterable<int> runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
 
     List<TweetEntity> entities = _getEntities();
 
     List<InlineSpan> parts = [];
     int index = 0;
+
+    if(this.translate == true) {
+      Response res = await get(new Uri(
+        scheme: "https",
+        host: "libretranslate.de",
+        path: "languages",
+      ));
+
+      if(res.statusCode != 200) {
+        await Fluttertoast.showToast(msg: "Error: Failed to get a list of supported languages to translate", toastLength: Toast.LENGTH_LONG);
+        this.translate = false;
+      }
+      else {
+        List supportedLanguages = jsonDecode(res.body);
+
+        String systemLanguage = Platform.localeName.split('_')[0];
+
+        if(findInJSONArray(supportedLanguages, "code", systemLanguage) == false) {
+          this.translate = false;
+          await Fluttertoast.showToast(msg: "Error: System language is not supported for translation", toastLength: Toast.LENGTH_LONG);
+        }
+      }
+    }
 
     await Future.forEach(entities, (TweetEntity part) async {
       // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
