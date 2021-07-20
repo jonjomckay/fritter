@@ -1,0 +1,23 @@
+A privacy-friendly Twitter frontend for mobile devices.
+
+Fritter is an open source frontend for Twitter, focusing on giving you the best experience and keeping your data private, local and in your hands.
+
+Features:
+
+- 🔒 <b>Privacy:</b> No tracking, with all data stored locally
+- 💬 <b>Subscriptions:</b> Follow and group accounts
+- 🔖 <b>Bookmarks:</b> Save tweets locally and offline
+- 📈 <b>Trends:</b> See what's trending in the world
+- 🔎 <b>Search:</b> Find users and tweets
+- 🌙 <b>Light and Dark themes:</b> Protect your eyes
+
+Privacy:
+
+Fritter will never track your actions in the app, or send your personal data to a third-party. All your data (subscriptions, groups, tweets and settings) are stored locally, on your device, and no Twitter account is required to use any feature.
+
+- 🔒 No account required
+- 🔒 No special permissions
+- 🔒 No tracking
+- 🔒 All your data is stored locally
+
+Fritter is <a href="https://github.com/jonjomckay/fritter">openly developed on GitHub</a>, and any contributions, bug reports or feature requests are welcomed: https://github.com/jonjomckay/fritter
