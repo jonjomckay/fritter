@@ -1,15 +1,12 @@
-import 'dart:convert';
-import "dart:io";
-
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/utils/misc.dart';
+import 'package:fritter/utils/translation_api.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 abstract class TweetEntity {
@@ -105,7 +102,7 @@ class TweetContentState extends State {
 
   TweetContentState({ required this.tweet }): super();
 
-  _addText(List<InlineSpan> parts,Iterable<int> runes, int start, [int? end]) async {
+  _addText(List<InlineSpan> parts,Iterable<int> runes, TranslationAPI? translationAPI, int start, [int? end]) async {
     var string = runes.getRange(start, end).map((e) => String.fromCharCode(e)).join('');
     if (string.isEmpty) {
       return;
@@ -115,34 +112,23 @@ class TweetContentState extends State {
 
     String text = htmlUnescape.convert(string);
 
-    if (this.translate) {
-      Response res = await post(new Uri(
-        scheme: "https",
-        host: "libretranslate.de",
-        path: "translate",
-        queryParameters: {
-          'q': text,
-          'source': tweet.lang,
-          'target': getShortSystemLocale()
-        }
-      ));
+    if (this.translate == true && translationAPI != null) {
+      var res = await translationAPI.translate(text, tweet.lang ?? "");
 
-      dynamic body = jsonDecode(res.body);
-
-      if(res.statusCode == 200) {
-        text = body["translatedText"];
+      if(res.code == 200) {
+        text = res.body["translatedText"];
       }
       else {
         String message = "";
 
-        switch(res.statusCode) {
+        switch(res.code) {
           case 400:
             RegExp languageNotSupported = new RegExp(r"^\w+\ is\ not\ supported$");
 
-            message = (languageNotSupported.hasMatch(body["error"])
+            message = (languageNotSupported.hasMatch(res.body["error"])
               ? "Error: language "
               : "Error: "
-            ) + body["error"];
+            ) + res.body["error"];
             break;
           case 403:
             message = "Error: Banned from translation API";
@@ -228,21 +214,19 @@ class TweetContentState extends State {
     List<InlineSpan> parts = [];
     int index = 0;
 
-    if(this.translate == true) {
-      Response res = await get(new Uri(
-        scheme: "https",
-        host: "libretranslate.de",
-        path: "languages",
-      ));
+    TranslationAPI? translationAPI;
 
-      if(res.statusCode != 200) {
+    if(this.translate == true) {
+      translationAPI = TranslationAPI();
+
+      var res = await translationAPI.getSupportedLanguages();
+
+      if(res.code != 200) {
         await Fluttertoast.showToast(msg: "Error: Failed to get a list of supported languages to translate", toastLength: Toast.LENGTH_LONG);
         this.translate = false;
       }
       else {
-        List supportedLanguages = jsonDecode(res.body);
-
-        if(findInJSONArray(supportedLanguages, "code", getShortSystemLocale()) == false) {
+        if(findInJSONArray(res.body, "code", getShortSystemLocale()) == false) {
           this.translate = false;
           await Fluttertoast.showToast(msg: "Error: System language is not supported for translation", toastLength: Toast.LENGTH_LONG);
         }
@@ -260,7 +244,7 @@ class TweetContentState extends State {
       }
 
       // First, add any text between the last entity's end and the start of this one
-      await _addText(parts, runes, index, start);
+      await _addText(parts, runes, translationAPI, index, start);
 
       // Then add the actual entity
       parts.add(part.getContent());
@@ -269,7 +253,7 @@ class TweetContentState extends State {
       index = end;
     });
 
-    await _addText(parts, runes, index);
+    await _addText(parts, runes, translationAPI, index);
 
     return SelectableText.rich(
       TextSpan(
