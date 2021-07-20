@@ -1,21 +1,55 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
+import 'package:fritter/client.dart';
+import 'package:logging/logging.dart';
 
 abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
-class EmojiErrorWidget extends FritterErrorWidget {
+_EmojiErrorWidget createEmojiError(TwitterError error) {
+  String emoji;
+  String message;
+
+  switch (error.code) {
+    case 22:
+      emoji = '🔒';
+      message = 'Private profile';
+      break;
+    case 50:
+      emoji = '🕵️';
+      message = 'User not found';
+      break;
+    case 63:
+      emoji = '👮';
+      message = 'Account suspended';
+      break;
+    default:
+      Logger.root.warning('Unsupported Twitter error code: ${error.code}', error.message);
+      emoji = '💥';
+      message = 'Catastrophic failure';
+      break;
+  }
+
+  return _EmojiErrorWidget(
+      emoji: emoji,
+      message: message,
+      errorMessage: error.message
+  );
+}
+
+class _EmojiErrorWidget extends FritterErrorWidget {
   final String emoji;
   final String message;
   final String errorMessage;
   final Function? onRetry;
 
-  const EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
+  const _EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +154,6 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   }
 }
 
-
 class FullPageErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;
@@ -135,7 +168,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     var error = this.error;
     if (error is SocketException) {
-      return EmojiErrorWidget(
+      return _EmojiErrorWidget(
         emoji: '🔌',
         message: 'Could not contact Twitter',
         errorMessage: 'Please check your Internet connection.\n\n${error.message}',
@@ -143,9 +176,35 @@ class FullPageErrorWidget extends FritterErrorWidget {
       );
     }
 
+    if (error is TwitterError) {
+      return createEmojiError(error);
+    }
+
     var message = error;
     if (message is HttpException) {
-      message = JsonEncoder.withIndent(' ' * 2).convert(jsonDecode(message.body));
+      var content = jsonDecode(message.body);
+
+      var hasErrors = content.containsKey('errors');
+      if (hasErrors && content['errors'] != null) {
+        var errors = List.from(content['errors']);
+        if (errors.isNotEmpty) {
+          return createEmojiError(TwitterError(
+            code: errors.first['code'],
+            message: errors.first['message']
+          ));
+        }
+      }
+
+      message = JsonEncoder.withIndent(' ' * 2).convert(content);
+    }
+
+    if (message is TimeoutException) {
+      return _EmojiErrorWidget(
+        emoji: '⏱️',
+        message: 'Timed out',
+        errorMessage: 'This took too long to load. Please check your network connection!',
+        onRetry: onRetry,
+      );
     }
 
     return Container(
