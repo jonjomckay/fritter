@@ -6,7 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/home/_search.dart';
-import 'package:fritter/ui/misc.dart';
+import 'package:fritter/utils/misc.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart';
