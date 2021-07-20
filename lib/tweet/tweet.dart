@@ -250,101 +250,76 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   },
                   title: Row(
                     children: [
-                      Expanded(
-                        flex: 2,
+                      Flexible(
                         child: Row(
                           children: [
-                            Flexible(
-                              child: Text(
-                                tweet.user!.name!,
+                            Flexible(child: Text(tweet.user!.name!,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w500
+                                    fontWeight: FontWeight.w500
                                 )
-                              )
-                            ),
+                            )),
                             if (tweet.user!.verified ?? false)
-                              SizedBox(width: 4), 
-                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor),
-                            IconButton(
-                              icon: Icon(Icons.more_horiz),
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(minHeight: 32),
-                              onPressed: () async {
-                                var createSheetButton = (title, icon, onTap) => ListTile(
-                                  onTap: onTap,
-                                  leading: Icon(icon),
-                                  title: Text(title),
-                                );
-
-                                showModalBottomSheet(context: context, builder: (context) {
-                                  return SafeArea(child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      FutureBuilderWrapper<bool>(
-                                        future: model.isTweetSaved(tweet.idStr!),
-                                        onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
-                                          Catcher.reportCheckedError(error, stackTrace);
-                                        }),
-                                        onReady: (saved) {
-                                          if (saved) {
-                                            return createSheetButton('Unsave', Icons.bookmark, () async {
-                                              await model.deleteSavedTweet(tweet.idStr!);
-                                              Navigator.pop(context);
-                                            });
-                                          } else {
-                                            return createSheetButton('Save', Icons.bookmark_outline, () async {
-                                              await model.saveTweet(tweet.idStr!, tweet.toJson());
-                                              Navigator.pop(context);
-                                            });
-                                          }
-                                        },
-                                      ),
-                                      createSheetButton('Share tweet content', Icons.share, () async {
-                                        Share.share(tweetText);
-                                        Navigator.pop(context);
-                                      }),
-                                      createSheetButton('Share tweet link', Icons.share, () async {
-                                        Share.share('https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
-                                        Navigator.pop(context);
-                                      }),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 16),
-                                        child: Divider(
-                                          thickness: 1.0,
-                                        ),
-                                      ),
-                                      createSheetButton('Cancel', Icons.close, () => Navigator.pop(context))
-                                    ],
-                                  ));
-                                });
-                              },
-                            ),
+                              SizedBox(width: 4),
+                            if (tweet.user!.verified ?? false)
+                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
                           ],
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: double.infinity
-                        ),
-                      ),
-                      if(Platform.localeName.split("_")[0] != tweet.lang)
-                        Expanded(
-                          flex: 1,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              child: Container(
-                                margin: EdgeInsets.only(right: 10),
-                                child: Icon(Icons.translate, size: 18),
-                              ),
-                              onTap: () {
-                                tweetContent.currentState?.setTranslate(true);
-                              },
-                            )
-                          )
-                        ),
+                      IconButton(
+                        icon: Icon(Icons.more_horiz),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 32),
+                        onPressed: () async {
+                          var createSheetButton = (title, icon, onTap) => ListTile(
+                            onTap: onTap,
+                            leading: Icon(icon),
+                            title: Text(title),
+                          );
+
+                          showModalBottomSheet(context: context, builder: (context) {
+                            return SafeArea(child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                FutureBuilderWrapper<bool>(
+                                  future: model.isTweetSaved(tweet.idStr!),
+                                  onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
+                                    Catcher.reportCheckedError(error, stackTrace);
+                                  }),
+                                  onReady: (saved) {
+                                    if (saved) {
+                                      return createSheetButton('Unsave', Icons.bookmark, () async {
+                                        await model.deleteSavedTweet(tweet.idStr!);
+                                        Navigator.pop(context);
+                                      });
+                                    } else {
+                                      return createSheetButton('Save', Icons.bookmark_outline, () async {
+                                        await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                  },
+                                ),
+                                createSheetButton('Share tweet content', Icons.share, () async {
+                                  Share.share(tweetText);
+                                  Navigator.pop(context);
+                                }),
+                                createSheetButton('Share tweet link', Icons.share, () async {
+                                  Share.share('https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                  Navigator.pop(context);
+                                }),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  child: Divider(
+                                    thickness: 1.0,
+                                  ),
+                                ),
+                                createSheetButton('Cancel', Icons.close, () => Navigator.pop(context))
+                              ],
+                            ));
+                          });
+                        },
+                      )
                     ],
                   ),
                   subtitle: Row(
@@ -372,6 +347,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   child: ButtonBar(
                     buttonTextTheme: ButtonTextTheme.accent,
                     buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                    alignment: MainAxisAlignment.start,
                     children: [
                       if (tweet.replyCount != null)
                         _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
@@ -386,6 +362,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                       if (tweet.favoriteCount != null)
                         _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                      if (Platform.localeName.split("_")[0] != tweet.lang)
+                        _createFooterIconButton(Icons.translate, null, () {
+                          tweetContent.currentState?.setTranslate(true);
+                        })
                     ],
                   ),
                 ),
