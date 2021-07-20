@@ -286,7 +286,13 @@ class TweetContentState extends State {
       future: _getTweetContentWidget(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
+          return Center(
+            child: SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2)
+            )
+          );
         }
 
         SelectableText widget = snapshot.data as SelectableText;
