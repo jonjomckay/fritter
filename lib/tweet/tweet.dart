@@ -333,10 +333,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                       Expanded(
                         flex: 1,
                         child: Align(
-                          alignment: Alignment.topRight,
+                          alignment: Alignment.centerRight,
                           child: InkWell(
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              margin: EdgeInsets.only(right: 10),
                               child: Icon(Icons.translate, size: 18),
                             ),
                             onTap: () {
