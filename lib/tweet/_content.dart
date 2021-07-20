@@ -100,8 +100,6 @@ class TweetContentState extends State {
 
   SelectableText? result;
 
-  bool hasRun = false;
-
   TweetContentState({ required this.tweet }): super();
 
   _addText(List<InlineSpan> parts,Iterable<int> runes, int start, [int? end]) async {
@@ -114,9 +112,7 @@ class TweetContentState extends State {
 
     String text = htmlUnescape.convert(string);
 
-    debugPrint("Translate: " + this.translate.toString());
-
-    if(this.translate) {
+    if (this.translate) {
       Response res = await post(new Uri(
         scheme: "https",
         host: "libretranslate.de",
@@ -138,12 +134,27 @@ class TweetContentState extends State {
     parts.add(TextSpan(text: text, style: Theme.of(context).textTheme.bodyText2));
   }
 
-  _init(Iterable<int> runes, List<int> displayTextRange) async { 
+  List<TweetEntity> _populateEntities({required List<TweetEntity> entities, List<dynamic>? source, required Function getNewEntity}) {
+    source = source ?? [];
+
+    for(dynamic newEntity in source) {
+      entities.add(getNewEntity(newEntity));
+    }
+
+    return entities;
+  }
+
+  void setTranslate(bool translate) {
+    setState(() {
+      this.translate = translate;
+    });
+  }
+
+  List<TweetEntity> _getEntities() {
     List<TweetEntity> entities = [];
 
-    var hashtags = tweet.entities?.hashtags ?? [];
-    for (var hashtag in hashtags) {
-      entities.add(TweetHashtag(hashtag, () async {
+    entities = _populateEntities(entities: entities, source: tweet.entities?.hashtags, getNewEntity: (Hashtag hashtag) {
+      return TweetHashtag(hashtag, () async {
         await showSearch(
             context: context,
             delegate: TweetSearchDelegate(
@@ -151,32 +162,43 @@ class TweetContentState extends State {
             ),
             query: '#${hashtag.text}'
         );
-      }));
-    }
+      });
+    });
 
-    var mentions = tweet.entities?.userMentions ?? [];
-    for (var mention in mentions) {
-      entities.add(TweetUserMention(mention, () {
+    entities = _populateEntities(entities: entities, source: tweet.entities?.userMentions, getNewEntity: (UserMention mention) {
+      return TweetUserMention(mention, () {
         Navigator.pushNamed(context, ROUTE_PROFILE, arguments: mention.screenName!);
-      }));
-    }
+      });
+    });
 
-    var urls = tweet.entities?.urls ?? [];
-    for (var url in urls) {
-      entities.add(TweetUrl(url, () async {
-        var uri = url.expandedUrl;
+    entities = _populateEntities(entities: entities, source: tweet.entities?.urls, getNewEntity: (Url url) {
+      return TweetUrl(url, () async {
+        String? uri = url.expandedUrl;
         if (uri == null) {
           return;
         }
 
         await launch(uri);
-      }));
-    }
+      });
+    });
+
+    entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
+
+    return entities;
+  }
+
+  Future<SelectableText> _getTweetContentWidget() async {
+    var tweetText = Runes(tweet.fullText ?? tweet.text!);
+
+    // If we're not given a text display range, we just display the entire text
+    List<int> displayTextRange = tweet.displayTextRange ?? [0, tweetText.length];
+
+    var runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
+
+    List<TweetEntity> entities = _getEntities();
 
     List<InlineSpan> parts = [];
     int index = 0;
-
-    entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
 
     await Future.forEach(entities, (TweetEntity part) async {
       // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
@@ -184,43 +206,21 @@ class TweetContentState extends State {
       int end = part.getEntityEnd() - displayTextRange[0];
 
       // Only add entities that are after the displayTextRange's start index
-      if (start >= 0) {
-        // First, add any text between the last entity's end and the start of this one
-        await _addText(parts, runes, index, start);
-
-        // Then add the actual entity
-        parts.add(part.getContent());
-
-        // Then set our index in the tweet text as the end of our entity
-        index = end;
+      if(start < 0) {
+        return;
       }
+
+      // First, add any text between the last entity's end and the start of this one
+      await _addText(parts, runes, index, start);
+
+      // Then add the actual entity
+      parts.add(part.getContent());
+
+      // Then set our index in the tweet text as the end of our entity
+      index = end;
     });
 
     await _addText(parts, runes, index);
-
-    debugPrint("parts: " + parts.toString() + "\nindex: " + index.toString());
-
-    return parts;
-  }
-
-  setTranslate(bool translate) {
-    setState(() {
-      this.translate = translate;
-    });
-  }
-
-  test() async {
-    var tweetText = Runes(tweet.fullText ?? tweet.text!);
-
-    // If we're not given a text display range, we just display the entire text
-    var displayTextRange = tweet.displayTextRange;
-    if (displayTextRange == null) {
-      displayTextRange = [0, tweetText.length];
-    }
-
-    var runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
-
-    List<InlineSpan> parts = await _init(runes, displayTextRange);
 
     return SelectableText.rich(
       TextSpan(
@@ -232,13 +232,13 @@ class TweetContentState extends State {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: test(),
+      future: _getTweetContentWidget(),
       builder: (context, snapshot) {
-        if(snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState != ConnectionState.done) {
           return Container();
         }
 
-        Widget widget = snapshot.data as Widget;
+        SelectableText widget = snapshot.data as SelectableText;
 
         return widget;
       }
