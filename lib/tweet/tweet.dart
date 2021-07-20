@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +10,7 @@ import 'package:fritter/tweet/_content.dart';
 import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/utils/misc.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +43,21 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   final bool isPinned;
   final bool isThread;
 
+  bool hasBeenTranslated = false;
+
   TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+
+  Color? _decideTranslateButtonColor() {
+    if(getShortSystemLocale() == tweet?.lang) {
+      return Colors.grey;
+    }
+
+    if(hasBeenTranslated == true) {
+      return Colors.red;
+    }
+
+    return null;
+  }
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -362,10 +375,17 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                       if (tweet.favoriteCount != null)
                         _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                      if (Platform.localeName.split("_")[0] != tweet.lang)
-                        _createFooterIconButton(Icons.translate, null, () {
-                          tweetContent.currentState?.setTranslate(true);
-                        })
+                      _createFooterIconButton(
+                        Icons.translate,
+                        _decideTranslateButtonColor(),
+                        getShortSystemLocale() == tweet.lang ? null : () {
+                          tweetContent.currentState?.setTranslate(!hasBeenTranslated);
+
+                          setState(() {
+                            hasBeenTranslated = !hasBeenTranslated;
+                          });
+                        }
+                      )
                     ],
                   ),
                 ),
