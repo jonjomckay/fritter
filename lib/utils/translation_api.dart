@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:extended_image/extended_image.dart';
 import 'package:fritter/utils/misc.dart';
-
 import 'package:http/http.dart';
 
 class APIResult {
