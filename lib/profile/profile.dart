@@ -144,9 +144,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   @override
   Widget build(BuildContext context) {
     // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
-    var deviceSize = MediaQuery.of(context).size;
+    var mediaQuery = MediaQuery.of(context);
+    var deviceSize = mediaQuery.size;
     var bannerHeight = deviceSize.width * (500 / 1500);
-    var appBarHeight = 380.0;
+    var appBarHeight = 392.0;
+
+    var profileImageTop = bannerHeight + 16 - 36 - mediaQuery.padding.top;
+    var profileStuffTop = bannerHeight;
 
     var profile = widget.user;
     var banner = profile.profileBannerUrl;
@@ -188,15 +192,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   ],
                 ),
               ),
-              title: Row(
-                children: [
-                  Text(profile.name!),
-                  if (profile.verified ?? false)
-                    SizedBox(width: 6),
-                  if (profile.verified ?? false)
-                    Icon(Icons.verified, size: 24, color: Colors.white)
-                ],
-              ),
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                   child: Stack(
@@ -222,7 +217,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                           children: [
                             Flexible(
                               child: Container(
-                                margin: EdgeInsets.fromLTRB(16, 160, 16, 0),
+                                margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -251,8 +246,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                       Container(
                                         margin: EdgeInsets.only(bottom: 8),
                                         child: RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                          maxLines: 3,
                                           text: TextSpan(
                                             style: theme.textTheme.bodyText2,
                                             children: _addLinksToText(context, profile.description!)
@@ -325,7 +319,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
                       Container(
                         alignment: Alignment.topRight,
-                        margin: EdgeInsets.fromLTRB(16, 112, 16, 16),
+                        margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
                         child: CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.white,
