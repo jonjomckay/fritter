@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
+import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
@@ -11,7 +14,6 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/ui/tabs.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -36,8 +38,6 @@ class _ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<_ProfileScreen> {
-  static final log = Logger('_ProfileScreenState');
-
   late Future<User> _future;
   
   @override
@@ -87,6 +87,58 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     super.initState();
 
     _tabController = TabController(length: 5, vsync: this);
+  }
+
+  List<InlineSpan> _addLinksToText(BuildContext context, String content) {
+    List<InlineSpan> contentWidgets = [];
+
+    // Split the string by any mentions or hashtags, and turn those into links
+    content.splitMapJoin(RegExp(r'(#|(?<=\W|^)@)\w+'),
+        onMatch: (match) {
+          var full = match.group(0);
+          var type = match.group(1);
+          if (type == null || full == null) {
+            return '';
+          }
+
+          var onTap = () async {};
+          if (type == '#') {
+            onTap = () async {
+              await showSearch(
+                context: context,
+                delegate: TweetSearchDelegate(
+                    initialTab: 1
+                ),
+                query: full
+              );
+            };
+          }
+
+          if (type == '@') {
+            onTap = () async {
+              Navigator.pushNamed(context, ROUTE_PROFILE, arguments: full.substring(1));
+            };
+          }
+
+          contentWidgets.add(TextSpan(
+              text: full,
+              style: TextStyle(color: Theme.of(context).accentColor),
+              recognizer: TapGestureRecognizer()
+                ..onTap = onTap
+          ));
+
+          return type;
+        },
+        onNonMatch: (text) {
+          contentWidgets.add(TextSpan(
+              text: text
+          ));
+
+          return text;
+        }
+    );
+
+    return contentWidgets;
   }
 
   @override
@@ -203,8 +255,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                           maxLines: 2,
                                           text: TextSpan(
                                             style: theme.textTheme.bodyText2,
-                                            text: profile.description!,
-                                            // children: addLinksToText(context, profile.description)
+                                            children: _addLinksToText(context, profile.description!)
                                           )
                                         )
                                       ),
