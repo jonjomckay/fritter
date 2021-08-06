@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fritter/catcher/null_handler.dart';
@@ -155,7 +157,10 @@ Future<void> main() async {
       runApp(PrefService(
           child: ChangeNotifierProvider(
             create: (context) => HomeModel(),
-            child: MyApp(hub: sentryHub),
+            child: DevicePreview(
+              enabled: !kReleaseMode,
+              builder: (context) => MyApp(hub: sentryHub),
+            ),
           ),
           service: prefService
       ));
@@ -240,6 +245,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
+      locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [
         SentryNavigatorObserver(hub: widget.hub)
@@ -268,7 +274,7 @@ class _MyAppState extends State<MyApp> {
           );
         };
 
-        return child ?? Container();
+        return DevicePreview.appBuilder(context, child ?? Container());
       },
     );
   }
