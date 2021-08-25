@@ -67,6 +67,14 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
       _exportTweets = !_exportTweets;
     });
   }
+  
+  bool noExportOptionSelected() {
+    return !(_exportSettings ||
+          _exportSubscriptions ||
+          _exportSubscriptionGroups ||
+          _exportSubscriptionGroupMembers ||
+          _exportTweets);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +82,9 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
       appBar: AppBar(
         title: Text('Export'),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: noExportOptionSelected()
+          ? null
+          : FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () async {
           var model = context.read<HomeModel>();
