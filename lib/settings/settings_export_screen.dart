@@ -69,14 +69,11 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
   }
   
   bool noExportOptionSelected() {
-    if (_exportSettings ||
-        _exportSubscriptions ||
-        _exportSubscriptionGroups ||
-        _exportSubscriptionGroupMembers ||
-        _exportTweets)
-      return false;
-    else
-      return true;
+    return !(_exportSettings ||
+          _exportSubscriptions ||
+          _exportSubscriptionGroups ||
+          _exportSubscriptionGroupMembers ||
+          _exportTweets);
   }
 
   @override
