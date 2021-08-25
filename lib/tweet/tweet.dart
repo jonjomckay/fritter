@@ -76,7 +76,7 @@ class TweetTile extends StatelessWidget {
 
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(media: tweet.extendedEntities!.media!);
+      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet!.user!.screenName!);
     }
 
     Widget retweetBanner = Container();
