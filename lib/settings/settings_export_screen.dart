@@ -136,13 +136,14 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
             var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
 
             // This platform can support the directory picker, so display it
-            await FilePickerWritable().openFileForCreate(fileName: fileName, writer: (file) async {
+            var fileInfo = await FilePickerWritable().openFileForCreate(fileName: fileName, writer: (file) async {
               file.writeAsStringSync(exportData);
             });
-
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Data exported to $fileName'),
-            ));
+            if (fileInfo != null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Data exported to $fileName'),
+              ));
+            }
           }
         },
       ),
