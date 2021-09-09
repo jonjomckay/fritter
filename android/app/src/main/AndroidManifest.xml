@@ -60,6 +60,10 @@
                 <data
                     android:scheme="https"
                     android:host="mobile.twitter.com" />
+
+                <data
+                    android:scheme="https"
+                    android:host="www.twitter.com" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
