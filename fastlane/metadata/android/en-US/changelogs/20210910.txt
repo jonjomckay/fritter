@@ -4,3 +4,6 @@
 - Added "scroll to top" button on feeds (#78)
 - Fixed an overflow that was causing feeds to error for some users (#82, #193)
 - Fixed a null pointer when viewing tweets or media for a user without any content
+- Now prefixing media download filenames with the Twitter username (#221 - thanks to @e-zk!)
+- Now disabling the save button in the "Export" screen when no options are selected (#226 - thanks to @salevdns!)
+- Fixed "data exported" toast when nothing has been exported (#213, #232 - thanks to @Aga-C!)
