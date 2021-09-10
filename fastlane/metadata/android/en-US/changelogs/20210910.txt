@@ -1,0 +1,6 @@
+- Moved save and share buttons into a context menu to save space
+- Added support for handling a few more types of errors
+- Added support for pull-to-refresh on feeds (#100)
+- Added "scroll to top" button on feeds (#78)
+- Fixed an overflow that was causing feeds to error for some users (#82, #193)
+- Fixed a null pointer when viewing tweets or media for a user without any content
