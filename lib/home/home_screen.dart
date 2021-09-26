@@ -35,6 +35,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
 
+  late List<Widget> _children;
   late TabController _tabController;
 
   @override
@@ -48,6 +49,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     if (prefs.getKeys().contains(OPTION_HOME_INITIAL_TAB)) {
       initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(OPTION_HOME_INITIAL_TAB));
     }
+
+    _children = [
+      FeedScreen(scrollController: _scrollController),
+      SubscriptionsScreen(),
+      TrendsScreen(),
+      SavedScreen(),
+    ];
 
     _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
     _tabController.addListener(() {
@@ -102,12 +110,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          FeedScreen(scrollController: _scrollController),
-          SubscriptionsScreen(),
-          TrendsScreen(),
-          SavedScreen(),
-        ],
+        children: _children,
       ),
     );
   }
