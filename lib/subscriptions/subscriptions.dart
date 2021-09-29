@@ -1,9 +1,10 @@
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/subscriptions/_groups.dart';
 import 'package:fritter/subscriptions/_list.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     });
 
     try {
-      await context.read<HomeModel>().refreshSubscriptionData();
+      await context.read<UsersModel>().refreshSubscriptionData();
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);
 
@@ -42,7 +43,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       return Center(child: CircularProgressIndicator());
     }
 
-    return Consumer<HomeModel>(builder: (context, model, child) {
+    return Consumer2<GroupModel, UsersModel>(builder: (context, groupModel, usersModel, child) {
       return CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -53,11 +54,11 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                 const PopupMenuItem(child: Text('Name'), value: 'name'),
                 const PopupMenuItem(child: Text('Date Created'), value: 'created_at'),
               ],
-              onSelected: (value) => model.changeOrderSubscriptionGroupsBy(value),
+              onSelected: (value) => groupModel.changeOrderSubscriptionGroupsBy(value),
             ),
             IconButton(
               icon: Icon(Icons.sort_by_alpha),
-              onPressed: () => model.toggleOrderSubscriptionGroupsAscending(),
+              onPressed: () => groupModel.toggleOrderSubscriptionGroupsAscending(),
             )
           ]),
           SubscriptionGroups(controller: _scrollController),
@@ -78,11 +79,11 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                 const PopupMenuItem(child: Text('Username'), value: 'screen_name'),
                 const PopupMenuItem(child: Text('Date Subscribed'), value: 'created_at'),
               ],
-              onSelected: (value) => model.changeOrderSubscriptionsBy(value),
+              onSelected: (value) => usersModel.changeOrderSubscriptionsBy(value),
             ),
             IconButton(
               icon: Icon(Icons.sort_by_alpha),
-              onPressed: () => model.toggleOrderSubscriptionsAscending(),
+              onPressed: () => usersModel.toggleOrderSubscriptionsAscending(),
             )
           ]),
           SubscriptionUsers(),

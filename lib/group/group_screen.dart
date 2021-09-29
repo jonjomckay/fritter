@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/_feed.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
@@ -54,7 +55,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeModel>(builder: (context, model, child) {
+    return Consumer<GroupModel>(builder: (context, model, child) {
       return FutureBuilderWrapper<SubscriptionGroupGet>(
         future: _findSubscriptionGroup(id),
         onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group'),
@@ -141,7 +142,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                 color: Theme.of(context).disabledColor
                             ))
                         ),
-                        Consumer<HomeModel>(builder: (context, model, child) {
+                        Consumer<GroupModel>(builder: (context, model, child) {
                           return FutureBuilderWrapper<SubscriptionGroupSettings>(
                             future: model.loadSubscriptionGroupSettings(widget.id),
                             onError: (error, stackTrace) => InlineErrorWidget(error: error),

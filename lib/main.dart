@@ -13,6 +13,7 @@ import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
@@ -21,6 +22,7 @@ import 'package:fritter/profile/profile.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
@@ -159,12 +161,20 @@ Future<void> main() async {
       }
 
       var homeModel = HomeModel(prefService);
-      await homeModel.reloadSubscriptions();
-      await homeModel.reloadGroups();
+
+      var groupModel = GroupModel(prefService);
+      await groupModel.reloadGroups();
+
+      var usersModel = UsersModel(prefService, groupModel);
+      await usersModel.reloadSubscriptions();
 
       runApp(PrefService(
-          child: ChangeNotifierProvider(
-            create: (context) => homeModel,
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => groupModel),
+              ChangeNotifierProvider(create: (context) => homeModel),
+              ChangeNotifierProvider(create: (context) => usersModel),
+            ],
             child: DevicePreview(
               enabled: !kReleaseMode,
               builder: (context) => MyApp(hub: sentryHub),

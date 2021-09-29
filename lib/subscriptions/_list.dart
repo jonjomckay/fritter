@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class SubscriptionUsers extends StatefulWidget {
 class _SubscriptionUsersState extends State<SubscriptionUsers> {
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
+    var model = context.read<UsersModel>();
     if (model.subscriptions.isEmpty) {
       return SliverToBoxAdapter(child: Center(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

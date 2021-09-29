@@ -9,10 +9,11 @@ import 'package:flutter/services.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
-import 'package:fritter/settings/settings_export_screen.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +49,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future _importFromFile(File file) async {
     var content = jsonDecode(file.readAsStringSync());
 
-    var model = context.read<HomeModel>();
+    var homeModel = context.read<HomeModel>();
+    var usersModel = context.read<UsersModel>();
+    var groupModel = context.read<GroupModel>();
     var prefs = PrefService.of(context);
 
     var data = SettingsData.fromJson(content);
@@ -80,8 +83,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       dataToImport[TABLE_SAVED_TWEET] = tweets;
     }
 
-    await model.importData(dataToImport);
-    await model.refreshSubscriptionData();
+    await homeModel.importData(dataToImport);
+    await groupModel.reloadGroups();
+    await usersModel.reloadSubscriptions();
+    await usersModel.refreshSubscriptionData();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Data imported successfully'),
