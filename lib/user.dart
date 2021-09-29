@@ -1,15 +1,14 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database/repository.dart';
-import 'profile/profile.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? uri;
@@ -126,10 +125,6 @@ class _FollowButtonState extends State<FollowButton> {
     return result.first.values.first == 1;
   }
 
-  Future<List<SubscriptionGroup>> listGroups() async {
-    return await HomeModel().listSubscriptionGroups(orderBy: 'name', orderByAscending: true);
-  }
-
   Future<List<String>> listGroupsForUser(int id) async {
     Database database = await Repository.readOnly();
 
@@ -174,6 +169,8 @@ class _FollowButtonState extends State<FollowButton> {
         ? 'Unsubscribe'
         : 'Subscribe';
 
+    var model = context.read<HomeModel>();
+
     return PopupMenuButton<String>(
       icon: icon,
       itemBuilder: (context) => [
@@ -184,22 +181,16 @@ class _FollowButtonState extends State<FollowButton> {
         switch (value) {
           case 'add_to_group':
             showDialog(context: context, builder: (context) {
-              var futures = [
-                listGroups(),
-                listGroupsForUser(id)
-              ];
-
               // TODO: Add types
               return FutureBuilderWrapper<List<dynamic>>(
-                future: Future.wait(futures),
+                future: listGroupsForUser(id),
                 onError: (error, stackTrace) => FullPageErrorWidget(
                   error: error,
                   stackTrace: stackTrace,
                   prefix: 'Unable to load subscription groups',
                 ),
                 onReady: (data) {
-                  var groups = data[0] as List<SubscriptionGroup>;
-                  var existing = data[1] as List<String>;
+                  var existing = data as List<String>;
 
                   var color = Theme.of(context).brightness == Brightness.dark
                       ? Colors.white70
@@ -212,7 +203,7 @@ class _FollowButtonState extends State<FollowButton> {
                     selectedColor: Theme.of(context).accentColor,
                     unselectedColor: color,
                     selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                    items: groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
+                    items: model.groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
                     initialValue: existing,
                     onConfirm: (List<String> memberships) async {
                       // If we're not currently following the user, follow them first
@@ -221,7 +212,8 @@ class _FollowButtonState extends State<FollowButton> {
                       }
 
                       // Then add them to all the selected groups
-                      await HomeModel()
+                      // TODO: Test this still works
+                      await context.read<HomeModel>()
                           .saveUserGroupMembership(id, memberships);
                     },
                   );

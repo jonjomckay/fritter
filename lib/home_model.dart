@@ -1,20 +1,32 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/database/entities.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 
-import 'database/repository.dart';
-import 'database/entities.dart';
-
 class HomeModel extends ChangeNotifier {
   static final log = Logger('HomeModel');
+
+  List<SubscriptionGroup> _groups = [];
+  List<Subscription> _subscriptions = [];
+
+  final BasePrefService _prefs;
+
+  HomeModel(this._prefs);
+
+  bool get orderSubscriptionsAscending => _prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING);
+  String get orderSubscriptions => _prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD);
+  bool get orderGroupsAscending => _prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING);
+  String get orderGroupsBy => _prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD);
+  List<SubscriptionGroup> get groups => List.unmodifiable(_groups);
+  List<Subscription> get subscriptions => List.unmodifiable(_subscriptions);
 
   Future deleteSubscriptionGroup(String id) async {
     var database = await Repository.writable();
@@ -66,20 +78,22 @@ class HomeModel extends ChangeNotifier {
     return Twitter.getTrends(location);
   }
 
-  Future<List<SubscriptionGroup>> listSubscriptionGroups({ required String orderBy, required bool orderByAscending }) async {
+  Future listSubscriptionGroups() async {
     log.info('Listing subscriptions groups');
 
     var database = await Repository.readOnly();
 
-    var orderByDirection = orderByAscending
+    var orderByDirection = orderGroupsAscending
         ? 'COLLATE NOCASE ASC'
         : 'COLLATE NOCASE DESC';
 
-    var query = "SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderBy $orderByDirection";
+    var query = "SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
 
-    return (await database.rawQuery(query))
+    _groups = (await database.rawQuery(query))
         .map((e) => SubscriptionGroup(id: e['id'] as String, name: e['name'] as String, icon: e['icon'] as String, numberOfMembers: e['number_of_members'] as int, createdAt: DateTime.parse(e['created_at'] as String)))
         .toList(growable: false);
+
+    notifyListeners();
   }
 
   Future<List<SubscriptionGroupMember>> listSubscriptionGroupMembers() async {
@@ -112,13 +126,11 @@ class HomeModel extends ChangeNotifier {
   Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(String? id) async {
     var database = await Repository.readOnly();
 
-    var allSubscriptions = await listSubscriptions(orderBy: 'name', orderByAscending: true);
-
     if (id == null) {
       return SubscriptionGroupEdit(
           name: '',
           members: Set(),
-          allSubscriptions: allSubscriptions
+          allSubscriptions: subscriptions
       );
     }
 
@@ -127,7 +139,7 @@ class HomeModel extends ChangeNotifier {
       return SubscriptionGroupEdit(
           name: '',
           members: Set(),
-          allSubscriptions: allSubscriptions
+          allSubscriptions: subscriptions
       );
     }
 
@@ -138,22 +150,24 @@ class HomeModel extends ChangeNotifier {
     return SubscriptionGroupEdit(
         name: group.first['name'] as String,
         members: members,
-        allSubscriptions: allSubscriptions
+        allSubscriptions: subscriptions
     );
   }
 
-  Future<List<Subscription>> listSubscriptions({ required String orderBy, required bool orderByAscending }) async {
+  Future listSubscriptions() async {
     log.info('Listing subscriptions');
 
     var database = await Repository.readOnly();
 
-    var orderByDirection = orderByAscending
+    var orderByDirection = orderSubscriptionsAscending
       ? 'COLLATE NOCASE ASC'
       : 'COLLATE NOCASE DESC';
 
-    return (await database.query(TABLE_SUBSCRIPTION, orderBy: '$orderBy $orderByDirection'))
+    _subscriptions = (await database.query(TABLE_SUBSCRIPTION, orderBy: '$orderSubscriptions $orderByDirection'))
         .map((e) => Subscription.fromMap(e))
         .toList(growable: false);
+
+    notifyListeners();
   }
 
   Future<bool> refreshSubscriptionUsers() async {
@@ -257,9 +271,29 @@ class HomeModel extends ChangeNotifier {
         .first;
   }
 
-  Future setTrendLocation(BasePrefService prefs, TrendLocation item) async {
-    prefs.set(OPTION_TRENDS_LOCATION, jsonEncode(item.toJson()));
+  Future setTrendLocation(TrendLocation item) async {
+    _prefs.set(OPTION_TRENDS_LOCATION, jsonEncode(item.toJson()));
 
     notifyListeners();
+  }
+
+  void changeOrderSubscriptionsBy(String? value) async {
+    await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value ?? 'name');
+    await listSubscriptions();
+  }
+
+  void toggleOrderSubscriptionsAscending() async {
+    await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, !orderSubscriptionsAscending);
+    await listSubscriptions();
+  }
+
+  void changeOrderSubscriptionGroupsBy(String? value) async {
+    await _prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD, value ?? 'name');
+    await listSubscriptionGroups();
+  }
+
+  void toggleOrderSubscriptionGroupsAscending() async {
+    await _prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING, !orderGroupsAscending);
+    await listSubscriptionGroups();
   }
 }

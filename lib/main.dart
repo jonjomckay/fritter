@@ -87,6 +87,10 @@ Future<void> main() async {
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     OPTION_MEDIA_SIZE: 'medium',
+    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING: false,
+    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD: 'name',
+    OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING: false,
+    OPTION_SUBSCRIPTION_ORDER_BY_FIELD: 'name',
     OPTION_THEME_MODE: 'system',
     OPTION_THEME_TRUE_BLACK: false,
     OPTION_TRENDS_LOCATION: jsonEncode({
@@ -154,9 +158,13 @@ Future<void> main() async {
         checkForUpdates();
       }
 
+      var homeModel = HomeModel(prefService);
+      await homeModel.listSubscriptions();
+      await homeModel.listSubscriptionGroups();
+
       runApp(PrefService(
           child: ChangeNotifierProvider(
-            create: (context) => HomeModel(),
+            create: (context) => homeModel,
             child: DevicePreview(
               enabled: !kReleaseMode,
               builder: (context) => MyApp(hub: sentryHub),
