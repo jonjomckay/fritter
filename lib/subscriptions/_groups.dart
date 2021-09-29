@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/group/group_screen.dart';
-import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
-import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
+import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
@@ -20,150 +17,9 @@ class SubscriptionGroups extends StatefulWidget {
 }
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
-  void openDeleteSubscriptionGroupDialog(String id, String name) {
-    var model = context.read<HomeModel>();
-
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () async {
-              await model.deleteSubscriptionGroup(id);
-
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: Text('Yes'),
-          ),
-        ],
-        title: Text('Are you sure?'),
-        content: Text('Are you sure you want to delete the subscription group $name?'),
-      );
-    });
-  }
-
   void openSubscriptionGroupDialog(String? id, String name) {
-    var model = context.read<HomeModel>();
-
-    // TODO: This doesn't work anymore!
     showDialog(context: context, builder: (context) {
-      return FutureBuilderWrapper<SubscriptionGroupEdit>(
-        future: model.loadSubscriptionGroupEdit(id),
-        onError: (error, stackTrace) => AlertErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the subscription group'),
-        onReady: (edit) {
-          final form = FormGroup({
-            'name': FormControl<String>(
-                value: name,
-                validators: [Validators.required],
-                touched: true
-            ),
-            'subscriptions': FormArray<bool>(
-                edit.allSubscriptions
-                    .map((e) => FormControl<bool>(value: edit.members.contains(e.id)))
-                    .toList(growable: false)
-            )
-          });
-
-          return ReactiveForm(
-              formGroup: form,
-              child: AlertDialog(
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      var control = form.control('subscriptions') as FormArray<bool?>;
-
-                      var value = control.value;
-                      if (value == null || value.isEmpty || value.every((e) => e == false)) {
-                        // If no subscriptions are selected, mark them all as selected
-                        control.updateValue(edit.allSubscriptions
-                            .map((e) => true)
-                            .toList(growable: false));
-                      } else {
-                        // If one or more subscriptions are selected, deselect them all
-                        control.updateValue(edit.allSubscriptions
-                            .map((e) => false)
-                            .toList(growable: false));
-                      }
-                    },
-                    child: Text('Toggle All'),
-                  ),
-                  TextButton(
-                    onPressed: id == null
-                        ? null
-                        : () => openDeleteSubscriptionGroupDialog(id, name),
-                    child: Text('Delete'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Cancel'),
-                  ),
-                  ReactiveFormConsumer(
-                    builder: (context, form, child) {
-                      var onPressed = () async {
-                        var selectedSubscriptions = (form.control('subscriptions').value as List<bool?>)
-                            .asMap().entries
-                            .map((e) {
-                          var index = e.key;
-                          var value = e.value;
-                          if (value != null && value == true) {
-                            return edit.allSubscriptions[index];
-                          }
-
-                          return null;
-                        })
-                            .where((element) => element != null)
-                            .cast<Subscription>()
-                            .toList(growable: false);
-
-                        await model.saveSubscriptionGroup(
-                            id,
-                            form.control('name').value,
-                            selectedSubscriptions
-                        );
-
-                        Navigator.pop(context);
-                      };
-
-                      return TextButton(
-                        child: Text('OK'),
-                        onPressed: form.valid
-                            ? onPressed
-                            : null,
-                      );
-                    },
-                  ),
-                ],
-                content: Container(
-                  width: double.maxFinite,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ReactiveTextField(
-                        formControlName: 'name',
-                        decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            hintText: 'Name'
-                        ),
-                        validationMessages: (control) => {
-                          ValidationMessage.required: 'Please enter a name',
-                        },
-                      ),
-                      Expanded(
-                        child: SubscriptionCheckboxList(
-                          subscriptions: edit.allSubscriptions,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-          );
-        },
-      );
+      return SubscriptionGroupEditDialog(id: id, name: name);
     });
   }
 
@@ -216,7 +72,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
     var model = context.read<HomeModel>();
 
     return SliverGrid.extent(
-      maxCrossAxisExtent: 120,
+      maxCrossAxisExtent: 140,
       childAspectRatio: 200 / 125,
       children: [
         _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
@@ -249,6 +105,177 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
           ),
         )
       ],
+    );
+  }
+}
+
+class SubscriptionGroupEditDialog extends StatefulWidget {
+  final String? id;
+  final String name;
+
+  const SubscriptionGroupEditDialog({Key? key, required this.id, required this.name}) : super(key: key);
+
+  @override
+  _SubscriptionGroupEditDialogState createState() => _SubscriptionGroupEditDialogState();
+}
+
+class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialog> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  SubscriptionGroupEdit? _group;
+
+  String? id;
+  String? name;
+  Set<String> members = Set();
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<HomeModel>().loadGroupEdit(widget.id).then((group) => setState(() {
+      _group = group;
+
+      id = group.id;
+      name = group.name;
+      members = group.members;
+    }));
+  }
+
+  void openDeleteSubscriptionGroupDialog(String id, String name) {
+    var model = context.read<HomeModel>();
+
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await model.deleteGroup(id);
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: Text('Yes'),
+          ),
+        ],
+        title: Text('Are you sure?'),
+        content: Text('Are you sure you want to delete the subscription group $name?'),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var model = context.read<HomeModel>();
+
+    var group = _group;
+    if (group == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return AlertDialog(
+      actions: [
+        TextButton(
+          onPressed: () {
+            setState(() {
+              if (members.isEmpty) {
+                members = group.allSubscriptions.map((e) => e.id).toSet();
+              } else {
+                members.clear();
+              }
+            });
+          },
+          child: Text('Toggle All'),
+        ),
+        TextButton(
+          onPressed: id == null
+              ? null
+              : () => openDeleteSubscriptionGroupDialog(id!, name!),
+          child: Text('Delete'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel'),
+        ),
+        Builder(builder: (context) {
+          var onPressed = () async {
+            if (_formKey.currentState!.validate()) {
+              await model.saveGroup(
+                  id,
+                  name!,
+                  members
+              );
+
+              Navigator.pop(context);
+            }
+          };
+
+          return TextButton(
+            child: Text('OK'),
+            onPressed: onPressed,
+          );
+        }),
+      ],
+      content: Form(
+        key: _formKey,
+        child: Container(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                initialValue: group.name,
+                decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: 'Name'
+                ),
+                onChanged: (value) => setState(() {
+                  name = value;
+                }),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+
+                  return null;
+                },
+              ),
+
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: model.subscriptions.length,
+                  itemBuilder: (context, index) {
+                    var subscription = model.subscriptions[index];
+
+                    return CheckboxListTile(
+                      dense: true,
+                      secondary: ClipRRect(
+                        borderRadius: BorderRadius.circular(64),
+                        child: UserAvatar(uri: subscription.profileImageUrlHttps),
+                      ),
+                      title: Text(subscription.name),
+                      subtitle: Text('@${subscription.screenName}'),
+                      selected: group.members.contains(subscription.id),
+                      value: group.members.contains(subscription.id),
+                      onChanged: (v) => setState(() {
+                        if (v == null || v == false) {
+                          members.remove(subscription.id);
+                        } else {
+                          members.add(subscription.id);
+                        }
+                      }),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

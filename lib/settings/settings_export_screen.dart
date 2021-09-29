@@ -99,11 +99,11 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
               : null;
 
           var subscriptionGroups = _exportSubscriptionGroups
-              ? await model.listSubscriptionGroups()
+              ? await model.reloadGroups()
               : null;
 
           var subscriptionGroupMembers = _exportSubscriptionGroupMembers
-              ? await model.listSubscriptionGroupMembers()
+              ? await model.listGroupMembers()
               : null;
 
           var tweets = _exportTweets

@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     await model.importData(dataToImport);
-    await model.refreshSubscriptionUsers();
+    await model.refreshSubscriptionData();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Data imported successfully'),

@@ -31,7 +31,6 @@ dependencies:
   dart_twitter_api: ^0.5.0
   device_info: ^2.0.0
   device_preview: ^0.7.4
-  diffutil_sliverlist: ^0.5.0
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
@@ -51,7 +50,6 @@ dependencies:
   package_info: ^2.0.0
   pref: ^2.0.2
   quiver: ^3.0.1
-  reactive_forms: ^10.1.0
   sentry_flutter: ^5.1.0
   share: ^2.0.1
   simple_icons: ^4.22.0

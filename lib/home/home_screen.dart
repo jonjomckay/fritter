@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/database/entities.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/trends/trends.dart';
-import 'package:fritter/user.dart';
 import 'package:pref/pref.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 class _Tab {
   final String id;
@@ -112,60 +109,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         controller: _tabController,
         children: _children,
       ),
-    );
-  }
-}
-
-class SubscriptionCheckboxList extends StatefulWidget {
-  final List<Subscription> subscriptions;
-
-  const SubscriptionCheckboxList({Key? key, required this.subscriptions}) : super(key: key);
-
-  @override
-  _SubscriptionCheckboxListState createState() => _SubscriptionCheckboxListState();
-}
-
-class _SubscriptionCheckboxListState extends State<SubscriptionCheckboxList> {
-  @override
-  Widget build(BuildContext context) {
-    return ReactiveFormConsumer(
-      builder: (context, form, child) {
-        return ReactiveFormArray<bool>(
-          formArrayName: 'subscriptions',
-          builder: (context, formArray, child) {
-            var children = formArray.controls
-                .asMap().entries
-                .map((entry) {
-                  var index = entry.key;
-                  var value = entry.value;
-
-                  var e = widget.subscriptions[index];
-
-                  return CheckboxListTile(
-                    dense: true,
-                    secondary: ClipRRect(
-                      borderRadius: BorderRadius.circular(64),
-                      child: UserAvatar(uri: e.profileImageUrlHttps),
-                    ),
-                    title: Text(e.name),
-                    subtitle: Text('@${e.screenName}'),
-                    value: value.value ?? false,
-                    onChanged: (v) {
-                      if (v != null) {
-                        value.value = v;
-                      }
-                    },
-                  );
-                })
-                .toList(growable: false);
-
-            return ListView(
-                shrinkWrap: true,
-                children: children
-            );
-          },
-        );
-      },
     );
   }
 }

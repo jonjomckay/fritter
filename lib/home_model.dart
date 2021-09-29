@@ -28,11 +28,13 @@ class HomeModel extends ChangeNotifier {
   List<SubscriptionGroup> get groups => List.unmodifiable(_groups);
   List<Subscription> get subscriptions => List.unmodifiable(_subscriptions);
 
-  Future deleteSubscriptionGroup(String id) async {
+  Future deleteGroup(String id) async {
     var database = await Repository.writable();
 
     await database.delete(TABLE_SUBSCRIPTION_GROUP_MEMBER, where: 'group_id = ?', whereArgs: [id]);
     await database.delete(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]);
+
+    await reloadGroups();
 
     notifyListeners();
   }
@@ -78,7 +80,7 @@ class HomeModel extends ChangeNotifier {
     return Twitter.getTrends(location);
   }
 
-  Future listSubscriptionGroups() async {
+  Future reloadGroups() async {
     log.info('Listing subscriptions groups');
 
     var database = await Repository.readOnly();
@@ -96,7 +98,7 @@ class HomeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<SubscriptionGroupMember>> listSubscriptionGroupMembers() async {
+  Future<List<SubscriptionGroupMember>> listGroupMembers() async {
     var database = await Repository.readOnly();
 
     return (await database.query(TABLE_SUBSCRIPTION_GROUP_MEMBER))
@@ -121,25 +123,28 @@ class HomeModel extends ChangeNotifier {
     }
 
     await batch.commit();
+    await reloadGroups();
   }
 
-  Future<SubscriptionGroupEdit> loadSubscriptionGroupEdit(String? id) async {
+  Future<SubscriptionGroupEdit> loadGroupEdit(String? id) async {
     var database = await Repository.readOnly();
 
     if (id == null) {
       return SubscriptionGroupEdit(
-          name: '',
-          members: Set(),
-          allSubscriptions: subscriptions
+        id: null,
+        name: '',
+        members: Set(),
+        allSubscriptions: subscriptions
       );
     }
 
     var group = await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]);
     if (group.isEmpty) {
       return SubscriptionGroupEdit(
-          name: '',
-          members: Set(),
-          allSubscriptions: subscriptions
+        id: null,
+        name: '',
+        members: Set(),
+        allSubscriptions: subscriptions
       );
     }
 
@@ -148,13 +153,14 @@ class HomeModel extends ChangeNotifier {
       .toSet();
 
     return SubscriptionGroupEdit(
-        name: group.first['name'] as String,
-        members: members,
-        allSubscriptions: subscriptions
+      id: group.first['id'] as String,
+      name: group.first['name'] as String,
+      members: members,
+      allSubscriptions: subscriptions
     );
   }
 
-  Future listSubscriptions() async {
+  Future reloadSubscriptions() async {
     log.info('Listing subscriptions');
 
     var database = await Repository.readOnly();
@@ -170,7 +176,7 @@ class HomeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> refreshSubscriptionUsers() async {
+  Future refreshSubscriptionData() async {
     var database = await Repository.writable();
 
     var ids = (await database.query(TABLE_SUBSCRIPTION, columns: ['id']))
@@ -192,11 +198,9 @@ class HomeModel extends ChangeNotifier {
     await batch.commit();
 
     notifyListeners();
-
-    return true;
   }
 
-  Future saveSubscriptionGroup(String? id, String name, List<Subscription> subscriptions) async {
+  Future saveGroup(String? id, String name, Set<String> subscriptions) async {
     var database = await Repository.writable();
 
     // First insert or update the subscription group details
@@ -222,11 +226,12 @@ class HomeModel extends ChangeNotifier {
     for (var subscription in subscriptions) {
       batch.insert(TABLE_SUBSCRIPTION_GROUP_MEMBER, {
         'group_id': id,
-        'profile_id': subscription.id
+        'profile_id': subscription
       });
     }
 
     await batch.commit(noResult: true);
+    await reloadGroups();
 
     notifyListeners();
   }
@@ -245,6 +250,9 @@ class HomeModel extends ChangeNotifier {
     }
 
     await batch.commit();
+
+    await reloadGroups();
+    await reloadSubscriptions();
   }
 
   Future toggleSubscriptionGroupIncludeReplies(String id, bool value) async {
@@ -279,21 +287,21 @@ class HomeModel extends ChangeNotifier {
 
   void changeOrderSubscriptionsBy(String? value) async {
     await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value ?? 'name');
-    await listSubscriptions();
+    await reloadSubscriptions();
   }
 
   void toggleOrderSubscriptionsAscending() async {
     await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, !orderSubscriptionsAscending);
-    await listSubscriptions();
+    await reloadSubscriptions();
   }
 
   void changeOrderSubscriptionGroupsBy(String? value) async {
     await _prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD, value ?? 'name');
-    await listSubscriptionGroups();
+    await reloadGroups();
   }
 
   void toggleOrderSubscriptionGroupsAscending() async {
     await _prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING, !orderGroupsAscending);
-    await listSubscriptionGroups();
+    await reloadGroups();
   }
 }

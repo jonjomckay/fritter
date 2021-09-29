@@ -176,20 +176,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.4"
-  diffutil_dart:
-    dependency: transitive
-    description:
-      name: diffutil_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
-  diffutil_sliverlist:
-    dependency: "direct main"
-    description:
-      name: diffutil_sliverlist
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   dio:
     dependency: transitive
     description:
@@ -632,13 +618,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  reactive_forms:
-    dependency: "direct main"
-    description:
-      name: reactive_forms
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "10.1.0"
   sentry:
     dependency: transitive
     description:
