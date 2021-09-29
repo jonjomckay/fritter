@@ -22,7 +22,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     });
 
     try {
-      await context.read<HomeModel>().refreshSubscriptionUsers();
+      await context.read<HomeModel>().refreshSubscriptionData();
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);
 

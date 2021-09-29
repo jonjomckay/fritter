@@ -71,7 +71,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         }
       }
 
-      await model.refreshSubscriptionUsers();
+      await model.refreshSubscriptionData();
       _streamController?.close();
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);

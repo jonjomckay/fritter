@@ -1,6 +1,4 @@
-import 'package:diffutil_sliverlist/diffutil_sliverlist.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/database/entities.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
@@ -33,23 +31,18 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
       ));
     }
 
-    return DiffUtilSliverList<Subscription>(
-      items: model.subscriptions,
-      builder: (context, user) => UserTile(
-        id: user.id.toString(),
-        name: user.name,
-        screenName: user.screenName,
-        imageUri: user.profileImageUrlHttps,
-        verified: user.verified,
-      ),
-      insertAnimationBuilder: (context, animation, child) => FadeTransition(
-        opacity: animation,
-        child: child,
-      ),
-      removeAnimationBuilder: (context, animation, child) => SizeTransition(
-        sizeFactor: animation,
-        child: child,
-      ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        var user = model.subscriptions[index];
+
+        return UserTile(
+          id: user.id.toString(),
+          name: user.name,
+          screenName: user.screenName,
+          imageUri: user.profileImageUrlHttps,
+          verified: user.verified,
+        );
+      }, childCount: model.subscriptions.length),
     );
   }
 }

@@ -159,8 +159,8 @@ Future<void> main() async {
       }
 
       var homeModel = HomeModel(prefService);
-      await homeModel.listSubscriptions();
-      await homeModel.listSubscriptionGroups();
+      await homeModel.reloadSubscriptions();
+      await homeModel.reloadGroups();
 
       runApp(PrefService(
           child: ChangeNotifierProvider(
