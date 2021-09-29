@@ -31,6 +31,7 @@ dependencies:
   dart_twitter_api: ^0.5.0
   device_info: ^2.0.0
   device_preview: ^0.7.4
+  diffutil_sliverlist: ^0.5.0
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2

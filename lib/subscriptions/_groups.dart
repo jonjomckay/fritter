@@ -7,7 +7,6 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
-import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -21,42 +20,6 @@ class SubscriptionGroups extends StatefulWidget {
 }
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
-  late String _orderSubscriptionGroupsByField;
-  late bool _orderSubscriptionGroupsAscending;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    var prefs = PrefService.of(context);
-
-    setState(() {
-      _orderSubscriptionGroupsAscending = prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING) ?? true;
-      _orderSubscriptionGroupsByField = prefs.get(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD) ?? 'name';
-    });
-  }
-
-  void _onChangeOrderSubscriptionGroupsBy(String? value) {
-    var prefs = PrefService.of(context);
-
-    prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD, value);
-
-    setState(() {
-      this._orderSubscriptionGroupsByField = value ?? 'name';
-    });
-  }
-
-  void _onToggleOrderSubscriptionGroupsAscending() {
-    var prefs = PrefService.of(context);
-    var value = !_orderSubscriptionGroupsAscending;
-
-    prefs.set(OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING, value);
-
-    setState(() {
-      this._orderSubscriptionGroupsAscending = value;
-    });
-  }
-
   void openDeleteSubscriptionGroupDialog(String id, String name) {
     var model = context.read<HomeModel>();
 
@@ -86,6 +49,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
   void openSubscriptionGroupDialog(String? id, String name) {
     var model = context.read<HomeModel>();
 
+    // TODO: This doesn't work anymore!
     showDialog(context: context, builder: (context) {
       return FutureBuilderWrapper<SubscriptionGroupEdit>(
         future: model.loadSubscriptionGroupEdit(id),
@@ -249,78 +213,42 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text('Groups', style: TextStyle(
-            fontWeight: FontWeight.bold
-        )),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PopupMenuButton<String>(
-              icon: Icon(Icons.sort),
-              itemBuilder: (context) => [
-                const PopupMenuItem(child: Text('Name'), value: 'name'),
-                const PopupMenuItem(child: Text('Date Created'), value: 'created_at'),
-              ],
-              onSelected: (value) => _onChangeOrderSubscriptionGroupsBy(value),
-            ),
-            IconButton(
-              icon: Icon(Icons.sort_by_alpha),
-              onPressed: () => _onToggleOrderSubscriptionGroupsAscending(),
-            )
-          ],
-        ),
-        children: [
-          Consumer<HomeModel>(builder: (context, model, child) {
-            return FutureBuilderWrapper<List<SubscriptionGroup>>(
-              future: model.listSubscriptionGroups(orderBy: _orderSubscriptionGroupsByField, orderByAscending: _orderSubscriptionGroupsAscending),
-              onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to list your subscription groups'),
-              onReady: (groups) => Container(
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                child: GridView.extent(
-                    controller: widget.controller,
-                    maxCrossAxisExtent: 120,
-                    childAspectRatio: 200 / 125,
-                    shrinkWrap: true,
-                    children: [
-                      _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
-                      ...groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
-                      Card(
-                        child: InkWell(
-                          onTap: () {
-                            openSubscriptionGroupDialog(null, '');
-                          },
-                          child: DottedBorder(
-                            color: Theme.of(context).textTheme.caption!.color!,
-                            child: Container(
-                              width: double.infinity,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    // color: Colors.white10,
-                                    // width: double.infinity,
-                                    child: Icon(Icons.add, size: 16),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text('New', style: TextStyle(
-                                    fontSize: 11,
-                                  ))
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ]),
+    var model = context.read<HomeModel>();
+
+    return SliverGrid.extent(
+      maxCrossAxisExtent: 120,
+      childAspectRatio: 200 / 125,
+      children: [
+        _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
+        ...model.groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
+        Card(
+          child: InkWell(
+            onTap: () {
+              openSubscriptionGroupDialog(null, '');
+            },
+            child: DottedBorder(
+              color: Theme.of(context).textTheme.caption!.color!,
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // color: Colors.white10,
+                      // width: double.infinity,
+                      child: Icon(Icons.add, size: 16),
+                    ),
+                    SizedBox(height: 4),
+                    Text('New', style: TextStyle(
+                      fontSize: 11,
+                    ))
+                  ],
+                ),
               ),
-            );
-          })
-        ],
-      ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

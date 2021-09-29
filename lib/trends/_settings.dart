@@ -73,7 +73,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                   selected: place.woeid == item.woeid,
                   groupValue: place.woeid,
                   onChanged: (value) async {
-                    await model.setTrendLocation(prefs, item);
+                    await model.setTrendLocation(item);
 
                     Navigator.pop(context);
                   }

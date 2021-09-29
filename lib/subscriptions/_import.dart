@@ -8,6 +8,7 @@ import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SubscriptionImportScreen extends StatefulWidget {
@@ -37,7 +38,8 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       int? cursor;
       int total = 0;
 
-      var model = HomeModel();
+      // TODO: Test this still works
+      var model = context.read<HomeModel>();
 
       while (true) {
         var response = await Twitter.getProfileFollows(

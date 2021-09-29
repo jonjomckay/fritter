@@ -57,6 +57,16 @@ class Subscription with ToMappable {
       'verified': verified ? 1 : 0
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Subscription &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class SubscriptionGroup with ToMappable {
