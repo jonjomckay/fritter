@@ -2,8 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +70,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
+    var model = context.read<GroupModel>();
 
     return SliverGrid.extent(
       maxCrossAxisExtent: 140,
@@ -132,7 +133,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
   void initState() {
     super.initState();
 
-    context.read<HomeModel>().loadGroupEdit(widget.id).then((group) => setState(() {
+    context.read<GroupModel>().loadGroupEdit(widget.id).then((group) => setState(() {
       _group = group;
 
       id = group.id;
@@ -142,7 +143,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
   }
 
   void openDeleteSubscriptionGroupDialog(String id, String name) {
-    var model = context.read<HomeModel>();
+    var model = context.read<GroupModel>();
 
     showDialog(context: context, builder: (context) {
       return AlertDialog(
@@ -169,7 +170,8 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
+    var groupModel = context.read<GroupModel>();
+    var usersModel = context.read<UsersModel>();
 
     var group = _group;
     if (group == null) {
@@ -182,7 +184,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
           onPressed: () {
             setState(() {
               if (members.isEmpty) {
-                members = group.allSubscriptions.map((e) => e.id).toSet();
+                members = usersModel.subscriptions.map((e) => e.id).toSet();
               } else {
                 members.clear();
               }
@@ -203,7 +205,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
         Builder(builder: (context) {
           var onPressed = () async {
             if (_formKey.currentState!.validate()) {
-              await model.saveGroup(
+              await groupModel.saveGroup(
                   id,
                   name!,
                   members
@@ -247,9 +249,9 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: model.subscriptions.length,
+                  itemCount: usersModel.subscriptions.length,
                   itemBuilder: (context, index) {
-                    var subscription = model.subscriptions[index];
+                    var subscription = usersModel.subscriptions[index];
 
                     return CheckboxListTile(
                       dense: true,

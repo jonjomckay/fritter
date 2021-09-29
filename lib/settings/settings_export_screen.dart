@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
@@ -87,7 +89,9 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           : FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () async {
-          var model = context.read<HomeModel>();
+          var homeModel = context.read<HomeModel>();
+          var groupModel = context.read<GroupModel>();
+          var usersModel = context.read<UsersModel>();
           var prefs = PrefService.of(context);
 
           var settings = _exportSettings
@@ -95,19 +99,19 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
               : null;
 
           var subscriptions = _exportSubscriptions
-              ? model.subscriptions
+              ? usersModel.subscriptions
               : null;
 
           var subscriptionGroups = _exportSubscriptionGroups
-              ? await model.reloadGroups()
+              ? groupModel.groups
               : null;
 
           var subscriptionGroupMembers = _exportSubscriptionGroupMembers
-              ? await model.listGroupMembers()
+              ? await groupModel.listGroupMembers()
               : null;
 
           var tweets = _exportTweets
-              ? await model.listSavedTweets()
+              ? await homeModel.listSavedTweets()
               : null;
 
           var data = SettingsData(

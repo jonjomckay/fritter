@@ -110,9 +110,8 @@ class SubscriptionGroupEdit {
   final String? id;
   String name;
   Set<String> members;
-  final List<Subscription> allSubscriptions;
 
-  SubscriptionGroupEdit({required this.id, required this.name, required this.members, required this.allSubscriptions});
+  SubscriptionGroupEdit({required this.id, required this.name, required this.members});
 }
 
 class SubscriptionGroupMember with ToMappable {

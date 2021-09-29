@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,7 +41,9 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       int total = 0;
 
       // TODO: Test this still works
-      var model = context.read<HomeModel>();
+      var homeModel = context.read<HomeModel>();
+      var groupModel = context.read<GroupModel>();
+      var usersModel = context.read<UsersModel>();
 
       while (true) {
         var response = await Twitter.getProfileFollows(
@@ -51,7 +55,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         cursor = response.cursorBottom;
         total = total + response.users.length;
 
-        await model.importData({
+        await homeModel.importData({
           TABLE_SUBSCRIPTION: [
             ...response.users.map((e) =>
                 Subscription(
@@ -71,7 +75,9 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         }
       }
 
-      await model.refreshSubscriptionData();
+      await groupModel.reloadGroups();
+      await usersModel.reloadSubscriptions();
+      await usersModel.refreshSubscriptionData();
       _streamController?.close();
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);
