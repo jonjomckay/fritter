@@ -2,3 +2,4 @@
 * Improved memory usage by a large amount (#182)
 * Added support for opening www.twitter.com links in Fritter (#233)
 * Fixed videos sometimes not playing for various reasons (#161, #198)
+* Fixed not being able to tap on the usernames of some replies

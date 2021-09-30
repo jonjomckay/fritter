@@ -102,7 +102,7 @@ class _StatusScreenBodyState extends State<StatusScreenBody> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          TweetTile(currentUsername: widget.username, tweet: widget.status.tweet, clickable: false),
+          TweetTile(tweet: widget.status.tweet, clickable: false),
           Padding(
             padding: EdgeInsets.all(12),
             child: Column(

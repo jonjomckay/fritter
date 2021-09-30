@@ -150,7 +150,7 @@ class TweetTile extends StatelessWidget {
         quotedTweetTile = TweetTile(
           clickable: true,
           tweet: tweet.quotedStatusWithCard,
-          currentUsername: tweet.user?.screenName,
+          currentUsername: currentUsername,
         );
       } else {
         quotedTweetTile = Container(
