@@ -123,7 +123,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       child: PagedListView<String?, TweetChain>(
         scrollController: widget.scrollController,
         pagingController: _pagingController,
-        addAutomaticKeepAlives: true,
+        addAutomaticKeepAlives: false,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, conversation, index) {
             return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);

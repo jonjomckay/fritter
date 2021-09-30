@@ -64,7 +64,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
     return PagedListView<String?, TweetChain>(
       padding: EdgeInsets.zero,
       pagingController: _pagingController,
-      addAutomaticKeepAlives: true,
+      addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
         itemBuilder: (context, chain, index) {
           return TweetConversation(id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, isPinned: chain.isPinned);
