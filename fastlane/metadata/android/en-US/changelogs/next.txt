@@ -1,3 +1,4 @@
 * Improved performance of the Subscriptions tab on the home screen
 * Improved memory usage by a large amount (#182)
+* Added support for opening www.twitter.com links in Fritter (#233)
 * Fixed videos sometimes not playing for various reasons (#161, #198)
