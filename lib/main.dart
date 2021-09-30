@@ -160,6 +160,9 @@ Future<void> main() async {
         checkForUpdates();
       }
 
+      // Run the migrations early, so models work. We also do this later on so we can display errors to the user
+      await Repository().migrate();
+
       var homeModel = HomeModel(prefService);
 
       var groupModel = GroupModel(prefService);

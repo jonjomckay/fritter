@@ -1,1 +1,3 @@
 * Improved performance of the Subscriptions tab on the home screen
+* Improved memory usage by a large amount (#182)
+* Fixed videos sometimes not playing for various reasons (#161, #198)
