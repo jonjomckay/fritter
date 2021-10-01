@@ -2,5 +2,6 @@
 * Improved memory usage by a large amount (#182)
 * Added support for opening www.twitter.com links in Fritter (#233)
 * Now displaying the media type when media is disabled (#236)
+* Importing subscriptions from Twitter is now a GA feature (#143)
 * Fixed videos sometimes not playing for various reasons (#161, #198)
 * Fixed not being able to tap on the usernames of some replies

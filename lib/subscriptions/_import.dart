@@ -98,13 +98,6 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Text('This functionality is currently in beta!', style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold
-              )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
               child: Text('To import subscriptions from an existing Twitter account, enter your username below.'),
             ),
             Padding(
