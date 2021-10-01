@@ -46,6 +46,19 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
     }
   }
 
+  String getMediaType(String? type) {
+    switch (type) {
+      case 'animated_gif':
+        return 'GIF';
+      case 'photo':
+        return 'photo';
+      case 'video':
+        return 'video';
+      default:
+        return 'media';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
@@ -73,7 +86,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
         child: Container(
           color: Colors.black26,
           child: Center(
-            child: Text('Tap to show media'),
+            child: Text('Tap to show ${getMediaType(item.type)}'),
           ),
         ),
         onTap: () => setState(() {
