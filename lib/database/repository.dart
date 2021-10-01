@@ -140,11 +140,17 @@ class Repository {
         SqlMigration('CREATE TABLE $TABLE_SUBSCRIPTION (id VARCHAR PRIMARY KEY, screen_name VARCHAR, name VARCHAR, profile_image_url_https VARCHAR, verified BOOLEAN DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
         SqlMigration('INSERT INTO $TABLE_SUBSCRIPTION (id, screen_name, name, profile_image_url_https, created_at) SELECT id, screen_name, name, profile_image_url_https, created_at FROM ${TABLE_SUBSCRIPTION}_old'),
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION}_old'),
+      ],
+      16: [
+        // Add a "color" column to the subscription groups table, and make "icon" nullable
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN color INT DEFAULT NULL', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN color'),
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN icon'),
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN icon VARCHAR DEFAULT NULL'),
       ]
     });
 
     await openDatabase(DATABASE_NAME,
-        version: 15,
+        version: 16,
         onUpgrade: myMigrationPlan,
         onCreate: myMigrationPlan,
         onDowngrade: myMigrationPlan

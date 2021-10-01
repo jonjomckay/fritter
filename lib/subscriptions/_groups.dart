@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_iconpicker/IconPicker/Packs/Material.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/group/group_model.dart';
@@ -24,7 +29,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
     });
   }
 
-  Widget _createGroupCard(IconData icon, String id, String name, int? numberOfMembers, void Function()? onLongPress) {
+  Widget _createGroupCard(String id, String name, String? icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
     var title = numberOfMembers == null
         ? name
         : '$name ($numberOfMembers)';
@@ -42,14 +47,14 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
         child: Column(
           children: [
             Container(
-              color: Colors.white10,
+              color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Icon(icon, size: 16),
+              child: Icon(icon == null ? Icons.rss_feed : deserializeIcon(jsonDecode(icon)), size: 16),
             ),
             Expanded(child: Container(
               alignment: Alignment.center,
-              color: Theme.of(context).highlightColor,
+              color: color != null ? color.withOpacity(0.4) : Colors.white10,
               width: double.infinity,
               padding: EdgeInsets.all(4),
               child: Text(title,
@@ -76,8 +81,8 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
       maxCrossAxisExtent: 140,
       childAspectRatio: 200 / 125,
       children: [
-        _createGroupCard(Icons.rss_feed, '-1', 'All', null, null),
-        ...model.groups.map((e) => _createGroupCard(Icons.rss_feed, e.id, e.name, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
+        _createGroupCard('-1', 'All', null, null, null, null),
+        ...model.groups.map((e) => _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
         Card(
           child: InkWell(
             onTap: () {
@@ -127,6 +132,8 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
   String? id;
   String? name;
+  String? icon;
+  Color? color;
   Set<String> members = Set();
 
   @override
@@ -138,6 +145,8 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
       id = group.id;
       name = group.name;
+      icon = group.icon;
+      color = group.color;
       members = group.members;
     }));
   }
@@ -178,6 +187,10 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
       return Center(child: CircularProgressIndicator());
     }
 
+    // Filter the Material icons to only the baseline ones
+    var iconPack = icons.entries
+        .where((value) => !value.key.endsWith('_sharp') && !value.key.endsWith('_rounded') && !value.key.endsWith('_outlined') && !value.key.endsWith('_outline'));
+
     return AlertDialog(
       actions: [
         TextButton(
@@ -205,11 +218,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
         Builder(builder: (context) {
           var onPressed = () async {
             if (_formKey.currentState!.validate()) {
-              await groupModel.saveGroup(
-                  id,
-                  name!,
-                  members
-              );
+              await groupModel.saveGroup(id, name!, icon, color, members);
 
               Navigator.pop(context);
             }
@@ -226,24 +235,81 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
         child: Container(
           width: double.maxFinite,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              TextFormField(
-                initialValue: group.name,
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    hintText: 'Name'
-                ),
-                onChanged: (value) => setState(() {
-                  name = value;
-                }),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: group.name,
+                      decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          hintText: 'Name'
+                      ),
+                      onChanged: (value) => setState(() {
+                        name = value;
+                      }),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a name';
+                        }
 
-                  return null;
-                },
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: Icon(Icons.color_lens, color: color),
+                    onPressed: () {
+                      showDialog(context: context, builder: (context) {
+                        var selectedColor = color;
+
+                        return AlertDialog(
+                          title: const Text('Pick a color!'),
+                          content: SingleChildScrollView(
+                            child: MaterialPicker(
+                              pickerColor: color ?? Colors.grey,
+                              onColorChanged: (value) => setState(() {
+                                selectedColor = value;
+                              }),
+                              enableLabel: true,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                setState(() {
+                                  color = selectedColor;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(icon == null ? Icons.rss_feed : deserializeIcon(jsonDecode(icon!))),
+                    onPressed: () async {
+                      var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackMode: IconPack.custom, customIconPack: Map.fromEntries(iconPack));
+                      if (selectedIcon != null) {
+                        setState(() {
+                          icon = jsonEncode(serializeIcon(selectedIcon));
+                        });
+                      }
+                    },
+                  )
+                ],
               ),
 
               Expanded(

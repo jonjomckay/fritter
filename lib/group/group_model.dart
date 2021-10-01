@@ -39,10 +39,10 @@ class GroupModel extends ChangeNotifier {
         ? 'COLLATE NOCASE ASC'
         : 'COLLATE NOCASE DESC';
 
-    var query = "SELECT g.id, g.name, g.icon, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
+    var query = "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $TABLE_SUBSCRIPTION_GROUP g LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
 
     _groups = (await database.rawQuery(query))
-        .map((e) => SubscriptionGroup(id: e['id'] as String, name: e['name'] as String, icon: e['icon'] as String, numberOfMembers: e['number_of_members'] as int, createdAt: DateTime.parse(e['created_at'] as String)))
+        .map((e) => SubscriptionGroup.fromMap(e))
         .toList(growable: false);
 
     notifyListeners();
@@ -91,6 +91,8 @@ class GroupModel extends ChangeNotifier {
       return SubscriptionGroupEdit(
           id: null,
           name: '',
+          icon: null,
+          color: null,
           members: Set(),
       );
     }
@@ -98,9 +100,11 @@ class GroupModel extends ChangeNotifier {
     var group = await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]);
     if (group.isEmpty) {
       return SubscriptionGroupEdit(
-          id: null,
-          name: '',
-          members: Set(),
+        id: null,
+        name: '',
+        icon: null,
+        color: null,
+        members: Set(),
       );
     }
 
@@ -111,11 +115,13 @@ class GroupModel extends ChangeNotifier {
     return SubscriptionGroupEdit(
         id: group.first['id'] as String,
         name: group.first['name'] as String,
+        icon: group.first['icon'] as String?,
+        color: group.first['color'] == null ? null : Color(group.first['color'] as int),
         members: members,
     );
   }
 
-  Future saveGroup(String? id, String name, Set<String> subscriptions) async {
+  Future saveGroup(String? id, String name, String? icon, Color? color, Set<String> subscriptions) async {
     var database = await Repository.writable();
 
     // First insert or update the subscription group details
@@ -125,12 +131,14 @@ class GroupModel extends ChangeNotifier {
       await database.insert(TABLE_SUBSCRIPTION_GROUP, {
         'id': id,
         'name': name,
-        'icon': ''
+        'color': color?.value,
+        'icon': icon
       });
     } else {
       await database.update(TABLE_SUBSCRIPTION_GROUP, {
         'name': name,
-        'icon': ''
+        'color': color?.value,
+        'icon': icon,
       }, where: 'id = ?', whereArgs: [id]);
     }
 

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 mixin ToMappable {
   Map<String, dynamic> toMap();
 }
@@ -72,18 +74,20 @@ class Subscription with ToMappable {
 class SubscriptionGroup with ToMappable {
   final String id;
   final String name;
-  final String icon;
+  final String? icon;
+  final Color? color;
   final int numberOfMembers;
   final DateTime createdAt;
 
-  SubscriptionGroup({required this.id, required this.name, required this.icon, required this.numberOfMembers, required this.createdAt});
+  SubscriptionGroup({required this.id, required this.name, required this.icon, required this.color, required this.numberOfMembers, required this.createdAt});
 
   factory SubscriptionGroup.fromMap(Map<String, Object?> json) {
     return SubscriptionGroup(
       id: json['id'] as String,
       name: json['name'] as String,
-      icon: json['icon'] as String,
-      numberOfMembers: 0,
+      icon: json['icon'] as String?,
+      color: json['color'] == null ? null : Color(json['color'] as int),
+      numberOfMembers: json['number_of_members'] == null ? 0 : json['number_of_members'] as int,
       createdAt: DateTime.parse(json['created_at'] as String)
     );
   }
@@ -93,6 +97,7 @@ class SubscriptionGroup with ToMappable {
       'id': id,
       'name': name,
       'icon': icon,
+      'color': color?.value,
       'created_at': createdAt.toIso8601String()
     };
   }
@@ -109,9 +114,11 @@ class SubscriptionGroupGet {
 class SubscriptionGroupEdit {
   final String? id;
   String name;
+  String? icon;
+  Color? color;
   Set<String> members;
 
-  SubscriptionGroupEdit({required this.id, required this.name, required this.members});
+  SubscriptionGroupEdit({required this.id, required this.name, required this.icon, required this.color, required this.members});
 }
 
 class SubscriptionGroupMember with ToMappable {
