@@ -192,7 +192,9 @@ class Twitter {
     for (var entry in instructions[0]['addEntries']['entries']) {
       var entryId = entry['entryId'] as String;
       if (entryId.startsWith('tweet-')) {
-        // Ignore it, as it's just the main tweet, which we already have
+        var id = entry['content']['item']['content']['tweet']['id'];
+
+        replies.add(TweetChain(id: id, tweets: [TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id])], isPinned: false));
       }
 
       if (entryId.startsWith('cursor-bottom') || entryId.startsWith('cursor-showMore')) {
@@ -250,13 +252,7 @@ class Twitter {
     var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
 
     // TODO: Could this use createUnconversationedChains at some point?
-    var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
     var chains = createTweetChains(globalTweets, globalUsers, instructions);
-
-    // Make the main tweet the first item (TODO: this won't work when we display surrounding tweets like the Web UI)
-    if (cursor == null) {
-      chains.insert(0, TweetChain(id: id, tweets: [tweet], isPinned: false));
-    }
 
     String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
     String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
@@ -452,7 +448,7 @@ class Twitter {
     var tweets = globalTweets.values
         .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
         .toList();
-    
+
     return Map.fromIterable(tweets, key: (e) => e.idStr, value: (e) => e);
   }
 }
