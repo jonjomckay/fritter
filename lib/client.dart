@@ -221,25 +221,47 @@ class Twitter {
     return replies;
   }
 
-  static Future<TweetStatus> getTweet(String id) async {
+  static Future<TweetStatus> getTweet(String id, {String? cursor}) async {
+    var query = {
+      ...defaultParams,
+      'include_tweet_replies': '1',
+      'include_want_retweets': '1',
+    };
+
+    if (cursor != null) {
+      query['cursor'] = cursor;
+    }
+
     var response = await _twitterApi.client.get(
-        Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', {
-          ...defaultParams,
-          'include_tweet_replies': '1',
-          'include_want_retweets': '1',
-        })
+        Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', query)
     );
 
     var result = json.decode(response.body);
 
     var globalTweets = result['globalObjects']['tweets'];
-    var instructions = result['timeline']['instructions'];
     var globalUsers = result['globalObjects']['users'];
 
+    var instructions = List.from(result['timeline']['instructions']);
+    if (instructions.isEmpty) {
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
+    }
+
+    var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
+    var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
+
+    // TODO: Could this use createUnconversationedChains at some point?
     var tweet = TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id]);
     var chains = createTweetChains(globalTweets, globalUsers, instructions);
 
-    return TweetStatus(tweet: tweet, chains: chains, cursorBottom: 'TODO', cursorTop: 'TODO');
+    // Make the main tweet the first item (TODO: this won't work when we display surrounding tweets like the Web UI)
+    if (cursor == null) {
+      chains.insert(0, TweetChain(id: id, tweets: [tweet], isPinned: false));
+    }
+
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
+
+    return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
   static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
@@ -337,7 +359,7 @@ class Twitter {
   static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
     var instructions = List.from(result['timeline']['instructions']);
     if (instructions.isEmpty) {
-      return TweetStatus(tweet: null, chains: [], cursorBottom: null, cursorTop: null);
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
     }
 
     var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
@@ -394,7 +416,7 @@ class Twitter {
       }
     }
 
-    return TweetStatus(tweet: null, chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
+    return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
   static Future<List<User>> getUsers(Iterable<String> ids) async {
@@ -590,12 +612,11 @@ class Follows {
 class TweetStatus {
   // final TweetChain after;
   // final TweetChain before;
-  final TweetWithCard? tweet;
   final String? cursorBottom;
   final String? cursorTop;
   final List<TweetChain> chains;
 
-  TweetStatus({required this.tweet, required this.chains, required this.cursorBottom, required this.cursorTop});
+  TweetStatus({required this.chains, required this.cursorBottom, required this.cursorTop});
 }
 
 class TwitterError {

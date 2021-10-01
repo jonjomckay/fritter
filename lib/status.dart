@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet/conversation.dart';
-import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class StatusScreenArguments {
   final String id;
@@ -28,7 +27,6 @@ class StatusScreen extends StatelessWidget {
   }
 }
 
-
 class _StatusScreen extends StatefulWidget {
   final String? username;
   final String id;
@@ -40,76 +38,67 @@ class _StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<_StatusScreen> {
-  late Future<TweetStatus> _future;
+  final _pagingController = PagingController<String?, TweetChain>(firstPageKey: null);
 
   @override
   void initState() {
     super.initState();
 
-    fetchStatus();
+    _pagingController.addPageRequestListener((cursor) {
+      _loadTweet(cursor);
+    });
   }
 
-  void fetchStatus() {
-    setState(() {
-      _future = Twitter.getTweet(widget.id);
-    });
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  Future _loadTweet(String? cursor) async {
+    try {
+      var result = await Twitter.getTweet(widget.id, cursor: cursor);
+      if (result.cursorBottom != null && result.cursorBottom == _pagingController.nextPageKey) {
+        _pagingController.appendLastPage([]);
+      } else {
+        _pagingController.appendPage(result.chains, result.cursorBottom);
+      }
+    } catch (e, stackTrace) {
+      _pagingController.error = [e, stackTrace];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FutureBuilderWrapper<TweetStatus>(
-        future: _future,
-        onReady: (status) => StatusScreenBody(status: status, username: widget.username),
-        onError: (error, stackTrace) => FullPageErrorWidget(
-          error: error,
-          stackTrace: stackTrace,
-          prefix: 'Unable to load the tweet',
-          onRetry: () => fetchStatus(),
+      body: PagedListView<String?, TweetChain>(
+        padding: EdgeInsets.zero,
+        pagingController: _pagingController,
+        addAutomaticKeepAlives: false,
+        shrinkWrap: true,
+        builderDelegate: PagedChildBuilderDelegate(
+          itemBuilder: (context, chain, index) {
+            return TweetConversation(id: chain.id, tweets: chain.tweets, username: null, isPinned: chain.isPinned);
+          },
+          firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the tweet',
+            onRetry: () => _loadTweet(_pagingController.firstPageKey),
+          ),
+          newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+            error: _pagingController.error[0],
+            stackTrace: _pagingController.error[1],
+            prefix: 'Unable to load the next page of replies',
+            onRetry: () => _loadTweet(_pagingController.nextPageKey),
+          ),
+          noItemsFoundIndicatorBuilder: (context) {
+            return Center(
+              child: Text('Couldn\'t find any tweets by this user!'),
+            );
+          },
         ),
-      ),
-    );
-  }
-}
-
-class StatusScreenBody extends StatefulWidget {
-  final String? username;
-  final TweetStatus status;
-
-  const StatusScreenBody({Key? key, required this.username, required this.status}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _StatusScreenBodyState();
-}
-
-class _StatusScreenBodyState extends State<StatusScreenBody> {
-
-  @override
-  Widget build(BuildContext context) {
-    Iterable<Widget> comments = [];
-
-    var replies = widget.status.chains;
-    if (replies.isEmpty) {
-      comments = [Text('No replies')];
-    } else {
-      comments = replies.map((chain) {
-        // TODO: Is widget.username correct here?
-        return TweetConversation(id: chain.id, username: widget.username, tweets: chain.tweets, isPinned: false);
-      });
-    }
-
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TweetTile(tweet: widget.status.tweet, clickable: false),
-          Padding(
-            padding: EdgeInsets.all(12),
-            child: Column(
-              children: [...comments],
-            ),
-          )
-        ],
       ),
     );
   }

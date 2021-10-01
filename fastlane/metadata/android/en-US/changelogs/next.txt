@@ -4,5 +4,6 @@
 * Now displaying the media type when media is disabled (#236)
 * Importing subscriptions from Twitter is now a GA feature (#143)
 * Added support for setting a color and icon for groups
+* Now infinite scrolling tweet replies (#108)
 * Fixed videos sometimes not playing for various reasons (#161, #198)
 * Fixed not being able to tap on the usernames of some replies
