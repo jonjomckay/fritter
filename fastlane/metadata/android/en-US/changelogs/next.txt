@@ -8,3 +8,4 @@
 * Now displaying full individual tweet conversations
 * Fixed videos sometimes not playing for various reasons (#161, #198)
 * Fixed not being able to tap on the usernames of some replies
+* Fixed screen going to sleep when viewing videos in fullscreen (#219)
