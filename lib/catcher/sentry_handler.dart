@@ -9,6 +9,8 @@ import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:flutter_gen/gen_l10n/main_localizations.dart';
+
 /// This is a slight modification of the SentryHandler built into Catcher, but
 /// with support for sending stack traces, and opt-in reporting.
 class FritterSentryHandler extends ReportHandler {
@@ -17,7 +19,8 @@ class FritterSentryHandler extends ReportHandler {
 
   final Hub sentryHub;
 
-  FritterSentryHandler({required this.sentryHub, required Stream<bool?> sentryEnabledStream}) {
+  FritterSentryHandler(
+      {required this.sentryHub, required Stream<bool?> sentryEnabledStream}) {
     // If a user changes the Sentry preference, make sure we know about it
     sentryEnabledStream.listen((value) {
       _isSentryEnabled = value;
@@ -39,65 +42,77 @@ class FritterSentryHandler extends ReportHandler {
         return true;
       }
 
-      await showDialog(context: context, builder: (context) {
-        _isModalOpen = true;
+      await showDialog(
+          context: context,
+          builder: (context) {
+            _isModalOpen = true;
 
-        return AlertDialog(
-          title: Text('Reporting an error'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Something just went wrong in Fritter, and an error report has been generated. The report can be sent to the Fritter developers to help fix the problem.'),
-              SizedBox(height: 16),
-              Text('Would you like to enable automatic error reporting?'),
-              SizedBox(height: 16),
-              Text('Your report will be sent to Fritter\'s Sentry project, and privacy details can be found at:'),
-              SizedBox(height: 16),
-              InkWell(
-                child: Text('https://fritter.cc/privacy', style: TextStyle(
-                  color: Colors.blue
-                )),
-                onTap: () async => await launch('https://fritter.cc/privacy'),
-              )
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                sendThisTime = true;
-                Navigator.pop(context);
-              },
-              child: Text('Send once'),
-            ),
-            TextButton(
-              onPressed: () {
-                sendThisTime = true;
-                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, true);
-                Navigator.pop(context);
-              },
-              child: Text('Send always'),
-            ),
-            TextButton(
-              onPressed: () {
-                sendThisTime = false;
-                Navigator.pop(context);
-              },
-              child: Text("Don't send"),
-            ),
-            TextButton(
-              onPressed: () {
-                sendThisTime = false;
-                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, false);
-                Navigator.pop(context);
-              },
-              child: Text('Never send'),
-            )
-          ],
-        );
-      }, routeSettings: RouteSettings(
-        name: 'sentryRoute'
-      ));
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.reporting_an_error),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!
+                        .something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .would_you_like_to_enable_automatic_error_reporting,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .your_report_will_be_sent_to_fritter_sentry_project,
+                  ),
+                  SizedBox(height: 16),
+                  InkWell(
+                    child: Text('https://fritter.cc/privacy',
+                        style: TextStyle(color: Colors.blue)),
+                    onTap: () async =>
+                        await launch('https://fritter.cc/privacy'),
+                  )
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    sendThisTime = true;
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.send_once),
+                ),
+                TextButton(
+                  onPressed: () {
+                    sendThisTime = true;
+                    PrefService.of(context)
+                        .set(OPTION_ERRORS_SENTRY_ENABLED, true);
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.send_always),
+                ),
+                TextButton(
+                  onPressed: () {
+                    sendThisTime = false;
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.don_not_send),
+                ),
+                TextButton(
+                  onPressed: () {
+                    sendThisTime = false;
+                    PrefService.of(context)
+                        .set(OPTION_ERRORS_SENTRY_ENABLED, false);
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.never_send),
+                )
+              ],
+            );
+          },
+          routeSettings: RouteSettings(name: 'sentryRoute'));
 
       _isModalOpen = false;
     }
@@ -109,7 +124,16 @@ class FritterSentryHandler extends ReportHandler {
     try {
       var nestedError = error.error;
       if (nestedError is ManuallyReportedException) {
-        error = Report(nestedError.exception, error.stackTrace, error.dateTime, error.deviceParameters, error.applicationParameters, error.customParameters, error.errorDetails, error.platformType, error.screenshot);
+        error = Report(
+            nestedError.exception,
+            error.stackTrace,
+            error.dateTime,
+            error.deviceParameters,
+            error.applicationParameters,
+            error.customParameters,
+            error.errorDetails,
+            error.platformType,
+            error.screenshot);
       }
 
       final tags = <String, dynamic>{};
@@ -127,7 +151,10 @@ class FritterSentryHandler extends ReportHandler {
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('An error was reported to Sentry. Thank you!'),
+                Text(
+                  AppLocalizations.of(context)!
+                      .an_error_was_reported_to_sentry_thank_you,
+                ),
                 Text('🕵️'),
               ],
             ),
@@ -139,7 +166,10 @@ class FritterSentryHandler extends ReportHandler {
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Thanks for reporting. We'll try and fix it in no time!"),
+                Text(
+                  AppLocalizations.of(context)!
+                      .thanks_for_reporting_we_will_try_and_fix_it_in_no_time,
+                ),
                 Text('💖'),
               ],
             ),

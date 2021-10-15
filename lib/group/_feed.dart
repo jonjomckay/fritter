@@ -6,6 +6,8 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import 'package:flutter_gen/gen_l10n/main_localizations.dart';
+
 class SubscriptionGroupFeed extends StatefulWidget {
   final SubscriptionGroupGet group;
   final List<String> users;
@@ -13,7 +15,14 @@ class SubscriptionGroupFeed extends StatefulWidget {
   final bool includeRetweets;
   final ScrollController? scrollController;
 
-  const SubscriptionGroupFeed({Key? key, required this.group, required this.users, required this.includeReplies, required this.includeRetweets, this.scrollController}) : super(key: key);
+  const SubscriptionGroupFeed(
+      {Key? key,
+      required this.group,
+      required this.users,
+      required this.includeReplies,
+      required this.includeRetweets,
+      this.scrollController})
+      : super(key: key);
 
   @override
   _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
@@ -76,20 +85,23 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           query += queryToAdd;
         } else {
           // Otherwise, add the search future and start a new one
-          futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
+          futures.add(Twitter.searchTweets(query,
+              limit: 100, cursor: cursor, mode: 'live'));
 
           query = queryToAdd;
         }
       }
 
       // Add any remaining query as a search future too
-      futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
+      futures.add(Twitter.searchTweets(query,
+          limit: 100, cursor: cursor, mode: 'live'));
 
       var result = (await Future.wait(futures));
       var threads = result
           .map((e) => e.chains)
           .expand((element) => element)
-          .sorted((a, b) => b.tweets[0].createdAt!.compareTo(a.tweets[0].createdAt!))
+          .sorted((a, b) =>
+              b.tweets[0].createdAt!.compareTo(a.tweets[0].createdAt!))
           .toList();
 
       if (result.isEmpty) {
@@ -112,7 +124,11 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     if (widget.users.isEmpty) {
       return Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('This group contains no subscriptions!')),
+        body: Center(
+          child: Text(
+            AppLocalizations.of(context)!.this_group_contains_no_subscriptions,
+          ),
+        ),
       );
     }
 
@@ -126,7 +142,11 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         addAutomaticKeepAlives: false,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, conversation, index) {
-            return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
+            return TweetConversation(
+                id: conversation.id,
+                username: null,
+                tweets: conversation.tweets,
+                isPinned: conversation.isPinned);
           },
           newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],

@@ -1,0 +1,24 @@
+{
+    "this_group_contains_no_subscriptions": "This group contains no subscriptions!",
+    "could_not_find_any_tweets_by_this_user": "Couldn't find any tweets by this user!",
+    "unable_to_load_the_next_page_of_replies": "Unable to load the next page of replies",
+    "unable_to_load_the_tweet": "Unable to load the tweet",
+    "unable_to_load_subscription_groups": "Unable to load subscription groups",
+
+
+    "add_to_group": "Add to group",
+    "unsubscribe": "Unsubscribe",
+    "subscribe": "Subscribe",
+
+    "reporting_an_error": "Reporting an error",
+    "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "Something just went wrong in Fritter, and an error report has been generated. The report can be sent to the Fritter developers to help fix the problem.",
+    "would_you_like_to_enable_automatic_error_reporting": "Would you like to enable automatic error reporting?",
+    "your_report_will_be_sent_to_fritter_sentry_project": "Your report will be sent to Fritter's Sentry project, and privacy details can be found at:",
+    "send_once": "Send once",
+    "send_always": "Send always",
+    "don_not_send": "Don't send",
+    "never_send": "Never send",
+
+    "an_error_was_reported_to_sentry_thank_you": "An error was reported to Sentry. Thank you!",
+    "thanks_for_reporting_we_will_try_and_fix_it_in_no_time": "Thanks for reporting. We'll try and fix it in no time!"
+}
