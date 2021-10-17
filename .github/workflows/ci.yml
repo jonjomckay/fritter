@@ -36,7 +36,7 @@ jobs:
           flutter config --no-analytics
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk --no-tree-shake-icons
+          flutter build apk --debug --no-tree-shake-icons
 #         env:
 #           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
 #           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: apk-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
 
 #  ios:
 #    runs-on: macos-latest
