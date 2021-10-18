@@ -134,7 +134,12 @@ Future<void> main() async {
     enableLogger: false,
     runAppFunction: () async {
       Logger.root.onRecord.listen((event) async {
-        log(event.message, error: event.error, stackTrace: event.stackTrace);
+        print(event.message);
+
+        if (event.error != null) {
+          print(event.error);
+          print(event.stackTrace);
+        }
 
         if (event.level.value >= 900) {
           // Don't report internal Catcher errors, as it'll cause a loop
