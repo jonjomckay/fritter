@@ -1,0 +1,11 @@
+* Improved performance of the Subscriptions tab on the home screen
+* Improved memory usage by a large amount (#182)
+* Added support for opening www.twitter.com links in Fritter (#233)
+* Now displaying the media type when media is disabled (#236)
+* Importing subscriptions from Twitter is now a GA feature (#143)
+* Added support for setting a color and icon for groups
+* Now infinite scrolling tweet replies (#108)
+* Now displaying full individual tweet conversations
+* Fixed videos sometimes not playing for various reasons (#161, #198)
+* Fixed not being able to tap on the usernames of some replies
+* Fixed screen going to sleep when viewing videos in fullscreen (#219)
