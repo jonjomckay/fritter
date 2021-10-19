@@ -41,7 +41,7 @@ if (keystoreFile != null && !keystoreFile.isEmpty()) {
     keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
 }
 
-ext.abiCodes = [x86_64: '0', 'armeabi-v7a': '1', arm64: '2']
+ext.abiCodes = [x86_64: '0', 'armeabi-v7a': '1', 'arm64-v8a': '2']
 
 android {
     compileSdkVersion 30
