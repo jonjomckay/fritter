@@ -14,6 +14,7 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/ui/tabs.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
+import 'package:measured_size/measured_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -26,7 +27,6 @@ class ProfileScreen extends StatelessWidget {
     return _ProfileScreen(username: username);
   }
 }
-
 
 class _ProfileScreen extends StatefulWidget {
   final String username;
@@ -81,6 +81,9 @@ class ProfileScreenBody extends StatefulWidget {
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   late TabController _tabController;
+
+  double descriptionHeight = 0;
+  double metadataHeight = 0;
 
   @override
   void initState() {
@@ -147,10 +150,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var mediaQuery = MediaQuery.of(context);
     var deviceSize = mediaQuery.size;
     var bannerHeight = deviceSize.width * (500 / 1500);
-    var appBarHeight = 392.0;
+    var avatarHeight = 80;
 
     var profileImageTop = bannerHeight + 16 - 36 - mediaQuery.padding.top;
     var profileStuffTop = bannerHeight;
+
+    var theme = Theme.of(context);
 
     var profile = widget.user;
     var banner = profile.profileBannerUrl;
@@ -158,7 +163,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         ? Container(height: bannerHeight, color: Colors.white)
         : ExtendedImage.network(banner, fit: BoxFit.fitWidth, height: bannerHeight);
 
-    var theme = Theme.of(context);
+    // The height of the app bar should be all the inner components, plus any margins
+    var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 48 + descriptionHeight;
 
     return Scaffold(
       body: NestedScrollView(
@@ -222,7 +228,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 2),
+                                      margin: EdgeInsets.only(bottom: 4),
                                       child: Row(
                                         children: [
                                           Text(profile.name!, style: TextStyle(
@@ -243,71 +249,87 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                       )),
                                     ),
                                     if (profile.description != null && profile.description!.isNotEmpty)
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 8),
-                                        child: RichText(
-                                          maxLines: 3,
-                                          text: TextSpan(
-                                            style: theme.textTheme.bodyText2,
-                                            children: _addLinksToText(context, profile.description!)
+                                      MeasuredSize(
+                                        onChange: (size) {
+                                          setState(() {
+                                            descriptionHeight = size.height;
+                                          });
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(bottom: 4),
+                                          child: RichText(
+                                            maxLines: 3,
+                                            text: TextSpan(
+                                              style: theme.textTheme.bodyText2!.copyWith(
+                                                height: 1.4
+                                              ),
+                                              children: _addLinksToText(context, profile.description!)
+                                            )
                                           )
-                                        )
+                                        ),
                                       ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        if (profile.location != null && profile.location!.isNotEmpty)
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.place, size: 12, color: theme.hintColor),
-                                                SizedBox(width: 4),
-                                                Text(profile.location!, style: theme.textTheme.bodyText2),
-                                              ],
+                                    MeasuredSize(
+                                      onChange: (size) {
+                                        setState(() {
+                                          metadataHeight = size.height;
+                                        });
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          if (profile.location != null && profile.location!.isNotEmpty)
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.place, size: 12, color: theme.hintColor),
+                                                  SizedBox(width: 4),
+                                                  Text(profile.location!, style: theme.textTheme.bodyText2),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        if (profile.url != null && profile.url!.isNotEmpty)
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.link, size: 12, color: theme.hintColor),
-                                                SizedBox(width: 4),
-                                                Builder(builder: (context) {
-                                                  var url = profile.entities?.url?.urls
-                                                      ?.firstWhere((element) => element.url == profile.url);
+                                          if (profile.url != null && profile.url!.isNotEmpty)
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.link, size: 12, color: theme.hintColor),
+                                                  SizedBox(width: 4),
+                                                  Builder(builder: (context) {
+                                                    var url = profile.entities?.url?.urls
+                                                        ?.firstWhere((element) => element.url == profile.url);
 
-                                                  if (url == null) {
-                                                    return Container();
-                                                  }
+                                                    if (url == null) {
+                                                      return Container();
+                                                    }
 
-                                                  return InkWell(
-                                                    child: Text('${url.displayUrl!}', style: theme.textTheme.bodyText2!.copyWith(
-                                                      color: Colors.blue
-                                                    )),
-                                                    onTap: () => launch(url.expandedUrl!),
-                                                  );
-                                                }),
-                                              ],
+                                                    return InkWell(
+                                                      child: Text('${url.displayUrl!}', style: theme.textTheme.bodyText2!.copyWith(
+                                                        color: Colors.blue
+                                                      )),
+                                                      onTap: () => launch(url.expandedUrl!),
+                                                    );
+                                                  }),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        if (profile.createdAt != null)
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.calendar_today, size: 12, color: theme.hintColor),
-                                                SizedBox(width: 4),
-                                                Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}', style: theme.textTheme.bodyText2),
-                                              ],
+                                          if (profile.createdAt != null)
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.calendar_today, size: 12, color: theme.hintColor),
+                                                  SizedBox(width: 4),
+                                                  Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}', style: theme.textTheme.bodyText2),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                      ]
+                                        ]
+                                      ),
                                     ),
                                   ],
                                 ),
