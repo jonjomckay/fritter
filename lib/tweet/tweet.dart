@@ -10,22 +10,54 @@ import 'package:fritter/tweet/_content.dart';
 import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/utils/misc.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class TweetTile extends StatelessWidget {
-  static final log = Logger('TweetTile');
+import '_media.dart';
 
+class TweetTile extends StatefulWidget {
   final bool clickable;
   final String? currentUsername;
   final TweetWithCard? tweet;
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super(key: key);
+  TweetTile({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+
+  TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
+}
+
+class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
+  static final log = Logger('TweetTile');
+
+  GlobalKey<TweetContentState> tweetContent = GlobalKey();
+
+  final ScrollController scrollController = ScrollController();
+  final bool clickable;
+  final String? currentUsername;
+  final TweetWithCard? tweet;
+  final bool isPinned;
+  final bool isThread;
+
+  bool hasBeenTranslated = false;
+
+  TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+
+  Color? _decideTranslateButtonColor() {
+    if(getShortSystemLocale() == tweet?.lang) {
+      return Colors.grey;
+    }
+
+    if(hasBeenTranslated == true) {
+      return Colors.red;
+    }
+
+    return null;
+  }
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
@@ -176,6 +208,7 @@ class TweetTile extends StatelessWidget {
 
     // Only create the tweet content if the tweet contains text
     Widget content = Container();
+
     if (tweet.displayTextRange![1] != 0) {
       content = Container(
         // Fill the width so both RTL and LTR text are displayed correctly
@@ -183,7 +216,7 @@ class TweetTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
-          child: TweetContent(tweet: tweet),
+          child: TweetContent(key: tweetContent, tweet: tweet,),
         ),
       );
     }
@@ -327,6 +360,7 @@ class TweetTile extends StatelessWidget {
                   child: ButtonBar(
                     buttonTextTheme: ButtonTextTheme.accent,
                     buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                    alignment: MainAxisAlignment.start,
                     children: [
                       if (tweet.replyCount != null)
                         _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
@@ -341,6 +375,17 @@ class TweetTile extends StatelessWidget {
                         _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                       if (tweet.favoriteCount != null)
                         _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                      _createFooterIconButton(
+                        Icons.translate,
+                        _decideTranslateButtonColor(),
+                        getShortSystemLocale() == tweet.lang ? null : () {
+                          tweetContent.currentState?.setTranslate(!hasBeenTranslated);
+
+                          setState(() {
+                            hasBeenTranslated = !hasBeenTranslated;
+                          });
+                        }
+                      )
                     ],
                   ),
                 ),

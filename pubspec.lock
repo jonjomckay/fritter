@@ -332,7 +332,7 @@ packages:
     source: sdk
     version: "0.0.0"
   fluttertoast:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fluttertoast
       url: "https://pub.dartlang.org"
