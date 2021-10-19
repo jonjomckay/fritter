@@ -196,158 +196,161 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: bannerImage
-                      ),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: <Color>[Color(0xDD000000), Color(0x80000000)],
+                  child: DefaultTextStyle.merge(
+                    style: TextStyle(color: Colors.white),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topCenter,
+                          child: bannerImage
+                        ),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: <Color>[Color(0xDD000000), Color(0x80000000)],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Text(profile.name!, style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700
-                                          )),
-                                          if (profile.verified ?? false)
-                                            SizedBox(width: 6),
-                                          if (profile.verified ?? false)
-                                            Icon(Icons.verified, size: 24, color: Colors.blue)
-                                        ],
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Text(profile.name!, style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700
+                                            )),
+                                            if (profile.verified ?? false)
+                                              SizedBox(width: 6),
+                                            if (profile.verified ?? false)
+                                              Icon(Icons.verified, size: 24, color: Colors.blue)
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(bottom: 8),
-                                      child: Text('@${(profile.screenName!)}', style: TextStyle(
-                                          color: theme.primaryTextTheme.caption!.color
-                                      )),
-                                    ),
-                                    if (profile.description != null && profile.description!.isNotEmpty)
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 8),
+                                        child: Text('@${(profile.screenName!)}', style: TextStyle(
+                                            color: theme.primaryTextTheme.caption!.color
+                                        )),
+                                      ),
+                                      if (profile.description != null && profile.description!.isNotEmpty)
+                                        MeasuredSize(
+                                          onChange: (size) {
+                                            setState(() {
+                                              descriptionHeight = size.height;
+                                            });
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(bottom: 4),
+                                            child: RichText(
+                                              maxLines: 3,
+                                              text: TextSpan(
+                                                style: TextStyle(
+                                                  height: 1.4
+                                                ),
+                                                children: _addLinksToText(context, profile.description!)
+                                              )
+                                            )
+                                          ),
+                                        ),
                                       MeasuredSize(
                                         onChange: (size) {
                                           setState(() {
-                                            descriptionHeight = size.height;
+                                            metadataHeight = size.height;
                                           });
                                         },
-                                        child: Container(
-                                          margin: EdgeInsets.only(bottom: 4),
-                                          child: RichText(
-                                            maxLines: 3,
-                                            text: TextSpan(
-                                              style: theme.textTheme.bodyText2!.copyWith(
-                                                height: 1.4
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            if (profile.location != null && profile.location!.isNotEmpty)
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.place, size: 12, color: Colors.white),
+                                                    SizedBox(width: 4),
+                                                    Text(profile.location!),
+                                                  ],
+                                                ),
                                               ),
-                                              children: _addLinksToText(context, profile.description!)
-                                            )
-                                          )
+                                            if (profile.url != null && profile.url!.isNotEmpty)
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.link, size: 12, color: Colors.white),
+                                                    SizedBox(width: 4),
+                                                    Builder(builder: (context) {
+                                                      var url = profile.entities?.url?.urls
+                                                          ?.firstWhere((element) => element.url == profile.url);
+
+                                                      if (url == null) {
+                                                        return Container();
+                                                      }
+
+                                                      return InkWell(
+                                                        child: Text('${url.displayUrl!}', style: TextStyle(
+                                                          color: Colors.blue
+                                                        )),
+                                                        onTap: () => launch(url.expandedUrl!),
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                              ),
+                                            if (profile.createdAt != null)
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.calendar_today, size: 12, color: Colors.white),
+                                                    SizedBox(width: 4),
+                                                    Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}'),
+                                                  ],
+                                                ),
+                                              ),
+                                          ]
                                         ),
                                       ),
-                                    MeasuredSize(
-                                      onChange: (size) {
-                                        setState(() {
-                                          metadataHeight = size.height;
-                                        });
-                                      },
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          if (profile.location != null && profile.location!.isNotEmpty)
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.place, size: 12, color: theme.hintColor),
-                                                  SizedBox(width: 4),
-                                                  Text(profile.location!, style: theme.textTheme.bodyText2),
-                                                ],
-                                              ),
-                                            ),
-                                          if (profile.url != null && profile.url!.isNotEmpty)
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.link, size: 12, color: theme.hintColor),
-                                                  SizedBox(width: 4),
-                                                  Builder(builder: (context) {
-                                                    var url = profile.entities?.url?.urls
-                                                        ?.firstWhere((element) => element.url == profile.url);
-
-                                                    if (url == null) {
-                                                      return Container();
-                                                    }
-
-                                                    return InkWell(
-                                                      child: Text('${url.displayUrl!}', style: theme.textTheme.bodyText2!.copyWith(
-                                                        color: Colors.blue
-                                                      )),
-                                                      onTap: () => launch(url.expandedUrl!),
-                                                    );
-                                                  }),
-                                                ],
-                                              ),
-                                            ),
-                                          if (profile.createdAt != null)
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.calendar_today, size: 12, color: theme.hintColor),
-                                                  SizedBox(width: 4),
-                                                  Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}', style: theme.textTheme.bodyText2),
-                                                ],
-                                              ),
-                                            ),
-                                        ]
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        alignment: Alignment.topRight,
-                        margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
-                            radius: 48,
+                            ],
                           ),
                         ),
-                      )
-                    ]
+
+                        Container(
+                          alignment: Alignment.topRight,
+                          margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
+                              radius: 48,
+                            ),
+                          ),
+                        )
+                      ]
+                    ),
                   ),
                 )
               )
