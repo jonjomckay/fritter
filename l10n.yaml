@@ -1,3 +1,0 @@
-arb-dir: lib/lang/
-template-arb-file: main_en.arb
-output-localization-file: main_localizations.dart

@@ -9,6 +9,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
@@ -33,8 +34,7 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:flutter_gen/gen_l10n/main_localizations.dart';
+import 'package:fritter/generated/l10n.dart';
 
 Future checkForUpdates() async {
   Logger.root.info('Checking for updates');
@@ -135,25 +135,27 @@ Future<void> main() async {
   });
 
   Catcher(
+      debugConfig: catcherOptions,
+      releaseConfig: catcherOptions,
+      enableLogger: false,
+      runAppFunction: () async {
+        Logger.root.onRecord.listen(
+          (event) async {
+            print(event.message);
 
-    debugConfig: catcherOptions,
-    releaseConfig: catcherOptions,
-    enableLogger: false,
-    runAppFunction: () async {
-      Logger.root.onRecord.listen((event) async {
-        print(event.message);
+            if (event.error != null) {
+              print(event.error);
+              print(event.stackTrace);
+            }
 
-        if (event.error != null) {
-          print(event.error);
-          print(event.stackTrace);
-        }
-
-        if (event.level.value >= 900) {
-          // Don't report internal Catcher errors, as it'll cause a loop
-          if (event.loggerName != 'Catcher') {
-            Catcher.reportCheckedError(event.error, event.stackTrace);
-          }
-        });
+            if (event.level.value >= 900) {
+              // Don't report internal Catcher errors, as it'll cause a loop
+              if (event.loggerName != 'Catcher') {
+                Catcher.reportCheckedError(event.error, event.stackTrace);
+              }
+            }
+          },
+        );
 
         if (Platform.isAndroid) {
           FlutterLocalNotificationsPlugin notifications =
@@ -321,8 +323,13 @@ class _MyAppState extends State<MyApp> {
         }
         return Locale('en');
       },
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: [
+        L10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: L10n.delegate.supportedLocales,
       locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
@@ -346,13 +353,17 @@ class _MyAppState extends State<MyApp> {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
           log.severe(
-              'Something broke in Fritter.', details.exception, details.stack);
+            'Something broke in Fritter.',
+            details.exception,
+            details.stack,
+          );
 
           return Scaffold(
             body: FullPageErrorWidget(
-                error: details.exception,
-                stackTrace: details.stack,
-                prefix: 'Something broke in Fritter.'),
+              error: details.exception,
+              stackTrace: details.stack,
+              prefix: 'Something broke in Fritter.',
+            ),
           );
         };
 

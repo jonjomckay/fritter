@@ -5,11 +5,10 @@ import 'package:catcher/model/platform_type.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:flutter_gen/gen_l10n/main_localizations.dart';
 
 /// This is a slight modification of the SentryHandler built into Catcher, but
 /// with support for sending stack traces, and opt-in reporting.
@@ -48,23 +47,23 @@ class FritterSentryHandler extends ReportHandler {
             _isModalOpen = true;
 
             return AlertDialog(
-              title: Text(AppLocalizations.of(context)!.reporting_an_error),
+              title: Text(L10n.of(context).reporting_an_error),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!
+                    L10n.of(context)
                         .something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
                   ),
                   SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!
+                    L10n.of(context)
                         .would_you_like_to_enable_automatic_error_reporting,
                   ),
                   SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!
+                    L10n.of(context)
                         .your_report_will_be_sent_to_fritter_sentry_project,
                   ),
                   SizedBox(height: 16),
@@ -82,7 +81,7 @@ class FritterSentryHandler extends ReportHandler {
                     sendThisTime = true;
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)!.send_once),
+                  child: Text(L10n.of(context).send_once),
                 ),
                 TextButton(
                   onPressed: () {
@@ -91,14 +90,14 @@ class FritterSentryHandler extends ReportHandler {
                         .set(OPTION_ERRORS_SENTRY_ENABLED, true);
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)!.send_always),
+                  child: Text(L10n.of(context).send_always),
                 ),
                 TextButton(
                   onPressed: () {
                     sendThisTime = false;
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)!.don_not_send),
+                  child: Text(L10n.of(context).don_not_send),
                 ),
                 TextButton(
                   onPressed: () {
@@ -107,7 +106,7 @@ class FritterSentryHandler extends ReportHandler {
                         .set(OPTION_ERRORS_SENTRY_ENABLED, false);
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)!.never_send),
+                  child: Text(L10n.of(context).never_send),
                 )
               ],
             );
@@ -152,8 +151,7 @@ class FritterSentryHandler extends ReportHandler {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!
-                      .an_error_was_reported_to_sentry_thank_you,
+                  L10n.of(context).an_error_was_reported_to_sentry_thank_you,
                 ),
                 Text('🕵️'),
               ],
@@ -167,7 +165,7 @@ class FritterSentryHandler extends ReportHandler {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!
+                  L10n.of(context)
                       .thanks_for_reporting_we_will_try_and_fix_it_in_no_time,
                 ),
                 Text('💖'),

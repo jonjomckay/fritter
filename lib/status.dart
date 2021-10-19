@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-
-import 'package:flutter_gen/gen_l10n/main_localizations.dart';
 
 class StatusScreenArguments {
   final String id;
@@ -125,21 +124,19 @@ class _StatusScreenState extends State<_StatusScreen> {
           firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: AppLocalizations.of(context)!.unable_to_load_the_tweet,
+            prefix: L10n.of(context).unable_to_load_the_tweet,
             onRetry: () => _loadTweet(_pagingController.firstPageKey),
           ),
           newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: AppLocalizations.of(context)!
-                .unable_to_load_the_next_page_of_replies,
+            prefix: L10n.of(context).unable_to_load_the_next_page_of_replies,
             onRetry: () => _loadTweet(_pagingController.nextPageKey),
           ),
           noItemsFoundIndicatorBuilder: (context) {
             return Center(
               child: Text(
-                AppLocalizations.of(context)!
-                    .could_not_find_any_tweets_by_this_user,
+                L10n.of(context).could_not_find_any_tweets_by_this_user,
               ),
             );
           },

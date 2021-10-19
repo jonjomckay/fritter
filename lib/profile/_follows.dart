@@ -4,12 +4,14 @@ import 'package:fritter/client.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class ProfileFollows extends StatefulWidget {
   final User user;
   final String type;
 
-  const ProfileFollows({Key? key, required this.user, required this.type}) : super(key: key);
+  const ProfileFollows({Key? key, required this.user, required this.type})
+      : super(key: key);
 
   @override
   _ProfileFollowsState createState() => _ProfileFollowsState();
@@ -37,13 +39,12 @@ class _ProfileFollowsState extends State<ProfileFollows> {
   }
 
   Future _loadFollows(int? cursor) async {
-
     try {
       var result = await Twitter.getProfileFollows(
-          widget.user.screenName!,
-          widget.type,
-          cursor: cursor,
-          count: _pageSize,
+        widget.user.screenName!,
+        widget.type,
+        cursor: cursor,
+        count: _pageSize,
       );
 
       if (result.cursorBottom == _pagingController.nextPageKey) {
@@ -75,19 +76,19 @@ class _ProfileFollowsState extends State<ProfileFollows> {
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the list of follows',
+          prefix: L10n.of(context).unable_to_load_the_list_of_follows,
           onRetry: () => _loadFollows(_pagingController.firstPageKey),
         ),
         newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the next page of follows',
+          prefix: L10n.of(context).unable_to_load_the_next_page_of_follows,
           onRetry: () => _loadFollows(_pagingController.nextPageKey),
         ),
         noItemsFoundIndicatorBuilder: (context) {
           var text = widget.type == 'following'
-            ? 'This user does not follow anyone!'
-            : 'This user does not have anyone following them!';
+              ? L10n.of(context).this_user_does_not_follow_anyone
+              : L10n.of(context).this_user_does_not_have_anyone_following_them;
 
           return Center(
             child: Text(text),

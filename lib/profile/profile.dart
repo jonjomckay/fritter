@@ -10,6 +10,7 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:logging/logging.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class ProfileScreen extends StatelessWidget {
     return _ProfileScreen(username: username);
   }
 }
-
 
 class _ProfileScreen extends StatefulWidget {
   final String username;
@@ -36,11 +36,11 @@ class _ProfileScreenState extends State<_ProfileScreen> {
   static final log = Logger('_ProfileScreenState');
 
   late Future<User> _future;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     fetchProfile();
   }
 
@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<_ProfileScreen> {
       _future = Twitter.getProfile(widget.username);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<_ProfileScreen> {
         onError: (error, stackTrace) => FullPageErrorWidget(
           error: error,
           stackTrace: stackTrace,
-          prefix: 'Unable to load the profile',
+          prefix: L10n.of(context).unable_to_load_the_profile,
           onRetry: () => fetchProfile(),
         ),
       ),
@@ -76,7 +76,8 @@ class ProfileScreenBody extends StatefulWidget {
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
 }
 
-class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
+class _ProfileScreenBodyState extends State<ProfileScreenBody>
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -96,7 +97,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
         ? Container()
-        : ExtendedImage.network(banner, fit: BoxFit.cover, height: appBarHeight, cache: true);
+        : ExtendedImage.network(banner,
+            fit: BoxFit.cover, height: appBarHeight, cache: true);
 
     return Scaffold(
       body: NestedScrollView(
@@ -109,7 +111,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               snap: false,
               forceElevated: innerBoxIsScrolled,
               actions: [
-                FollowButton(id: profile.idStr!,
+                FollowButton(
+                  id: profile.idStr!,
                   name: profile.name!,
                   screenName: profile.screenName!,
                   imageUri: profile.profileImageUrlHttps,
@@ -120,18 +123,42 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 controller: _tabController,
                 isScrollable: true,
                 tabs: [
-                  Tab(child: Text('Tweets', textAlign: TextAlign.center)),
-                  Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
-                  Tab(child: Text('Media', textAlign: TextAlign.center)),
-                  Tab(child: Text('Following', textAlign: TextAlign.center)),
-                  Tab(child: Text('Followers', textAlign: TextAlign.center)),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).tweets,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).tweets_and_replies,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).media,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).following,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).followers,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
               title: Row(
                 children: [
                   Text(profile.name!),
-                  if (profile.verified ?? false)
-                    SizedBox(width: 6),
+                  if (profile.verified ?? false) SizedBox(width: 6),
                   if (profile.verified ?? false)
                     Icon(Icons.verified, size: 24, color: Colors.white)
                 ],
@@ -159,7 +186,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         body: TabBarView(
           controller: _tabController,
           children: [
-            ProfileTweets(user: profile, type: 'profile', includeReplies: false),
+            ProfileTweets(
+                user: profile, type: 'profile', includeReplies: false),
             ProfileTweets(user: profile, type: 'profile', includeReplies: true),
             ProfileTweets(user: profile, type: 'media', includeReplies: false),
             ProfileFollows(user: profile, type: 'following'),

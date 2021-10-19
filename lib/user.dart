@@ -1,14 +1,13 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter_gen/gen_l10n/main_localizations.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? uri;
@@ -111,16 +110,15 @@ class FollowButton extends StatelessWidget {
 
       var icon = followed ? Icon(Icons.person_remove) : Icon(Icons.person_add);
 
-      var text = followed
-          ? AppLocalizations.of(context)!.unsubscribe
-          : AppLocalizations.of(context)!.subscribe;
+      var text =
+          followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
 
       return PopupMenuButton<String>(
         icon: icon,
         itemBuilder: (context) => [
           PopupMenuItem(child: Text(text), value: 'toggle_subscribe'),
           PopupMenuItem(
-              child: Text(AppLocalizations.of(context)!.add_to_group),
+              child: Text(L10n.of(context).add_to_group),
               value: 'add_to_group'),
         ],
         onSelected: (value) async {
@@ -134,8 +132,8 @@ class FollowButton extends StatelessWidget {
                       onError: (error, stackTrace) => FullPageErrorWidget(
                         error: error,
                         stackTrace: stackTrace,
-                        prefix: AppLocalizations.of(context)!
-                            .unable_to_load_subscription_groups,
+                        prefix:
+                            L10n.of(context).unable_to_load_subscription_groups,
                       ),
                       onReady: (existing) {
                         var color =

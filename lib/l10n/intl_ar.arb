@@ -1,0 +1,25 @@
+{
+    "this_group_contains_no_subscriptions": "هذه المجموعة لا تحتوي على أية مجموعات!",
+    "could_not_find_any_tweets_by_this_user": "لم يتم العثور على أي تغريدة من هذا المستخدم",
+    "unable_to_load_the_next_page_of_replies": "غير قادر على تحميل الصفحة التالية من الردود",
+    "unable_to_load_the_tweet": "غير قادر على تحميل التغريدات",
+    "unable_to_load_subscription_groups": "غير قادر على تحميل مجموعات الاشتراك",
+
+    "add_to_group": "أضف إلى المجموعة",
+    "unsubscribe": "إلغاء الاشتراك",
+    "subscribe": "الاشتراك",
+
+    "reporting_an_error": "الإبلاغ غن خطأ",
+    "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "حدث خطأ ما في فريتر، تم إنشاء تقرير لهذا الخطأ، تستطيع أن تبعث التقرير إلى مطورين فريتر لمساعدتهم على إصلاح المشكلة.",
+    "would_you_like_to_enable_automatic_error_reporting": "هل تُحب أن تفعل مُبَلغ الأخطاء الآلي؟",
+    "your_report_will_be_sent_to_fritter_sentry_project": "تقريرك سيُبعث إلى مشروع حراسة فريتر، ويمكن العثور على تفاصيل الخصوصية في:",
+    "send_once": "ابعث مرة واحدة",
+    "send_always": "ابعث كل مرة",
+    "don_not_send": "لا تبعث",
+    "never_send": "يا ويلك لو تبعث",
+
+    "an_error_was_reported_to_sentry_thank_you": "بُلِّغ عن خطأ للحارس. شكرا!",
+    "thanks_for_reporting_we_will_try_and_fix_it_in_no_time": "شكراً علي تبليغك لنا. سنحاول أن نصحله بأسرع ما يمكن!",
+
+    "unable-to-load-the-next-page-of-tweets": "Unable to load the next page of tweets"
+}

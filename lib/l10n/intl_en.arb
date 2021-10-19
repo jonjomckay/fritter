@@ -1,0 +1,85 @@
+{
+    "this_group_contains_no_subscriptions": "This group contains no subscriptions!",
+    "could_not_find_any_tweets_by_this_user": "Couldn't find any tweets by this user!",
+    "unable_to_load_the_next_page_of_replies": "Unable to load the next page of replies",
+    "unable_to_load_the_tweet": "Unable to load the tweet",
+    "unable_to_load_subscription_groups": "Unable to load subscription groups",
+
+    "add_to_group": "Add to group",
+    "unsubscribe": "Unsubscribe",
+    "subscribe": "Subscribe",
+
+    "reporting_an_error": "Reporting an error",
+    "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "Something just went wrong in Fritter, and an error report has been generated. The report can be sent to the Fritter developers to help fix the problem.",
+    "would_you_like_to_enable_automatic_error_reporting": "Would you like to enable automatic error reporting?",
+    "your_report_will_be_sent_to_fritter_sentry_project": "Your report will be sent to Fritter's Sentry project, and privacy details can be found at:",
+    "send_once": "Send once",
+    "send_always": "Send always",
+    "don_not_send": "Don't send",
+    "never_send": "Never send",
+
+    "an_error_was_reported_to_sentry_thank_you": "An error was reported to Sentry. Thank you!",
+    "thanks_for_reporting_we_will_try_and_fix_it_in_no_time": "Thanks for reporting. We'll try and fix it in no time!",
+
+
+    "unable_to_load_the_next_page_of_tweets": "Unable to load the next page of tweets",
+    "unable_to_load_the_tweets_for_the_feed": "Unable to load the tweets for the feed",
+    "could_not_find_any_tweets_from_the_last_7_days": "Couldn't find any tweets from the last 7 days!",
+
+
+    "unable_to_load_the_group": "Unable to load the group",
+    "unable_to_load_the_group_settings": "Unable to load the group settings",
+
+    "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": "Note: Due to a Twitter limitation, not all tweets may be included",
+    "include_replies": "Include replies",
+    "include_retweets": "Include retweets",
+
+    "unable_to_find_your_saved_tweets": "Unable to find your saved tweets.",
+    "you_have_not_saved_any_tweets_yet": "You haven't saved any tweets yet!",
+
+    "unable_to_load_the_search_results": "Unable to load the search results.",
+    "no_results": "No results",
+
+    "feed": "Feed",
+    "subscriptions": "Subscriptions",
+    "trending": "Trending",
+    "saved": "Saved",
+    
+    "unable_to_load_the_list_of_follows": "Unable to load the list of follows",
+    "unable_to_load_the_next_page_of_follows": "Unable to load the next page of follows",
+    "this_user_does_not_follow_anyone": "This user does not follow anyone!",
+    "this_user_does_not_have_anyone_following_them": "This user does not have anyone following them!",
+
+    "unable_to_load_the_tweets": "Unable to load the tweets",
+
+    "unable_to_load_the_profile": "Unable to load the profile",
+    "tweets": "Tweets",
+    "tweets_and_replies": "Tweets & Replies",
+    "media": "Media",
+    "following": "Following",
+    "followers": "Followers",
+
+    "export": "Export",
+    "data_exported_to_fullPath": "Data exported to {fullPath}",
+    "data_exported_to_fileName": "Data exported to {fileName}",
+    "unable_to_check_if_this_is_a_legacy_Android_device": "Unable to check if this is a legacy Android device.",
+    "your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to": "Your device is running a version of Android older than KitKat (4.4), so the export can only be saved to:",
+    "export_settings": "Export settings?",
+    "export_subscriptions": "Export subscriptions?",
+    "export_subscription_groups": "Export subscription groups?",
+    "export_subscription_group_members": "Export subscription group members?",
+    "export_tweets": "Export tweets?",
+
+    "data_imported_successfully": "Data imported successfully",
+    "it_looks_like_you_have_already_said_hello_from_this_version_of_fritter": "It looks like you've already said hello from this version of Fritter!",
+    "cancel": "Cancel",
+    "thanks_for_helping_fritter": "Thanks for helping Fritter! 💖",
+    "it_looks_like_you_have_already_sent_a_ping_recently": "It looks like you've already sent a ping recently 🤔",
+    "unable_to_send_the_ping_the_status_code_was_response_statusCode": "Unable to send the ping. The status code was {statusCode}",
+    "timed_out_trying_to_send_the_ping": "Timed out trying to send the ping 😢",
+    "unable_to_send_the_ping_e_to_string": "Unable to send the ping. {e}",
+    "send": "Send",
+    "say_hello": "Say Hello 👋",
+    "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": "Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future.",
+    "unable_to_find_the_app_package_info": "Unable to find the app's package info"
+}
