@@ -1,3 +1,4 @@
+import 'package:fritter/subscriptions/_groups.dart';
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration_plan/migration/sql.dart';
@@ -168,36 +169,12 @@ class Repository {
         SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION}_old'),
       ],
       16: [
-        // Add a "color" column to the subscription groups table, and make "icon" nullable
-        SqlMigration(
-          'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN color INT DEFAULT NULL',
-          reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN color',
-        ),
-        // SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN icon'),
+        // Add a "color" column to the subscription groups table, and set a default icon for existing groups
+        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN color INT DEFAULT NULL', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN color'),
 
-        //--------- All this code just means `ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN icon`, because it's sqlite -------------------- //
-        SqlMigration(
-          'CREATE TEMPORARY TABLE ${TABLE_SUBSCRIPTION_GROUP}_backup(id, name, created_at, include_replies, include_retweets, color)',
-        ),
-        SqlMigration(
-          'INSERT INTO ${TABLE_SUBSCRIPTION_GROUP}_backup SELECT id, name, created_at, include_replies, include_retweets, color FROM $TABLE_SUBSCRIPTION_GROUP',
-        ),
-        SqlMigration(
-          'DROP TABLE $TABLE_SUBSCRIPTION_GROUP',
-        ),
-        SqlMigration(
-            'CREATE TABLE $TABLE_SUBSCRIPTION_GROUP(id, name, created_at, include_replies, include_retweets, color)'),
-        SqlMigration(
-          'INSERT INTO $TABLE_SUBSCRIPTION_GROUP SELECT id, name, created_at, include_replies, include_retweets, color FROM ${TABLE_SUBSCRIPTION_GROUP}_backup',
-        ),
-        SqlMigration(
-          'DROP TABLE ${TABLE_SUBSCRIPTION_GROUP}_backup',
-        ),
-        //--------------------------------------------------------------//
-
-        SqlMigration(
-          'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN icon VARCHAR NULL',
-        ),
+        Migration(Operation((db) async {
+          await db.update(TABLE_SUBSCRIPTION_GROUP, {'icon': defaultGroupIcon}, where: "icon IS NULL OR icon = '' OR icon = ?", whereArgs: ['rss_feed']);
+        }))
       ]
     });
     await openDatabase(

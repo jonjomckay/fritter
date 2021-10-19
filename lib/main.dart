@@ -135,18 +135,23 @@ Future<void> main() async {
   });
 
   Catcher(
-      debugConfig: catcherOptions,
-      releaseConfig: catcherOptions,
-      enableLogger: false,
-      runAppFunction: () async {
-        Logger.root.onRecord.listen((event) async {
-          log(event.message, error: event.error, stackTrace: event.stackTrace);
 
-          if (event.level.value >= 900) {
-            // Don't report internal Catcher errors, as it'll cause a loop
-            if (event.loggerName != 'Catcher') {
-              Catcher.reportCheckedError(event.error, event.stackTrace);
-            }
+    debugConfig: catcherOptions,
+    releaseConfig: catcherOptions,
+    enableLogger: false,
+    runAppFunction: () async {
+      Logger.root.onRecord.listen((event) async {
+        print(event.message);
+
+        if (event.error != null) {
+          print(event.error);
+          print(event.stackTrace);
+        }
+
+        if (event.level.value >= 900) {
+          // Don't report internal Catcher errors, as it'll cause a loop
+          if (event.loggerName != 'Catcher') {
+            Catcher.reportCheckedError(event.error, event.stackTrace);
           }
         });
 
