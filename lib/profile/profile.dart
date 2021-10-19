@@ -11,7 +11,6 @@ import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
-import 'package:fritter/ui/tabs.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
@@ -184,19 +183,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   verified: profile.verified!,
                 )
               ],
-              bottom: ColouredTabBar(
-                color: theme.scaffoldBackgroundColor,
-                child: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabs: [
-                    Tab(child: Text('Tweets', textAlign: TextAlign.center)),
-                    Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
-                    Tab(child: Text('Media', textAlign: TextAlign.center)),
-                    Tab(child: Text('Following', textAlign: TextAlign.center)),
-                    Tab(child: Text('Followers', textAlign: TextAlign.center)),
-                  ],
-                ),
+              bottom: TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                tabs: [
+                  Tab(child: Text('Tweets', textAlign: TextAlign.center)),
+                  Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
+                  Tab(child: Text('Media', textAlign: TextAlign.center)),
+                  Tab(child: Text('Following', textAlign: TextAlign.center)),
+                  Tab(child: Text('Followers', textAlign: TextAlign.center)),
+                ],
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
