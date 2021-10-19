@@ -74,7 +74,7 @@ class Subscription with ToMappable {
 class SubscriptionGroup with ToMappable {
   final String id;
   final String name;
-  final String? icon;
+  final String icon;
   final Color? color;
   final int numberOfMembers;
   final DateTime createdAt;
@@ -85,7 +85,7 @@ class SubscriptionGroup with ToMappable {
     return SubscriptionGroup(
       id: json['id'] as String,
       name: json['name'] as String,
-      icon: json['icon'] as String?,
+      icon: json['icon'] as String,
       color: json['color'] == null ? null : Color(json['color'] as int),
       numberOfMembers: json['number_of_members'] == null ? 0 : json['number_of_members'] as int,
       createdAt: DateTime.parse(json['created_at'] as String)

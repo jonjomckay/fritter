@@ -13,6 +13,8 @@ import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
+var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
+
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
 
@@ -29,7 +31,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
     });
   }
 
-  Widget _createGroupCard(String id, String name, String? icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
+  Widget _createGroupCard(String id, String name, String icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
     var title = numberOfMembers == null
         ? name
         : '$name ($numberOfMembers)';
@@ -50,7 +52,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
               color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Icon(icon == null ? Icons.rss_feed : deserializeIcon(jsonDecode(icon)), size: 16),
+              child: Icon(deserializeIcon(jsonDecode(icon)), size: 16),
             ),
             Expanded(child: Container(
               alignment: Alignment.center,
@@ -81,7 +83,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
       maxCrossAxisExtent: 140,
       childAspectRatio: 200 / 125,
       children: [
-        _createGroupCard('-1', 'All', null, null, null, null),
+        _createGroupCard('-1', 'All', defaultGroupIcon, null, null, null),
         ...model.groups.map((e) => _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
         Card(
           child: InkWell(

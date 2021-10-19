@@ -41,6 +41,7 @@ class _TweetVideoState extends State<TweetVideo> {
       autoInitialize: true,
       allowMuting: true,
       customControls: MaterialDesktopControls(),
+      allowedScreenSleep: false,
       additionalOptions: (context) => [
         OptionItem(
           onTap: () async {
