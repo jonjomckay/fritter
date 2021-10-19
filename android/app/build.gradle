@@ -1,3 +1,5 @@
+import com.android.build.OutputFile
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -38,6 +40,8 @@ if (keystoreFile != null && !keystoreFile.isEmpty()) {
     keystoreProperties.setProperty('keyAlias', System.getenv('KEY_ALIAS'));
     keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
 }
+
+ext.abiCodes = [x86_64: '0', 'armeabi-v7a': '1', arm64: '2']
 
 android {
     compileSdkVersion 30
@@ -81,6 +85,12 @@ android {
     android.applicationVariants.all { variant ->
         if (variant.buildType.name == "release") {
             variant.outputs.all { output ->
+                // Make sure each ABI we build for is unique, by tacking an extra digit on the end of its version code
+                def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+                if (baseAbiVersionCode != null) {
+                    output.versionCodeOverride = (flutterVersionCode + baseAbiVersionCode).toInteger()
+                }
+
                 output.outputFileName = "app-release.apk"
             }
         }
