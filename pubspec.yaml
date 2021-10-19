@@ -48,6 +48,7 @@ dependencies:
   infinite_scroll_pagination: ^3.0.1
   intl: ^0.17.0
   logging: ^1.0.1
+  measured_size: ^1.0.0
   multi_select_flutter: ^4.0.0
   package_info: ^2.0.0
   pref: ^2.0.2
