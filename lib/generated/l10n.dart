@@ -1964,6 +1964,16 @@ class L10n {
     );
   }
 
+  /// `Fritter blue`
+  String get fritter_blue {
+    return Intl.message(
+      'Fritter blue',
+      name: 'fritter_blue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Blue theme based on the Twitter color scheme`
   String get blue_theme_based_on_the_twitter_color_scheme {
     return Intl.message(

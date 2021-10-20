@@ -147,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "followers": MessageLookupByLibrary.simpleMessage("Followers"),
         "following": MessageLookupByLibrary.simpleMessage("Following"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
+        "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blue"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
         "groups": MessageLookupByLibrary.simpleMessage("Groups"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(

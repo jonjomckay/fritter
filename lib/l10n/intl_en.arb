@@ -187,6 +187,7 @@
     "an_update_for_fritter_is_available": "An update for Fritter is available! 🚀",
     "tap_to_download_release_version": "Tap to download {releaseVersion}",
     "update_to_release_version_through_your_fdroid_client": "Update to {releaseVersion} through your F-Droid client",
+    "fritter_blue": "Fritter blue",
     "blue_theme_based_on_the_twitter_color_scheme": "Blue theme based on the Twitter color scheme",
     "something_broke_in_fritter": "Something broke in Fritter.",
     "unable_to_run_the_database_migrations": "Unable to run the database migrations"

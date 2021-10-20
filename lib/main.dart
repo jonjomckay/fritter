@@ -37,8 +37,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:fritter/generated/l10n.dart';
 
 Future checkForUpdates() async {
+  L10n.load(Locale('en'));
   Logger.root.info('Checking for updates');
-
   try {
     var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
     if (response.statusCode == 200) {
@@ -59,8 +59,8 @@ Future checkForUpdates() async {
 
       if (int.parse(package.buildNumber) < latest) {
         var details = NotificationDetails(
-            android: AndroidNotificationDetails('updates', L10n.current.updates,
-                L10n.current.when_a_new_app_update_is_available,
+            android: AndroidNotificationDetails(
+                'updates', 'Updates', 'When a new app update is available',
                 importance: Importance.max,
                 largeIcon:
                     DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
@@ -70,16 +70,15 @@ Future checkForUpdates() async {
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
               0,
-              L10n.current.an_update_for_fritter_is_available,
-              L10n.current.tap_to_download_release_version(release['version']),
+              'An update for Fritter is available! 🚀',
+              'Tap to download ${release['version']}',
               details,
               payload: release['apk']);
         } else {
           await FlutterLocalNotificationsPlugin().show(
               0,
-              L10n.current.an_update_for_fritter_is_available,
-              L10n.current.update_to_release_version_through_your_fdroid_client(
-                  release['version']),
+              'An update for Fritter is available! 🚀',
+              'Update to ${release['version']} through your F-Droid client',
               details,
               payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/');
         }
@@ -248,9 +247,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     FlexSchemeData fritterColorScheme = FlexSchemeData(
-      name: 'Fritter blue',
-      description:
-          L10n.of(context).blue_theme_based_on_the_twitter_color_scheme,
+      name: L10n.current.fritter_blue,
+      description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
         primaryVariant: Color(0xFF320019),
