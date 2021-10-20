@@ -1,0 +1,1 @@
+* Added a new profile screen, including bio and metadata (#204, #223)

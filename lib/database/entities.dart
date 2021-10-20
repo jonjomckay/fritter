@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:fritter/subscriptions/_groups.dart';
+
 mixin ToMappable {
   Map<String, dynamic> toMap();
 }
@@ -82,10 +84,16 @@ class SubscriptionGroup with ToMappable {
   SubscriptionGroup({required this.id, required this.name, required this.icon, required this.color, required this.numberOfMembers, required this.createdAt});
 
   factory SubscriptionGroup.fromMap(Map<String, Object?> json) {
+    // This is here to handle imports of data from before v2.15.0
+    var icon = json['icon'] as String;
+    if (icon == 'rss_feed' || icon == '') {
+      icon = defaultGroupIcon;
+    }
+
     return SubscriptionGroup(
       id: json['id'] as String,
       name: json['name'] as String,
-      icon: json['icon'] as String,
+      icon: icon,
       color: json['color'] == null ? null : Color(json['color'] as int),
       numberOfMembers: json['number_of_members'] == null ? 0 : json['number_of_members'] as int,
       createdAt: DateTime.parse(json['created_at'] as String)
