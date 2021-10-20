@@ -118,8 +118,9 @@ class FollowButton extends StatelessWidget {
         itemBuilder: (context) => [
           PopupMenuItem(child: Text(text), value: 'toggle_subscribe'),
           PopupMenuItem(
-              child: Text(L10n.of(context).add_to_group),
-              value: 'add_to_group'),
+            child: Text(L10n.of(context).add_to_group),
+            value: 'add_to_group',
+          ),
         ],
         onSelected: (value) async {
           switch (value) {

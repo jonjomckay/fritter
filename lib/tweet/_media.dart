@@ -11,13 +11,16 @@ import 'package:fritter/utils/downloads.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetMediaItem extends StatefulWidget {
   final int index;
   final int total;
   final Media media;
 
-  const TweetMediaItem({Key? key, required this.index, required this.total, required this.media}) : super(key: key);
+  const TweetMediaItem(
+      {Key? key, required this.index, required this.total, required this.media})
+      : super(key: key);
 
   @override
   _TweetMediaItemState createState() => _TweetMediaItemState();
@@ -30,15 +33,15 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   void initState() {
     super.initState();
 
-    var mediaSize = PrefService.of(context, listen: false)
-        .get(OPTION_MEDIA_SIZE);
+    var mediaSize =
+        PrefService.of(context, listen: false).get(OPTION_MEDIA_SIZE);
 
     if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
       cachedImageExists(widget.media.mediaUrlHttps!)
           .then((value) => setState(() {
-        _showMedia = value;
-      }));
+                _showMedia = value;
+              }));
     } else {
       setState(() {
         _showMedia = true;
@@ -86,7 +89,10 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
         child: Container(
           color: Colors.black26,
           child: Center(
-            child: Text('Tap to show ${getMediaType(item.type)}'),
+            child: Text(
+              L10n.of(context)
+                  .tap_to_show_getMediaType_item_type(getMediaType(item.type)),
+            ),
           ),
         ),
         onTap: () => setState(() {
@@ -122,7 +128,8 @@ class TweetMedia extends StatefulWidget {
   final List<Media> media;
   final String username;
 
-  const TweetMedia({Key? key, required this.media, required this.username}) : super(key: key);
+  const TweetMedia({Key? key, required this.media, required this.username})
+      : super(key: key);
 
   @override
   _TweetMediaState createState() => _TweetMediaState();
@@ -149,9 +156,15 @@ class _TweetMediaState extends State<TweetMedia> {
             var item = widget.media[index];
 
             return GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TweetMediaView(initialIndex: index, media: widget.media, username: widget.username ))),
-              child: TweetMediaItem(media: item, index: index + 1, total: widget.media.length),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TweetMediaView(
+                          initialIndex: index,
+                          media: widget.media,
+                          username: widget.username))),
+              child: TweetMediaItem(
+                  media: item, index: index + 1, total: widget.media.length),
             );
           },
         ),
@@ -165,7 +178,12 @@ class TweetMediaView extends StatefulWidget {
   final List<Media> media;
   final String username;
 
-  const TweetMediaView({Key? key, required this.initialIndex, required this.media, required this.username}) : super(key: key);
+  const TweetMediaView(
+      {Key? key,
+      required this.initialIndex,
+      required this.media,
+      required this.username})
+      : super(key: key);
 
   @override
   _TweetMediaViewState createState() => _TweetMediaViewState();
@@ -203,22 +221,30 @@ class _TweetMediaViewState extends State<TweetMediaView> {
               var fileName = '$_username-$url';
               var uri = '${_media.mediaUrlHttps}:orig';
 
-              await downloadUriToPickedFile(uri, fileName,
+              await downloadUriToPickedFile(
+                uri,
+                fileName,
                 onError: (response) {
-                  log.severe('Unable to save the media. The response was ${response.body}');
+                  log.severe(
+                      'Unable to save the media. The response was ${response.body}');
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
+                    content: Text(
+                      L10n.of(context)
+                          .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
+                              response.statusCode),
+                    ),
                   ));
                 },
                 onStart: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Downloading media...'),
+                    content: Text(L10n.of(context).downloading_media),
                   ));
                 },
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Successfully saved the media!'),
+                    content:
+                        Text(L10n.of(context).successfully_saved_the_media),
                   ));
                 },
               );
@@ -238,9 +264,10 @@ class _TweetMediaViewState extends State<TweetMediaView> {
           } else if (item.type == 'video') {
             media = TweetVideo(media: item, loop: false);
           } else if (item.type == 'photo') {
-            media = TweetPhoto(inPageView: true, size: size, uri: item.mediaUrlHttps!);
+            media = TweetPhoto(
+                inPageView: true, size: size, uri: item.mediaUrlHttps!);
           } else {
-            media = Text('Unknown');
+            media = Text(L10n.of(context).unknown);
           }
 
           return media;

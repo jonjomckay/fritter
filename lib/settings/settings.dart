@@ -208,8 +208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             L10n.of(context)
-                                .unable_to_send_the_ping_e_to_string(
-                                    e.toString()),
+                                .unable_to_send_the_ping_e_to_string(e),
                           ),
                         ));
                       }
@@ -251,19 +250,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           return PrefPage(children: [
             PrefButton(
-              child: Text('👋 Hello'),
-              title: Text('Say Hello'),
+              child: Text(L10n.of(context).say_hello_emoji),
+              title: Text(L10n.of(context).say_hello),
               subtitle: Text(
-                  'Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
+                L10n.of(context)
+                    .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
+              ),
               onTap: _sendPing,
             ),
             PrefTitle(
-              title: Text('General'),
+              title: Text(L10n.of(context).general),
             ),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Default tab'),
-                subtitle: Text('Which tab is shown when the app opens'),
+                title: Text(L10n.of(context).default_tab),
+                subtitle: Text(
+                  L10n.of(context).which_tab_is_shown_when_the_app_opens,
+                ),
                 pref: OPTION_HOME_INITIAL_TAB,
                 items: homeTabs
                     .map((e) =>
@@ -271,38 +274,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     .toList()),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Media size'),
-                subtitle: Text('Save bandwidth using smaller images'),
+                title: Text(L10n.of(context).media_size),
+                subtitle: Text(
+                  L10n.of(context).save_bandwidth_using_smaller_images,
+                ),
                 pref: OPTION_MEDIA_SIZE,
                 items: [
-                  DropdownMenuItem(child: Text('Disabled'), value: 'disabled'),
-                  DropdownMenuItem(child: Text('Thumbnail'), value: 'thumb'),
-                  DropdownMenuItem(child: Text('Small'), value: 'small'),
-                  DropdownMenuItem(child: Text('Medium'), value: 'medium'),
-                  DropdownMenuItem(child: Text('Large'), value: 'large'),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).disabled),
+                    value: 'disabled',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).thumbnail),
+                    value: 'thumb',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).small),
+                    value: 'small',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).medium),
+                    value: 'medium',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).large),
+                    value: 'large',
+                  ),
                 ]),
-            PrefTitle(title: Text('Theme')),
+            PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Theme'),
+                title: Text(L10n.of(context).theme),
                 pref: OPTION_THEME_MODE,
                 items: [
-                  DropdownMenuItem(child: Text('System'), value: 'system'),
-                  DropdownMenuItem(child: Text('Light'), value: 'light'),
-                  DropdownMenuItem(child: Text('Dark'), value: 'dark'),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).system),
+                    value: 'system',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).light),
+                    value: 'light',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).dark),
+                    value: 'dark',
+                  ),
                 ]),
             PrefSwitch(
-              title: Text('True Black?'),
+              title: Text(L10n.of(context).true_black),
               pref: OPTION_THEME_TRUE_BLACK,
-              subtitle: Text('Use true black for the dark mode theme'),
+              subtitle: Text(
+                L10n.of(context).use_true_black_for_the_dark_mode_theme,
+              ),
             ),
             PrefTitle(
-              title: Text('Data'),
+              title: Text(L10n.of(context).data),
             ),
             PrefLabel(
               leading: Icon(Icons.import_export),
-              title: Text('Import'),
-              subtitle: Text('Import data from another device'),
+              title: Text(L10n.of(context).import),
+              subtitle: Text(L10n.of(context).import_data_from_another_device),
               onTap: () async {
                 var isLegacy = await isLegacyAndroid();
                 if (isLegacy) {
@@ -310,14 +341,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Legacy Android Import'),
+                          title: Text(L10n.of(context).legacy_android_import),
                           actions: [
                             TextButton(
-                              child: Text('Cancel'),
+                              child: Text(L10n.of(context).cancel),
                               onPressed: () => Navigator.pop(context),
                             ),
                             TextButton(
-                              child: Text('Import'),
+                              child: Text(L10n.of(context).import),
                               onPressed: () async {
                                 var file = File(
                                     await getLegacyPath(legacyExportFileName));
@@ -336,11 +367,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ));
                                   }
                                 } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text(
-                                        'The file does not exist. Please ensure it is located at ${file.path}'),
-                                  ));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        L10n.of(context)
+                                            .the_file_does_not_exist_please_ensure_it_is_located_at_file_path(
+                                                file.path),
+                                      ),
+                                    ),
+                                  );
                                 }
 
                                 Navigator.pop(context);
@@ -352,20 +387,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onError: (error, stackTrace) => FullPageErrorWidget(
                                 error: error,
                                 stackTrace: stackTrace,
-                                prefix: 'prefix'),
+                                prefix: L10n.of(context).prefix),
                             onReady: (legacyExportPath) => Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                    'Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
-                                    textAlign: TextAlign.left),
+                                  L10n.of(context)
+                                      .your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from,
+                                  textAlign: TextAlign.left,
+                                ),
                                 SizedBox(height: 16),
                                 Text(legacyExportPath,
                                     textAlign: TextAlign.left),
                                 SizedBox(height: 16),
                                 Text(
-                                    'Please make sure the data you wish to import is located there, then press the import button below.',
-                                    textAlign: TextAlign.left)
+                                  L10n.of(context)
+                                      .please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below,
+                                  textAlign: TextAlign.left,
+                                )
                               ],
                             ),
                           ),
@@ -380,52 +419,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             PrefLabel(
               leading: Icon(Icons.save),
-              title: Text('Export'),
-              subtitle: Text('Export your data'),
+              title: Text(L10n.of(context).export),
+              subtitle: Text(L10n.of(context).export_your_data),
               onTap: () => Navigator.pushNamed(context, ROUTE_SETTINGS_EXPORT),
             ),
-            PrefTitle(title: Text('Logging')),
+            PrefTitle(title: Text(L10n.of(context).logging)),
             PrefCheckbox(
-              title: Text('Enable Sentry?'),
-              subtitle: Text('Whether errors should be reported to Sentry'),
+              title: Text(L10n.of(context).enable_sentry),
+              subtitle: Text(
+                L10n.of(context).whether_errors_should_be_reported_to_sentry,
+              ),
               pref: OPTION_ERRORS_SENTRY_ENABLED,
             ),
-            PrefTitle(title: Text('About')),
+            PrefTitle(title: Text(L10n.of(context).about)),
             PrefLabel(
               leading: Icon(Icons.info),
-              title: Text('Version'),
+              title: Text(L10n.of(context).version),
               subtitle: Text(version),
               onTap: () async {
                 await Clipboard.setData(ClipboardData(text: version));
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Copied version to clipboard'),
+                  content: Text(L10n.of(context).copied_version_to_clipboard),
                 ));
               },
             ),
             PrefLabel(
               leading: Icon(Icons.favorite),
-              title: Text('Contribute'),
-              subtitle: Text('Help make Fritter even better'),
+              title: Text(L10n.of(context).contribute),
+              subtitle: Text(L10n.of(context).help_make_fritter_even_better),
               onTap: () => launch('https://github.com/jonjomckay/fritter'),
             ),
             PrefLabel(
               leading: Icon(Icons.bug_report),
-              title: Text('Report a bug'),
-              subtitle: Text('Let the developers know if something\'s broken'),
+              title: Text(L10n.of(context).report_a_bug),
+              subtitle: Text(
+                L10n.of(context).let_the_developers_know_if_something_is_broken,
+              ),
               onTap: () =>
                   launch('https://github.com/jonjomckay/fritter/issues'),
             ),
             if (getFlavor() != 'play')
               PrefLabel(
                 leading: Icon(Icons.attach_money),
-                title: Text('Donate'),
-                subtitle: Text('Help support Fritter\'s future'),
+                title: Text(L10n.of(context).donate),
+                subtitle: Text(L10n.of(context).help_support_fritters_future),
                 onTap: () => showDialog(
                     context: context,
                     builder: (context) {
                       return SimpleDialog(
-                        title: Text('Donate'),
+                        title: Text(L10n.of(context).donate),
                         children: [
                           SimpleDialogOption(
                             child: ListTile(
@@ -438,10 +481,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                               Navigator.pop(context);
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text('Copied address to clipboard'),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    L10n.of(context)
+                                        .copied_address_to_clipboard,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                           SimpleDialogOption(
@@ -474,13 +521,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             PrefLabel(
               leading: Icon(Icons.copyright),
-              title: Text('Licenses'),
-              subtitle: Text('All the great software used by Fritter'),
+              title: Text(L10n.of(context).licenses),
+              subtitle:
+                  Text(L10n.of(context).all_the_great_software_used_by_fritter),
               onTap: () => showLicensePage(
                   context: context,
-                  applicationName: 'Fritter',
+                  applicationName: L10n.of(context).fritter,
                   applicationVersion: version,
-                  applicationLegalese: 'Released under the MIT License',
+                  applicationLegalese:
+                      L10n.of(context).released_under_the_mit_license,
                   applicationIcon: Container(
                     margin: EdgeInsets.all(12),
                     child: ClipRRect(

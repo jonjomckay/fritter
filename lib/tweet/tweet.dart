@@ -15,6 +15,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:fritter/generated/l10n.dart';
 
 class TweetTile extends StatelessWidget {
   static final log = Logger('TweetTile');
@@ -25,9 +26,17 @@ class TweetTile extends StatelessWidget {
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({Key? key, required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super(key: key);
+  TweetTile(
+      {Key? key,
+      required this.clickable,
+      this.currentUsername,
+      this.tweet,
+      this.isPinned = false,
+      this.isThread = false})
+      : super(key: key);
 
-  _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
+  _createFooterIconButton(IconData icon,
+      [Color? color, Function()? onPressed]) {
     return InkWell(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 16),
@@ -37,14 +46,12 @@ class TweetTile extends StatelessWidget {
     );
   }
 
-  _createFooterTextButton(IconData icon, String label, [Color? color, Function()? onPressed]) {
+  _createFooterTextButton(IconData icon, String label,
+      [Color? color, Function()? onPressed]) {
     return TextButton.icon(
       icon: Icon(icon, size: 14, color: color),
       onPressed: onPressed,
-      label: Text(label, style: TextStyle(
-        color: color,
-        fontSize: 12.5
-      )),
+      label: Text(label, style: TextStyle(color: color, fontSize: 12.5)),
     );
   }
 
@@ -57,26 +64,27 @@ class TweetTile extends StatelessWidget {
     var numberFormat = NumberFormat.compact();
 
     TweetWithCard tweet = this.tweet!.retweetedStatusWithCard == null
-      ? this.tweet!
-      : this.tweet!.retweetedStatusWithCard!;
+        ? this.tweet!
+        : this.tweet!.retweetedStatusWithCard!;
 
     if (tweet.isTombstone ?? false) {
       return Container(
         width: double.infinity,
         child: Card(
           child: Container(
-            padding: EdgeInsets.all(16),
-            child: Text(tweet.text!, style: TextStyle(
-              fontStyle: FontStyle.italic
-            ))
-          ),
+              padding: EdgeInsets.all(16),
+              child: Text(tweet.text!,
+                  style: TextStyle(fontStyle: FontStyle.italic))),
         ),
       );
     }
 
     Widget media = Container();
-    if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet!.user!.screenName!);
+    if (tweet.extendedEntities?.media != null &&
+        tweet.extendedEntities!.media!.isNotEmpty) {
+      media = TweetMedia(
+          media: tweet.extendedEntities!.media!,
+          username: this.tweet!.user!.screenName!);
     }
 
     Widget retweetBanner = Container();
@@ -86,16 +94,14 @@ class TweetTile extends StatelessWidget {
         icon: Icons.repeat,
         children: [
           TextSpan(
-              text: '${this.tweet!.user!.name!} retweeted',
-              style: Theme.of(context).textTheme.caption
-          )
+              text: L10n.of(context)
+                  .this_tweet_user_name_retweeted(this.tweet!.user!.name!),
+              style: Theme.of(context).textTheme.caption)
         ],
       );
 
-      retweetSidebar = Container(
-          color: Theme.of(context).secondaryHeaderColor,
-          width: 4
-      );
+      retweetSidebar =
+          Container(color: Theme.of(context).secondaryHeaderColor, width: 4);
     }
 
     Widget replyToTile = Container();
@@ -106,40 +112,44 @@ class TweetTile extends StatelessWidget {
           var replyToId = tweet.inReplyToStatusIdStr;
           if (replyToId == null) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Sorry, the replied tweet could not be found!'),
+              content: Text(
+                L10n.of(context).sorry_the_replied_tweet_could_not_be_found,
+              ),
             ));
           } else {
-            Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-                id: replyToId,
-                username: replyTo
-            ));
+            Navigator.pushNamed(context, ROUTE_STATUS,
+                arguments:
+                    StatusScreenArguments(id: replyToId, username: replyTo));
           }
         },
         icon: Icons.reply,
         children: [
-          TextSpan(text: 'Replying to ', style: Theme.of(context).textTheme.caption),
+          TextSpan(
+              text: '${L10n.of(context).replying_to} ',
+              style: Theme.of(context).textTheme.caption),
           TextSpan(
               text: '@$replyTo',
-              style: Theme.of(context).textTheme.caption!.copyWith(
-                  fontWeight: FontWeight.bold
-              )
-          ),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(fontWeight: FontWeight.bold)),
         ],
       );
     }
 
-    var tweetText = tweet.fullText == null
-        ? tweet.text
-        : tweet.fullText;
+    var tweetText = tweet.fullText == null ? tweet.text : tweet.fullText;
 
     if (tweetText == null) {
       var message = 'The tweet did not contain any text. This is unexpected';
 
       log.severe(message);
 
-      return Container(child: Text(
-          'The tweet did not contain any text. This is unexpected'
-      ));
+      return Container(
+        child: Text(
+          L10n.of(context)
+              .the_tweet_did_not_contain_any_text_this_is_unexpected,
+        ),
+      );
     }
 
     var quotedTweet = Container();
@@ -156,17 +166,17 @@ class TweetTile extends StatelessWidget {
         quotedTweetTile = Container(
           width: double.infinity,
           margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Text('This tweet is unavailable', style: TextStyle(
-              color: Theme.of(context).hintColor
-          )),
+          child: Text(
+            L10n.of(context).this_tweet_is_unavailable,
+            style: TextStyle(color: Theme.of(context).hintColor),
+          ),
         );
       }
 
       quotedTweet = Container(
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(8)
-        ),
+            borderRadius: BorderRadius.circular(8)),
         margin: EdgeInsets.all(8),
         child: Container(
           child: quotedTweetTile,
@@ -188,168 +198,212 @@ class TweetTile extends StatelessWidget {
       );
     }
 
-    return Consumer<HomeModel>(builder: (context, model, child) => Card(
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            retweetSidebar,
-            Expanded(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                retweetBanner,
-                replyToTile,
-                if (isPinned)
-                  _TweetTileLeading(
-                    icon: Icons.push_pin,
-                    children: [
+    return Consumer<HomeModel>(
+      builder: (context, model, child) => Card(
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              retweetSidebar,
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  retweetBanner,
+                  replyToTile,
+                  if (isPinned)
+                    _TweetTileLeading(icon: Icons.push_pin, children: [
                       TextSpan(
-                          text: 'Pinned tweet',
-                          style: Theme.of(context).textTheme.caption
+                        text: L10n.of(context).pinned_tweet,
+                        style: Theme.of(context).textTheme.caption,
                       )
-                    ]
-                  ),
-                if (isThread)
-                  _TweetTileLeading(
-                    icon: Icons.forum,
-                    children: [
+                    ]),
+                  if (isThread)
+                    _TweetTileLeading(icon: Icons.forum, children: [
                       TextSpan(
-                          text: 'Thread',
-                          style: Theme.of(context).textTheme.caption
+                        text: L10n.of(context).thread,
+                        style: Theme.of(context).textTheme.caption,
                       )
-                    ]
-                  ),
-                ListTile(
-                  onTap: () {
-                    // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                    if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
-                      return null;
-                    }
+                    ]),
+                  ListTile(
+                    onTap: () {
+                      // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
+                      if (currentUsername != null &&
+                          tweet.user!.screenName!.endsWith(currentUsername!)) {
+                        return null;
+                      }
 
-                    Navigator.pushNamed(context, ROUTE_PROFILE, arguments: tweet.user!.screenName!);
-                  },
-                  title: Row(
-                    children: [
-                      Flexible(
-                        child: Row(
-                          children: [
-                            Flexible(child: Text(tweet.user!.name!,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500
-                                )
-                            )),
-                            if (tweet.user!.verified ?? false)
-                              SizedBox(width: 4),
-                            if (tweet.user!.verified ?? false)
-                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
-                          ],
+                      Navigator.pushNamed(context, ROUTE_PROFILE,
+                          arguments: tweet.user!.screenName!);
+                    },
+                    title: Row(
+                      children: [
+                        Flexible(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                  child: Text(tweet.user!.name!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500))),
+                              if (tweet.user!.verified ?? false)
+                                SizedBox(width: 4),
+                              if (tweet.user!.verified ?? false)
+                                Icon(Icons.verified,
+                                    size: 18,
+                                    color: Theme.of(context).primaryColor)
+                            ],
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.more_horiz),
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(minHeight: 32),
-                        onPressed: () async {
-                          var createSheetButton = (title, icon, onTap) => ListTile(
-                            onTap: onTap,
-                            leading: Icon(icon),
-                            title: Text(title),
-                          );
+                        IconButton(
+                          icon: Icon(Icons.more_horiz),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(minHeight: 32),
+                          onPressed: () async {
+                            var createSheetButton =
+                                (title, icon, onTap) => ListTile(
+                                      onTap: onTap,
+                                      leading: Icon(icon),
+                                      title: Text(title),
+                                    );
 
-                          showModalBottomSheet(context: context, builder: (context) {
-                            return SafeArea(child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                FutureBuilderWrapper<bool>(
-                                  future: model.isTweetSaved(tweet.idStr!),
-                                  onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
-                                    Catcher.reportCheckedError(error, stackTrace);
-                                  }),
-                                  onReady: (saved) {
-                                    if (saved) {
-                                      return createSheetButton('Unsave', Icons.bookmark, () async {
-                                        await model.deleteSavedTweet(tweet.idStr!);
-                                        Navigator.pop(context);
-                                      });
-                                    } else {
-                                      return createSheetButton('Save', Icons.bookmark_outline, () async {
-                                        await model.saveTweet(tweet.idStr!, tweet.toJson());
-                                        Navigator.pop(context);
-                                      });
-                                    }
-                                  },
-                                ),
-                                createSheetButton('Share tweet content', Icons.share, () async {
-                                  Share.share(tweetText);
-                                  Navigator.pop(context);
-                                }),
-                                createSheetButton('Share tweet link', Icons.share, () async {
-                                  Share.share('https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
-                                  Navigator.pop(context);
-                                }),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  child: Divider(
-                                    thickness: 1.0,
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return SafeArea(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FutureBuilderWrapper<bool>(
+                                        future:
+                                            model.isTweetSaved(tweet.idStr!),
+                                        onError: (error, stackTrace) =>
+                                            _createFooterIconButton(
+                                          Icons.error,
+                                          Colors.red,
+                                          () async {
+                                            Catcher.reportCheckedError(
+                                                error, stackTrace);
+                                          },
+                                        ),
+                                        onReady: (saved) {
+                                          if (saved) {
+                                            return createSheetButton(
+                                              L10n.of(context).unsave,
+                                              Icons.bookmark,
+                                              () async {
+                                                await model.deleteSavedTweet(
+                                                    tweet.idStr!);
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          } else {
+                                            return createSheetButton(
+                                              L10n.of(context).save,
+                                              Icons.bookmark_outline,
+                                              () async {
+                                                await model.saveTweet(
+                                                    tweet.idStr!,
+                                                    tweet.toJson());
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      createSheetButton(
+                                        L10n.of(context).share_tweet_content,
+                                        Icons.share,
+                                        () async {
+                                          Share.share(tweetText);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      createSheetButton(
+                                        L10n.of(context).share_tweet_link,
+                                        Icons.share,
+                                        () async {
+                                          Share.share(
+                                              'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Divider(
+                                          thickness: 1.0,
+                                        ),
+                                      ),
+                                      createSheetButton(
+                                        L10n.of(context).cancel,
+                                        Icons.close,
+                                        () => Navigator.pop(context),
+                                      )
+                                    ],
                                   ),
-                                ),
-                                createSheetButton('Cancel', Icons.close, () => Navigator.pop(context))
-                              ],
-                            ));
-                          });
-                        },
-                      )
-                    ],
+                                );
+                              },
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                            child: Text(
+                          '@${tweet.user!.screenName!}',
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        SizedBox(width: 4),
+                        Text(timeago.format(tweet.createdAt!),
+                            style: Theme.of(context).textTheme.caption)
+                      ],
+                    ),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(64),
+                      child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
+                    ),
                   ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(child: Text('@${tweet.user!.screenName!}',
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                      SizedBox(width: 4),
-                      Text(timeago.format(tweet.createdAt!),
-                          style: Theme.of(context).textTheme.caption)
-                    ],
+                  content,
+                  media,
+                  quotedTweet,
+                  TweetCard(tweet: tweet, card: tweet.card),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    child: ButtonBar(
+                      buttonTextTheme: ButtonTextTheme.accent,
+                      buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                      children: [
+                        if (tweet.replyCount != null)
+                          _createFooterTextButton(Icons.comment,
+                              numberFormat.format(tweet.replyCount), null, () {
+                            Navigator.pushNamed(context, ROUTE_STATUS,
+                                arguments: StatusScreenArguments(
+                                    id: tweet.idStr!,
+                                    username: tweet.user!.screenName!));
+                          }),
+                        if (tweet.retweetCount != null)
+                          _createFooterTextButton(Icons.repeat,
+                              numberFormat.format(tweet.retweetCount)),
+                        if (tweet.quoteCount != null)
+                          _createFooterTextButton(Icons.message,
+                              numberFormat.format(tweet.quoteCount)),
+                        if (tweet.favoriteCount != null)
+                          _createFooterTextButton(Icons.favorite,
+                              numberFormat.format(tweet.favoriteCount)),
+                      ],
+                    ),
                   ),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(64),
-                    child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
-                  ),
-                ),
-                content,
-                media,
-                quotedTweet,
-                TweetCard(tweet: tweet, card: tweet.card),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: ButtonBar(
-                    buttonTextTheme: ButtonTextTheme.accent,
-                    buttonPadding: EdgeInsets.symmetric(horizontal: 0),
-                    children: [
-                      if (tweet.replyCount != null)
-                        _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-                              id: tweet.idStr!,
-                              username: tweet.user!.screenName!
-                          ));
-                        }),
-                      if (tweet.retweetCount != null)
-                        _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
-                      if (tweet.quoteCount != null)
-                        _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
-                      if (tweet.favoriteCount != null)
-                        _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                    ],
-                  ),
-                ),
-              ],
-            ))
-          ],
+                ],
+              ))
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -358,7 +412,9 @@ class _TweetTileLeading extends StatelessWidget {
   final IconData icon;
   final Iterable<InlineSpan> children;
 
-  const _TweetTileLeading({Key? key, this.onTap, required this.icon, required this.children}) : super(key: key);
+  const _TweetTileLeading(
+      {Key? key, this.onTap, required this.icon, required this.children})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -371,18 +427,14 @@ class _TweetTileLeading extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
           child: Container(
             child: RichText(
-              text: TextSpan(
-                  children: [
-                    WidgetSpan(
-                        child: Icon(icon, size: 12, color: Theme.of(context).hintColor),
-                        alignment: PlaceholderAlignment.middle
-                    ),
-                    WidgetSpan(
-                        child: SizedBox(width: 16)
-                    ),
-                    ...children
-                  ]
-              ),
+              text: TextSpan(children: [
+                WidgetSpan(
+                    child: Icon(icon,
+                        size: 12, color: Theme.of(context).hintColor),
+                    alignment: PlaceholderAlignment.middle),
+                WidgetSpan(child: SizedBox(width: 16)),
+                ...children
+              ]),
             ),
           ),
         ),

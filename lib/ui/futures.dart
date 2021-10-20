@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:logging/logging.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class FutureBuilderWrapper<T> extends StatelessWidget {
   final Future<T>? future;
-  final FritterErrorWidget Function(Object? error, StackTrace? stackTrace) onError;
+  final FritterErrorWidget Function(Object? error, StackTrace? stackTrace)
+      onError;
   final Widget Function(T data) onReady;
 
-  const FutureBuilderWrapper({Key? key, required this.future, required this.onError, required this.onReady}) : super(key: key);
+  const FutureBuilderWrapper(
+      {Key? key,
+      required this.future,
+      required this.onError,
+      required this.onReady})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,8 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
         var state = snapshot.connectionState;
 
         if (snapshot.hasError) {
-          Logger.root.severe('Unexpected error', snapshot.error, snapshot.stackTrace);
+          Logger.root
+              .severe('Unexpected error', snapshot.error, snapshot.stackTrace);
           return Center(child: onError(snapshot.error, snapshot.stackTrace));
         }
 
@@ -27,12 +35,22 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
           case ConnectionState.done:
             var data = snapshot.data;
             if (data == null) {
-              return Center(child: Text('No data was returned, which should never happen. Please report a bug, if possible!'));
+              return Center(
+                child: Text(
+                  L10n.of(context)
+                      .no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible,
+                ),
+              );
             }
 
             return onReady(data);
           default:
-            return Center(child: Text('The connection state $state is not supported'));
+            return Center(
+              child: Text(
+                L10n.of(context)
+                    .the_connection_state_state_is_not_supported(state),
+              ),
+            );
         }
       },
     );

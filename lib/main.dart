@@ -59,8 +59,8 @@ Future checkForUpdates() async {
 
       if (int.parse(package.buildNumber) < latest) {
         var details = NotificationDetails(
-            android: AndroidNotificationDetails(
-                'updates', 'Updates', 'When a new app update is available',
+            android: AndroidNotificationDetails('updates', L10n.current.updates,
+                L10n.current.when_a_new_app_update_is_available,
                 importance: Importance.max,
                 largeIcon:
                     DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
@@ -70,15 +70,16 @@ Future checkForUpdates() async {
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
               0,
-              'An update for Fritter is available! 🚀',
-              'Tap to download ${release['version']}',
+              L10n.current.an_update_for_fritter_is_available,
+              L10n.current.tap_to_download_release_version(release['version']),
               details,
               payload: release['apk']);
         } else {
           await FlutterLocalNotificationsPlugin().show(
               0,
-              'An update for Fritter is available! 🚀',
-              'Update to ${release['version']} through your F-Droid client',
+              L10n.current.an_update_for_fritter_is_available,
+              L10n.current.update_to_release_version_through_your_fdroid_client(
+                  release['version']),
               details,
               payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/');
         }
@@ -122,12 +123,14 @@ Future<void> main() async {
         sentryEnabledStream:
             prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED))
   ], localizationOptions: [
-    LocalizationOptions('en',
-        dialogReportModeDescription:
-            'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
-        dialogReportModeTitle: 'Send report',
-        dialogReportModeAccept: 'Send',
-        dialogReportModeCancel: "Don't send")
+    LocalizationOptions(
+      'en',
+      dialogReportModeDescription:
+          'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+      dialogReportModeTitle: 'Send report',
+      dialogReportModeAccept: 'Send',
+      dialogReportModeCancel: "Don't send",
+    )
   ], explicitExceptionHandlersMap: {
     'SocketException': NullHandler()
   }, customParameters: {
@@ -246,7 +249,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     FlexSchemeData fritterColorScheme = FlexSchemeData(
       name: 'Fritter blue',
-      description: 'Blue theme based on the Twitter color scheme',
+      description:
+          L10n.of(context).blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
         primaryVariant: Color(0xFF320019),
@@ -362,7 +366,7 @@ class _MyAppState extends State<MyApp> {
             body: FullPageErrorWidget(
               error: details.exception,
               stackTrace: details.stack,
-              prefix: 'Something broke in Fritter.',
+              prefix: L10n.of(context).something_broke_in_fritter,
             ),
           );
         };
@@ -431,7 +435,7 @@ class _DefaultPageState extends State<DefaultPage> {
       onError: (error, stackTrace) => ScaffoldErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix: 'Unable to run the database migrations',
+        prefix: L10n.of(context).unable_to_run_the_database_migrations,
       ),
       onReady: (data) => HomeScreen(),
     );
