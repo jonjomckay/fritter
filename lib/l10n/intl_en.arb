@@ -148,7 +148,7 @@
     "tweets_number": "{num, plural, zero{no tweets} one{one tweet} two{two tweets} few{{numFormatted} tweets} many{{numFormatted} tweet} other{{numFormatted} tweets}}",
     "ended_timeago_format_endsAt_allowFromNow_true": "Ended {timeagoFormat}",
     "ends_timeago_format_endsAt_allowFromNow_true": "Ends {timeagoFormat}",
-    "numberFormat_format_total_votes": "{numberFormatTotal} votes",
+    "numberFormat_format_total_votes": "{num, plural, zero{no votes} one{one vote} two{two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}",
     "tap_to_show_getMediaType_item_type": "Tap to show {getMediaType}",
     "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": "Unable to save the media. Twitter returned a status of {responseStatusCode}",
     "downloading_media": "Downloading media...",

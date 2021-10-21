@@ -148,7 +148,7 @@
     "tweets_number": "{num, plural, zero{لا تغريدات} one{تغريدة واحدة} two{تغريدتان} few{{numFormatted} تغريدات} many{{numFormatted} تغريدة} other{{numFormatted} تغريدات}}",
     "ended_timeago_format_endsAt_allowFromNow_true": "اتنهى {timeagoFormat}",
     "ends_timeago_format_endsAt_allowFromNow_true": "يتنهي {timeagoFormat}",
-    "numberFormat_format_total_votes": "{numberFormatTotal} تصويت",
+    "numberFormat_format_total_votes": "{num, plural, zero{ولا تصويت} one{تصويت واحد} two{تصويتان} few{{numFormatted} تصويتات} many{{numFormatted} تصويت} other{{numFormatted} تصويتات}}",
     "tap_to_show_getMediaType_item_type": "انقر للعرض {getMediaType}",
     "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": "غير قادر على حفظ الوسائط. أرجع تويتر حالة  {responseStatusCode}",
     "downloading_media": "تحميل الوسائط...",

@@ -34,7 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(snapshotData) => "Imported ${snapshotData} users so far";
 
-  static String m7(numberFormatTotal) => "${numberFormatTotal} votes";
+  static String m7(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'no votes', one: 'one vote', two: 'two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
   static String m8(errorMessage) =>
       "Please check your Internet connection.\n\n${errorMessage}";

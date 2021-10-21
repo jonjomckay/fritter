@@ -242,6 +242,7 @@ class TweetCard extends StatelessWidget {
                 text: TextSpan(children: [
                   TextSpan(
                     text: L10n.of(context).numberFormat_format_total_votes(
+                      total,
                       numberFormat.format(total),
                     ),
                   ),

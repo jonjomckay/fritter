@@ -33,7 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(snapshotData) => "استورد ${snapshotData} مستخدم لحد الآن";
 
-  static String m7(numberFormatTotal) => "${numberFormatTotal} تصويت";
+  static String m7(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'ولا تصويت', one: 'تصويت واحد', two: 'تصويتان', few: '${numFormatted} تصويتات', many: '${numFormatted} تصويت', other: '${numFormatted} تصويتات')}";
 
   static String m8(errorMessage) =>
       "رجائاً تحقق من اتصال الشبكة لديك.\n\n${errorMessage}";
