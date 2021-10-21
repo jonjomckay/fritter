@@ -49,21 +49,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(thisTweetUserName) => "${thisTweetUserName} أعاد التغريد";
 
-  static String m14(widgetPlaceName) =>
+  static String m14(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'لا تغريدات', one: 'تغريدة واحدة', two: 'تغريدتان', few: '${numFormatted} تغريدات', many: '${numFormatted} تغريدة', other: '${numFormatted} تغريدات')}";
+
+  static String m15(widgetPlaceName) =>
       "غير قادر على تحميل الترندات لـ${widgetPlaceName}";
 
-  static String m15(e) =>
+  static String m16(e) =>
       "غير قادر على تحديث الاشتراكات. الخطأ هو كالتالي ${e}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "غير قادر على حفظ الوسائط. أرجع تويتر حالة  ${responseStatusCode}";
 
-  static String m17(e) => "غير قادر على إرسال البنج. ${e}";
+  static String m18(e) => "غير قادر على إرسال البنج. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Unable to send the ping. The status code was ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "حدّث إلى ${releaseVersion} عبر عميل الـF-Droid لديك";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -312,6 +315,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("التغريدات"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("التغريدات والردود"),
+        "tweets_number": m14,
         "unable_to_check_if_this_is_a_legacy_Android_device":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على التحقق ما إذا كان جهاز الأندرويد هذا قديم."),
@@ -348,7 +352,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تحميل نتائج البحث"),
-        "unable_to_load_the_trends_for_widget_place_name": m14,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "غير قادر على تحميل التغريدات"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -356,21 +360,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تحميل التغريدات للمُلقّم"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m15,
+        "unable_to_refresh_the_subscriptions_the_error_was_e": m16,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تشغيل تحديث قاعدة البيانات"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على بث تفضيل موقع الترندات"),
         "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
         "unsave": MessageLookupByLibrary.simpleMessage("الغاء الحفظ"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("التحديثات"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

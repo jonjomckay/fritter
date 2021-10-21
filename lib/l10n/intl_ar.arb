@@ -145,6 +145,7 @@
     "country": "البلد",
     "unable_to_stream_the_trend_location_preference": "غير قادر على بث تفضيل موقع الترندات",
     "trends": "الترندات",
+    "tweets_number": "{num, plural, zero{لا تغريدات} one{تغريدة واحدة} two{تغريدتان} few{{numFormatted} تغريدات} many{{numFormatted} تغريدة} other{{numFormatted} تغريدات}}",
     "ended_timeago_format_endsAt_allowFromNow_true": "اتنهى {timeagoFormat}",
     "ends_timeago_format_endsAt_allowFromNow_true": "يتنهي {timeagoFormat}",
     "numberFormat_format_total_votes": "{numberFormatTotal} تصويت",

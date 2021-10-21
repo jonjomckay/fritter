@@ -50,24 +50,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(thisTweetUserName) => "${thisTweetUserName} retweeted";
 
-  static String m20(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'no tweets', one: 'one tweet', two: 'two tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
 
-  static String m14(widgetPlaceName) =>
+  static String m15(widgetPlaceName) =>
       "Unable to load the trends for ${widgetPlaceName}";
 
-  static String m15(e) =>
+  static String m16(e) =>
       "Unable to refresh the subscriptions. The error was ${e}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Unable to save the media. Twitter returned a status of ${responseStatusCode}";
 
-  static String m17(e) => "Unable to send the ping. ${e}";
+  static String m18(e) => "Unable to send the ping. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Unable to send the ping. The status code was ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Update to ${releaseVersion} through your F-Droid client";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -318,7 +318,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Replies"),
-        "tweets_number": m20,
+        "tweets_number": m14,
         "unable_to_check_if_this_is_a_legacy_Android_device":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to check if this is a legacy Android device."),
@@ -358,7 +358,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to load the search results."),
-        "unable_to_load_the_trends_for_widget_place_name": m14,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Unable to load the tweet"),
         "unable_to_load_the_tweets":
@@ -366,21 +366,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to load the tweets for the feed"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m15,
+        "unable_to_refresh_the_subscriptions_the_error_was_e": m16,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to run the database migrations"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to stream the trend location preference"),
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "unsave": MessageLookupByLibrary.simpleMessage("Unsave"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Unsubscribe"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Updates"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(
