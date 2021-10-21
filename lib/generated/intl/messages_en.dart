@@ -50,6 +50,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(thisTweetUserName) => "${thisTweetUserName} retweeted";
 
+  static String m20(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'no tweets', one: 'one tweet', two: 'two tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
+
   static String m14(widgetPlaceName) =>
       "Unable to load the trends for ${widgetPlaceName}";
 
@@ -315,6 +318,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Replies"),
+        "tweets_number": m20,
         "unable_to_check_if_this_is_a_legacy_Android_device":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to check if this is a legacy Android device."),

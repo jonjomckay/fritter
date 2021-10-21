@@ -27,12 +27,24 @@ class TweetTile extends StatefulWidget {
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+  TweetTile(
+      {required this.clickable,
+      this.currentUsername,
+      this.tweet,
+      this.isPinned = false,
+      this.isThread = false})
+      : super();
 
-  TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
+  TweetTileState createState() => TweetTileState(
+      clickable: this.clickable,
+      currentUsername: currentUsername,
+      tweet: tweet,
+      isPinned: isPinned,
+      isThread: isThread);
 }
 
-class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
+class TweetTileState extends State<TweetTile>
+    with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
 
   GlobalKey<TweetContentState> tweetContent = GlobalKey();
@@ -44,23 +56,27 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   final bool isPinned;
   final bool isThread;
 
-
   bool hasBeenTranslated = false;
 
-  TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+  TweetTileState(
+      {required this.clickable,
+      this.currentUsername,
+      this.tweet,
+      this.isPinned = false,
+      this.isThread = false})
+      : super();
 
   Color? _decideTranslateButtonColor() {
-    if(getShortSystemLocale() == tweet?.lang) {
+    if (getShortSystemLocale() == tweet?.lang) {
       return Colors.grey;
     }
 
-    if(hasBeenTranslated == true) {
+    if (hasBeenTranslated == true) {
       return Colors.red;
     }
 
     return null;
   }
-
 
   _createFooterIconButton(IconData icon,
       [Color? color, Function()? onPressed]) {
@@ -221,7 +237,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
-          child: TweetContent(key: tweetContent, tweet: tweet,),
+          child: TweetContent(
+            key: tweetContent,
+            tweet: tweet,
+          ),
         ),
       );
     }
@@ -395,43 +414,49 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                       child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
                     ),
                   ),
-                ),
-                content,
-                media,
-                quotedTweet,
-                TweetCard(tweet: tweet, card: tweet.card),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  child: ButtonBar(
-                    buttonTextTheme: ButtonTextTheme.accent,
-                    buttonPadding: EdgeInsets.symmetric(horizontal: 0),
-                    alignment: MainAxisAlignment.start,
-                    children: [
-                      if (tweet.replyCount != null)
-                        _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-                              id: tweet.idStr!,
-                              username: tweet.user!.screenName!
-                          ));
-                        }),
-                      if (tweet.retweetCount != null)
-                        _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
-                      if (tweet.quoteCount != null)
-                        _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
-                      if (tweet.favoriteCount != null)
-                        _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                      _createFooterIconButton(
-                        Icons.translate,
-                        _decideTranslateButtonColor(),
-                        getShortSystemLocale() == tweet.lang ? null : () {
-                          tweetContent.currentState?.setTranslate(!hasBeenTranslated);
+                  content,
+                  media,
+                  quotedTweet,
+                  TweetCard(tweet: tweet, card: tweet.card),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    child: ButtonBar(
+                      buttonTextTheme: ButtonTextTheme.accent,
+                      buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                      alignment: MainAxisAlignment.start,
+                      children: [
+                        if (tweet.replyCount != null)
+                          _createFooterTextButton(Icons.comment,
+                              numberFormat.format(tweet.replyCount), null, () {
+                            Navigator.pushNamed(context, ROUTE_STATUS,
+                                arguments: StatusScreenArguments(
+                                    id: tweet.idStr!,
+                                    username: tweet.user!.screenName!));
+                          }),
+                        if (tweet.retweetCount != null)
+                          _createFooterTextButton(Icons.repeat,
+                              numberFormat.format(tweet.retweetCount)),
+                        if (tweet.quoteCount != null)
+                          _createFooterTextButton(Icons.message,
+                              numberFormat.format(tweet.quoteCount)),
+                        if (tweet.favoriteCount != null)
+                          _createFooterTextButton(Icons.favorite,
+                              numberFormat.format(tweet.favoriteCount)),
+                        _createFooterIconButton(
+                            Icons.translate,
+                            _decideTranslateButtonColor(),
+                            getShortSystemLocale() == tweet.lang
+                                ? null
+                                : () {
+                                    tweetContent.currentState
+                                        ?.setTranslate(!hasBeenTranslated);
 
-                          setState(() {
-                            hasBeenTranslated = !hasBeenTranslated;
-                          });
-                        }
-                      )
-                    ],
+                                    setState(() {
+                                      hasBeenTranslated = !hasBeenTranslated;
+                                    });
+                                  })
+                      ],
+                    ),
                   ),
                 ],
               ))

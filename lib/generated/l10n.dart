@@ -1537,6 +1537,22 @@ class L10n {
     );
   }
 
+  /// `{num, plural, zero{no tweets} one{one tweet} two{two tweets} few{{numFormatted} tweets} many{{numFormatted} tweet} other{{numFormatted} tweets}}`
+  String tweets_number(num num, Object numFormatted) {
+    return Intl.plural(
+      num,
+      zero: 'no tweets',
+      one: 'one tweet',
+      two: 'two tweets',
+      few: '$numFormatted tweets',
+      many: '$numFormatted tweet',
+      other: '$numFormatted tweets',
+      name: 'tweets_number',
+      desc: '',
+      args: [num, numFormatted],
+    );
+  }
+
   /// `Ended {timeagoFormat}`
   String ended_timeago_format_endsAt_allowFromNow_true(Object timeagoFormat) {
     return Intl.message(

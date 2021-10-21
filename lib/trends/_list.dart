@@ -71,7 +71,10 @@ class _TrendsListState extends State<TrendsList> {
               subtitle: trend.tweetVolume == null
                   ? null
                   : Text(
-                      '${numberFormat.format(trend.tweetVolume)} ${L10n.of(context).tweets}',
+                      L10n.of(context).tweets_number(
+                        trend.tweetVolume!,
+                        numberFormat.format(trend.tweetVolume),
+                      ),
                     ),
               onTap: () async {
                 await showSearch(
