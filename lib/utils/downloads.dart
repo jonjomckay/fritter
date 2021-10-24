@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker_writable/file_picker_writable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/settings/settings_data.dart';
@@ -52,6 +53,14 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
         }
         onSuccess();
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Not granted'),
+            action: SnackBarAction(label: 'Open App settings',
+            onPressed: openAppSettings,
+            ),
+          ),
+        );
         await openAppSettings();
         print('can not write anything, opening Settings');
       }
@@ -59,7 +68,6 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
       var fileInfo = await FilePickerWritable().openFileForCreate(
           fileName: sanitizedFilename,
           writer: (file) async {
-            onStart();
 
             var response = await downloadFile();
             if (response != null) {

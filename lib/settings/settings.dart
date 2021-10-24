@@ -508,39 +508,35 @@ class DownloadPathState extends State<DownloadPath> {
                   PrefService.of(context)
                       .set(OPTION_DOWNLOAD_PATH, directoryPath);
                 });
-                print('Custom path is: $directoryPath');
+                print('Custom path is: ${directoryPath ?? 'Not set'}');
               }
 
               print('checking storage permission');
-              PermissionStatus storagePermission =
-                  await Permission.storage.request();
               print('checking manage storage permission');
-              PermissionStatus manageStorage =
-                  await Permission.manageExternalStorage.request();
 
-              if (manageStorage.isGranted)
+              if (await Permission.manageExternalStorage.request().isGranted)
                 await setDirectory();
               else if (await Permission
                   .manageExternalStorage.isPermanentlyDenied)
                 await openAppSettings();
-              else if (storagePermission.isGranted) {
-                if (storagePermission.isLimited) {
-                  print('Limited Storage access');
-                }
+              else if (await Permission.storage.request().isGranted) {
                 await setDirectory();
               } else if (await Permission.storage.isPermanentlyDenied)
                 await openAppSettings();
               else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Not granted'),
-                  duration: Duration(milliseconds: 500),
+                  action: SnackBarAction(
+                    label: 'Open App settings',
+                    onPressed: openAppSettings,
+                  )
                 ));
                 print('Access Storage not granted');
               }
             },
             title: Text('Path'),
             subtitle: Text(
-              PrefService.of(context).get(OPTION_DOWNLOAD_PATH) ?? 'Not set',
+              PrefService.of(context).get(OPTION_DOWNLOAD_PATH) == '' ? 'Not set': PrefService.of(context).get(OPTION_DOWNLOAD_PATH),
             ),
             child: Text('Change'),
           )
