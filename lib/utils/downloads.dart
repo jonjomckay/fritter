@@ -1,11 +1,19 @@
 import 'dart:io';
 
 import 'package:file_picker_writable/file_picker_writable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(String uri, String fileName, { required Function(http.Response response) onError, required Function() onStart, required Function() onSuccess }) async {
+Future downloadUriToPickedFile(
+    BuildContext context, String uri, String fileName,
+    {required Function(http.Response response) onError,
+    required Function() onStart,
+    required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   var downloadFile = () async {
@@ -32,17 +40,38 @@ Future downloadUriToPickedFile(String uri, String fileName, { required Function(
       onSuccess();
     }
   } else {
-    var fileInfo = await FilePickerWritable().openFileForCreate(fileName: sanitizedFilename, writer: (file) async {
-      onStart();
+    onStart();
+    var response = await downloadFile();
 
-      var response = await downloadFile();
-      if (response != null) {
-        await file.writeAsBytes(response);
+    final prefDownloadType = PrefService.of(context).get(OPTION_DOWNLOAD_TYPE);
+    final prefDownloadPath = PrefService.of(context).get(OPTION_DOWNLOAD_PATH);
+
+    if (prefDownloadType == 'save_files_to' && prefDownloadPath != '') {
+      if (await Permission.manageExternalStorage.request().isGranted ||
+          await Permission.storage.request().isGranted) {
+        if (response != null) {
+          final File _localFile = File('$prefDownloadPath/$sanitizedFilename');
+          final sponse = await _localFile.writeAsBytes(response);
+          print(sponse.path);
+        }
+        onSuccess();
+      } else {
+        await openAppSettings();
+        print('can not write anything, opening Settings');
       }
-    });
+    } else {
+      var fileInfo = await FilePickerWritable().openFileForCreate(
+          fileName: sanitizedFilename,
+          writer: (file) async {
+            onStart();
 
-    if (fileInfo != null) {
-      onSuccess();
+            var response = await downloadFile();
+            if (response != null) {
+              await file.writeAsBytes(response);
+              print(file.path);
+            }
+          });
+      if (fileInfo != null) onSuccess();
     }
   }
 }

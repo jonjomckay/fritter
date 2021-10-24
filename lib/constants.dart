@@ -6,6 +6,9 @@ const OPTION_HOME_INITIAL_TAB = 'home.initial_tab';
 
 const OPTION_MEDIA_SIZE = 'media.size';
 
+const OPTION_DOWNLOAD_TYPE = 'download_type';
+const OPTION_DOWNLOAD_PATH = 'download_path';
+
 const OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING = 'subscription_groups.order_by.ascending';
 const OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD = 'subscription_groups.order_by.field';
 const OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING = 'subscription.order_by.ascending';
