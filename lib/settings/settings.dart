@@ -458,7 +458,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         height: 48.0,
                         width: 48.0,
                       ),
-                    ),
+                  ),
                 )
               ),
             ),
