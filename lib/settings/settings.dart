@@ -290,56 +290,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 var isLegacy = await isLegacyAndroid();
                 if (isLegacy) {
                   showDialog(context: context, builder: (context) {
-                        return AlertDialog(
-                          title: Text('Legacy Android Import'),
-                          actions: [
-                            TextButton(
-                              child: Text('Cancel'),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            TextButton(
-                              child: Text('Import'),
-                              onPressed: () async {
+                    return AlertDialog(
+                      title: Text('Legacy Android Import'),
+                      actions: [
+                        TextButton(
+                          child: Text('Cancel'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text('Import'),
+                          onPressed: () async {
                             var file = File(await getLegacyPath(legacyExportFileName));
-                                if (await file.exists()) {
-                                  try {
-                                    await _importFromFile(file);
-                                  } catch (e, stackTrace) {
+                            if (await file.exists()) {
+                              try {
+                                await _importFromFile(file);
+                              } catch (e, stackTrace) {
                                 log.severe('Unable to import the file on a legacy Android device', e, stackTrace);
 
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text('$e'),
-                                    ));
-                                  }
-                                } else {
+                                  content: Text('$e'),
+                                ));
+                              }
+                            } else {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text('The file does not exist. Please ensure it is located at ${file.path}'),
-                                  ));
-                                }
+                              ));
+                            }
 
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                          content: FutureBuilderWrapper<String>(
-                            future: getLegacyPath(legacyExportFileName),
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                      content: FutureBuilderWrapper<String>(
+                        future: getLegacyPath(legacyExportFileName),
                         onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'prefix'),
-                            onReady: (legacyExportPath) => Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
+                        onReady: (legacyExportPath) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
                             Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
-                                    textAlign: TextAlign.left),
-                                SizedBox(height: 16),
-                                Text(legacyExportPath,
-                                    textAlign: TextAlign.left),
-                                SizedBox(height: 16),
+                                textAlign: TextAlign.left),
+                            SizedBox(height: 16),
+                            Text(legacyExportPath,
+                                textAlign: TextAlign.left),
+                            SizedBox(height: 16),
                             Text('Please make sure the data you wish to import is located there, then press the import button below.',
-                                    textAlign: TextAlign.left)
-                              ],
-                            ),
-                          ),
-                        );
-                      });
+                                textAlign: TextAlign.left)
+                          ],
+                        ),
+                      ),
+                    );
+                  });
                 } else {
                   await FilePickerWritable().openFile((fileInfo, file) async {
                     await _importFromFile(file);
@@ -396,48 +396,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text('Donate'),
                 subtitle: Text('Help support Fritter\'s future'),
                 onTap: () => showDialog(context: context, builder: (context) {
-                      return SimpleDialog(
-                        title: Text('Donate'),
-                        children: [
-                          SimpleDialogOption(
-                            child: ListTile(
-                              leading: Icon(SimpleIcons.bitcoin),
-                              title: Text('Bitcoin'),
-                            ),
-                            onPressed: () async {
+                  return SimpleDialog(
+                    title: Text('Donate'),
+                    children: [
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.bitcoin),
+                          title: Text('Bitcoin'),
+                        ),
+                        onPressed: () async {
                           await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                              Navigator.pop(context);
+                          Navigator.pop(context);
 
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Copied address to clipboard'),
-                              ));
-                            },
-                          ),
-                          SimpleDialogOption(
-                            child: ListTile(
-                              leading: Icon(SimpleIcons.github),
-                              title: Text('GitHub'),
-                            ),
+                            content: Text('Copied address to clipboard'),
+                          ));
+                        },
+                      ),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.github),
+                          title: Text('GitHub'),
+                        ),
                         onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
-                          ),
-                          SimpleDialogOption(
-                            child: ListTile(
-                              leading: Icon(SimpleIcons.liberapay),
-                              title: Text('Liberapay'),
-                            ),
+                      ),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.liberapay),
+                          title: Text('Liberapay'),
+                        ),
                         onPressed: () => launch('https://liberapay.com/jonjomckay'),
-                          ),
-                          SimpleDialogOption(
-                            child: ListTile(
-                              leading: Icon(SimpleIcons.paypal),
-                              title: Text('PayPal'),
-                            ),
+                      ),
+                      SimpleDialogOption(
+                        child: ListTile(
+                          leading: Icon(SimpleIcons.paypal),
+                          title: Text('PayPal'),
+                        ),
                         onPressed: () => launch('https://paypal.me/jonjomckay'),
-                          )
-                        ],
-                      );
-                    }),
+                      )
+                    ],
+                  );
+                }),
               ),
             PrefLabel(
               leading: Icon(Icons.copyright),
@@ -458,7 +458,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )),
+                   )
+              ),
             ),
           ]);
         },
