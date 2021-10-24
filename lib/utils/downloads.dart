@@ -9,11 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(
-    BuildContext context, String uri, String fileName,
-    {required Function(http.Response response) onError,
-    required Function() onStart,
-    required Function() onSuccess}) async {
+Future downloadUriToPickedFile(BuildContext context, String uri, String fileName, {required Function(http.Response response) onError, required Function() onStart, required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   var downloadFile = () async {
@@ -71,7 +67,10 @@ Future downloadUriToPickedFile(
               print(file.path);
             }
           });
-      if (fileInfo != null) onSuccess();
+
+      if (fileInfo != null) {
+        onSuccess();
+      }
     }
   }
 }
