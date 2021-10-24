@@ -44,33 +44,30 @@ class _TweetVideoState extends State<TweetVideo> {
       allowedScreenSleep: false,
       additionalOptions: (context) => [
         OptionItem(
-            onTap: () async {
-              var fileName = path.basename(url);
+          onTap: () async {
+            var fileName = path.basename(url);
 
-              await downloadUriToPickedFile(
-                context,
-                url,
-                fileName,
+              await downloadUriToPickedFile(context, url, fileName,
                 onError: (response) {
                 log.severe('Unable to save the media. The response was ${response.body}');
 
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
-                  ));
-                },
-                onStart: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Downloading media...'),
-                  ));
-                },
-                onSuccess: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Successfully saved the media!'),
-                  ));
-                },
-              );
-            },
-            iconData: Icons.download_sharp,
+                ));
+              },
+              onStart: () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Downloading media...'),
+                ));
+              },
+              onSuccess: () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Successfully saved the media!'),
+                ));
+              },
+            );
+          },
+          iconData: Icons.download_sharp,
           title: 'Download'
         )
       ],
