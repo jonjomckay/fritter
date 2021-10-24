@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,20 @@ import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
 var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
+
+IconData? deserializeIconData(String iconData) {
+  try {
+    var icon = deserializeIcon(jsonDecode(iconData));
+    if (icon != null) {
+      return icon;
+    }
+  } catch (e, stackTrace) {
+    log('Unable to deserialize icon', error: e, stackTrace: stackTrace);
+  }
+
+  // Use this as a default;
+  return Icons.rss_feed;
+}
 
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
@@ -52,7 +67,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
               color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 8),
-              child: Icon(deserializeIcon(jsonDecode(icon)), size: 16),
+              child: Icon(deserializeIconData(icon), size: 16),
             ),
             Expanded(child: Container(
               alignment: Alignment.center,
@@ -301,7 +316,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     },
                   ),
                   IconButton(
-                    icon: Icon(icon == null ? Icons.rss_feed : deserializeIcon(jsonDecode(icon!))),
+                    icon: Icon(icon == null ? Icons.rss_feed : deserializeIconData(icon!)),
                     onPressed: () async {
                       var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackMode: IconPack.custom, customIconPack: Map.fromEntries(iconPack));
                       if (selectedIcon != null) {

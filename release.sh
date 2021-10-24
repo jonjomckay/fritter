@@ -16,7 +16,7 @@ fi
 
 VERSION_NAME=$1
 VERSION_NUMBER=$(date +%Y%m%d)
-VERSION_FLUTTER="2.2.1"
+VERSION_FLUTTER="2.5.3"
 
 FULL_VERSION="$VERSION_NAME"+"$VERSION_NUMBER"
 
@@ -57,7 +57,8 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
-    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi --target-platform=android-x64
+    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
+      --target-platform=android-x64
 
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}1
@@ -72,12 +73,13 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
-    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi --target-platform=android-arm
+    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
+      --target-platform=android-arm
 
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}2
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-arm64-release.apk
+  output: build/app/outputs/apk/release/app-arm64-v8a-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -87,7 +89,8 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
-    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi --target-platform=android-arm64
+    - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
+      --target-platform=android-arm64
 EOF
 )
 
