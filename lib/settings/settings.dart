@@ -259,7 +259,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   DropdownMenuItem(child: Text('Small'), value: 'small'),
                   DropdownMenuItem(child: Text('Medium'), value: 'medium'),
                   DropdownMenuItem(child: Text('Large'), value: 'large'),
-                ]),
+                ]
+            ),
             // Complete from here. Add a download location button
             DownloadPath(),
             PrefTitle(title: Text('Theme')),
@@ -458,7 +459,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                   )
+                )
               ),
             ),
           ]);
