@@ -138,9 +138,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       };
     }
 
-    showDialog(
-        context: context,
-        builder: (context) {
+    showDialog(context: context, builder: (context) {
           var content = JsonEncoder.withIndent(' ' * 2).convert(metadata);
 
           return AlertDialog(
@@ -155,11 +153,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       var pingUri = 'https://fritter.jonjomckay.com/ping';
 
                       try {
-                        var response = await http
-                            .post(Uri.parse(pingUri),
-                                headers: {'Content-Type': 'application/json'},
-                                body: content)
-                            .timeout(Duration(seconds: 10));
+                    var response = await http.post(Uri.parse(pingUri),
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: content
+                    ).timeout(Duration(seconds: 10));
 
                         SnackBar snackBar;
 
@@ -171,8 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
 
                           // Mark that we've said hello from this build version
-                          await prefService.set(
-                              OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
+                      await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
                         } else if (response.statusCode == 403) {
                           snackBar = SnackBar(
                             content: Text(
@@ -227,9 +225,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future,
                   ),
                   SizedBox(height: 16),
-                  Text(content, style: TextStyle(fontFamily: 'monospace'))
+              Text(content, style: TextStyle(
+                  fontFamily: 'monospace'
+              ))
                 ],
-              ));
+          )
+      );
         });
   }
 
@@ -269,9 +270,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 pref: OPTION_HOME_INITIAL_TAB,
                 items: homeTabs
-                    .map((e) =>
-                        DropdownMenuItem(child: Text(e.title), value: e.id))
-                    .toList()),
+                    .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
+                    .toList()
+            ),
             PrefDropdown(
                 fullWidth: false,
                 title: Text(L10n.of(context).media_size),
@@ -337,9 +338,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () async {
                 var isLegacy = await isLegacyAndroid();
                 if (isLegacy) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
+                  showDialog(context: context, builder: (context) {
                         return AlertDialog(
                           title: Text(L10n.of(context).legacy_android_import),
                           actions: [
@@ -350,8 +349,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             TextButton(
                               child: Text(L10n.of(context).import),
                               onPressed: () async {
-                                var file = File(
-                                    await getLegacyPath(legacyExportFileName));
+                            var file = File(await getLegacyPath(legacyExportFileName));
                                 if (await file.exists()) {
                                   try {
                                     await _importFromFile(file);
@@ -361,8 +359,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         e,
                                         stackTrace);
 
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       content: Text('$e'),
                                     ));
                                   }
@@ -476,8 +473,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               title: Text('Bitcoin'),
                             ),
                             onPressed: () async {
-                              await Clipboard.setData(ClipboardData(
-                                  text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+                          await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
                               Navigator.pop(context);
 
@@ -496,24 +492,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               leading: Icon(SimpleIcons.github),
                               title: Text('GitHub'),
                             ),
-                            onPressed: () => launch(
-                                'https://github.com/sponsors/jonjomckay'),
+                        onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: ListTile(
                               leading: Icon(SimpleIcons.liberapay),
                               title: Text('Liberapay'),
                             ),
-                            onPressed: () =>
-                                launch('https://liberapay.com/jonjomckay'),
+                        onPressed: () => launch('https://liberapay.com/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: ListTile(
                               leading: Icon(SimpleIcons.paypal),
                               title: Text('PayPal'),
                             ),
-                            onPressed: () =>
-                                launch('https://paypal.me/jonjomckay'),
+                        onPressed: () => launch('https://paypal.me/jonjomckay'),
                           )
                         ],
                       );
@@ -540,7 +533,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )),
+                  )
+              ),
             ),
           ]);
         },

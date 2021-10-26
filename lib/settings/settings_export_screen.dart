@@ -30,8 +30,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
   bool _exportTweets = false;
 
   void toggleExportSubscriptionGroupMembersIfRequired() {
-    if (_exportSubscriptionGroupMembers &&
-        (!_exportSubscriptions || !_exportSubscriptionGroups)) {
+    if (_exportSubscriptionGroupMembers && (!_exportSubscriptions || !_exportSubscriptionGroups)) {
       setState(() {
         _exportSubscriptionGroupMembers = false;
       });
@@ -96,27 +95,33 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                 var usersModel = context.read<UsersModel>();
                 var prefs = PrefService.of(context);
 
-                var settings = _exportSettings ? prefs.toMap() : null;
+          var settings = _exportSettings
+              ? prefs.toMap()
+              : null;
 
-                var subscriptions =
-                    _exportSubscriptions ? usersModel.subscriptions : null;
+          var subscriptions = _exportSubscriptions
+              ? usersModel.subscriptions
+              : null;
 
-                var subscriptionGroups =
-                    _exportSubscriptionGroups ? groupModel.groups : null;
+          var subscriptionGroups = _exportSubscriptionGroups
+              ? groupModel.groups
+              : null;
 
                 var subscriptionGroupMembers = _exportSubscriptionGroupMembers
                     ? await groupModel.listGroupMembers()
                     : null;
 
-                var tweets =
-                    _exportTweets ? await homeModel.listSavedTweets() : null;
+          var tweets = _exportTweets
+              ? await homeModel.listSavedTweets()
+              : null;
 
                 var data = SettingsData(
                     settings: settings,
                     subscriptions: subscriptions,
                     subscriptionGroups: subscriptionGroups,
                     subscriptionGroupMembers: subscriptionGroupMembers,
-                    tweets: tweets);
+              tweets: tweets
+          );
 
                 var exportData = jsonEncode(data.toJson());
 
@@ -125,8 +130,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                   // This platform is too old to support a directory picker, so we just save the file to a predefined location
                   var fullPath = await getLegacyPath(legacyExportFileName);
 
-                  await Directory(path.dirname(fullPath))
-                      .create(recursive: true);
+            await Directory(path.dirname(fullPath)).create(recursive: true);
                   await File(fullPath).writeAsString(exportData);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -137,8 +141,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                   );
                 } else {
                   var dateFormat = DateFormat('yyyy-MM-dd');
-                  var fileName =
-                      'fritter-${dateFormat.format(DateTime.now())}.json';
+            var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
 
                   // This platform can support the directory picker, so display it
                   var fileInfo = await FilePickerWritable().openFileForCreate(
@@ -184,7 +187,8 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                               .your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to,
                           textAlign: TextAlign.center),
                       SizedBox(height: 8),
-                      Text(legacyExportPath, textAlign: TextAlign.center),
+                      Text(legacyExportPath,
+                          textAlign: TextAlign.center),
                     ],
                   ),
                 );
@@ -195,9 +199,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
+              Expanded(child: SingleChildScrollView(child: Column(
                 children: [
                   CheckboxListTile(
                       value: _exportSettings,
@@ -225,6 +227,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                       onChanged: (v) => toggleExportTweets()),
                 ],
               ))),
+
               legacyAndroidMessage,
             ],
           );

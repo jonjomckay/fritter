@@ -18,8 +18,7 @@ class FritterSentryHandler extends ReportHandler {
 
   final Hub sentryHub;
 
-  FritterSentryHandler(
-      {required this.sentryHub, required Stream<bool?> sentryEnabledStream}) {
+  FritterSentryHandler({required this.sentryHub, required Stream<bool?> sentryEnabledStream}) {
     // If a user changes the Sentry preference, make sure we know about it
     sentryEnabledStream.listen((value) {
       _isSentryEnabled = value;
@@ -41,9 +40,7 @@ class FritterSentryHandler extends ReportHandler {
         return true;
       }
 
-      await showDialog(
-          context: context,
-          builder: (context) {
+      await showDialog(context: context, builder: (context) {
             _isModalOpen = true;
 
             return AlertDialog(
@@ -68,10 +65,10 @@ class FritterSentryHandler extends ReportHandler {
                   ),
                   SizedBox(height: 16),
                   InkWell(
-                    child: Text('https://fritter.cc/privacy',
-                        style: TextStyle(color: Colors.blue)),
-                    onTap: () async =>
-                        await launch('https://fritter.cc/privacy'),
+                child: Text('https://fritter.cc/privacy', style: TextStyle(
+                  color: Colors.blue
+                )),
+                onTap: () async => await launch('https://fritter.cc/privacy'),
                   )
                 ],
               ),
@@ -86,11 +83,10 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = true;
-                    PrefService.of(context)
-                        .set(OPTION_ERRORS_SENTRY_ENABLED, true);
+                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, true);
                     Navigator.pop(context);
                   },
-                  child: Text(L10n.of(context).send_always),
+              child: Text('Send always'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -102,16 +98,16 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = false;
-                    PrefService.of(context)
-                        .set(OPTION_ERRORS_SENTRY_ENABLED, false);
+                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, false);
                     Navigator.pop(context);
                   },
                   child: Text(L10n.of(context).never_send),
                 )
               ],
             );
-          },
-          routeSettings: RouteSettings(name: 'sentryRoute'));
+      }, routeSettings: RouteSettings(
+        name: 'sentryRoute'
+      ));
 
       _isModalOpen = false;
     }
@@ -123,16 +119,7 @@ class FritterSentryHandler extends ReportHandler {
     try {
       var nestedError = error.error;
       if (nestedError is ManuallyReportedException) {
-        error = Report(
-            nestedError.exception,
-            error.stackTrace,
-            error.dateTime,
-            error.deviceParameters,
-            error.applicationParameters,
-            error.customParameters,
-            error.errorDetails,
-            error.platformType,
-            error.screenshot);
+        error = Report(nestedError.exception, error.stackTrace, error.dateTime, error.deviceParameters, error.applicationParameters, error.customParameters, error.errorDetails, error.platformType, error.screenshot);
       }
 
       final tags = <String, dynamic>{};

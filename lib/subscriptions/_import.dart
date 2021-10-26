@@ -18,8 +18,7 @@ class SubscriptionImportScreen extends StatefulWidget {
   const SubscriptionImportScreen({Key? key}) : super(key: key);
 
   @override
-  _SubscriptionImportScreenState createState() =>
-      _SubscriptionImportScreenState();
+  _SubscriptionImportScreenState createState() => _SubscriptionImportScreenState();
 }
 
 class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
@@ -59,12 +58,14 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
 
         await homeModel.importData({
           TABLE_SUBSCRIPTION: [
-            ...response.users.map((e) => Subscription(
+            ...response.users.map((e) =>
+                Subscription(
                 id: e.idStr!,
                 name: e.name!,
                 profileImageUrlHttps: e.profileImageUrlHttps,
                 screenName: e.screenName!,
-                verified: e.verified ?? false))
+                    verified: e.verified ?? false
+                ))
           ]
         });
 

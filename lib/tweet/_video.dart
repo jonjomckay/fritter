@@ -14,8 +14,7 @@ class TweetVideo extends StatefulWidget {
   final bool loop;
   final Media media;
 
-  const TweetVideo({Key? key, required this.loop, required this.media})
-      : super(key: key);
+  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -34,9 +33,8 @@ class _TweetVideoState extends State<TweetVideo> {
     var url = widget.media.videoInfo!.variants![0].url!;
 
     double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-        ? _videoController.value.aspectRatio
-        : widget.media.videoInfo!.aspectRatio![0] /
-            widget.media.videoInfo!.aspectRatio![1];
+        ?  _videoController.value.aspectRatio
+        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
 
     _videoController = VideoPlayerController.network(url);
     _chewieController = ChewieController(
@@ -50,12 +48,9 @@ class _TweetVideoState extends State<TweetVideo> {
           onTap: () async {
             var fileName = path.basename(url);
 
-            await downloadUriToPickedFile(
-              url,
-              fileName,
+            await downloadUriToPickedFile(url, fileName,
               onError: (response) {
-                log.severe(
-                    'Unable to save the media. The response was ${response.body}');
+                log.severe('Unable to save the media. The response was ${response.body}');
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(

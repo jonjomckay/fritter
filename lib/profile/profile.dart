@@ -80,8 +80,7 @@ class ProfileScreenBody extends StatefulWidget {
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
 }
 
-class _ProfileScreenBodyState extends State<ProfileScreenBody>
-    with TickerProviderStateMixin {
+class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   late TabController _tabController;
 
   double descriptionHeight = 0;
@@ -162,13 +161,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody>
     var profile = widget.user;
     var banner = profile.profileBannerUrl;
     var bannerImage = banner == null
-
         ? Container(height: bannerHeight, color: Colors.white)
         : ExtendedImage.network(banner, fit: BoxFit.fitWidth, height: bannerHeight);
 
     // The height of the app bar should be all the inner components, plus any margins
     var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 48 + descriptionHeight;
-
 
     return Scaffold(
       body: NestedScrollView(
@@ -181,8 +178,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody>
               snap: false,
               forceElevated: innerBoxIsScrolled,
               actions: [
-                FollowButton(
-                  id: profile.idStr!,
+                FollowButton(id: profile.idStr!,
                   name: profile.name!,
                   screenName: profile.screenName!,
                   imageUri: profile.profileImageUrlHttps,
@@ -391,8 +387,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody>
         body: TabBarView(
           controller: _tabController,
           children: [
-            ProfileTweets(
-                user: profile, type: 'profile', includeReplies: false),
+            ProfileTweets(user: profile, type: 'profile', includeReplies: false),
             ProfileTweets(user: profile, type: 'profile', includeReplies: true),
             ProfileTweets(user: profile, type: 'media', includeReplies: false),
             ProfileFollows(user: profile, type: 'following'),

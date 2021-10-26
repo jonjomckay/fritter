@@ -21,8 +21,7 @@ class GroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
+    final args = ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
 
     return _SubscriptionGroupScreen(id: args.id, name: args.name);
   }
@@ -32,9 +31,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
   final String id;
   final ScrollController scrollController;
 
-  const SubscriptionGroupScreenContent(
-      {Key? key, required this.id, required this.scrollController})
-      : super(key: key);
+  const SubscriptionGroupScreenContent({Key? key, required this.id, required this.scrollController}) : super(key: key);
 
   Future<SubscriptionGroupGet> _findSubscriptionGroup(String id) async {
     var database = await Repository.readOnly();
@@ -44,23 +41,16 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(
-          id: '-1', name: 'All', subscriptions: subscriptions);
+      return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
     } else {
-      var group = (await database.query(TABLE_SUBSCRIPTION_GROUP,
-              where: 'id = ?', whereArgs: [id]))
+      var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
           .first;
 
-      var subscriptions = (await database.rawQuery(
-              'SELECT s.* FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
-              [id]))
+      var subscriptions = (await database.rawQuery('SELECT s.* FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(
-          id: group['id'] as String,
-          name: group['name'] as String,
-          subscriptions: subscriptions);
+      return SubscriptionGroupGet(id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions);
     }
   }
 
@@ -103,13 +93,10 @@ class _SubscriptionGroupScreen extends StatefulWidget {
   final String id;
   final String name;
 
-  const _SubscriptionGroupScreen(
-      {Key? key, required this.id, required this.name})
-      : super(key: key);
+  const _SubscriptionGroupScreen({Key? key, required this.id, required this.name}) : super(key: key);
 
   @override
-  _SubscriptionGroupScreenState createState() =>
-      _SubscriptionGroupScreenState();
+  _SubscriptionGroupScreenState createState() => _SubscriptionGroupScreenState();
 }
 
 class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
@@ -118,25 +105,18 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.name), actions: [
-        IconButton(
-            icon: Icon(Icons.arrow_upward),
-            onPressed: () async {
-              await _scrollController.animateTo(0,
-                  duration: Duration(seconds: 1), curve: Curves.easeInOut);
+      appBar: AppBar(
+          title: Text(widget.name),
+          actions: [
+            IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
+              await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
             }),
-        IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () async {
+            IconButton(icon: Icon(Icons.refresh), onPressed: () async {
               // This is a dirty hack, and probably won't work if the child widgets ever become stateful
               setState(() {});
             }),
-        IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
+            IconButton(icon: Icon(Icons.more_vert), onPressed: () {
+              showModalBottomSheet(context: context, builder: (context) {
                     var theme = Theme.of(context);
 
                     return Container(
@@ -156,10 +136,12 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                   icon: Icon(Icons.arrow_back),
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                  }),
+                                  }
+                              ),
                               title: Text('Filters'),
                               tileColor: theme.colorScheme.primary,
-                            )),
+                            )
+                        ),
                             Container(
                               alignment: Alignment.centerLeft,
                               margin: EdgeInsets.only(
@@ -170,16 +152,11 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                 style: TextStyle(
                                   color: Theme.of(context).disabledColor,
                                 ),
-                              ),
-                            ),
-                            Consumer<GroupModel>(
-                                builder: (context, model, child) {
-                              return FutureBuilderWrapper<
-                                  SubscriptionGroupSettings>(
-                                future: model
-                                    .loadSubscriptionGroupSettings(widget.id),
-                                onError: (error, stackTrace) =>
-                                    InlineErrorWidget(error: error),
+                            )),
+                        Consumer<GroupModel>(builder: (context, model, child) {
+                          return FutureBuilderWrapper<SubscriptionGroupSettings>(
+                            future: model.loadSubscriptionGroupSettings(widget.id),
+                            onError: (error, stackTrace) => InlineErrorWidget(error: error),
                                 onReady: (settings) => Column(
                                   children: [
                                     CheckboxListTile(
@@ -212,7 +189,8 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                     );
                   });
             })
-      ]),
+          ]
+      ),
       body: SubscriptionGroupScreenContent(
         id: widget.id,
         scrollController: _scrollController,

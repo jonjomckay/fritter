@@ -48,15 +48,12 @@ class _TrendsScreenState extends State<TrendsScreen> {
                         children: [
                           IconButton(
                             icon: Icon(Icons.settings),
-                            onPressed: () async => showDialog(
-                              context: context,
-                              builder: (context) {
+                              onPressed: () async => showDialog(context: context, builder: (context) {
                                 return TrendsSettings();
-                              },
-                            ),
+                              }),
                           )
                         ],
-                      ),
+                        )
                     ),
                   ),
                   TrendsList(place: place),

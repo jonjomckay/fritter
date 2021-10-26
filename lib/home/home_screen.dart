@@ -30,8 +30,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
 
   late List<Widget> _children;
@@ -46,8 +45,7 @@ class _HomeScreenState extends State<HomeScreen>
     // If we have an initial tab set, use it as the initial index
     var prefs = PrefService.of(context, listen: false);
     if (prefs.getKeys().contains(OPTION_HOME_INITIAL_TAB)) {
-      initialIndex = homeTabs.indexWhere(
-          (element) => element.id == prefs.get(OPTION_HOME_INITIAL_TAB));
+      initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(OPTION_HOME_INITIAL_TAB));
     }
 
     _children = [
@@ -57,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen>
       SavedScreen(),
     ];
 
-    _tabController = TabController(
-        vsync: this, initialIndex: initialIndex, length: homeTabs.length);
+    _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
     _tabController.addListener(() {
       setState(() {});
     });
@@ -77,25 +74,20 @@ class _HomeScreenState extends State<HomeScreen>
         title: Text(homeTabs[_tabController.index].title),
         actions: [
           if (_tabController.index == feedTabIndex)
-            IconButton(
-                icon: Icon(Icons.arrow_upward),
-                onPressed: () async {
-                  await _scrollController.animateTo(0,
-                      duration: Duration(seconds: 1), curve: Curves.easeInOut);
+            IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
+              await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
                 }),
           if (_tabController.index == feedTabIndex)
-            IconButton(
-                icon: Icon(Icons.refresh),
-                onPressed: () async {
+            IconButton(icon: Icon(Icons.refresh), onPressed: () async {
                   // This is a dirty hack, and probably won't work if the child widgets ever become stateful
                   setState(() {});
                 }),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              showSearch(
-                  context: context,
-                  delegate: TweetSearchDelegate(initialTab: 0));
+              showSearch(context: context, delegate: TweetSearchDelegate(
+                initialTab: 0
+              ));
             },
           ),
           IconButton(
@@ -105,11 +97,14 @@ class _HomeScreenState extends State<HomeScreen>
             },
           )
         ],
-        bottom: TabBar(controller: _tabController, tabs: [
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
           ...homeTabs.map((e) => Tab(
                 icon: Icon(e.icon),
               ))
-        ]),
+          ]
+        ),
       ),
       body: TabBarView(
         controller: _tabController,

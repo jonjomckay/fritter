@@ -10,8 +10,7 @@ class ProfileFollows extends StatefulWidget {
   final User user;
   final String type;
 
-  const ProfileFollows({Key? key, required this.user, required this.type})
-      : super(key: key);
+  const ProfileFollows({Key? key, required this.user, required this.type}) : super(key: key);
 
   @override
   _ProfileFollowsState createState() => _ProfileFollowsState();
@@ -39,6 +38,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
   }
 
   Future _loadFollows(int? cursor) async {
+
     try {
       var result = await Twitter.getProfileFollows(
         widget.user.screenName!,

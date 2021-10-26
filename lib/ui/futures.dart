@@ -5,16 +5,10 @@ import 'package:fritter/generated/l10n.dart';
 
 class FutureBuilderWrapper<T> extends StatelessWidget {
   final Future<T>? future;
-  final FritterErrorWidget Function(Object? error, StackTrace? stackTrace)
-      onError;
+  final FritterErrorWidget Function(Object? error, StackTrace? stackTrace) onError;
   final Widget Function(T data) onReady;
 
-  const FutureBuilderWrapper(
-      {Key? key,
-      required this.future,
-      required this.onError,
-      required this.onReady})
-      : super(key: key);
+  const FutureBuilderWrapper({Key? key, required this.future, required this.onError, required this.onReady}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -39,6 +39,7 @@ import 'package:fritter/generated/l10n.dart';
 Future checkForUpdates() async {
   L10n.load(Locale('en'));
   Logger.root.info('Checking for updates');
+
   try {
     var response = await http.get(Uri.https('fritter.cc', '/api/data.json'));
     if (response.statusCode == 200) {
@@ -54,33 +55,28 @@ Future checkForUpdates() async {
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
 
-      Logger.root.info(
-          'The latest version is $latest, and we are on ${package.buildNumber}');
+      Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
       if (int.parse(package.buildNumber) < latest) {
-        var details = NotificationDetails(
-            android: AndroidNotificationDetails(
+        var details = NotificationDetails(android: AndroidNotificationDetails(
                 'updates', 'Updates', 'When a new app update is available',
                 importance: Importance.max,
-                largeIcon:
-                    DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+            largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
                 priority: Priority.high,
-                showWhen: false));
+            showWhen: false
+        ));
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
-              0,
-              'An update for Fritter is available! 🚀',
-              'Tap to download ${release['version']}',
-              details,
+              0, 'An update for Fritter is available! 🚀',
+              'Tap to download ${release['version']}', details,
               payload: release['apk']);
         } else {
           await FlutterLocalNotificationsPlugin().show(
-              0,
-              'An update for Fritter is available! 🚀',
-              'Update to ${release['version']} through your F-Droid client',
-              details,
-              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/');
+              0, 'An update for Fritter is available! 🚀',
+              'Update to ${release['version']} through your F-Droid client', details,
+              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/'
+          );
         }
       }
     } else {
@@ -102,12 +98,13 @@ Future<void> main() async {
     OPTION_SUBSCRIPTION_ORDER_BY_FIELD: 'name',
     OPTION_THEME_MODE: 'system',
     OPTION_THEME_TRUE_BLACK: false,
-    OPTION_TRENDS_LOCATION: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
+    OPTION_TRENDS_LOCATION: jsonEncode({
+      'name': 'Worldwide',
+      'woeid': 1
+    }),
   });
 
-  var sentryOptions = SentryOptions(
-      dsn:
-          'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
+  var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
   sentryOptions.sendDefaultPii = false;
   sentryOptions.attachStacktrace = true;
 
@@ -119,16 +116,14 @@ Future<void> main() async {
     ConsoleHandler(),
     FritterSentryHandler(
         sentryHub: sentryHub,
-        sentryEnabledStream:
-            prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED))
+      sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
+    )
   ], localizationOptions: [
-    LocalizationOptions(
-      'en',
-      dialogReportModeDescription:
-          'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+    LocalizationOptions('en',
+      dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
       dialogReportModeTitle: 'Send report',
       dialogReportModeAccept: 'Send',
-      dialogReportModeCancel: "Don't send",
+      dialogReportModeCancel: "Don't send"
     )
   ], explicitExceptionHandlersMap: {
     'SocketException': NullHandler()
@@ -141,8 +136,7 @@ Future<void> main() async {
       releaseConfig: catcherOptions,
       enableLogger: false,
       runAppFunction: () async {
-        Logger.root.onRecord.listen(
-          (event) async {
+      Logger.root.onRecord.listen((event) async {
             print(event.message);
 
             if (event.error != null) {
@@ -156,18 +150,16 @@ Future<void> main() async {
                 Catcher.reportCheckedError(event.error, event.stackTrace);
               }
             }
-          },
-        );
+      });
 
         if (Platform.isAndroid) {
-          FlutterLocalNotificationsPlugin notifications =
-              FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
           final InitializationSettings settings = InitializationSettings(
-              android: AndroidInitializationSettings('@mipmap/launcher_icon'));
+            android: AndroidInitializationSettings('@mipmap/launcher_icon')
+        );
 
-          await notifications.initialize(settings,
-              onSelectNotification: (payload) async {
+        await notifications.initialize(settings, onSelectNotification: (payload) async {
             if (payload != null && payload.startsWith('https://')) {
               await launch(payload);
             }
@@ -199,7 +191,8 @@ Future<void> main() async {
                 builder: (context) => MyApp(hub: sentryHub),
               ),
             ),
-            service: prefService));
+          service: prefService
+      ));
       });
 }
 
@@ -334,12 +327,12 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: L10n.delegate.supportedLocales,
       locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
-      navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
+      navigatorObservers: [
+        SentryNavigatorObserver(hub: widget.hub)
+      ],
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
-      darkTheme: FlexColorScheme.dark(
-              colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack)
-          .toTheme,
+      darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
       themeMode: themeMode,
       initialRoute: '/',
       routes: {
@@ -354,11 +347,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
-          log.severe(
-            'Something broke in Fritter.',
-            details.exception,
-            details.stack,
-          );
+          log.severe('Something broke in Fritter.', details.exception, details.stack);
 
           return Scaffold(
             body: FullPageErrorWidget(
@@ -386,8 +375,7 @@ class _DefaultPageState extends State<DefaultPage> {
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      Navigator.pushNamed(context, ROUTE_PROFILE,
-          arguments: link.pathSegments.first);
+      Navigator.pushNamed(context, ROUTE_PROFILE, arguments: link.pathSegments.first);
       return;
     }
 
@@ -397,8 +385,7 @@ class _DefaultPageState extends State<DefaultPage> {
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
 
-        Navigator.pushNamed(context, ROUTE_STATUS,
-            arguments: StatusScreenArguments(
+        Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
               id: statusId,
               username: username,
             ));
@@ -417,8 +404,7 @@ class _DefaultPageState extends State<DefaultPage> {
       }
 
       // Attach a listener to the stream
-      _sub = uriLinkStream.listen((link) => handleInitialLink(link!),
-          onError: (err) {
+      _sub = uriLinkStream.listen((link) => handleInitialLink(link!), onError: (err) {
         // TODO: Handle exception by warning the user their action did not succeed
         int i = 0;
       });

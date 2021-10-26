@@ -254,7 +254,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
       duration: const Duration(milliseconds: 300),
       child: Container(
         height: barHeight + 20,
-        padding: EdgeInsets.only(bottom: 10.0),
+        padding:
+        EdgeInsets.only(bottom: 10.0),
         child: SafeArea(
           bottom: chewieController.isFullScreen,
           child: Column(

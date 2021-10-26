@@ -27,24 +27,12 @@ class TweetTile extends StatefulWidget {
   final bool isPinned;
   final bool isThread;
 
-  TweetTile(
-      {required this.clickable,
-      this.currentUsername,
-      this.tweet,
-      this.isPinned = false,
-      this.isThread = false})
-      : super();
+  TweetTile({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
 
-  TweetTileState createState() => TweetTileState(
-      clickable: this.clickable,
-      currentUsername: currentUsername,
-      tweet: tweet,
-      isPinned: isPinned,
-      isThread: isThread);
+  TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
 }
 
-class TweetTileState extends State<TweetTile>
-    with SingleTickerProviderStateMixin {
+class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
 
   GlobalKey<TweetContentState> tweetContent = GlobalKey();
@@ -58,28 +46,21 @@ class TweetTileState extends State<TweetTile>
 
   bool hasBeenTranslated = false;
 
-  TweetTileState(
-      {required this.clickable,
-      this.currentUsername,
-      this.tweet,
-      this.isPinned = false,
-      this.isThread = false})
-      : super();
+  TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
 
   Color? _decideTranslateButtonColor() {
-    if (getShortSystemLocale() == tweet?.lang) {
+    if(getShortSystemLocale() == tweet?.lang) {
       return Colors.grey;
     }
 
-    if (hasBeenTranslated == true) {
+    if(hasBeenTranslated == true) {
       return Colors.red;
     }
 
     return null;
   }
 
-  _createFooterIconButton(IconData icon,
-      [Color? color, Function()? onPressed]) {
+  _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
     return InkWell(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 16),
@@ -89,12 +70,14 @@ class TweetTileState extends State<TweetTile>
     );
   }
 
-  _createFooterTextButton(IconData icon, String label,
-      [Color? color, Function()? onPressed]) {
+  _createFooterTextButton(IconData icon, String label, [Color? color, Function()? onPressed]) {
     return TextButton.icon(
       icon: Icon(icon, size: 14, color: color),
       onPressed: onPressed,
-      label: Text(label, style: TextStyle(color: color, fontSize: 12.5)),
+      label: Text(label, style: TextStyle(
+        color: color,
+        fontSize: 12.5
+      )),
     );
   }
 
@@ -116,18 +99,17 @@ class TweetTileState extends State<TweetTile>
         child: Card(
           child: Container(
               padding: EdgeInsets.all(16),
-              child: Text(tweet.text!,
-                  style: TextStyle(fontStyle: FontStyle.italic))),
+            child: Text(tweet.text!, style: TextStyle(
+              fontStyle: FontStyle.italic
+            ))
+          ),
         ),
       );
     }
 
     Widget media = Container();
-    if (tweet.extendedEntities?.media != null &&
-        tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(
-          media: tweet.extendedEntities!.media!,
-          username: this.tweet!.user!.screenName!);
+    if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
+      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet!.user!.screenName!);
     }
 
     Widget retweetBanner = Container();
@@ -143,8 +125,10 @@ class TweetTileState extends State<TweetTile>
         ],
       );
 
-      retweetSidebar =
-          Container(color: Theme.of(context).secondaryHeaderColor, width: 4);
+      retweetSidebar = Container(
+          color: Theme.of(context).secondaryHeaderColor,
+          width: 4
+      );
     }
 
     Widget replyToTile = Container();
@@ -160,9 +144,10 @@ class TweetTileState extends State<TweetTile>
               ),
             ));
           } else {
-            Navigator.pushNamed(context, ROUTE_STATUS,
-                arguments:
-                    StatusScreenArguments(id: replyToId, username: replyTo));
+            Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+                id: replyToId,
+                username: replyTo
+            ));
           }
         },
         icon: Icons.reply,
@@ -172,15 +157,17 @@ class TweetTileState extends State<TweetTile>
               style: Theme.of(context).textTheme.caption),
           TextSpan(
               text: '@$replyTo',
-              style: Theme.of(context)
-                  .textTheme
-                  .caption!
-                  .copyWith(fontWeight: FontWeight.bold)),
+              style: Theme.of(context).textTheme.caption!.copyWith(
+                  fontWeight: FontWeight.bold
+              )
+          ),
         ],
       );
     }
 
-    var tweetText = tweet.fullText == null ? tweet.text : tweet.fullText;
+    var tweetText = tweet.fullText == null
+        ? tweet.text
+        : tweet.fullText;
 
     if (tweetText == null) {
       var message = 'The tweet did not contain any text. This is unexpected';
@@ -219,7 +206,8 @@ class TweetTileState extends State<TweetTile>
       quotedTweet = Container(
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(8)),
+            borderRadius: BorderRadius.circular(8)
+        ),
         margin: EdgeInsets.all(8),
         child: Container(
           child: quotedTweetTile,
@@ -237,68 +225,64 @@ class TweetTileState extends State<TweetTile>
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
-          child: TweetContent(
-            key: tweetContent,
-            tweet: tweet,
-          ),
+          child: TweetContent(key: tweetContent, tweet: tweet,),
         ),
       );
     }
 
-    return Consumer<HomeModel>(
-      builder: (context, model, child) => Card(
+    return Consumer<HomeModel>(builder: (context, model, child) => Card(
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               retweetSidebar,
-              Expanded(
-                  child: Column(
+            Expanded(child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   retweetBanner,
                   replyToTile,
                   if (isPinned)
-                    _TweetTileLeading(icon: Icons.push_pin, children: [
+                  _TweetTileLeading(
+                    icon: Icons.push_pin,
+                    children: [
                       TextSpan(
                         text: L10n.of(context).pinned_tweet,
                         style: Theme.of(context).textTheme.caption,
                       )
-                    ]),
+                    ]
+                  ),
                   if (isThread)
-                    _TweetTileLeading(icon: Icons.forum, children: [
+                  _TweetTileLeading(
+                    icon: Icons.forum,
+                    children: [
                       TextSpan(
                         text: L10n.of(context).thread,
                         style: Theme.of(context).textTheme.caption,
                       )
-                    ]),
+                    ]
+                  ),
                   ListTile(
                     onTap: () {
                       // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                      if (currentUsername != null &&
-                          tweet.user!.screenName!.endsWith(currentUsername!)) {
+                    if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
                         return null;
                       }
 
-                      Navigator.pushNamed(context, ROUTE_PROFILE,
-                          arguments: tweet.user!.screenName!);
+                    Navigator.pushNamed(context, ROUTE_PROFILE, arguments: tweet.user!.screenName!);
                     },
                     title: Row(
                       children: [
                         Flexible(
                           child: Row(
                             children: [
-                              Flexible(
-                                  child: Text(tweet.user!.name!,
+                            Flexible(child: Text(tweet.user!.name!,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500))),
                               if (tweet.user!.verified ?? false)
                                 SizedBox(width: 4),
                               if (tweet.user!.verified ?? false)
-                                Icon(Icons.verified,
-                                    size: 18,
-                                    color: Theme.of(context).primaryColor)
+                              Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
                             ],
                           ),
                         ),
@@ -307,32 +291,21 @@ class TweetTileState extends State<TweetTile>
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(minHeight: 32),
                           onPressed: () async {
-                            var createSheetButton =
-                                (title, icon, onTap) => ListTile(
+                          var createSheetButton = (title, icon, onTap) => ListTile(
                                       onTap: onTap,
                                       leading: Icon(icon),
                                       title: Text(title),
                                     );
 
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return SafeArea(
-                                  child: Column(
+                          showModalBottomSheet(context: context, builder: (context) {
+                            return SafeArea(child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       FutureBuilderWrapper<bool>(
-                                        future:
-                                            model.isTweetSaved(tweet.idStr!),
-                                        onError: (error, stackTrace) =>
-                                            _createFooterIconButton(
-                                          Icons.error,
-                                          Colors.red,
-                                          () async {
-                                            Catcher.reportCheckedError(
-                                                error, stackTrace);
-                                          },
-                                        ),
+                                  future: model.isTweetSaved(tweet.idStr!),
+                                  onError: (error, stackTrace) => _createFooterIconButton(Icons.error, Colors.red, () async {
+                                    Catcher.reportCheckedError(error, stackTrace);
+                                  }),
                                         onReady: (saved) {
                                           if (saved) {
                                             return createSheetButton(
@@ -353,8 +326,7 @@ class TweetTileState extends State<TweetTile>
                                                     tweet.idStr!,
                                                     tweet.toJson());
                                                 Navigator.pop(context);
-                                              },
-                                            );
+                                      });
                                           }
                                         },
                                       ),
@@ -373,11 +345,9 @@ class TweetTileState extends State<TweetTile>
                                           Share.share(
                                               'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
                                           Navigator.pop(context);
-                                        },
-                                      ),
+                                }),
                                       const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16),
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
                                         child: Divider(
                                           thickness: 1.0,
                                         ),
@@ -388,10 +358,8 @@ class TweetTileState extends State<TweetTile>
                                         () => Navigator.pop(context),
                                       )
                                     ],
-                                  ),
-                                );
-                              },
-                            );
+                            ));
+                          });
                           },
                         )
                       ],
@@ -399,9 +367,7 @@ class TweetTileState extends State<TweetTile>
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
-                            child: Text(
-                          '@${tweet.user!.screenName!}',
+                      Flexible(child: Text('@${tweet.user!.screenName!}',
                           overflow: TextOverflow.ellipsis,
                         )),
                         SizedBox(width: 4),
@@ -426,35 +392,29 @@ class TweetTileState extends State<TweetTile>
                       alignment: MainAxisAlignment.start,
                       children: [
                         if (tweet.replyCount != null)
-                          _createFooterTextButton(Icons.comment,
-                              numberFormat.format(tweet.replyCount), null, () {
-                            Navigator.pushNamed(context, ROUTE_STATUS,
-                                arguments: StatusScreenArguments(
+                        _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
                                     id: tweet.idStr!,
-                                    username: tweet.user!.screenName!));
+                              username: tweet.user!.screenName!
+                          ));
                           }),
                         if (tweet.retweetCount != null)
-                          _createFooterTextButton(Icons.repeat,
-                              numberFormat.format(tweet.retweetCount)),
+                        _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                         if (tweet.quoteCount != null)
-                          _createFooterTextButton(Icons.message,
-                              numberFormat.format(tweet.quoteCount)),
+                        _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                         if (tweet.favoriteCount != null)
-                          _createFooterTextButton(Icons.favorite,
-                              numberFormat.format(tweet.favoriteCount)),
+                        _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
                         _createFooterIconButton(
                             Icons.translate,
                             _decideTranslateButtonColor(),
-                            getShortSystemLocale() == tweet.lang
-                                ? null
-                                : () {
-                                    tweetContent.currentState
-                                        ?.setTranslate(!hasBeenTranslated);
+                        getShortSystemLocale() == tweet.lang ? null : () {
+                          tweetContent.currentState?.setTranslate(!hasBeenTranslated);
 
                                     setState(() {
                                       hasBeenTranslated = !hasBeenTranslated;
                                     });
-                                  })
+                        }
+                      )
                       ],
                     ),
                   ),
@@ -463,8 +423,7 @@ class TweetTileState extends State<TweetTile>
             ],
           ),
         ),
-      ),
-    );
+    ));
   }
 }
 
@@ -473,9 +432,7 @@ class _TweetTileLeading extends StatelessWidget {
   final IconData icon;
   final Iterable<InlineSpan> children;
 
-  const _TweetTileLeading(
-      {Key? key, this.onTap, required this.icon, required this.children})
-      : super(key: key);
+  const _TweetTileLeading({Key? key, this.onTap, required this.icon, required this.children}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -488,14 +445,16 @@ class _TweetTileLeading extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
           child: Container(
             child: RichText(
-              text: TextSpan(children: [
+              text: TextSpan(
+                  children: [
                 WidgetSpan(
                     child: Icon(icon,
                         size: 12, color: Theme.of(context).hintColor),
                     alignment: PlaceholderAlignment.middle),
                 WidgetSpan(child: SizedBox(width: 16)),
                 ...children
-              ]),
+                  ]
+              ),
             ),
           ),
         ),

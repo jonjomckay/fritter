@@ -51,14 +51,7 @@ class UserTile extends StatelessWidget {
   final String? imageUri;
   final bool verified;
 
-  const UserTile(
-      {Key? key,
-      required this.id,
-      required this.name,
-      required this.screenName,
-      this.imageUri,
-      required this.verified})
-      : super(key: key);
+  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,25 +64,23 @@ class UserTile extends StatelessWidget {
       title: Row(
         children: [
           Text(name),
-          if (verified) SizedBox(width: 6),
-          if (verified) Icon(Icons.verified, size: 14, color: Colors.blue)
+          if (verified)
+            SizedBox(width: 6),
+          if (verified)
+            Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
       subtitle: Text('@$screenName'),
       trailing: Container(
         width: 36,
-        child: FollowButton(
-            id: id,
-            name: name,
-            screenName: screenName,
-            imageUri: imageUri,
-            verified: verified),
+        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, verified: verified),
       ),
       onTap: () {
         Navigator.pushNamed(context, ROUTE_PROFILE, arguments: screenName);
       },
     );
   }
+
 }
 
 class FollowButton extends StatelessWidget {
@@ -99,19 +90,11 @@ class FollowButton extends StatelessWidget {
   final String? imageUri;
   final bool verified;
 
-  const FollowButton(
-      {Key? key,
-      required this.id,
-      required this.name,
-      required this.screenName,
-      this.imageUri,
-      required this.verified})
-      : super(key: key);
+  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<GroupModel, UsersModel>(
-        builder: (context, groupModel, usersModel, child) {
+    return Consumer2<GroupModel, UsersModel>(builder: (context, groupModel, usersModel, child) {
       var followed = usersModel.subscriptionIds.contains(id);
 
       var icon = followed ? Icon(Icons.person_remove) : Icon(Icons.person_add);
@@ -131,9 +114,7 @@ class FollowButton extends StatelessWidget {
         onSelected: (value) async {
           switch (value) {
             case 'add_to_group':
-              showDialog(
-                  context: context,
-                  builder: (context) {
+              showDialog(context: context, builder: (context) {
                     return FutureBuilderWrapper<List<String>>(
                       future: groupModel.listGroupsForUser(id),
                       onError: (error, stackTrace) => FullPageErrorWidget(
@@ -143,8 +124,7 @@ class FollowButton extends StatelessWidget {
                             L10n.of(context).unable_to_load_subscription_groups,
                       ),
                       onReady: (existing) {
-                        var color =
-                            Theme.of(context).brightness == Brightness.dark
+                    var color = Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white70
                                 : Colors.black54;
 
@@ -154,22 +134,24 @@ class FollowButton extends StatelessWidget {
                           itemsTextStyle: Theme.of(context).textTheme.bodyText1,
                           selectedColor: Theme.of(context).accentColor,
                           unselectedColor: color,
-                          selectedItemsTextStyle:
-                              Theme.of(context).textTheme.bodyText1,
-                          items: groupModel.groups
-                              .map((e) => MultiSelectItem(e.id, e.name))
-                              .toList(),
+                      selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
+                      items: groupModel.groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
                           initialValue: existing,
                           onConfirm: (List<String> memberships) async {
                             // If we're not currently following the user, follow them first
                             if (followed == false) {
-                              await usersModel.toggleSubscribe(id, screenName,
-                                  name, imageUri, verified, followed);
+                          await usersModel.toggleSubscribe(
+                              id,
+                              screenName,
+                              name,
+                              imageUri,
+                              verified,
+                              followed
+                          );
                             }
 
                             // Then add them to all the selected groups
-                            await groupModel.saveUserGroupMembership(
-                                id, memberships);
+                        await groupModel.saveUserGroupMembership(id, memberships);
                           },
                         );
                       },
@@ -178,7 +160,13 @@ class FollowButton extends StatelessWidget {
               break;
             case 'toggle_subscribe':
               await usersModel.toggleSubscribe(
-                  id, screenName, name, imageUri, verified, followed);
+                  id,
+                  screenName,
+                  name,
+                  imageUri,
+                  verified,
+                  followed
+              );
               break;
           }
         },

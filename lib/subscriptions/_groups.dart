@@ -34,8 +34,7 @@ IconData? deserializeIconData(String iconData) {
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
 
-  const SubscriptionGroups({Key? key, required this.controller})
-      : super(key: key);
+  const SubscriptionGroups({Key? key, required this.controller}) : super(key: key);
 
   @override
   _SubscriptionGroupsState createState() => _SubscriptionGroupsState();
@@ -43,37 +42,35 @@ class SubscriptionGroups extends StatefulWidget {
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
   void openSubscriptionGroupDialog(String? id, String name) {
-    showDialog(
-        context: context,
-        builder: (context) {
+    showDialog(context: context, builder: (context) {
           return SubscriptionGroupEditDialog(id: id, name: name);
         });
   }
 
-  Widget _createGroupCard(String id, String name, String icon, Color? color,
-      int? numberOfMembers, void Function()? onLongPress) {
-    var title = numberOfMembers == null ? name : '$name ($numberOfMembers)';
+  Widget _createGroupCard(String id, String name, String icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
+    var title = numberOfMembers == null
+        ? name
+        : '$name ($numberOfMembers)';
 
     return Card(
       child: InkWell(
         onTap: () {
           // Open page with the group's feed
-          Navigator.pushNamed(context, ROUTE_GROUP,
-              arguments: GroupScreenArguments(id: id, name: name));
+          Navigator.pushNamed(context, ROUTE_GROUP, arguments: GroupScreenArguments(
+              id: id,
+              name: name
+          ));
         },
         onLongPress: onLongPress,
         child: Column(
           children: [
             Container(
-              color: color != null
-                  ? color.withOpacity(0.9)
-                  : Theme.of(context).highlightColor,
+              color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Icon(deserializeIconData(icon), size: 16),
             ),
-            Expanded(
-                child: Container(
+            Expanded(child: Container(
               alignment: Alignment.center,
               color: color != null ? color.withOpacity(0.4) : Colors.white10,
               width: double.infinity,
@@ -82,7 +79,11 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold
+                  )
+              ),
             ))
           ],
         ),
@@ -144,17 +145,13 @@ class SubscriptionGroupEditDialog extends StatefulWidget {
   final String? id;
   final String name;
 
-  const SubscriptionGroupEditDialog(
-      {Key? key, required this.id, required this.name})
-      : super(key: key);
+  const SubscriptionGroupEditDialog({Key? key, required this.id, required this.name}) : super(key: key);
 
   @override
-  _SubscriptionGroupEditDialogState createState() =>
-      _SubscriptionGroupEditDialogState();
+  _SubscriptionGroupEditDialogState createState() => _SubscriptionGroupEditDialogState();
 }
 
-class _SubscriptionGroupEditDialogState
-    extends State<SubscriptionGroupEditDialog> {
+class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   SubscriptionGroupEdit? _group;
@@ -169,10 +166,7 @@ class _SubscriptionGroupEditDialogState
   void initState() {
     super.initState();
 
-    context
-        .read<GroupModel>()
-        .loadGroupEdit(widget.id)
-        .then((group) => setState(() {
+    context.read<GroupModel>().loadGroupEdit(widget.id).then((group) => setState(() {
               _group = group;
 
               id = group.id;
@@ -186,9 +180,7 @@ class _SubscriptionGroupEditDialogState
   void openDeleteSubscriptionGroupDialog(String id, String name) {
     var model = context.read<GroupModel>();
 
-    showDialog(
-      context: context,
-      builder: (context) {
+    showDialog(context: context, builder: (context) {
         return AlertDialog(
           actions: [
             TextButton(
@@ -212,8 +204,7 @@ class _SubscriptionGroupEditDialogState
                     name),
           ),
         );
-      },
-    );
+    });
   }
 
   @override
@@ -301,12 +292,11 @@ class _SubscriptionGroupEditDialogState
                       },
                     ),
                   ),
+
                   IconButton(
                     icon: Icon(Icons.color_lens, color: color),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
+                      showDialog(context: context, builder: (context) {
                             var selectedColor = color;
 
                             return AlertDialog(
@@ -344,10 +334,7 @@ class _SubscriptionGroupEditDialogState
                   IconButton(
                     icon: Icon(icon == null ? Icons.rss_feed : deserializeIconData(icon!)),
                     onPressed: () async {
-                      var selectedIcon = await FlutterIconPicker.showIconPicker(
-                          context,
-                          iconPackMode: IconPack.custom,
-                          customIconPack: Map.fromEntries(iconPack));
+                      var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackMode: IconPack.custom, customIconPack: Map.fromEntries(iconPack));
                       if (selectedIcon != null) {
                         setState(() {
                           icon = jsonEncode(serializeIcon(selectedIcon));
@@ -357,6 +344,7 @@ class _SubscriptionGroupEditDialogState
                   )
                 ],
               ),
+
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -368,8 +356,7 @@ class _SubscriptionGroupEditDialogState
                       dense: true,
                       secondary: ClipRRect(
                         borderRadius: BorderRadius.circular(64),
-                        child:
-                            UserAvatar(uri: subscription.profileImageUrlHttps),
+                        child: UserAvatar(uri: subscription.profileImageUrlHttps),
                       ),
                       title: Text(subscription.name),
                       subtitle: Text('@${subscription.screenName}'),

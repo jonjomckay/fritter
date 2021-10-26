@@ -49,8 +49,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       return Center(child: CircularProgressIndicator());
     }
 
-    return Consumer2<GroupModel, UsersModel>(
-        builder: (context, groupModel, usersModel, child) {
+    return Consumer2<GroupModel, UsersModel>(builder: (context, groupModel, usersModel, child) {
       return CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -70,13 +69,11 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                       value: 'created_at',
                     ),
                   ],
-                  onSelected: (value) =>
-                      groupModel.changeOrderSubscriptionGroupsBy(value),
+              onSelected: (value) => groupModel.changeOrderSubscriptionGroupsBy(value),
                 ),
                 IconButton(
                   icon: Icon(Icons.sort_by_alpha),
-                  onPressed: () =>
-                      groupModel.toggleOrderSubscriptionGroupsAscending(),
+              onPressed: () => groupModel.toggleOrderSubscriptionGroupsAscending(),
                 )
               ]),
           SubscriptionGroups(controller: _scrollController),
@@ -86,8 +83,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             actions: [
               IconButton(
                 icon: Icon(Icons.import_export),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
+              onPressed: () => Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
               ),
               IconButton(
                 icon: Icon(Icons.refresh),
@@ -109,15 +105,13 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                     value: 'created_at',
                   ),
                 ],
-                onSelected: (value) =>
-                    usersModel.changeOrderSubscriptionsBy(value),
+              onSelected: (value) => usersModel.changeOrderSubscriptionsBy(value),
               ),
               IconButton(
                 icon: Icon(Icons.sort_by_alpha),
                 onPressed: () => usersModel.toggleOrderSubscriptionsAscending(),
               )
-            ],
-          ),
+          ]),
           SubscriptionUsers(),
         ],
       );

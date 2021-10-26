@@ -41,7 +41,10 @@ _EmojiErrorWidget createEmojiError(TwitterError error) {
   }
 
   return _EmojiErrorWidget(
-      emoji: emoji, message: message, errorMessage: error.message);
+      emoji: emoji,
+      message: message,
+      errorMessage: error.message
+  );
 }
 
 class _EmojiErrorWidget extends FritterErrorWidget {
@@ -50,13 +53,7 @@ class _EmojiErrorWidget extends FritterErrorWidget {
   final String errorMessage;
   final Function? onRetry;
 
-  const _EmojiErrorWidget(
-      {Key? key,
-      required this.emoji,
-      required this.message,
-      required this.errorMessage,
-      this.onRetry})
-      : super(key: key);
+  const _EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +66,18 @@ class _EmojiErrorWidget extends FritterErrorWidget {
         children: [
           Container(
             margin: EdgeInsets.only(bottom: 16),
-            child: Text(emoji, style: TextStyle(fontSize: 36)),
+            child: Text(emoji, style: TextStyle(
+                fontSize: 36
+            )),
           ),
-          Text(message,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+          Text(message, textAlign: TextAlign.center, style: TextStyle(
+              fontSize: 18
+          )),
           Container(
             margin: EdgeInsets.only(top: 12),
-            child: Text(errorMessage,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).hintColor)),
+            child: Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(
+                color: Theme.of(context).hintColor
+            )),
           ),
           Container(
             margin: EdgeInsets.only(top: 12),
@@ -117,9 +117,9 @@ class InlineErrorWidget extends FritterErrorWidget {
             child: Icon(Icons.error, color: Colors.red),
           ),
           Container(
-            child: Text('$error',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).hintColor)),
+            child: Text('$error', textAlign: TextAlign.center, style: TextStyle(
+                color: Theme.of(context).hintColor
+            )),
           ),
         ],
       ),
@@ -132,18 +132,12 @@ class AlertErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
 
-  const AlertErrorWidget(
-      {Key? key,
-      required this.error,
-      required this.stackTrace,
-      required this.prefix})
-      : super(key: key);
+  const AlertErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: FullPageErrorWidget(
-          error: error, prefix: prefix, stackTrace: stackTrace),
+      content: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace),
     );
   }
 }
@@ -153,19 +147,13 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
 
-  const ScaffoldErrorWidget(
-      {Key? key,
-      required this.error,
-      required this.stackTrace,
-      required this.prefix})
-      : super(key: key);
+  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FullPageErrorWidget(
-          error: error, prefix: prefix, stackTrace: stackTrace),
+      body: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace),
     );
   }
 }
@@ -176,13 +164,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
   final String prefix;
   final Function? onRetry;
 
-  const FullPageErrorWidget(
-      {Key? key,
-      required this.error,
-      required this.stackTrace,
-      required this.prefix,
-      this.onRetry})
-      : super(key: key);
+  const FullPageErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +194,9 @@ class FullPageErrorWidget extends FritterErrorWidget {
         var errors = List.from(content['errors']);
         if (errors.isNotEmpty) {
           return createEmojiError(TwitterError(
-              code: errors.first['code'], message: errors.first['message']));
+            code: errors.first['code'],
+            message: errors.first['message']
+          ));
         }
       }
 
@@ -246,16 +230,16 @@ class FullPageErrorWidget extends FritterErrorWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 12),
-            child: Text('$prefix',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).hintColor)),
+            child: Text('$prefix', textAlign: TextAlign.center, style: TextStyle(
+                color: Theme.of(context).hintColor
+            )),
           ),
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(top: 12),
-            child: Text('$message',
-                textAlign: TextAlign.left,
-                style: TextStyle(color: Theme.of(context).hintColor)),
+            child: Text('$message', textAlign: TextAlign.left, style: TextStyle(
+                color: Theme.of(context).hintColor
+            )),
           ),
           Container(
             margin: EdgeInsets.only(top: 12),

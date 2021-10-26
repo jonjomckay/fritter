@@ -79,8 +79,11 @@ class _TrendsListState extends State<TrendsList> {
               onTap: () async {
                 await showSearch(
                     context: context,
-                    delegate: TweetSearchDelegate(initialTab: 1),
-                    query: Uri.decodeQueryComponent(trend.query!));
+                    delegate: TweetSearchDelegate(
+                        initialTab: 1
+                    ),
+                    query: Uri.decodeQueryComponent(trend.query!)
+                );
               },
             );
           },

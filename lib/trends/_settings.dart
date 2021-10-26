@@ -52,15 +52,15 @@ class _TrendsSettingsState extends State<TrendsSettings> {
         onReady: (trends) {
           trends.sort((a, b) => a.name!.compareTo(b.name!));
 
-          var place = TrendLocation.fromJson(
-              jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
+            var place = TrendLocation.fromJson(jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
 
           var countries = trends
               .sorted((a, b) => a.name!.compareTo(b.name!))
               .groupBy((e) => e.country);
 
-          var names =
-              countries.keys.sorted((a, b) => a!.compareTo(b!)).toList();
+            var names = countries.keys
+                .sorted((a, b) => a!.compareTo(b!))
+                .toList();
 
           var _createLocationTile = (TrendLocation item) {
             var subtitle =
@@ -76,7 +76,8 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                   await model.setTrendLocation(item);
 
                   Navigator.pop(context);
-                });
+                  }
+              );
           };
 
           return Container(
@@ -87,8 +88,10 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                 var name = names[index]!;
                 if (name == '') {
                   // If there's no country name, assume it's "Worldwide"
-                  return _createLocationTile(TrendLocation.fromJson(
-                      {'name': 'Worldwide', 'woeid': 1}));
+                      return _createLocationTile(TrendLocation.fromJson({
+                        'name': 'Worldwide',
+                        'woeid': 1
+                      }));
                 }
 
                 return ExpansionTile(
@@ -98,9 +101,9 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                   ],
                 );
               },
-            ),
+                )
           );
-        },
+          }
       ),
     );
   }

@@ -12,10 +12,9 @@ import 'package:fritter/generated/l10n.dart';
 class TweetSearchDelegate extends SearchDelegate {
   final int initialTab;
 
-  TweetSearchDelegate({required this.initialTab});
+  TweetSearchDelegate({ required this.initialTab });
 
-  Future<List<TweetWithCard>> searchTweets(
-      BuildContext context, String query) async {
+  Future<List<TweetWithCard>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
     } else {
@@ -39,9 +38,7 @@ class TweetSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
+      IconButton(icon: Icon(Icons.clear), onPressed: () {
             query = '';
           })
     ];
@@ -50,11 +47,11 @@ class TweetSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: AnimatedIcon(
-            icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+        icon: AnimatedIcon(icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
         onPressed: () {
           close(context, null);
-        });
+        }
+    );
   }
 
   @override
@@ -74,8 +71,7 @@ class TweetSearchDelegate extends SearchDelegate {
               ),
             ),
             Container(
-              child: Expanded(
-                  child: TabBarView(children: [
+              child: Expanded(child: TabBarView(children: [
                 TweetSearchResultList<User>(
                     query: query,
                     future: (q) => searchUsers(context, q),
@@ -87,17 +83,23 @@ class TweetSearchDelegate extends SearchDelegate {
                         screenName: item.screenName!,
                         verified: item.verified!,
                       );
-                    }),
+                    }
+                ),
                 TweetSearchResultList<TweetWithCard>(
                     query: query,
                     future: (q) => searchTweets(context, q),
                     itemBuilder: (context, item) {
-                      return TweetTile(tweet: item, clickable: true);
-                    }),
+                      return TweetTile(
+                          tweet: item,
+                          clickable: true
+                      );
+                    }
+                ),
               ])),
             )
           ],
-        ));
+        )
+    );
   }
 
   @override
@@ -109,20 +111,15 @@ class TweetSearchDelegate extends SearchDelegate {
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 class TweetSearchResultList<T> extends StatefulWidget {
+
   final String query;
   final Future<List<T>> Function(String query) future;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const TweetSearchResultList(
-      {Key? key,
-      required this.query,
-      required this.future,
-      required this.itemBuilder})
-      : super(key: key);
+  const TweetSearchResultList({Key? key, required this.query, required this.future, required this.itemBuilder}) : super(key: key);
 
   @override
-  _TweetSearchResultListState<T> createState() =>
-      _TweetSearchResultListState<T>();
+  _TweetSearchResultListState<T> createState() => _TweetSearchResultListState<T>();
 }
 
 class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {

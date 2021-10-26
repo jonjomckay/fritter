@@ -17,8 +17,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
   Widget build(BuildContext context) {
     var model = context.read<UsersModel>();
     if (model.subscriptions.isEmpty) {
-      return SliverToBoxAdapter(
-        child: Container(
+      return SliverToBoxAdapter(child: Container(
           margin: EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -26,7 +25,9 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
             children: [
               Container(
                 margin: EdgeInsets.symmetric(vertical: 8),
-                child: Text('¯\\_(ツ)_/¯', style: TextStyle(fontSize: 32)),
+                child: Text('¯\\_(ツ)_/¯', style: TextStyle(
+                    fontSize: 32
+                )),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 8),
@@ -46,15 +47,13 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
                       Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
                 ),
               )
-            ],
-          ),
-        ),
+            ])
+        )
       );
     }
 
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
+      delegate: SliverChildBuilderDelegate((context, index) {
           var user = model.subscriptions[index];
 
           return UserTile(
@@ -64,9 +63,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
             imageUri: user.profileImageUrlHttps,
             verified: user.verified,
           );
-        },
-        childCount: model.subscriptions.length,
-      ),
+      }, childCount: model.subscriptions.length),
     );
   }
 }
