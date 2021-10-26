@@ -40,3 +40,7 @@
 ## Acknowledgments
 
 Icons made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com).
+
+## Translation
+
+Help translate this project on [Hosted Weblate](https://hosted.weblate.org/projects/fritter/).
