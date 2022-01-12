@@ -318,7 +318,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                   IconButton(
                     icon: Icon(icon == null ? Icons.rss_feed : deserializeIconData(icon!)),
                     onPressed: () async {
-                      var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackMode: IconPack.custom, customIconPack: Map.fromEntries(iconPack));
+                      var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackModes: [IconPack.custom], customIconPack: Map.fromEntries(iconPack));
                       if (selectedIcon != null) {
                         setState(() {
                           icon = jsonEncode(serializeIcon(selectedIcon));

@@ -41,7 +41,7 @@ dependencies:
       url: https://github.com/jonjomckay/file_picker_writable.git
       ref: 45b55f13266de97e7f02fb05b49dbccfb492c4cc
   flutter_colorpicker: ^0.6.0
-  flutter_iconpicker: ^3.0.4
+  flutter_iconpicker: ^3.1.2
   flutter_local_notifications: ^5.0.0+4
   fluttertoast: ^8.0.7
   html_unescape: ^2.0.0
