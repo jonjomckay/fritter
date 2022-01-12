@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -133,32 +134,11 @@ class FritterSentryHandler extends ReportHandler {
       if (context != null) {
         var isEnabled = _isSentryEnabled;
         if (isEnabled != null && isEnabled) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  L10n.of(context).an_error_was_reported_to_sentry_thank_you,
-                ),
-                Text('🕵️'),
-              ],
-            ),
-          ));
+          showSnackBar(context, icon: '🕵️', message: L10n.of(context).an_error_was_reported_to_sentry_thank_you);
         }
 
         if (isEnabled == null || isEnabled == false) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  L10n.of(context)
-                      .thanks_for_reporting_we_will_try_and_fix_it_in_no_time,
-                ),
-                Text('💖'),
-              ],
-            ),
-          ));
+          showSnackBar(context, icon: '💖', message: L10n.of(context).thanks_for_reporting_we_will_try_and_fix_it_in_no_time);
         }
       }
 
