@@ -289,7 +289,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         children: [
           TextSpan(
               text: L10n.of(context).this_tweet_user_name_retweeted(this.tweet.user!.name!),
-              style: Theme.of(context).textTheme.caption)
+              style: Theme.of(context).textTheme.caption
           )
         ],
       );
@@ -584,7 +584,6 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                       child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
                     ),
                   ),
-                ),
                 content,
                 media,
                 quotedTweet,
@@ -610,6 +609,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
                       translateButton,
                     ],
+                  ),
                   ),
                 ],
               ))
