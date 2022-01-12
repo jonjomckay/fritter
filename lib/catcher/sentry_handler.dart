@@ -5,6 +5,7 @@ import 'package:catcher/model/platform_type.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -123,27 +124,11 @@ class FritterSentryHandler extends ReportHandler {
       if (context != null) {
         var isEnabled = _isSentryEnabled;
         if (isEnabled != null && isEnabled) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('An error was reported to Sentry. Thank you!'),
-                Text('🕵️'),
-              ],
-            ),
-          ));
+          showSnackBar(context, icon: '🕵️', message: 'An error was reported to Sentry. Thank you!');
         }
 
         if (isEnabled == null || isEnabled == false) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Thanks for reporting. We'll try and fix it in no time!"),
-                Text('💖'),
-              ],
-            ),
-          ));
+          showSnackBar(context, icon: '💖', message: "Thanks for reporting. We'll try and fix it in no time!");
         }
       }
 

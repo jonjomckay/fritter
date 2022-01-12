@@ -8,6 +8,20 @@ import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:logging/logging.dart';
 
+void showSnackBar(BuildContext context, {required String icon, required String message}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(child: Text(message, style: TextStyle(
+          height: 1.5
+        ))),
+        Text(icon),
+      ],
+    ),
+  ));
+}
+
 abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
