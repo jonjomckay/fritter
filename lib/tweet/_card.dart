@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetCard extends StatelessWidget {
   static final log = Logger('TweetCard');
@@ -103,8 +104,8 @@ class TweetCard extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     uri,
-                    style: Theme.of(context).textTheme.caption!.copyWith(
-                      color: Colors.white,
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                            color: Colors.white,
                     )
                   ),
                 ],
@@ -130,9 +131,9 @@ class TweetCard extends StatelessWidget {
         SizedBox(
           height: 24,
           child: LinearProgressIndicator(
-            value: choicePercent / 100,
-            color: theme.brightness == Brightness.light
-              ? Colors.blue.withOpacity(0.3)
+              value: choicePercent / 100,
+              color: theme.brightness == Brightness.light
+                  ? Colors.blue.withOpacity(0.3)
               : Colors.blue.withOpacity(0.7)
           ),
         ),
@@ -166,26 +167,26 @@ class TweetCard extends StatelessWidget {
         var uri = unifiedCard['destination_objects']['browser_1']['data']['url_data']['url'];
 
         return _createCard(uri, Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (imageSize != 'disabled')
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (imageSize != 'disabled')
               _createImage(imageSize, {
-                'url': image['media_url_https'],
-                'width': image['original_info']['width'],
-                'height': image['original_info']['height'],
+                        'url': image['media_url_https'],
+                        'width': image['original_info']['width'],
+                        'height': image['original_info']['height'],
               }, BoxFit.contain),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              child: _createListTile(
-                  context,
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  child: _createListTile(
+                      context,
                   unifiedCard['component_objects']['details_1']['data']['title']['content'],
                   unifiedCard['component_objects']['details_1']['data']['subtitle']['content'],
                   null
               ),
-            ),
-          ],
-        ));
+                ),
+              ],
+            ));
       default:
         log.warning('Unsupported unified card type ${unifiedCard['type']} encountered');
         return Container();
@@ -202,9 +203,15 @@ class TweetCard extends StatelessWidget {
 
     var endsAt = DateTime.parse(card['binding_values']['end_datetime_utc']['string_value']);
     if (endsAt.isBefore(DateTime.now())) {
-      endsAtText = 'Ended ${timeago.format(endsAt, allowFromNow: true)}';
+      endsAtText =
+          L10n.of(context).ended_timeago_format_endsAt_allowFromNow_true(
+        timeago.format(endsAt, allowFromNow: true),
+      );
     } else {
-      endsAtText = 'Ends ${timeago.format(endsAt, allowFromNow: true)}';
+      endsAtText =
+          L10n.of(context).ends_timeago_format_endsAt_allowFromNow_true(
+        timeago.format(endsAt, allowFromNow: true),
+      );
     }
 
     return Container(
@@ -216,11 +223,15 @@ class TweetCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               margin: EdgeInsets.only(top: 8),
               child: RichText(
-                text: TextSpan(
-                    children: [
-                      TextSpan(text: '${numberFormat.format(total)} votes'),
-                      TextSpan(text: ' • '),
-                      TextSpan(text: endsAtText)
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: L10n.of(context).numberFormat_format_total_votes(
+                      total,
+                      numberFormat.format(total),
+                    ),
+                  ),
+                  TextSpan(text: ' • '),
+                  TextSpan(text: endsAtText)
                     ]
                 ),
               ),
@@ -264,51 +275,51 @@ class TweetCard extends StatelessWidget {
         var image = card['binding_values']['thumbnail_image$imageKey']?['image_value'];
 
         return _createCard(_findCardUrl(card), Row(
-          children: [
-            if (imageSize != 'disabled')
+              children: [
+                if (imageSize != 'disabled')
               Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.contain)),
             Expanded(flex: 4, child: _createListTile(
-              context,
-              card['binding_values']['title']['string_value'],
-              card['binding_values']?['description']?['string_value'],
+                        context,
+                        card['binding_values']['title']['string_value'],
+                        card['binding_values']?['description']?['string_value'],
               card['binding_values']?['vanity_url']?['string_value']
             ))
-          ],
-        ));
+              ],
+            ));
       case 'summary_large_image':
         var image = card['binding_values']['thumbnail_image$imageKey']?['image_value'];
 
         return _createCard(_findCardUrl(card), Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (imageSize != 'disabled')
-              _createImage(imageSize, image, BoxFit.contain),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              child: _createListTile(
-                context,
-                card['binding_values']['title']['string_value'],
-                card['binding_values']?['description']?['string_value'],
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (imageSize != 'disabled')
+                  _createImage(imageSize, image, BoxFit.contain),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  child: _createListTile(
+                      context,
+                      card['binding_values']['title']['string_value'],
+                      card['binding_values']?['description']?['string_value'],
                 card['binding_values']?['vanity_url']?['string_value']
               ),
-            ),
-          ],
-        ));
+                ),
+              ],
+            ));
       case 'player':
         var image = card['binding_values']['player_image$imageKey']?['image_value'];
 
         return _createCard(_findCardUrl(card), Row(
-          children: [
+              children: [
             Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.cover, aspectRatio: 1)),
             Expanded(flex: 4, child: _createListTile(
-              context,
-              card['binding_values']['title']['string_value'],
-              card['binding_values']?['description']?['string_value'],
+                        context,
+                        card['binding_values']['title']['string_value'],
+                        card['binding_values']?['description']?['string_value'],
               card['binding_values']?['vanity_url']?['string_value']
             ))
-          ],
-        ));
+              ],
+            ));
       case 'poll2choice_text_only':
         return _createVoteCard(context, card, 2);
       case 'poll3choice_text_only':

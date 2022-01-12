@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:logging/logging.dart';
+import 'package:fritter/generated/l10n.dart';
 
 void showSnackBar(BuildContext context, {required String icon, required String message}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -33,20 +34,23 @@ _EmojiErrorWidget createEmojiError(TwitterError error) {
   switch (error.code) {
     case 22:
       emoji = '🔒';
-      message = 'Private profile';
+      message = L10n.current.private_profile;
       break;
     case 50:
       emoji = '🕵️';
-      message = 'User not found';
+      message = L10n.current.user_not_found;
       break;
     case 63:
       emoji = '👮';
-      message = 'Account suspended';
+      message = L10n.current.account_suspended;
       break;
     default:
-      Logger.root.warning('Unsupported Twitter error code: ${error.code}', error.message);
+      Logger.root.warning(
+        'Unsupported Twitter error code: ${error.code}',
+        error.message,
+      );
       emoji = '💥';
-      message = 'Catastrophic failure';
+      message = L10n.current.catastrophic_failure;
       break;
   }
 
@@ -92,7 +96,7 @@ class _EmojiErrorWidget extends FritterErrorWidget {
           Container(
             margin: EdgeInsets.only(top: 12),
             child: ElevatedButton(
-              child: Text('Back'),
+              child: Text(L10n.of(context).back),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -100,7 +104,7 @@ class _EmojiErrorWidget extends FritterErrorWidget {
             Container(
               margin: EdgeInsets.only(top: 12),
               child: ElevatedButton(
-                child: Text('Retry'),
+                child: Text(L10n.of(context).retry),
                 onPressed: () => onRetry(),
               ),
             )
@@ -184,8 +188,9 @@ class FullPageErrorWidget extends FritterErrorWidget {
     if (error is SocketException) {
       return _EmojiErrorWidget(
         emoji: '🔌',
-        message: 'Could not contact Twitter',
-        errorMessage: 'Please check your Internet connection.\n\n${error.message}',
+        message: L10n.of(context).could_not_contact_twitter,
+        errorMessage: L10n.of(context)
+            .please_check_your_internet_connection_error_message(error.message),
         onRetry: onRetry,
       );
     }
@@ -215,8 +220,9 @@ class FullPageErrorWidget extends FritterErrorWidget {
     if (message is TimeoutException) {
       return _EmojiErrorWidget(
         emoji: '⏱️',
-        message: 'Timed out',
-        errorMessage: 'This took too long to load. Please check your network connection!',
+        message: L10n.of(context).timed_out,
+        errorMessage: L10n.of(context)
+            .this_took_too_long_to_load_please_check_your_network_connection,
         onRetry: onRetry,
       );
     }
@@ -231,9 +237,11 @@ class FullPageErrorWidget extends FritterErrorWidget {
             margin: EdgeInsets.only(bottom: 16),
             child: Icon(Icons.error, color: Colors.red, size: 36),
           ),
-          Text('Oops! Something went wrong 🥲', textAlign: TextAlign.center, style: TextStyle(
-              fontSize: 18
-          )),
+          Text(
+            L10n.of(context).oops_something_went_wrong,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
           Container(
             margin: EdgeInsets.only(top: 12),
             child: Text('$prefix', textAlign: TextAlign.center, style: TextStyle(
@@ -250,15 +258,16 @@ class FullPageErrorWidget extends FritterErrorWidget {
           Container(
             margin: EdgeInsets.only(top: 12),
             child: ElevatedButton(
-              child: Text('Report'),
-              onPressed: () => Catcher.reportCheckedError(ManuallyReportedException(error), stackTrace),
+              child: Text(L10n.of(context).report),
+              onPressed: () => Catcher.reportCheckedError(
+                  ManuallyReportedException(error), stackTrace),
             ),
           ),
           if (onRetry != null)
             Container(
               margin: EdgeInsets.only(top: 12),
               child: ElevatedButton(
-                child: Text('Retry'),
+                child: Text(L10n.of(context).retry),
                 onPressed: () => onRetry(),
               ),
             )

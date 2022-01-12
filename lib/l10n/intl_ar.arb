@@ -1,0 +1,195 @@
+{
+    "this_group_contains_no_subscriptions": "هذه المجموعة لا تحتوي على أي مجموعات!",
+    "could_not_find_any_tweets_by_this_user": "لم يتم العثور على أي تغريدة من هذا المستخدم",
+    "unable_to_load_the_next_page_of_replies": "غير قادر على تحميل الصفحة التالية من الردود",
+    "unable_to_load_the_tweet": "غير قادر على تحميل التغريدات",
+    "unable_to_load_subscription_groups": "غير قادر على تحميل مجموعات الاشتراك",
+    "add_to_group": "أضف إلى المجموعة",
+    "unsubscribe": "إلغاء الاشتراك",
+    "subscribe": "الاشتراك",
+    "reporting_an_error": "الإبلاغ غن خطأ",
+    "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "حدث خطأ ما في فريتر، تم إنشاء تقرير لهذا الخطأ، تستطيع أن تبعث التقرير إلى مطورين فريتر لمساعدتهم على إصلاح المشكلة.",
+    "would_you_like_to_enable_automatic_error_reporting": "هل تُحب أن تفعل مُبَلغ الأخطاء الآلي؟",
+    "your_report_will_be_sent_to_fritter_sentry_project": "تقريرك سيُبعث إلى مشروع حراسة فريتر، ويمكن العثور على تفاصيل الخصوصية في:",
+    "send_once": "ابعث مرة واحدة",
+    "send_always": "ابعث كل مرة",
+    "don_not_send": "لا تبعث",
+    "never_send": "يا ويلك لو تبعث",
+    "an_error_was_reported_to_sentry_thank_you": "بُلِّغ عن خطأ للحارس. شكرا!",
+    "thanks_for_reporting_we_will_try_and_fix_it_in_no_time": "شكراً علي تبليغك لنا. سنحاول أن نصحله بأسرع ما يمكن!",
+    "unable-to-load-the-next-page-of-tweets": "غير قادر على تحميل صحفة التغريدات التالية",
+    "unable_to_load_the_tweets_for_the_feed": "غير قادر على تحميل التغريدات للمُلقّم",
+    "could_not_find_any_tweets_from_the_last_7_days": "لم يُعثر على أي تغريدات من الأيام الـ7 الماضية!",
+    "unable_to_load_the_group": "غير قادر على تحميل المجموعة",
+    "unable_to_load_the_group_settings": "غير قادر على تحميل إعدادات المجموعة",
+    "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": "ملاحظة: نظراً لقَيد معين من تويتر، قد لا يتم تضمين جميع التغريدات",
+    "include_replies": "تضمين الردود",
+    "include_retweets": "تضمين إعادات التغاريد",
+    "unable_to_find_your_saved_tweets": "غير قادر على العثور على تغريداتك المحفوظة",
+    "you_have_not_saved_any_tweets_yet": "لم تحفظ أي تغريدة حتى الآن!",
+    "unable_to_load_the_search_results": "غير قادر على تحميل نتائج البحث",
+    "no_results": "لا نتائج",
+    "feed": "التلقيم",
+    "subscriptions": "الإشتراكات",
+    "trending": "الشائع",
+    "saved": "المحفوظ",
+    "unable_to_load_the_list_of_follows": "غير قادر على تحميل قائمة المتابَعون",
+    "unable_to_load_the_next_page_of_follows": "غير قادر على تحميل الصفحة المتابَعون التالية",
+    "this_user_does_not_follow_anyone": "هذا المستخدم لا يتابِع أحداً!",
+    "this_user_does_not_have_anyone_following_them": "لا أحد يُتابِع هذا المستخدم",
+    "unable_to_load_the_tweets": "غير قادر على تحميل التغريدات",
+    "unable_to_load_the_profile": "غير قادر على تحميل الملف الشخصي",
+    "tweets": "التغريدات",
+    "tweets_and_replies": "التغريدات والردود",
+    "media": "الوسائط",
+    "following": "المتابَعون",
+    "followers": "المتابِعون",
+    "export": "تصدير",
+    "data_exported_to_fullPath": "صُدِّرَت البيانات إلى {fullPath}",
+    "data_exported_to_fileName": "صُدِّرَت البيانات إلى {fileName}",
+    "unable_to_check_if_this_is_a_legacy_Android_device": "غير قادر على التحقق ما إذا كان جهاز الأندرويد هذا قديم.",
+    "your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to": "جهازك يشتغل على نظام أقدم من أندرويد كيت كات (4.4)، لذلك يستطيع التصدير أن يُحفظ فقط إلى:",
+    "export_settings": "تصدير الإعدادات؟",
+    "export_subscriptions": "تصدير الاشتراكات؟",
+    "export_subscription_groups": "تصدير مجموعات الاشتراكات؟",
+    "export_subscription_group_members": "تصدير أفراد مجموعات الاشتراكات؟",
+    "export_tweets": "تصدير التغريدات؟",
+    "data_imported_successfully": "استوردت البيانات بنجاح",
+    "it_looks_like_you_have_already_said_hello_from_this_version_of_fritter": "يبدوا أنك قد سلمت بالفعل من إصدار فريتر هذا!",
+    "cancel": "الغاء",
+    "thanks_for_helping_fritter": "شكراً على مساعدتك لفريتر! 💖",
+    "it_looks_like_you_have_already_sent_a_ping_recently": "يبدوا أنك بالفعل قد أرسلت بينج حديثاً 🤔",
+    "unable_to_send_the_ping_the_status_code_was_response_statusCode": "Unable to send the ping. The status code was {statusCode}",
+    "timed_out_trying_to_send_the_ping": "انتهت مهلة المحاولة لإرسال البنج 😢",
+    "unable_to_send_the_ping_e_to_string": "غير قادر على إرسال البنج. {e}",
+    "send": "إرسال",
+    "say_hello_emoji": "سَلّم 👋",
+    "say_hello": "سَلّم",
+    "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": "هذه هي البيانات التي ستُرسل. ستُستعمل فقط لمعرفة أي أجهزة وأي لغات لدعمها في المستقبل",
+    "unable_to_find_the_app_package_info": "غير قادر على العثور على معلومات حزمة التطبيق",
+    "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "أرسل بنج غير محدِّد للهوية لإعلامي بأنك تستعمل فريتر ولمساعدة التطوير في المستقبل.",
+    "general": "العامة",
+    "default_tab": "التبويب الافتراضي",
+    "which_tab_is_shown_when_the_app_opens": "أي تبويب يظهر عندما يفتح التطبيق",
+    "media_size": "حجم الوسائط",
+    "save_bandwidth_using_smaller_images": "الحفاظ على عرض النطاق (البيانات) باستخدام صور أصغر",
+    "disabled": "معطل",
+    "thumbnail": "الصورة المصغرة",
+    "small": "صغير",
+    "medium": "متوسط",
+    "large": "كبير",
+    "theme": "السمة",
+    "system": "النظام",
+    "light": "فاتح",
+    "dark": "داكن",
+    "true_black": "أسود حقيقي؟",
+    "use_true_black_for_the_dark_mode_theme": "استخدم ميزة الأسود الحقيقي للسمة الداكنة",
+    "data": "البيانات",
+    "import": "استيراد",
+    "import_data_from_another_device": "استيراد البيانات من جهاز آخر",
+    "legacy_android_import": "استيردات البيانات للأندرويد القديم",
+    "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": "الملف غير موجود. رجائاً تأكد أنه موجو في {filePath}",
+    "prefix": "السابقة",
+    "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from": "جهازك يشتغل على نظام أقدم من أندرويد كيت كات (4.4)، لذلك ستُستورد البيانات من:",
+    "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below": "رجائاً تأكد ما إذا كانت البيانات موجودة هناك, ومن ثم اضغط على زر الاستيراد في أدناه.",
+    "export_your_data": "تصدير بياناتك",
+    "logging": "تسجيل البيانات",
+    "enable_sentry": "تفعيل الحارس؟",
+    "whether_errors_should_be_reported_to_sentry": "ما إذا يجب على الأخطاء البرمجية أن يُبلّغ عنها إلى الحارس",
+    "about": "عن",
+    "version": "الإصدار",
+    "copied_version_to_clipboard": "نُسخ الإصدار إلى الحافظة",
+    "contribute": "المساهمة",
+    "help_make_fritter_even_better": "ساعد في تحسين فريتر!",
+    "report_a_bug": "الإبلاغ عن خطأ",
+    "let_the_developers_know_if_something_is_broken": "دع المطورين يعرفون ما إذا كان هناك خطأ ما",
+    "donate": "التبرع",
+    "help_support_fritters_future": "ساعد على دعم مستقبل فريتر",
+    "copied_address_to_clipboard": "نُسخ العنوان إلى الحافظة",
+    "licenses": "الرخص",
+    "all_the_great_software_used_by_fritter": "كل البرمجيات الرائعة التي يستخدمها فريتر",
+    "fritter": "فريتر",
+    "released_under_the_mit_license": "منشور تحت رخصة الإم أي تي (MIT License)",
+    "all": "الكل",
+    "newTrans": "الجديد",
+    "no": "لا",
+    "yes": "نعم",
+    "are_you_sure": "هل أنت متأكد؟",
+    "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group": "هل أنت متأكد من حذف اسم مجموعة الاشتراك {name}?",
+    "toggle_all": "تبديل الكل",
+    "delete": "حذف",
+    "ok": "تمام",
+    "name": "الاسم",
+    "please_enter_a_name": "رجائاً اكتب اسماً",
+    "pick_a_color": "اختر لون!",
+    "import_subscriptions": "استيراد الاشتراكات",
+    "to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below": "لاستيراد الاشتراكات من حساب موجود على تويتر، أدخل اسم المستخدم للحساب أدناه",
+    "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts": "رجائاً انتبه أن طريقة الاستيراد التي يستعملها فريتر هي مقيدة المعدل بشدة، لذلك من الممكن أن تفِل إذا كان لديك الكثير من الحسابات المتابَعة",
+    "if_you_have_any_feedback_on_this_feature_please_leave_it_on": "إذا كان لديك أي تعليقات عن هذه الميزة، رجائاً اكتبها هنا",
+    "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "تحديد حسابات مفردة، وتعيين مجموعات هما ميزات قد خُطط لها بالفعل للمستقبل!",
+    "enter_your_twitter_username": "ادخل اسم مستخدم للتويتر",
+    "your_profile_must_be_public_otherwise_the_import_will_not_work": "يجب على ملفك الشخصي أن يكون عام، لن يعمل  الاستيراد إذا لم يكن كذلك.",
+    "username": "اسم المستخدم",
+    "unable_to_import": "غير قادر على الاستيراد",
+    "imported_snapshot_data_users_so_far": "استورد {snapshotData} مستخدم لحد الآن",
+    "finished_with_snapshotData_users": "تم الانتهاء بـ{snapshotData} مستخدم",
+    "no_subscriptions_try_searching_or_importing_some": "لا اشتراكات. حاول أن تبحث أو أن تستورد البعض!",
+    "import_from_twitter": "الاستيراد من تويتر!",
+    "unable_to_refresh_the_subscriptions_the_error_was_e": "غير قادر على تحديث الاشتراكات. الخطأ هو كالتالي {e}",
+    "groups": "المجموعات",
+    "date_created": "تاريخ الإنشاء",
+    "date_subscribed": "تاريخ الاشتراك",
+    "unable_to_load_the_trends_for_widget_place_name": "غير قادر على تحميل الترندات لـ{widgetPlaceName}",
+    "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible": "لم يتم إرجاع أي ترند. هذا غير متوقع! رجائاً أبلغ عن خطأ، إذا كان ممكناً.",
+    "unable_to_find_the_available_trend_locations": "غير قادر على تحديد موقع الترندات",
+    "country": "البلد",
+    "unable_to_stream_the_trend_location_preference": "غير قادر على بث تفضيل موقع الترندات",
+    "trends": "الترندات",
+    "tweets_number": "{num, plural, zero{لا تغريدات} one{تغريدة واحدة} two{تغريدتان} few{{numFormatted} تغريدات} many{{numFormatted} تغريدة} other{{numFormatted} تغريدات}}",
+    "ended_timeago_format_endsAt_allowFromNow_true": "اتنهى {timeagoFormat}",
+    "ends_timeago_format_endsAt_allowFromNow_true": "يتنهي {timeagoFormat}",
+    "numberFormat_format_total_votes": "{num, plural, zero{ولا تصويت} one{تصويت واحد} two{تصويتان} few{{numFormatted} تصويتات} many{{numFormatted} تصويت} other{{numFormatted} تصويتات}}",
+    "tap_to_show_getMediaType_item_type": "انقر للعرض {getMediaType}",
+    "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": "غير قادر على حفظ الوسائط. أرجع تويتر حالة  {responseStatusCode}",
+    "downloading_media": "تحميل الوسائط...",
+    "successfully_saved_the_media": "تم حفظ الوسائط بنجاح!!",
+    "unknown": "غير معروف",
+    "playback_speed": "سرعة التشغيل",
+    "subtitles": "السطرجة",
+    "live": "مباشر",
+    "download": "تحميل",
+    "this_tweet_user_name_retweeted": "{thisTweetUserName} أعاد التغريد",
+    "sorry_the_replied_tweet_could_not_be_found": "نأسف، ولكن لا يمكن العثور على التغريدة المُرَد عليها",
+    "replying_to": "يرد على",
+    "the_tweet_did_not_contain_any_text_this_is_unexpected": "التغريدة لا تحتوي على أي نص. هذا غير متوقع",
+    "this_tweet_is_unavailable": "هذه التغريدة غير متاحة",
+    "pinned_tweet": "التغريدة المثبتة",
+    "thread": "سلسلة",
+    "unsave": "الغاء الحفظ",
+    "save": "حفظ",
+    "share_tweet_content": "مشاركة محتوى التغريدة",
+    "share_tweet_link": "مشاركة رابط التغريدة",
+    "private_profile": "ملف شخصي خاص",
+    "user_not_found": "لم يُعثر على المستخدم",
+    "account_suspended": "الحساب معلق",
+    "catastrophic_failure": "فشل ذريع",
+    "back": "رجوع",
+    "retry": "إعادة المحاوة",
+    "could_not_contact_twitter": "غير قادر على التواصل مع تويتر",
+    "please_check_your_internet_connection_error_message": "رجائاً تحقق من اتصال الشبكة لديك.\n\n{errorMessage}",
+    "timed_out": "انتهت المهلة",
+    "this_took_too_long_to_load_please_check_your_network_connection": "استغرق هذا وقتا طويلا للتحميل. رجائاً تأكد من اتصال الشبكة لديك!",
+    "oops_something_went_wrong": "أوبسي! حدث خطأ ما 🥲",
+    "report": "إبلاغ",
+    "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible": "لم يتم إرجاع أي بيانات، ومن المفروض أن لا يكون كذلك. رجائاً بلّغ عن خطأ، إذا كان ممكناً",
+    "the_connection_state_state_is_not_supported": "حالة اتصال الـ{state} غير مدعومة",
+    "updates": "التحديثات",
+    "when_a_new_app_update_is_available": "عندما يكون هناك تحديث جديد للتطبيق",
+    "an_update_for_fritter_is_available": "هناك تحديث متاح لفريتر! 🚀",
+    "tap_to_download_release_version": "انقر للتحميل {releaseVersion}",
+    "update_to_release_version_through_your_fdroid_client": "حدّث إلى {releaseVersion} عبر عميل الـF-Droid لديك",
+    "fritter_blue": "فريتر أزرق",
+    "blue_theme_based_on_the_twitter_color_scheme": "السمة الزرقاء بنائاً على سمة تويتر",
+    "something_broke_in_fritter": "حدث خطأ ما في فريتر",
+    "unable_to_run_the_database_migrations": "غير قادر على تشغيل تحديث قاعدة البيانات"
+}

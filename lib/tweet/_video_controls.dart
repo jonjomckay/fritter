@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/material/widgets/playback_speed_dialog.dart';
+import 'package:fritter/generated/l10n.dart';
 
 /// This is pretty much 99.9% the MaterialDesktopControls widget from Chewie, released
 /// under the MIT License. It fixes some padding issues, and makes the widget
@@ -60,9 +61,9 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   Widget build(BuildContext context) {
     if (_latestValue.hasError) {
       return chewieController.errorBuilder?.call(
-        context,
-        chewieController.videoPlayerController.value.errorDescription!,
-      ) ??
+            context,
+            chewieController.videoPlayerController.value.errorDescription!,
+          ) ??
           const Center(
             child: Icon(
               Icons.error,
@@ -96,7 +97,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
                       offset: Offset(
                           0.0, notifier.hideStuff ? barHeight * 0.8 : 0.0),
                       child:
-                      _buildSubtitles(context, chewieController.subtitle!),
+                          _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
                 ],
@@ -147,7 +148,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
         },
         iconData: Icons.speed,
         title: chewieController.optionsTranslation?.playbackSpeedButtonText ??
-            'Playback speed',
+            L10n.of(context).playback_speed,
       )
     ];
 
@@ -163,7 +164,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
               ? Icons.closed_caption
               : Icons.closed_caption_off_outlined,
           title: chewieController.optionsTranslation?.subtitlesButtonText ??
-              'Subtitles',
+              L10n.of(context).subtitles,
         ),
       );
     }
@@ -191,7 +192,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
               builder: (context) => OptionsDialog(
                 options: options,
                 cancelButtonText:
-                chewieController.optionsTranslation?.cancelButtonText,
+                    chewieController.optionsTranslation?.cancelButtonText,
               ),
             );
           }
@@ -244,8 +245,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   }
 
   AnimatedOpacity _buildBottomBar(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     final iconColor = Theme.of(context).textTheme.button!.color;
 
     return AnimatedOpacity(
@@ -268,7 +269,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
                     _buildPlayPause(controller),
                     _buildMuteButton(controller),
                     if (chewieController.isLive)
-                      const Expanded(child: Text('LIVE'))
+                      Expanded(child: Text(L10n.of(context).live))
                     else
                       _buildPosition(iconColor),
                     const Spacer(),
@@ -381,8 +382,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   }
 
   GestureDetector _buildMuteButton(
-      VideoPlayerController controller,
-      ) {
+    VideoPlayerController controller,
+  ) {
     return GestureDetector(
       onTap: () {
         _cancelAndRestartTimer();
@@ -487,10 +488,10 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer =
           Timer(const Duration(milliseconds: 300), () {
-            setState(() {
-              _cancelAndRestartTimer();
-            });
-          });
+        setState(() {
+          _cancelAndRestartTimer();
+        });
+      });
     });
   }
 

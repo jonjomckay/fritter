@@ -8,6 +8,7 @@ import 'package:fritter/utils/downloads.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetVideo extends StatefulWidget {
   final bool loop;
@@ -52,23 +53,27 @@ class _TweetVideoState extends State<TweetVideo> {
                 log.severe('Unable to save the media. The response was ${response.body}');
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
+                  content: Text(
+                    L10n.of(context)
+                        .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
+                            response.statusCode),
+                  ),
                 ));
               },
               onStart: () {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Downloading media...'),
+                  content: Text(L10n.of(context).downloading_media),
                 ));
               },
               onSuccess: () {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Successfully saved the media!'),
+                  content: Text(L10n.of(context).successfully_saved_the_media),
                 ));
               },
             );
           },
           iconData: Icons.download_sharp,
-          title: 'Download'
+          title: L10n.of(context).download,
         )
       ],
       looping: widget.loop,

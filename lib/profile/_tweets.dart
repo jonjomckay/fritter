@@ -5,6 +5,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class ProfileTweets extends StatefulWidget {
   final User user;
@@ -44,8 +45,8 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       var result = await Twitter.getTweets(
         widget.user.idStr!,
         widget.type,
-        cursor: cursor,
-        count: _pageSize,
+          cursor: cursor,
+          count: _pageSize,
         includeReplies: widget.includeReplies
       );
 
@@ -72,18 +73,20 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the tweets',
+          prefix: L10n.of(context).unable_to_load_the_tweets,
           onRetry: () => _loadTweets(_pagingController.firstPageKey),
         ),
         newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the next page of tweets',
+          prefix: L10n.of(context).unable_to_load_the_next_page_of_tweets,
           onRetry: () => _loadTweets(_pagingController.nextPageKey),
         ),
         noItemsFoundIndicatorBuilder: (context) {
           return Center(
-            child: Text('Couldn\'t find any tweets by this user!'),
+            child: Text(
+              L10n.of(context).could_not_find_any_tweets_by_this_user,
+            ),
           );
         },
       ),

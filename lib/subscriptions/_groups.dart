@@ -13,6 +13,7 @@ import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
+import 'package:fritter/generated/l10n.dart';
 
 var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
 
@@ -42,8 +43,8 @@ class SubscriptionGroups extends StatefulWidget {
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
   void openSubscriptionGroupDialog(String? id, String name) {
     showDialog(context: context, builder: (context) {
-      return SubscriptionGroupEditDialog(id: id, name: name);
-    });
+          return SubscriptionGroupEditDialog(id: id, name: name);
+        });
   }
 
   Widget _createGroupCard(String id, String name, String icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
@@ -98,8 +99,15 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
       maxCrossAxisExtent: 140,
       childAspectRatio: 200 / 125,
       children: [
-        _createGroupCard('-1', 'All', defaultGroupIcon, null, null, null),
-        ...model.groups.map((e) => _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name))),
+        _createGroupCard(
+            '-1', L10n.of(context).all, defaultGroupIcon, null, null, null),
+        ...model.groups.map((e) => _createGroupCard(
+            e.id,
+            e.name,
+            e.icon,
+            e.color,
+            e.numberOfMembers,
+            () => openSubscriptionGroupDialog(e.id, e.name))),
         Card(
           child: InkWell(
             onTap: () {
@@ -118,9 +126,10 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
                       child: Icon(Icons.add, size: 16),
                     ),
                     SizedBox(height: 4),
-                    Text('New', style: TextStyle(
-                      fontSize: 11,
-                    ))
+                    Text(
+                      L10n.of(context).newTrans,
+                      style: TextStyle(fontSize: 11),
+                    )
                   ],
                 ),
               ),
@@ -158,39 +167,43 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
     super.initState();
 
     context.read<GroupModel>().loadGroupEdit(widget.id).then((group) => setState(() {
-      _group = group;
+              _group = group;
 
-      id = group.id;
-      name = group.name;
-      icon = group.icon;
-      color = group.color;
-      members = group.members;
-    }));
+              id = group.id;
+              name = group.name;
+              icon = group.icon;
+              color = group.color;
+              members = group.members;
+            }));
   }
 
   void openDeleteSubscriptionGroupDialog(String id, String name) {
     var model = context.read<GroupModel>();
 
     showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () async {
-              await model.deleteGroup(id);
+        return AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(L10n.of(context).no),
+            ),
+            TextButton(
+              onPressed: () async {
+                await model.deleteGroup(id);
 
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: Text('Yes'),
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: Text(L10n.of(context).yes),
+            ),
+          ],
+          title: Text(L10n.of(context).are_you_sure),
+          content: Text(
+            L10n.of(context)
+                .are_you_sure_you_want_to_delete_the_subscription_group_name_of_group(
+                    name),
           ),
-        ],
-        title: Text('Are you sure?'),
-        content: Text('Are you sure you want to delete the subscription group $name?'),
-      );
+        );
     });
   }
 
@@ -205,8 +218,11 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
     }
 
     // Filter the Material icons to only the baseline ones
-    var iconPack = icons.entries
-        .where((value) => !value.key.endsWith('_sharp') && !value.key.endsWith('_rounded') && !value.key.endsWith('_outlined') && !value.key.endsWith('_outline'));
+    var iconPack = icons.entries.where((value) =>
+        !value.key.endsWith('_sharp') &&
+        !value.key.endsWith('_rounded') &&
+        !value.key.endsWith('_outlined') &&
+        !value.key.endsWith('_outline'));
 
     return AlertDialog(
       actions: [
@@ -220,17 +236,17 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
               }
             });
           },
-          child: Text('Toggle All'),
+          child: Text(L10n.of(context).toggle_all),
         ),
         TextButton(
           onPressed: id == null
               ? null
               : () => openDeleteSubscriptionGroupDialog(id!, name!),
-          child: Text('Delete'),
+          child: Text(L10n.of(context).delete),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: Text(L10n.of(context).cancel),
         ),
         Builder(builder: (context) {
           var onPressed = () async {
@@ -242,7 +258,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
           };
 
           return TextButton(
-            child: Text('OK'),
+            child: Text(L10n.of(context).ok),
             onPressed: onPressed,
           );
         }),
@@ -261,15 +277,15 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     child: TextFormField(
                       initialValue: group.name,
                       decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Name'
+                        border: UnderlineInputBorder(),
+                        hintText: L10n.of(context).name,
                       ),
                       onChanged: (value) => setState(() {
                         name = value;
                       }),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return L10n.of(context).please_enter_a_name;
                         }
 
                         return null;
@@ -281,38 +297,38 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     icon: Icon(Icons.color_lens, color: color),
                     onPressed: () {
                       showDialog(context: context, builder: (context) {
-                        var selectedColor = color;
+                            var selectedColor = color;
 
-                        return AlertDialog(
-                          title: const Text('Pick a color!'),
-                          content: SingleChildScrollView(
-                            child: MaterialPicker(
-                              pickerColor: color ?? Colors.grey,
-                              onColorChanged: (value) => setState(() {
-                                selectedColor = value;
-                              }),
-                              enableLabel: true,
-                            ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Cancel'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('OK'),
-                              onPressed: () {
-                                setState(() {
-                                  color = selectedColor;
-                                });
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
+                            return AlertDialog(
+                              title: Text(L10n.of(context).pick_a_color),
+                              content: SingleChildScrollView(
+                                child: MaterialPicker(
+                                  pickerColor: color ?? Colors.grey,
+                                  onColorChanged: (value) => setState(() {
+                                    selectedColor = value;
+                                  }),
+                                  enableLabel: true,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text(L10n.of(context).cancel),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(L10n.of(context).ok),
+                                  onPressed: () {
+                                    setState(() {
+                                      color = selectedColor;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
                     },
                   ),
                   IconButton(

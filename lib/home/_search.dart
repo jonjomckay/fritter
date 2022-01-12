@@ -7,6 +7,7 @@ import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetSearchDelegate extends SearchDelegate {
   final int initialTab;
@@ -38,8 +39,8 @@ class TweetSearchDelegate extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(icon: Icon(Icons.clear), onPressed: () {
-        query = '';
-      })
+            query = '';
+          })
     ];
   }
 
@@ -72,7 +73,7 @@ class TweetSearchDelegate extends SearchDelegate {
             Container(
               child: Expanded(child: TabBarView(children: [
                 TweetSearchResultList<User>(
-                  query: query,
+                    query: query,
                     future: (q) => searchUsers(context, q),
                     itemBuilder: (context, item) {
                       return UserTile(
@@ -164,12 +165,12 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
       onError: (error, stackTrace) => FullPageErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix: 'Unable to load the search results.',
+        prefix: L10n.of(context).unable_to_load_the_search_results,
         onRetry: () => fetchResults(),
       ),
       onReady: (items) {
         if (items.isEmpty) {
-          return Center(child: Text('No results'));
+          return Center(child: Text(L10n.of(context).no_results));
         }
 
         return ListView.builder(

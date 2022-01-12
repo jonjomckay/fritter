@@ -15,6 +15,8 @@ import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -38,11 +40,11 @@ class _ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<_ProfileScreen> {
   late Future<User> _future;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     fetchProfile();
   }
 
@@ -51,7 +53,7 @@ class _ProfileScreenState extends State<_ProfileScreen> {
       _future = Twitter.getProfile(widget.username);
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +63,7 @@ class _ProfileScreenState extends State<_ProfileScreen> {
         onError: (error, stackTrace) => FullPageErrorWidget(
           error: error,
           stackTrace: stackTrace,
-          prefix: 'Unable to load the profile',
+          prefix: L10n.of(context).unable_to_load_the_profile,
           onRetry: () => fetchProfile(),
         ),
       ),
@@ -187,11 +189,36 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 controller: _tabController,
                 isScrollable: true,
                 tabs: [
-                  Tab(child: Text('Tweets', textAlign: TextAlign.center)),
-                  Tab(child: Text('Tweets & Replies', textAlign: TextAlign.center)),
-                  Tab(child: Text('Media', textAlign: TextAlign.center)),
-                  Tab(child: Text('Following', textAlign: TextAlign.center)),
-                  Tab(child: Text('Followers', textAlign: TextAlign.center)),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).tweets,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).tweets_and_replies,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).media,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).following,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      L10n.of(context).followers,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
               flexibleSpace: FlexibleSpaceBar(

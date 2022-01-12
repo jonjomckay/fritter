@@ -9,6 +9,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
@@ -33,8 +34,10 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
 
 Future checkForUpdates() async {
+  L10n.load(Locale('en'));
   Logger.root.info('Checking for updates');
 
   try {
@@ -56,10 +59,10 @@ Future checkForUpdates() async {
 
       if (int.parse(package.buildNumber) < latest) {
         var details = NotificationDetails(android: AndroidNotificationDetails(
-            'updates', 'Updates', 'When a new app update is available',
-            importance: Importance.max,
+                'updates', 'Updates', 'When a new app update is available',
+                importance: Importance.max,
             largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
-            priority: Priority.high,
+                priority: Priority.high,
             showWhen: false
         ));
 
@@ -112,7 +115,7 @@ Future<void> main() async {
   CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
     ConsoleHandler(),
     FritterSentryHandler(
-      sentryHub: sentryHub,
+        sentryHub: sentryHub,
       sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
     )
   ], localizationOptions: [
@@ -129,68 +132,68 @@ Future<void> main() async {
   });
 
   Catcher(
-    debugConfig: catcherOptions,
-    releaseConfig: catcherOptions,
-    enableLogger: false,
-    runAppFunction: () async {
+      debugConfig: catcherOptions,
+      releaseConfig: catcherOptions,
+      enableLogger: false,
+      runAppFunction: () async {
       Logger.root.onRecord.listen((event) async {
-        print(event.message);
+            print(event.message);
 
-        if (event.error != null) {
-          print(event.error);
-          print(event.stackTrace);
-        }
+            if (event.error != null) {
+              print(event.error);
+              print(event.stackTrace);
+            }
 
-        if (event.level.value >= 900) {
-          // Don't report internal Catcher errors, as it'll cause a loop
-          if (event.loggerName != 'Catcher') {
-            Catcher.reportCheckedError(event.error, event.stackTrace);
-          }
-        }
+            if (event.level.value >= 900) {
+              // Don't report internal Catcher errors, as it'll cause a loop
+              if (event.loggerName != 'Catcher') {
+                Catcher.reportCheckedError(event.error, event.stackTrace);
+              }
+            }
       });
 
-      if (Platform.isAndroid) {
+        if (Platform.isAndroid) {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
-        final InitializationSettings settings = InitializationSettings(
+          final InitializationSettings settings = InitializationSettings(
             android: AndroidInitializationSettings('@mipmap/launcher_icon')
         );
 
         await notifications.initialize(settings, onSelectNotification: (payload) async {
-          if (payload != null && payload.startsWith('https://')) {
-            await launch(payload);
-          }
-        });
+            if (payload != null && payload.startsWith('https://')) {
+              await launch(payload);
+            }
+          });
 
-        checkForUpdates();
-      }
+          checkForUpdates();
+        }
 
-      // Run the migrations early, so models work. We also do this later on so we can display errors to the user
-      await Repository().migrate();
+        // Run the migrations early, so models work. We also do this later on so we can display errors to the user
+        await Repository().migrate();
 
-      var homeModel = HomeModel(prefService);
+        var homeModel = HomeModel(prefService);
 
-      var groupModel = GroupModel(prefService);
-      await groupModel.reloadGroups();
+        var groupModel = GroupModel(prefService);
+        await groupModel.reloadGroups();
 
-      var usersModel = UsersModel(prefService, groupModel);
-      await usersModel.reloadSubscriptions();
+        var usersModel = UsersModel(prefService, groupModel);
+        await usersModel.reloadSubscriptions();
 
-      runApp(PrefService(
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => groupModel),
-              ChangeNotifierProvider(create: (context) => homeModel),
-              ChangeNotifierProvider(create: (context) => usersModel),
-            ],
-            child: DevicePreview(
-              enabled: !kReleaseMode,
-              builder: (context) => MyApp(hub: sentryHub),
+        runApp(PrefService(
+            child: MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => groupModel),
+                ChangeNotifierProvider(create: (context) => homeModel),
+                ChangeNotifierProvider(create: (context) => usersModel),
+              ],
+              child: DevicePreview(
+                enabled: !kReleaseMode,
+                builder: (context) => MyApp(hub: sentryHub),
+              ),
             ),
-          ),
           service: prefService
       ));
-    });
+      });
 }
 
 class MyApp extends StatefulWidget {
@@ -211,7 +214,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     var prefService = PrefService.of(context);
 
     // Set any already-enabled preferences
@@ -237,8 +240,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     FlexSchemeData fritterColorScheme = FlexSchemeData(
-      name: 'Fritter blue',
-      description: 'Blue theme based on the Twitter color scheme',
+      name: L10n.current.fritter_blue,
+      description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
         primaryVariant: Color(0xFF320019),
@@ -265,12 +268,63 @@ class _MyAppState extends State<MyApp> {
         themeMode = ThemeMode.system;
         break;
       default:
-        log.warning('Unknown theme mode preference: '+ _themeMode);
+        log.warning('Unknown theme mode preference: ' + _themeMode);
         themeMode = ThemeMode.system;
         break;
     }
 
     return MaterialApp(
+      localeListResolutionCallback: (locales, supportedLocales) {
+        List supportedLocalesCountryCode = [];
+        for (var item in supportedLocales) {
+          supportedLocalesCountryCode.add(item.countryCode);
+        }
+
+        List supportedLocalesLanguageCode = [];
+        for (var item in supportedLocales) {
+          supportedLocalesLanguageCode.add(item.languageCode);
+        }
+
+        locales!;
+        List localesCountryCode = [];
+        for (var item in locales) {
+          localesCountryCode.add(item.countryCode);
+        }
+
+        List localesLanguageCode = [];
+        for (var item in locales) {
+          localesLanguageCode.add(item.languageCode);
+        }
+
+        // print('Supported Locales CountryCode: $supportedLocalesCountryCode');
+        // print('Supported Locales LanguageCode: $supportedLocalesLanguageCode');
+
+        // print('Locales CountryCode: $localesCountryCode');
+        // print('Locales LanguageCode: $localesLanguageCode');
+
+        for (var i = 0; i < locales.length; i++) {
+          if (supportedLocalesCountryCode.contains(localesCountryCode[i]) &&
+              supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
+            print(
+                'Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
+            return Locale(localesLanguageCode[i], localesCountryCode[i]);
+          } else if (supportedLocalesLanguageCode
+              .contains(localesLanguageCode[i])) {
+            print('Yes language: ${localesLanguageCode[i]}');
+            return Locale(localesLanguageCode[i]);
+          } else {
+            print('Nothing');
+          }
+        }
+        return Locale('en');
+      },
+      localizationsDelegates: [
+        L10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: L10n.delegate.supportedLocales,
       locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [
@@ -296,7 +350,11 @@ class _MyAppState extends State<MyApp> {
           log.severe('Something broke in Fritter.', details.exception, details.stack);
 
           return Scaffold(
-            body: FullPageErrorWidget(error: details.exception, stackTrace: details.stack, prefix: 'Something broke in Fritter.'),
+            body: FullPageErrorWidget(
+              error: details.exception,
+              stackTrace: details.stack,
+              prefix: L10n.of(context).something_broke_in_fritter,
+            ),
           );
         };
 
@@ -328,9 +386,9 @@ class _DefaultPageState extends State<DefaultPage> {
         var statusId = link.pathSegments[2];
 
         Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-          id: statusId,
-          username: username,
-        ));
+              id: statusId,
+              username: username,
+            ));
         return;
       }
     }
@@ -361,7 +419,7 @@ class _DefaultPageState extends State<DefaultPage> {
       onError: (error, stackTrace) => ScaffoldErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix: 'Unable to run the database migrations',
+        prefix: L10n.of(context).unable_to_run_the_database_migrations,
       ),
       onReady: (data) => HomeScreen(),
     );

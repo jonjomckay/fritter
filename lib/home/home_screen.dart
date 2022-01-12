@@ -6,6 +6,7 @@ import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/trends/trends.dart';
 import 'package:pref/pref.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class _Tab {
   final String id;
@@ -16,10 +17,10 @@ class _Tab {
 }
 
 final List<_Tab> homeTabs = [
-  _Tab('feed', 'Feed', Icons.rss_feed),
-  _Tab('subscriptions', 'Subscriptions', Icons.people),
-  _Tab('trending', 'Trending', Icons.trending_up),
-  _Tab('saved', 'Saved', Icons.bookmark),
+  _Tab('feed', L10n.current.feed, Icons.rss_feed),
+  _Tab('subscriptions', L10n.current.subscriptions, Icons.people),
+  _Tab('trending', L10n.current.trending, Icons.trending_up),
+  _Tab('saved', L10n.current.saved, Icons.bookmark),
 ];
 
 final int feedTabIndex = homeTabs.indexWhere((element) => element.id == 'feed');
@@ -60,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
- @override
- void dispose() {
-   _tabController.dispose();
-   super.dispose();
- }
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +76,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           if (_tabController.index == feedTabIndex)
             IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
               await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
-            }),
+                }),
           if (_tabController.index == feedTabIndex)
             IconButton(icon: Icon(Icons.refresh), onPressed: () async {
-              // This is a dirty hack, and probably won't work if the child widgets ever become stateful
-              setState(() {});
-            }),
+                  // This is a dirty hack, and probably won't work if the child widgets ever become stateful
+                  setState(() {});
+                }),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -99,9 +100,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            ...homeTabs.map((e) => Tab(
-              icon: Icon(e.icon),
-            ))
+          ...homeTabs.map((e) => Tab(
+                icon: Icon(e.icon),
+              ))
           ]
         ),
       ),

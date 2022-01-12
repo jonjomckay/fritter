@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -69,8 +70,8 @@ class _StatusScreenState extends State<_StatusScreen> {
       } else {
         // Twitter sometimes sends the original replies with all pages, so we need to manually exclude ones that we've already seen
         var chains = result.chains
-          .skipWhile((element) => _seenAlready.contains(element.id))
-          .toList();
+            .skipWhile((element) => _seenAlready.contains(element.id))
+            .toList();
 
         for (var chain in chains) {
           _seenAlready.add(chain.id);
@@ -114,18 +115,20 @@ class _StatusScreenState extends State<_StatusScreen> {
           firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: 'Unable to load the tweet',
+            prefix: L10n.of(context).unable_to_load_the_tweet,
             onRetry: () => _loadTweet(_pagingController.firstPageKey),
           ),
           newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: 'Unable to load the next page of replies',
+            prefix: L10n.of(context).unable_to_load_the_next_page_of_replies,
             onRetry: () => _loadTweet(_pagingController.nextPageKey),
           ),
           noItemsFoundIndicatorBuilder: (context) {
             return Center(
-              child: Text('Couldn\'t find any tweets by this user!'),
+              child: Text(
+                L10n.of(context).could_not_find_any_tweets_by_this_user,
+              ),
             );
           },
         ),

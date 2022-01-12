@@ -4,6 +4,7 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/_feed.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
@@ -58,13 +59,20 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
     return Consumer<GroupModel>(builder: (context, model, child) {
       return FutureBuilderWrapper<SubscriptionGroupGet>(
         future: _findSubscriptionGroup(id),
-        onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group'),
+        onError: (error, stackTrace) => ScaffoldErrorWidget(
+            error: error,
+            stackTrace: stackTrace,
+            prefix: L10n.of(context).unable_to_load_the_group),
         onReady: (group) {
           var users = group.subscriptions.map((e) => e.screenName).toList();
 
           return FutureBuilderWrapper<SubscriptionGroupSettings>(
             future: model.loadSubscriptionGroupSettings(group.id),
-            onError: (error, stackTrace) => ScaffoldErrorWidget(error: error, stackTrace: stackTrace, prefix: 'Unable to load the group settings'),
+            onError: (error, stackTrace) => ScaffoldErrorWidget(
+              error: error,
+              stackTrace: stackTrace,
+              prefix: L10n.of(context).unable_to_load_the_group_settings,
+            ),
             onReady: (settings) {
               return SubscriptionGroupFeed(
                 group: group,
@@ -80,7 +88,6 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
     });
   }
 }
-
 
 class _SubscriptionGroupScreen extends StatefulWidget {
   final String id;
@@ -110,21 +117,21 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
             }),
             IconButton(icon: Icon(Icons.more_vert), onPressed: () {
               showModalBottomSheet(context: context, builder: (context) {
-                var theme = Theme.of(context);
+                    var theme = Theme.of(context);
 
-                return Container(
-                  height: 220,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(25),
-                        topRight: const Radius.circular(25),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                            child: ListTile(
+                    return Container(
+                      height: 220,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(25),
+                            topRight: const Radius.circular(25),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                                child: ListTile(
                               leading: IconButton(
                                   icon: Icon(Icons.arrow_back),
                                   onPressed: () {
@@ -135,34 +142,52 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                               tileColor: theme.colorScheme.primary,
                             )
                         ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
-                            child: Text('Note: Due to a Twitter limitation, not all tweets may be included', style: TextStyle(
-                                color: Theme.of(context).disabledColor
-                            ))
-                        ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              margin: EdgeInsets.only(
+                                  bottom: 8, top: 16, left: 16, right: 16),
+                              child: Text(
+                                L10n.of(context)
+                                    .note_due_to_a_twitter_limitation_not_all_tweets_may_be_included,
+                                style: TextStyle(
+                                  color: Theme.of(context).disabledColor,
+                                ),
+                            )),
                         Consumer<GroupModel>(builder: (context, model, child) {
                           return FutureBuilderWrapper<SubscriptionGroupSettings>(
                             future: model.loadSubscriptionGroupSettings(widget.id),
                             onError: (error, stackTrace) => InlineErrorWidget(error: error),
-                            onReady: (settings) => Column(
-                              children: [
-                                CheckboxListTile(title: Text('Include replies'), value: settings.includeReplies, onChanged: (value) async {
-                                  await model.toggleSubscriptionGroupIncludeReplies(widget.id, value ?? false);
-                                }),
-                                CheckboxListTile(title: Text('Include retweets'), value: settings.includeRetweets, onChanged: (value) async {
-                                  await model.toggleSubscriptionGroupIncludeRetweets(widget.id, value ?? false);
-                                }),
-                              ],
-                            ),
-                          );
-                        })
-                      ],
-                    ),
-                  ),
-                );
-              });
+                                onReady: (settings) => Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        title: Text(
+                                          L10n.of(context).include_replies,
+                                        ),
+                                        value: settings.includeReplies,
+                                        onChanged: (value) async {
+                                          await model
+                                              .toggleSubscriptionGroupIncludeReplies(
+                                                  widget.id, value ?? false);
+                                        }),
+                                    CheckboxListTile(
+                                        title: Text(
+                                          L10n.of(context).include_retweets,
+                                        ),
+                                        value: settings.includeRetweets,
+                                        onChanged: (value) async {
+                                          await model
+                                              .toggleSubscriptionGroupIncludeRetweets(
+                                                  widget.id, value ?? false);
+                                        }),
+                                  ],
+                                ),
+                              );
+                            })
+                          ],
+                        ),
+                      ),
+                    );
+                  });
             })
           ]
       ),

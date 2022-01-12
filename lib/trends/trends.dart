@@ -7,6 +7,7 @@ import 'package:fritter/trends/_list.dart';
 import 'package:fritter/trends/_settings.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TrendsScreen extends StatefulWidget {
   @override
@@ -24,7 +25,12 @@ class _TrendsScreenState extends State<TrendsScreen> {
         builder: (context, snapshot) {
           var error = snapshot.error;
           if (error != null) {
-            return FullPageErrorWidget(error: error, stackTrace: snapshot.stackTrace, prefix: 'Unable to stream the trend location preference');
+            return FullPageErrorWidget(
+              error: error,
+              stackTrace: snapshot.stackTrace,
+              prefix: L10n.of(context)
+                  .unable_to_stream_the_trend_location_preference,
+            );
           }
 
           switch (snapshot.connectionState) {
@@ -35,19 +41,18 @@ class _TrendsScreenState extends State<TrendsScreen> {
                 children: [
                   Container(
                     child: ListTile(
-                        title: Text('${place.name} trends', style: TextStyle(
-                            fontWeight: FontWeight.bold
-                        )),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.settings),
+                      title: Text('${place.name} ${L10n.of(context).trends}',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.settings),
                               onPressed: () async => showDialog(context: context, builder: (context) {
                                 return TrendsSettings();
                               }),
-                            )
-                          ],
+                          )
+                        ],
                         )
                     ),
                   ),

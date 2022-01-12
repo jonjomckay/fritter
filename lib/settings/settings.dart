@@ -23,6 +23,7 @@ import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -89,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await usersModel.refreshSubscriptionData();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Data imported successfully'),
+      content: Text(L10n.of(context).data_imported_successfully),
     ));
   }
 
@@ -102,7 +103,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var helloBuild = prefService.get(OPTION_HELLO_LAST_BUILD);
     if (helloBuild != null && helloBuild == packageInfo.buildNumber) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('It looks like you\'ve already said hello from this version of Fritter!'),
+        content: Text(L10n.of(context)
+            .it_looks_like_you_have_already_said_hello_from_this_version_of_fritter),
       ));
 
       return;
@@ -137,21 +139,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     showDialog(context: context, builder: (context) {
-      var content = JsonEncoder.withIndent(' ' * 2).convert(metadata);
+          var content = JsonEncoder.withIndent(' ' * 2).convert(metadata);
 
-      return AlertDialog(
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Cancel')
-            ),
-            TextButton(
-                onPressed: () async {
-                  var pingUri = 'https://fritter.jonjomckay.com/ping';
+          return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(L10n.of(context).cancel)),
+                TextButton(
+                    onPressed: () async {
+                      var pingUri = 'https://fritter.jonjomckay.com/ping';
 
-                  try {
+                      try {
                     var response = await http.post(Uri.parse(pingUri),
                         headers: {
                           'Content-Type': 'application/json'
@@ -159,61 +160,78 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         body: content
                     ).timeout(Duration(seconds: 10));
 
-                    SnackBar snackBar;
+                        SnackBar snackBar;
 
-                    if (response.statusCode == 200) {
-                      snackBar = SnackBar(
-                        content: Text('Thanks for helping Fritter! 💖'),
-                      );
+                        if (response.statusCode == 200) {
+                          snackBar = SnackBar(
+                            content: Text(
+                              L10n.of(context).thanks_for_helping_fritter,
+                            ),
+                          );
 
-                      // Mark that we've said hello from this build version
+                          // Mark that we've said hello from this build version
                       await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
-                    } else if (response.statusCode == 403) {
-                      snackBar = SnackBar(
-                        content: Text('It looks like you\'ve already sent a ping recently 🤔'),
-                      );
-                    } else {
-                      log.severe('Unable to send the ping');
+                        } else if (response.statusCode == 403) {
+                          snackBar = SnackBar(
+                            content: Text(
+                              L10n.of(context)
+                                  .it_looks_like_you_have_already_sent_a_ping_recently,
+                            ),
+                          );
+                        } else {
+                          log.severe('Unable to send the ping');
 
-                      snackBar = SnackBar(
-                        content: Text('Unable to send the ping. The status code was ${response.statusCode}'),
-                      );
-                    }
+                          snackBar = SnackBar(
+                            content: Text(
+                              L10n.of(context)
+                                  .unable_to_send_the_ping_the_status_code_was_response_statusCode(
+                                      response.statusCode),
+                            ),
+                          );
+                        }
 
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } on TimeoutException catch (e, stackTrace) {
-                    log.severe('Timed out trying to send the ping', e, stackTrace);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } on TimeoutException catch (e, stackTrace) {
+                        log.severe(
+                            'Timed out trying to send the ping', e, stackTrace);
 
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Timed out trying to send the ping 😢'),
-                    ));
-                  } catch (e, stackTrace) {
-                    log.severe('Unable to send', e, stackTrace);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            L10n.of(context).timed_out_trying_to_send_the_ping,
+                          ),
+                        ));
+                      } catch (e, stackTrace) {
+                        log.severe('Unable to send', e, stackTrace);
 
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Unable to send the ping. ${e.toString()}'),
-                    ));
-                  }
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            L10n.of(context)
+                                .unable_to_send_the_ping_e_to_string(e),
+                          ),
+                        ));
+                      }
 
-                  Navigator.pop(context);
-                },
-                child: Text('Send')
-            )
-          ],
-          title: Text('Say Hello 👋'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future.'),
-              SizedBox(height: 16),
+                      Navigator.pop(context);
+                    },
+                    child: Text(L10n.of(context).send))
+              ],
+              title: Text(L10n.of(context).say_hello),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    L10n.of(context)
+                        .here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future,
+                  ),
+                  SizedBox(height: 16),
               Text(content, style: TextStyle(
                   fontFamily: 'monospace'
               ))
-            ],
+                ],
           )
       );
-    });
+        });
   }
 
   @override
@@ -222,25 +240,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(),
       body: FutureBuilderWrapper<PackageInfo>(
         future: PackageInfo.fromPlatform(),
-        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: "Unable to find the app's package info"),
+        onError: (error, stackTrace) => FullPageErrorWidget(
+          error: error,
+          stackTrace: stackTrace,
+          prefix: L10n.of(context).unable_to_find_the_app_package_info,
+        ),
+        // Complete translation from here @ManeraKai
         onReady: (packageInfo) {
           var version = _createVersionString(packageInfo);
 
           return PrefPage(children: [
             PrefButton(
-              child: Text('👋 Hello'),
-              title: Text('Say Hello'),
-              subtitle: Text('Send a non-identifying ping to let me know you\'re using Fritter, and to help future development'),
+              child: Text(L10n.of(context).say_hello_emoji),
+              title: Text(L10n.of(context).say_hello),
+              subtitle: Text(
+                L10n.of(context)
+                    .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
+              ),
               onTap: _sendPing,
             ),
-
             PrefTitle(
-              title: Text('General'),
+              title: Text(L10n.of(context).general),
             ),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Default tab'),
-                subtitle: Text('Which tab is shown when the app opens'),
+                title: Text(L10n.of(context).default_tab),
+                subtitle: Text(
+                  L10n.of(context).which_tab_is_shown_when_the_app_opens,
+                ),
                 pref: OPTION_HOME_INITIAL_TAB,
                 items: homeTabs
                     .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
@@ -248,98 +275,138 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Media size'),
-                subtitle: Text('Save bandwidth using smaller images'),
+                title: Text(L10n.of(context).media_size),
+                subtitle: Text(
+                  L10n.of(context).save_bandwidth_using_smaller_images,
+                ),
                 pref: OPTION_MEDIA_SIZE,
                 items: [
-                  DropdownMenuItem(child: Text('Disabled'), value: 'disabled'),
-                  DropdownMenuItem(child: Text('Thumbnail'), value: 'thumb'),
-                  DropdownMenuItem(child: Text('Small'), value: 'small'),
-                  DropdownMenuItem(child: Text('Medium'), value: 'medium'),
-                  DropdownMenuItem(child: Text('Large'), value: 'large'),
-                ]
-            ),
-
-            PrefTitle(
-                title: Text('Theme')
-            ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).disabled),
+                    value: 'disabled',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).thumbnail),
+                    value: 'thumb',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).small),
+                    value: 'small',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).medium),
+                    value: 'medium',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).large),
+                    value: 'large',
+                  ),
+                ]),
+            PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(
                 fullWidth: false,
-                title: Text('Theme'),
+                title: Text(L10n.of(context).theme),
                 pref: OPTION_THEME_MODE,
                 items: [
-                  DropdownMenuItem(child: Text('System'), value: 'system'),
-                  DropdownMenuItem(child: Text('Light'), value: 'light'),
-                  DropdownMenuItem(child: Text('Dark'), value: 'dark'),
-                ]
-            ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).system),
+                    value: 'system',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).light),
+                    value: 'light',
+                  ),
+                  DropdownMenuItem(
+                    child: Text(L10n.of(context).dark),
+                    value: 'dark',
+                  ),
+                ]),
             PrefSwitch(
-              title: Text('True Black?'),
+              title: Text(L10n.of(context).true_black),
               pref: OPTION_THEME_TRUE_BLACK,
-              subtitle: Text('Use true black for the dark mode theme'),
+              subtitle: Text(
+                L10n.of(context).use_true_black_for_the_dark_mode_theme,
+              ),
             ),
-
             PrefTitle(
-              title: Text('Data'),
+              title: Text(L10n.of(context).data),
             ),
             PrefLabel(
               leading: Icon(Icons.import_export),
-              title: Text('Import'),
-              subtitle: Text('Import data from another device'),
+              title: Text(L10n.of(context).import),
+              subtitle: Text(L10n.of(context).import_data_from_another_device),
               onTap: () async {
                 var isLegacy = await isLegacyAndroid();
                 if (isLegacy) {
                   showDialog(context: context, builder: (context) {
-                    return AlertDialog(
-                      title: Text('Legacy Android Import'),
-                      actions: [
-                        TextButton(
-                          child: Text('Cancel'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: Text('Import'),
-                          onPressed: () async {
+                        return AlertDialog(
+                          title: Text(L10n.of(context).legacy_android_import),
+                          actions: [
+                            TextButton(
+                              child: Text(L10n.of(context).cancel),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            TextButton(
+                              child: Text(L10n.of(context).import),
+                              onPressed: () async {
                             var file = File(await getLegacyPath(legacyExportFileName));
-                            if (await file.exists()) {
-                              try {
-                                await _importFromFile(file);
-                              } catch (e, stackTrace) {
-                                log.severe('Unable to import the file on a legacy Android device', e, stackTrace);
+                                if (await file.exists()) {
+                                  try {
+                                    await _importFromFile(file);
+                                  } catch (e, stackTrace) {
+                                    log.severe(
+                                        'Unable to import the file on a legacy Android device',
+                                        e,
+                                        stackTrace);
 
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text('$e'),
-                                ));
-                              }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('The file does not exist. Please ensure it is located at ${file.path}'),
-                              ));
-                            }
+                                      content: Text('$e'),
+                                    ));
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        L10n.of(context)
+                                            .the_file_does_not_exist_please_ensure_it_is_located_at_file_path(
+                                                file.path),
+                                      ),
+                                    ),
+                                  );
+                                }
 
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                      content: FutureBuilderWrapper<String>(
-                        future: getLegacyPath(legacyExportFileName),
-                        onError: (error, stackTrace) => FullPageErrorWidget(error: error, stackTrace: stackTrace, prefix: 'prefix'),
-                        onReady: (legacyExportPath) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:',
-                                textAlign: TextAlign.left),
-                            SizedBox(height: 16),
-                            Text(legacyExportPath,
-                                textAlign: TextAlign.left),
-                            SizedBox(height: 16),
-                            Text('Please make sure the data you wish to import is located there, then press the import button below.',
-                                textAlign: TextAlign.left)
+                                Navigator.pop(context);
+                              },
+                            )
                           ],
-                        ),
-                      ),
-                    );
-                  });
+                          content: FutureBuilderWrapper<String>(
+                            future: getLegacyPath(legacyExportFileName),
+                            onError: (error, stackTrace) => FullPageErrorWidget(
+                                error: error,
+                                stackTrace: stackTrace,
+                                prefix: L10n.of(context).prefix),
+                            onReady: (legacyExportPath) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  L10n.of(context)
+                                      .your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from,
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(height: 16),
+                                Text(legacyExportPath,
+                                    textAlign: TextAlign.left),
+                                SizedBox(height: 16),
+                                Text(
+                                  L10n.of(context)
+                                      .please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below,
+                                  textAlign: TextAlign.left,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      });
                 } else {
                   await FilePickerWritable().openFile((fileInfo, file) async {
                     await _importFromFile(file);
@@ -349,105 +416,113 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             PrefLabel(
               leading: Icon(Icons.save),
-              title: Text('Export'),
-              subtitle: Text('Export your data'),
+              title: Text(L10n.of(context).export),
+              subtitle: Text(L10n.of(context).export_your_data),
               onTap: () => Navigator.pushNamed(context, ROUTE_SETTINGS_EXPORT),
             ),
-
-            PrefTitle(
-              title: Text('Logging')
-            ),
+            PrefTitle(title: Text(L10n.of(context).logging)),
             PrefCheckbox(
-              title: Text('Enable Sentry?'),
-              subtitle: Text('Whether errors should be reported to Sentry'),
+              title: Text(L10n.of(context).enable_sentry),
+              subtitle: Text(
+                L10n.of(context).whether_errors_should_be_reported_to_sentry,
+              ),
               pref: OPTION_ERRORS_SENTRY_ENABLED,
             ),
-
-            PrefTitle(
-                title: Text('About')
-            ),
+            PrefTitle(title: Text(L10n.of(context).about)),
             PrefLabel(
               leading: Icon(Icons.info),
-              title: Text('Version'),
+              title: Text(L10n.of(context).version),
               subtitle: Text(version),
               onTap: () async {
                 await Clipboard.setData(ClipboardData(text: version));
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Copied version to clipboard'),
+                  content: Text(L10n.of(context).copied_version_to_clipboard),
                 ));
               },
             ),
             PrefLabel(
               leading: Icon(Icons.favorite),
-              title: Text('Contribute'),
-              subtitle: Text('Help make Fritter even better'),
+              title: Text(L10n.of(context).contribute),
+              subtitle: Text(L10n.of(context).help_make_fritter_even_better),
               onTap: () => launch('https://github.com/jonjomckay/fritter'),
             ),
             PrefLabel(
               leading: Icon(Icons.bug_report),
-              title: Text('Report a bug'),
-              subtitle: Text('Let the developers know if something\'s broken'),
-              onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
+              title: Text(L10n.of(context).report_a_bug),
+              subtitle: Text(
+                L10n.of(context).let_the_developers_know_if_something_is_broken,
+              ),
+              onTap: () =>
+                  launch('https://github.com/jonjomckay/fritter/issues'),
             ),
             if (getFlavor() != 'play')
               PrefLabel(
                 leading: Icon(Icons.attach_money),
-                title: Text('Donate'),
-                subtitle: Text('Help support Fritter\'s future'),
-                onTap: () => showDialog(context: context, builder: (context) {
-                  return SimpleDialog(
-                    title: Text('Donate'),
-                    children: [
-                      SimpleDialogOption(
-                        child: ListTile(
-                          leading: Icon(SimpleIcons.bitcoin),
-                          title: Text('Bitcoin'),
-                        ),
-                        onPressed: () async {
+                title: Text(L10n.of(context).donate),
+                subtitle: Text(L10n.of(context).help_support_fritters_future),
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        title: Text(L10n.of(context).donate),
+                        children: [
+                          SimpleDialogOption(
+                            child: ListTile(
+                              leading: Icon(SimpleIcons.bitcoin),
+                              title: Text('Bitcoin'),
+                            ),
+                            onPressed: () async {
                           await Clipboard.setData(ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                          Navigator.pop(context);
+                              Navigator.pop(context);
 
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Copied address to clipboard'),
-                          ));
-                        },
-                      ),
-                      SimpleDialogOption(
-                        child: ListTile(
-                          leading: Icon(SimpleIcons.github),
-                          title: Text('GitHub'),
-                        ),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    L10n.of(context)
+                                        .copied_address_to_clipboard,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SimpleDialogOption(
+                            child: ListTile(
+                              leading: Icon(SimpleIcons.github),
+                              title: Text('GitHub'),
+                            ),
                         onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
-                      ),
-                      SimpleDialogOption(
-                        child: ListTile(
-                          leading: Icon(SimpleIcons.liberapay),
-                          title: Text('Liberapay'),
-                        ),
+                          ),
+                          SimpleDialogOption(
+                            child: ListTile(
+                              leading: Icon(SimpleIcons.liberapay),
+                              title: Text('Liberapay'),
+                            ),
                         onPressed: () => launch('https://liberapay.com/jonjomckay'),
-                      ),
-                      SimpleDialogOption(
-                        child: ListTile(
-                          leading: Icon(SimpleIcons.paypal),
-                          title: Text('PayPal'),
-                        ),
+                          ),
+                          SimpleDialogOption(
+                            child: ListTile(
+                              leading: Icon(SimpleIcons.paypal),
+                              title: Text('PayPal'),
+                            ),
                         onPressed: () => launch('https://paypal.me/jonjomckay'),
-                      )
-                    ],
-                  );
-                }),
+                          )
+                        ],
+                      );
+                    }),
               ),
             PrefLabel(
               leading: Icon(Icons.copyright),
-              title: Text('Licenses'),
-              subtitle: Text('All the great software used by Fritter'),
+              title: Text(L10n.of(context).licenses),
+              subtitle:
+                  Text(L10n.of(context).all_the_great_software_used_by_fritter),
               onTap: () => showLicensePage(
                   context: context,
-                  applicationName: 'Fritter',
+                  applicationName: L10n.of(context).fritter,
                   applicationVersion: version,
-                  applicationLegalese: 'Released under the MIT License',
+                  applicationLegalese:
+                      L10n.of(context).released_under_the_mit_license,
                   applicationIcon: Container(
                     margin: EdgeInsets.all(12),
                     child: ClipRRect(
