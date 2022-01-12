@@ -1,32 +1,37 @@
 import 'package:auto_direction/auto_direction.dart';
 import 'package:catcher/catcher.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/home/_search.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
-import 'package:fritter/tweet/_content.dart';
+import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:fritter/utils/misc.dart';
+import 'package:fritter/utils/translation.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
-import '_media.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
   final String? currentUsername;
-  final TweetWithCard? tweet;
+  final TweetWithCard tweet;
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+  TweetTile({required this.clickable, this.currentUsername, required this.tweet, this.isPinned = false, this.isThread = false}) : super();
 
   TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
 }
@@ -34,38 +39,206 @@ class TweetTile extends StatefulWidget {
 class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
 
-  GlobalKey<TweetContentState> tweetContent = GlobalKey();
-
   final ScrollController scrollController = ScrollController();
   final bool clickable;
   final String? currentUsername;
-  final TweetWithCard? tweet;
+  final TweetWithCard tweet;
   final bool isPinned;
   final bool isThread;
 
-  bool hasBeenTranslated = false;
+  TranslationStatus _translationStatus = TranslationStatus.ORIGINAL;
 
-  TweetTileState({required this.clickable, this.currentUsername, this.tweet, this.isPinned = false, this.isThread = false}) : super();
+  List<TweetTextPart> _originalParts = [];
+  List<TweetTextPart> _displayParts = [];
+  List<TweetTextPart> _translatedParts = [];
 
-  Color? _decideTranslateButtonColor() {
-    if(getShortSystemLocale() == tweet?.lang) {
-      return Colors.grey;
+  TweetTileState({required this.clickable, this.currentUsername, required this.tweet, this.isPinned = false, this.isThread = false}) : super();
+
+  String? _convertRunesToText(Iterable<int> runes, int start, [int? end]) {
+    var string = runes.getRange(start, end).map((e) => String.fromCharCode(e)).join('');
+    if (string.isEmpty) {
+      return null;
     }
 
-    if(hasBeenTranslated == true) {
-      return Colors.red;
+    return HtmlUnescape().convert(string);
+  }
+
+  List<TweetEntity> _populateEntities({required List<TweetEntity> entities, List<dynamic>? source, required Function getNewEntity}) {
+    source = source ?? [];
+
+    for(dynamic newEntity in source) {
+      entities.add(getNewEntity(newEntity));
     }
 
-    return null;
+    return entities;
+  }
+
+  List<TweetEntity> _getEntities() {
+    List<TweetEntity> entities = [];
+
+    entities = _populateEntities(entities: entities, source: tweet.entities?.hashtags, getNewEntity: (Hashtag hashtag) {
+      return TweetHashtag(hashtag, () async {
+        await showSearch(
+          context: context,
+          delegate: TweetSearchDelegate(
+              initialTab: 1
+          ),
+          query: '#${hashtag.text}'
+        );
+      });
+    });
+
+    entities = _populateEntities(entities: entities, source: tweet.entities?.userMentions, getNewEntity: (UserMention mention) {
+      return TweetUserMention(mention, () {
+        Navigator.pushNamed(context, ROUTE_PROFILE, arguments: mention.screenName!);
+      });
+    });
+
+    entities = _populateEntities(entities: entities, source: tweet.entities?.urls, getNewEntity: (Url url) {
+      return TweetUrl(url, () async {
+        String? uri = url.expandedUrl;
+        if (uri == null) {
+          return;
+        }
+
+        await launch(uri);
+      });
+    });
+
+    entities.sort((a, b) => a.getEntityStart().compareTo(b.getEntityStart()));
+
+    return entities;
+  }
+
+  Future<void> onClickTranslate() async {
+    // If we've already translated this text before, use those results instead of translating again
+    if (_translatedParts.isNotEmpty) {
+      return setState(() {
+        _displayParts = _translatedParts;
+        _translationStatus = TranslationStatus.TRANSLATED;
+      });
+    }
+
+    setState(() {
+      _translationStatus = TranslationStatus.TRANSLATING;
+    });
+
+    try {
+      var systemLocale = getShortSystemLocale();
+
+      var isLanguageSupported = await isLanguageSupportedForTranslation(systemLocale);
+      if (!isLanguageSupported) {
+        return showTranslationError('Your system language ($systemLocale) is not supported for translation');
+      }
+    } catch (e, stackTrace) {
+      log.severe('Unable to list the supported languages', e, stackTrace);
+      return showTranslationError('Failed to get the list of supported languages. Please check your connection, or try again later!');
+    }
+
+    var originalText = _originalParts.map((e) => e.toString()).toList();
+
+    var res = await TranslationAPI.translate(tweet.idStr!, originalText, tweet.lang ?? "");
+    if (res.success) {
+      var translatedParts = convertTextPartsToTweetEntities(List.from(res.body['translatedText']));
+
+      // We cache the translated parts in a property in case the user swaps back and forth
+      return setState(() {
+        _displayParts = translatedParts;
+        _translatedParts = translatedParts;
+        _translationStatus = TranslationStatus.TRANSLATED;
+      });
+    } else {
+      return showTranslationError(res.errorMessage ?? 'An unknown error occurred while translating');
+    }
+  }
+
+  void showTranslationError(String message) {
+    setState(() {
+      _translationStatus = TranslationStatus.TRANSLATION_FAILED;
+    });
+
+    showSnackBar(context, icon: '💥', message: message);
+  }
+
+  Future<void> onClickShowOriginal() async {
+    setState(() {
+      _displayParts = _originalParts;
+      _translationStatus = TranslationStatus.ORIGINAL;
+    });
+  }
+
+  List<TweetTextPart> convertTextPartsToTweetEntities(List<String> parts) {
+    List<TweetTextPart> translatedParts = [];
+
+    for (var i = 0; i < parts.length; i++) {
+      var thing = _originalParts[i];
+      if (thing.plainText != null) {
+        translatedParts.add(TweetTextPart(null, parts[i]));
+      } else {
+        translatedParts.add(TweetTextPart(thing.entity, null));
+      }
+    }
+
+    return translatedParts;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Generate all the tweet entities (mentions, hashtags, etc.) from the tweet text
+    Runes tweetText = Runes(tweet.fullText ?? tweet.text!);
+
+    // If we're not given a text display range, we just display the entire text
+    List<int> displayTextRange = tweet.displayTextRange ?? [0, tweetText.length];
+
+    Iterable<int> runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
+
+    List<TweetEntity> entities = _getEntities();
+    List<TweetTextPart> things = [];
+
+    int index = 0;
+
+    for (var part in entities) {
+      // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
+      int start = part.getEntityStart() - displayTextRange[0];
+      int end = part.getEntityEnd() - displayTextRange[0];
+
+      // Only add entities that are after the displayTextRange's start index
+      if (start < 0) {
+        return;
+      }
+
+      // Add any text between the last entity's end and the start of this one
+      var textPart = _convertRunesToText(runes, index, start);
+      if (textPart != null) {
+        things.add(TweetTextPart(null, textPart));
+      }
+
+      // Then add the actual entity
+      things.add(TweetTextPart(part.getContent(), null));
+      // parts.add(part.getContent());
+
+      // Then set our index in the tweet text as the end of our entity
+      index = end;
+    }
+
+    var textPart = _convertRunesToText(runes, index);
+    if (textPart != null) {
+      things.add(TweetTextPart(null, textPart));
+    }
+
+    setState(() {
+      _displayParts = things;
+      _originalParts = things;
+    });
   }
 
   _createFooterIconButton(IconData icon, [Color? color, Function()? onPressed]) {
-    return InkWell(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
-        child: Icon(icon, size: 14, color: color),
-      ),
-      onTap: onPressed,
+    return TextButton.icon(
+      icon: Icon(icon, size: 14, color: color),
+      onPressed: onPressed,
+      label: Container(),
     );
   }
 
@@ -82,15 +255,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
-    if (this.tweet == null) {
-      return Container();
-    }
-
     var numberFormat = NumberFormat.compact();
 
-    TweetWithCard tweet = this.tweet!.retweetedStatusWithCard == null
-      ? this.tweet!
-      : this.tweet!.retweetedStatusWithCard!;
+    TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null
+      ? this.tweet
+      : this.tweet.retweetedStatusWithCard!;
 
     if (tweet.isTombstone ?? false) {
       return Container(
@@ -108,17 +277,17 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet!.user!.screenName!);
+      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet.user!.screenName!);
     }
 
     Widget retweetBanner = Container();
     Widget retweetSidebar = Container();
-    if (this.tweet!.retweetedStatusWithCard != null) {
+    if (this.tweet.retweetedStatusWithCard != null) {
       retweetBanner = _TweetTileLeading(
         icon: Icons.repeat,
         children: [
           TextSpan(
-              text: '${this.tweet!.user!.name!} retweeted',
+              text: '${this.tweet.user!.name!} retweeted',
               style: Theme.of(context).textTheme.caption
           )
         ],
@@ -181,7 +350,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       if (tweet.quotedStatusWithCard != null) {
         quotedTweetTile = TweetTile(
           clickable: true,
-          tweet: tweet.quotedStatusWithCard,
+          tweet: tweet.quotedStatusWithCard!,
           currentUsername: currentUsername,
         );
       } else {
@@ -216,9 +385,44 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
-          child: TweetContent(key: tweetContent, tweet: tweet,),
+          child: SelectableText.rich(
+            TextSpan(
+                children: [
+                  ..._displayParts.map((e) {
+                    if (e.plainText != null) {
+                      return TextSpan(text: e.plainText);
+                    } else {
+                      return e.entity!;
+                    }
+                  })
+                ]
+            ),
+          )
         ),
       );
+    }
+
+    Widget translateButton;
+    switch (_translationStatus) {
+      case TranslationStatus.ORIGINAL:
+        translateButton = _createFooterIconButton(Icons.translate, Colors.blue, () async => onClickTranslate());
+        break;
+      case TranslationStatus.TRANSLATING:
+        translateButton = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator()
+          ),
+        );
+        break;
+      case TranslationStatus.TRANSLATION_FAILED:
+        translateButton = _createFooterIconButton(Icons.translate, Colors.red, () async => onClickTranslate());
+        break;
+      case TranslationStatus.TRANSLATED:
+        translateButton = _createFooterIconButton(Icons.translate, Colors.green, () async => onClickShowOriginal());
+        break;
     }
 
     return Consumer<HomeModel>(builder: (context, model, child) => Card(
@@ -360,7 +564,6 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   child: ButtonBar(
                     buttonTextTheme: ButtonTextTheme.accent,
                     buttonPadding: EdgeInsets.symmetric(horizontal: 0),
-                    alignment: MainAxisAlignment.start,
                     children: [
                       if (tweet.replyCount != null)
                         _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
@@ -375,17 +578,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
                       if (tweet.favoriteCount != null)
                         _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                      _createFooterIconButton(
-                        Icons.translate,
-                        _decideTranslateButtonColor(),
-                        getShortSystemLocale() == tweet.lang ? null : () {
-                          tweetContent.currentState?.setTranslate(!hasBeenTranslated);
-
-                          setState(() {
-                            hasBeenTranslated = !hasBeenTranslated;
-                          });
-                        }
-                      )
+                      translateButton,
                     ],
                   ),
                 ),
@@ -434,4 +627,23 @@ class _TweetTileLeading extends StatelessWidget {
       ),
     );
   }
+}
+
+class TweetTextPart {
+  final InlineSpan? entity;
+  String? plainText;
+
+  TweetTextPart(this.entity, this.plainText);
+
+  @override
+  String toString() {
+    return plainText ?? '';
+  }
+}
+
+enum TranslationStatus {
+  ORIGINAL,
+  TRANSLATING,
+  TRANSLATION_FAILED,
+  TRANSLATED
 }

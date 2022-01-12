@@ -31,6 +31,7 @@ dependencies:
   dart_twitter_api: ^0.5.0
   device_info: ^2.0.0
   device_preview: ^0.7.4
+  dio: ^4.0.0
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
@@ -40,10 +41,10 @@ dependencies:
     git:
       url: https://github.com/jonjomckay/file_picker_writable.git
       ref: 45b55f13266de97e7f02fb05b49dbccfb492c4cc
+  flutter_cache: ^0.1.0
   flutter_colorpicker: ^0.6.0
   flutter_iconpicker: ^3.1.2
   flutter_local_notifications: ^5.0.0+4
-  fluttertoast: ^8.0.7
   html_unescape: ^2.0.0
   http: ^0.13.1
   infinite_scroll_pagination: ^3.0.1
