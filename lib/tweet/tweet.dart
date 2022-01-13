@@ -207,7 +207,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
       // Only add entities that are after the displayTextRange's start index
       if (start < 0) {
-        return;
+        continue;
       }
 
       // Add any text between the last entity's end and the start of this one
