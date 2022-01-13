@@ -280,9 +280,43 @@ class Twitter {
     return createUnconversationedChains(result, 'sq-I-t', false, true);
   }
 
-  static Future<List<User>> searchUsers(String query) async => await _twitterApi.userService.usersSearch(
-      q: query,
+  static Future<List<User>> searchUsers(String query, {int limit = 25, String? maxId, String? cursor}) async {
+    var queryParameters = {
+      ...defaultParams,
+      'count': limit.toString(),
+      'max_id': maxId,
+      'q': query,
+      'query_source': 'typed_query',
+      'pc': '1',
+      'spelling_corrections': '1',
+      'result_filter': 'user'
+    };
+
+    if (cursor != null) {
+      queryParameters['cursor'] = cursor;
+    }
+
+    var response = await _twitterApi.client.get(
+        Uri.https('api.twitter.com', '/2/search/adaptive.json', queryParameters)
     );
+
+    var result = json.decode(response.body);
+
+    // This is fairly similar to createUnconversationedChains
+    var instructions = List.from(result['timeline']['instructions']);
+    if (instructions.isEmpty) {
+      return [];
+    }
+
+    var users = result['globalObjects']['users'] as Map<String, dynamic>;
+
+    return List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'])
+      .where((element) => element['entryId'].startsWith('user-'))
+      .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
+      .map((e) => users[e['content']['item']['content']['user']['id']])
+      .map((e) => User.fromJson(e))
+      .toList();
+  }
 
   static Future<List<TrendLocation>> getTrendLocations() async {
     var result = await _cache.getOrCreateAsJSON('trends.locations', Duration(days: 2), () async {
