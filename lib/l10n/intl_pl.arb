@@ -138,5 +138,15 @@
   "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Wyślij nieidentyfikujący ping, aby dać mi znać, że używasz Frittera, i pomóc w przyszłym rozwoju",
   "@send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": {},
   "general": "Ogólne",
-  "@general": {}
+  "@general": {},
+  "default_tab": "Domyślna karta",
+  "@default_tab": {},
+  "which_tab_is_shown_when_the_app_opens": "Karta wyświetlana po otwarciu aplikacji",
+  "@which_tab_is_shown_when_the_app_opens": {},
+  "media_size": "Rozmiar multimediów",
+  "@media_size": {},
+  "save_bandwidth_using_smaller_images": "Oszczędzaj transfer, używając mniejszych obrazów",
+  "@save_bandwidth_using_smaller_images": {},
+  "disabled": "Wyłączone",
+  "@disabled": {}
 }
