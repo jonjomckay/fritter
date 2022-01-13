@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -15,22 +14,6 @@ import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
 
-var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
-
-IconData? deserializeIconData(String iconData) {
-  try {
-    var icon = deserializeIcon(jsonDecode(iconData));
-    if (icon != null) {
-      return icon;
-    }
-  } catch (e, stackTrace) {
-    log('Unable to deserialize icon', error: e, stackTrace: stackTrace);
-  }
-
-  // Use this as a default;
-  return Icons.rss_feed;
-}
-
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController controller;
 
@@ -41,9 +24,9 @@ class SubscriptionGroups extends StatefulWidget {
 }
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
-  void openSubscriptionGroupDialog(String? id, String name) {
+  void openSubscriptionGroupDialog(String? id, String name, String icon) {
     showDialog(context: context, builder: (context) {
-          return SubscriptionGroupEditDialog(id: id, name: name);
+          return SubscriptionGroupEditDialog(id: id, name: name, icon: icon);
         });
   }
 
@@ -107,11 +90,11 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
             e.icon,
             e.color,
             e.numberOfMembers,
-            () => openSubscriptionGroupDialog(e.id, e.name))),
+            () => openSubscriptionGroupDialog(e.id, e.name, e.icon))),
         Card(
           child: InkWell(
             onTap: () {
-              openSubscriptionGroupDialog(null, '');
+              openSubscriptionGroupDialog(null, '', defaultGroupIcon);
             },
             child: DottedBorder(
               color: Theme.of(context).textTheme.caption!.color!,
@@ -144,8 +127,9 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 class SubscriptionGroupEditDialog extends StatefulWidget {
   final String? id;
   final String name;
+  final String icon;
 
-  const SubscriptionGroupEditDialog({Key? key, required this.id, required this.name}) : super(key: key);
+  const SubscriptionGroupEditDialog({Key? key, required this.id, required this.name, required this.icon}) : super(key: key);
 
   @override
   _SubscriptionGroupEditDialogState createState() => _SubscriptionGroupEditDialogState();
@@ -156,15 +140,19 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
   SubscriptionGroupEdit? _group;
 
-  String? id;
-  String? name;
-  String? icon;
+  late String? id;
+  late String? name;
+  late String icon;
   Color? color;
   Set<String> members = Set();
 
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      icon = widget.icon;
+    });
 
     context.read<GroupModel>().loadGroupEdit(widget.id).then((group) => setState(() {
               _group = group;
@@ -332,7 +320,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     },
                   ),
                   IconButton(
-                    icon: Icon(icon == null ? Icons.rss_feed : deserializeIconData(icon!)),
+                    icon: Icon(deserializeIconData(icon)),
                     onPressed: () async {
                       var selectedIcon = await FlutterIconPicker.showIconPicker(context, iconPackModes: [IconPack.custom], customIconPack: Map.fromEntries(iconPack));
                       if (selectedIcon != null) {

@@ -1,10 +1,30 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:uuid/uuid.dart';
+
+var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
+
+IconData? deserializeIconData(String iconData) {
+  try {
+    var icon = deserializeIcon(jsonDecode(iconData));
+    if (icon != null) {
+      return icon;
+    }
+  } catch (e, stackTrace) {
+    log('Unable to deserialize icon', error: e, stackTrace: stackTrace);
+  }
+
+  // Use this as a default;
+  return Icons.rss_feed;
+}
 
 class GroupModel extends ChangeNotifier {
   static final log = Logger('GroupModel');
@@ -91,7 +111,7 @@ class GroupModel extends ChangeNotifier {
       return SubscriptionGroupEdit(
           id: null,
           name: '',
-          icon: null,
+          icon: defaultGroupIcon,
           color: null,
           members: Set(),
       );
@@ -102,7 +122,7 @@ class GroupModel extends ChangeNotifier {
       return SubscriptionGroupEdit(
         id: null,
         name: '',
-        icon: null,
+        icon: defaultGroupIcon,
         color: null,
         members: Set(),
       );
@@ -115,13 +135,13 @@ class GroupModel extends ChangeNotifier {
     return SubscriptionGroupEdit(
         id: group.first['id'] as String,
         name: group.first['name'] as String,
-        icon: group.first['icon'] as String?,
+        icon: group.first['icon'] as String,
         color: group.first['color'] == null ? null : Color(group.first['color'] as int),
         members: members,
     );
   }
 
-  Future saveGroup(String? id, String name, String? icon, Color? color, Set<String> subscriptions) async {
+  Future saveGroup(String? id, String name, String icon, Color? color, Set<String> subscriptions) async {
     var database = await Repository.writable();
 
     // First insert or update the subscription group details

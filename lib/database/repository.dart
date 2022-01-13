@@ -1,4 +1,4 @@
-import 'package:fritter/subscriptions/_groups.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_migration_plan/migration/sql.dart';
