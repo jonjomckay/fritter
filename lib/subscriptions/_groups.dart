@@ -348,8 +348,8 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                       ),
                       title: Text(subscription.name),
                       subtitle: Text('@${subscription.screenName}'),
-                      selected: group.members.contains(subscription.id),
-                      value: group.members.contains(subscription.id),
+                      selected: members.contains(subscription.id),
+                      value: members.contains(subscription.id),
                       onChanged: (v) => setState(() {
                         if (v == null || v == false) {
                           members.remove(subscription.id);

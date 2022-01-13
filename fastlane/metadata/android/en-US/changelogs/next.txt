@@ -1,3 +1,4 @@
 * Added a new profile screen, including bio and metadata (#204, #223)
 * Added support for translating tweets (#132, #199). Massive thanks to @HampusMat!
 * Fixed not being able to save groups (#284)
+* Fixed not being able to toggle group members (#278)
