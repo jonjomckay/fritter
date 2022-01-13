@@ -167,7 +167,7 @@
   "@dark": {},
   "true_black": "Prawdziwa czerń?",
   "@true_black": {},
-  "use_true_black_for_the_dark_mode_theme": "Używaj prawdziwej czerni dla motywu trybu ciemnego",
+  "use_true_black_for_the_dark_mode_theme": "Używaj prawdziwej czerni dla ciemnego motywu",
   "@use_true_black_for_the_dark_mode_theme": {},
   "data": "Dane",
   "@data": {},
@@ -384,5 +384,9 @@
   "this_took_too_long_to_load_please_check_your_network_connection": "Ładowanie trwało zbyt długo. Sprawdź swoje połączenie sieciowe!",
   "@this_took_too_long_to_load_please_check_your_network_connection": {},
   "updates": "Aktualizacje",
-  "@updates": {}
+  "@updates": {},
+  "filters": "Filtry",
+  "@filters": {},
+  "joined": "Dołączył(a) {date}",
+  "@joined": {}
 }
