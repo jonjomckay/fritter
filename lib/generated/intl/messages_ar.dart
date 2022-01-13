@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -60,12 +61,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "غير قادر على تحديث الاشتراكات. الخطأ هو كالتالي ${e}";
 
   static String m17(responseStatusCode) =>
-      "غير قادر على حفظ الوسائط. أرجع تويتر حالة  ${responseStatusCode}";
+      "تعذر حفظ الوسائط. أعاد تويتر حالة ${responseStatusCode}";
 
   static String m18(e) => "غير قادر على إرسال البنج. ${e}";
 
   static String m19(statusCode) =>
-      "Unable to send the ping. The status code was ${statusCode}";
+      "تعذر إرسال الأمر ping. كان رمز الحالة ${statusCode}";
 
   static String m20(releaseVersion) =>
       "حدّث إلى ${releaseVersion} عبر عميل الـF-Droid لديك";
@@ -104,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "غير قادر على التواصل مع تويتر"),
         "could_not_find_any_tweets_by_this_user":
             MessageLookupByLibrary.simpleMessage(
-                "لم يتم العثور على أي تغريدة من هذا المستخدم"),
+                "لم يتم العثور على أي تغريدة من هذا المستخدم!"),
         "could_not_find_any_tweets_from_the_last_7_days":
             MessageLookupByLibrary.simpleMessage(
                 "لم يُعثر على أي تغريدات من الأيام الـ7 الماضية!"),
@@ -155,12 +156,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "general": MessageLookupByLibrary.simpleMessage("العامة"),
         "groups": MessageLookupByLibrary.simpleMessage("المجموعات"),
         "help_make_fritter_even_better":
-            MessageLookupByLibrary.simpleMessage("ساعد في تحسين فريتر!"),
+            MessageLookupByLibrary.simpleMessage("المساعدة في جعل فريتر أفضل"),
         "help_support_fritters_future":
             MessageLookupByLibrary.simpleMessage("ساعد على دعم مستقبل فريتر"),
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
-                "هذه هي البيانات التي ستُرسل. ستُستعمل فقط لمعرفة أي أجهزة وأي لغات لدعمها في المستقبل"),
+                "هنا البيانات التي سيتم إرسالها. سيتم استخدامه فقط لتحديد الأجهزة واللغات التي يجب دعمها في Fritter في المستقبل."),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "إذا كان لديك أي تعليقات عن هذه الميزة، رجائاً اكتبها هنا"),
@@ -168,7 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "import_data_from_another_device": MessageLookupByLibrary.simpleMessage(
             "استيراد البيانات من جهاز آخر"),
         "import_from_twitter":
-            MessageLookupByLibrary.simpleMessage("الاستيراد من تويتر!"),
+            MessageLookupByLibrary.simpleMessage("الاستيراد من تويتر"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("استيراد الاشتراكات"),
         "imported_snapshot_data_users_so_far": m6,
@@ -200,7 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "no": MessageLookupByLibrary.simpleMessage("لا"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
-                "لم يتم إرجاع أي بيانات، ومن المفروض أن لا يكون كذلك. رجائاً بلّغ عن خطأ، إذا كان ممكناً"),
+                "لم يتم إرجاع أي بيانات، وهو ما لا ينبغي أن يحدث أبدا. يرجى الإبلاغ عن وجود خلل، إذا كان ذلك ممكنا!"),
         "no_results": MessageLookupByLibrary.simpleMessage("لا نتائج"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
@@ -224,7 +225,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "رجائاً تأكد ما إذا كانت البيانات موجودة هناك, ومن ثم اضغط على زر الاستيراد في أدناه."),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
-                "رجائاً انتبه أن طريقة الاستيراد التي يستعملها فريتر هي مقيدة المعدل بشدة، لذلك من الممكن أن تفِل إذا كان لديك الكثير من الحسابات المتابَعة"),
+                "يرجى ملاحظة أن الطريقة التي يستخدمها Fritter لاستيراد الاشتراكات محدودة بشكل كبير من قبل Twitter ، لذلك قد يفشل هذا إذا كان لديك الكثير من الحسابات المتابعة."),
         "prefix": MessageLookupByLibrary.simpleMessage("السابقة"),
         "private_profile": MessageLookupByLibrary.simpleMessage("ملف شخصي خاص"),
         "released_under_the_mit_license": MessageLookupByLibrary.simpleMessage(
@@ -248,7 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("إرسال"),
         "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development":
             MessageLookupByLibrary.simpleMessage(
-                "أرسل بنج غير محدِّد للهوية لإعلامي بأنك تستعمل فريتر ولمساعدة التطوير في المستقبل."),
+                "أرسل ping غير محدد الهوية لإخباري بأنك تستخدم Fritter وللمساعدة في التطوير المستقبلي"),
         "send_always": MessageLookupByLibrary.simpleMessage("ابعث كل مرة"),
         "send_once": MessageLookupByLibrary.simpleMessage("ابعث مرة واحدة"),
         "share_tweet_content":
@@ -257,13 +258,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("مشاركة رابط التغريدة"),
         "small": MessageLookupByLibrary.simpleMessage("صغير"),
         "something_broke_in_fritter":
-            MessageLookupByLibrary.simpleMessage("حدث خطأ ما في فريتر"),
+            MessageLookupByLibrary.simpleMessage("حدث خطأ ما في فريتر."),
         "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated":
             MessageLookupByLibrary.simpleMessage(
                 "حدث خطأ ما في فريتر، تم إنشاء تقرير لهذا الخطأ، تستطيع أن تبعث التقرير إلى مطورين فريتر لمساعدتهم على إصلاح المشكلة."),
         "sorry_the_replied_tweet_could_not_be_found":
             MessageLookupByLibrary.simpleMessage(
-                "نأسف، ولكن لا يمكن العثور على التغريدة المُرَد عليها"),
+                "عذرا ، لم يتم العثور على التغريدة التي تم الرد عليها!"),
         "subscribe": MessageLookupByLibrary.simpleMessage("الاشتراك"),
         "subscriptions": MessageLookupByLibrary.simpleMessage("الإشتراكات"),
         "subtitles": MessageLookupByLibrary.simpleMessage("السطرجة"),
@@ -299,7 +300,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "هذا المستخدم لا يتابِع أحداً!"),
         "this_user_does_not_have_anyone_following_them":
-            MessageLookupByLibrary.simpleMessage("لا أحد يُتابِع هذا المستخدم"),
+            MessageLookupByLibrary.simpleMessage(
+                "هذا المستخدم ليس لديه أي اشخاص يتابعهم!"),
         "thread": MessageLookupByLibrary.simpleMessage("سلسلة"),
         "thumbnail": MessageLookupByLibrary.simpleMessage("الصورة المصغرة"),
         "timed_out": MessageLookupByLibrary.simpleMessage("انتهت المهلة"),
@@ -308,7 +310,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "انتهت مهلة المحاولة لإرسال البنج 😢"),
         "to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below":
             MessageLookupByLibrary.simpleMessage(
-                "لاستيراد الاشتراكات من حساب موجود على تويتر، أدخل اسم المستخدم للحساب أدناه"),
+                "لاستيراد الاشتراكات من حساب تويتر موجود، أدخل اسم المستخدم أدناه."),
         "toggle_all": MessageLookupByLibrary.simpleMessage("تبديل الكل"),
         "trending": MessageLookupByLibrary.simpleMessage("الشائع"),
         "trends": MessageLookupByLibrary.simpleMessage("الترندات"),
@@ -325,10 +327,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "غير قادر على العثور على معلومات حزمة التطبيق"),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
-                "غير قادر على تحديد موقع الترندات"),
+                "غير قادر على تحديد موقع الترندات."),
         "unable_to_find_your_saved_tweets":
             MessageLookupByLibrary.simpleMessage(
-                "غير قادر على العثور على تغريداتك المحفوظة"),
+                "غير قادر على العثور على تغريداتك المحفوظة."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("غير قادر على الاستيراد"),
         "unable_to_load_subscription_groups":
@@ -348,11 +350,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_next_page_of_replies":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تحميل الصفحة التالية من الردود"),
+        "unable_to_load_the_next_page_of_tweets":
+            MessageLookupByLibrary.simpleMessage(
+                "غير قادر على تحميل الصفحة التالية من التغريدات"),
         "unable_to_load_the_profile": MessageLookupByLibrary.simpleMessage(
             "غير قادر على تحميل الملف الشخصي"),
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
-                "غير قادر على تحميل نتائج البحث"),
+                "غير قادر على تحميل نتائج البحث."),
         "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "غير قادر على تحميل التغريدات"),
@@ -407,7 +412,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "جهازك يشتغل على نظام أقدم من أندرويد كيت كات (4.4)، لذلك يستطيع التصدير أن يُحفظ فقط إلى:"),
         "your_profile_must_be_public_otherwise_the_import_will_not_work":
             MessageLookupByLibrary.simpleMessage(
-                "يجب على ملفك الشخصي أن يكون عام، لن يعمل  الاستيراد إذا لم يكن كذلك."),
+                "يجب أن يكون ملف التعريف الخاص بك عاما، وإلا لن يعمل الاستيراد"),
         "your_report_will_be_sent_to_fritter_sentry_project":
             MessageLookupByLibrary.simpleMessage(
                 "تقريرك سيُبعث إلى مشروع حراسة فريتر، ويمكن العثور على تفاصيل الخصوصية في:")

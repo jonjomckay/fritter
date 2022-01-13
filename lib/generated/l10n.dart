@@ -282,6 +282,16 @@ class L10n {
     );
   }
 
+  /// `Filters`
+  String get filters {
+    return Intl.message(
+      'Filters',
+      name: 'filters',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Note: Due to a Twitter limitation, not all tweets may be included`
   String get note_due_to_a_twitter_limitation_not_all_tweets_may_be_included {
     return Intl.message(
@@ -499,6 +509,16 @@ class L10n {
       name: 'followers',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Joined {date}`
+  String joined(Object date) {
+    return Intl.message(
+      'Joined $date',
+      name: 'joined',
+      desc: '',
+      args: [date],
     );
   }
 
@@ -2034,6 +2054,18 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'ar'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'id'),
+      Locale.fromSubtags(languageCode: 'it'),
+      Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'ml'),
+      Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
+      Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+      Locale.fromSubtags(languageCode: 'ru'),
+      Locale.fromSubtags(languageCode: 'tr'),
     ];
   }
 

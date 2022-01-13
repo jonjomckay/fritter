@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -33,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(snapshotData) => "Finished with ${snapshotData} users";
 
   static String m6(snapshotData) => "Imported ${snapshotData} users so far";
+
+  static String m21(date) => "Joined ${date}";
 
   static String m7(num, numFormatted) =>
       "${Intl.plural(num, zero: 'no votes', one: 'one vote', two: 'two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
@@ -147,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "export_your_data":
             MessageLookupByLibrary.simpleMessage("Export your data"),
         "feed": MessageLookupByLibrary.simpleMessage("Feed"),
+        "filters": MessageLookupByLibrary.simpleMessage("Filters"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Followers"),
         "following": MessageLookupByLibrary.simpleMessage("Following"),
@@ -182,6 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "It looks like you\'ve already sent a ping recently 🤔"),
+        "joined": m21,
         "large": MessageLookupByLibrary.simpleMessage("Large"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Legacy Android Import"),
