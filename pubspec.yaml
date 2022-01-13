@@ -37,12 +37,9 @@ dependencies:
   faker: ^2.0.0-rc.2
   ffcache: ^1.0.0
   flex_color_scheme: ^2.1.1
-  file_picker_writable:
-    git:
-      url: https://github.com/jonjomckay/file_picker_writable.git
-      ref: 45b55f13266de97e7f02fb05b49dbccfb492c4cc
   flutter_cache: ^0.1.0
   flutter_colorpicker: ^0.6.0
+  flutter_file_dialog: ^2.3.0
   flutter_iconpicker: ^3.1.2
   flutter_local_notifications: ^5.0.0+4
   html_unescape: ^2.0.0

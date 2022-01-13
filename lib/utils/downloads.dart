@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_picker_writable/file_picker_writable.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
@@ -32,17 +32,15 @@ Future downloadUriToPickedFile(String uri, String fileName, { required Function(
       onSuccess();
     }
   } else {
-    var fileInfo = await FilePickerWritable().openFileForCreate(fileName: sanitizedFilename, writer: (file) async {
-      onStart();
+    onStart();
 
-      var response = await downloadFile();
-      if (response != null) {
-        await file.writeAsBytes(response);
-      }
-    });
+    var response = await downloadFile();
 
-    if (fileInfo != null) {
-      onSuccess();
+    var fileInfo = await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
+    if (fileInfo == null) {
+      return;
     }
+
+    onSuccess();
   }
 }

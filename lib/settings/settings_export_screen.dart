@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
@@ -141,15 +142,11 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                   );
                 } else {
                   var dateFormat = DateFormat('yyyy-MM-dd');
-            var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
+                  var fileName = 'fritter-${dateFormat.format(DateTime.now())}.json';
 
                   // This platform can support the directory picker, so display it
-                  var fileInfo = await FilePickerWritable().openFileForCreate(
-                      fileName: fileName,
-                      writer: (file) async {
-                        file.writeAsStringSync(exportData);
-                      });
-                  if (fileInfo != null) {
+                  var path = await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: fileName, data: Uint8List.fromList(utf8.encode(exportData))));
+                  if (path != null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

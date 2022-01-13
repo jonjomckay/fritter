@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
-import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
@@ -408,9 +408,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       });
                 } else {
-                  await FilePickerWritable().openFile((fileInfo, file) async {
-                    await _importFromFile(file);
-                  });
+                  var path = await FlutterFileDialog.pickFile(params: OpenFileDialogParams());
+                  if (path != null) {
+                    await _importFromFile(File(path));
+                  }
                 }
               },
             ),
