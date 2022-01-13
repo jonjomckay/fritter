@@ -134,5 +134,9 @@
   "timed_out_trying_to_send_the_ping": "Przekroczono limit czasu podczas próby wysłania ping 😢",
   "@timed_out_trying_to_send_the_ping": {},
   "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": "Oto dane, które zostaną wysłane. Zostaną wykorzystane tylko do określenia, które urządzenia i języki będą obsługiwane we Fritterze w przyszłości.",
-  "@here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": {}
+  "@here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": {},
+  "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Wyślij nieidentyfikujący ping, aby dać mi znać, że używasz Frittera, i pomóc w przyszłym rozwoju",
+  "@send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": {},
+  "general": "Ogólne",
+  "@general": {}
 }
