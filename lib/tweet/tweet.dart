@@ -575,7 +575,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                           overflow: TextOverflow.ellipsis,
                         )),
                         SizedBox(width: 4),
-                        Text(timeago.format(tweet.createdAt!),
+                        Text(timeago.format(tweet.createdAt!, locale: Intl.shortLocale(Intl.getCurrentLocale())),
                             style: Theme.of(context).textTheme.caption)
                       ],
                     ),

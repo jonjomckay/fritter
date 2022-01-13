@@ -138,7 +138,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                     Navigator.of(context).pop();
                                   }
                               ),
-                              title: Text('Filters'),
+                              title: Text(L10n.of(context).filters),
                               tileColor: theme.colorScheme.primary,
                             )
                         ),

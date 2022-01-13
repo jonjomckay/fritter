@@ -80,7 +80,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
       } else if (item.type == 'photo') {
         media = TweetPhoto(size: size, uri: item.mediaUrlHttps!);
       } else {
-        media = Text('Unknown');
+        media = Text(L10n.of(context).unknown);
       }
     } else {
       media = GestureDetector(

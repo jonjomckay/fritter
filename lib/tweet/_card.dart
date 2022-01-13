@@ -205,12 +205,12 @@ class TweetCard extends StatelessWidget {
     if (endsAt.isBefore(DateTime.now())) {
       endsAtText =
           L10n.of(context).ended_timeago_format_endsAt_allowFromNow_true(
-        timeago.format(endsAt, allowFromNow: true),
+        timeago.format(endsAt, allowFromNow: true, locale: Intl.shortLocale(Intl.getCurrentLocale())),
       );
     } else {
       endsAtText =
           L10n.of(context).ends_timeago_format_endsAt_allowFromNow_true(
-        timeago.format(endsAt, allowFromNow: true),
+        timeago.format(endsAt, allowFromNow: true, locale: Intl.shortLocale(Intl.getCurrentLocale())),
       );
     }
 
