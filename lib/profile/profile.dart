@@ -349,7 +349,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                   children: [
                                                     Icon(Icons.calendar_today, size: 12, color: Colors.white),
                                                     SizedBox(width: 4),
-                                                    Text('Joined ${DateFormat('MMMM yyyy').format(profile.createdAt!)}'),
+                                                    Text(L10n.of(context).joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
                                                   ],
                                                 ),
                                               ),

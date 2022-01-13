@@ -87,7 +87,7 @@ class FritterSentryHandler extends ReportHandler {
                 PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, true);
                     Navigator.pop(context);
                   },
-              child: Text('Send always'),
+              child: Text(L10n.of(context).send_always),
                 ),
                 TextButton(
                   onPressed: () {
