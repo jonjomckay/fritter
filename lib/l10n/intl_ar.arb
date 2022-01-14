@@ -384,5 +384,9 @@
   "unable_to_run_the_database_migrations": "غير قادر على تشغيل تحديث قاعدة البيانات",
   "@unable_to_run_the_database_migrations": {},
   "unable_to_load_the_next_page_of_tweets": "غير قادر على تحميل الصفحة التالية من التغريدات",
-  "@unable_to_load_the_next_page_of_tweets": {}
+  "@unable_to_load_the_next_page_of_tweets": {},
+  "filters": "المرشحات",
+  "@filters": {},
+  "joined": "انضم {date}",
+  "@joined": {}
 }
