@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +189,7 @@ class TweetCard extends StatelessWidget {
               ],
             ));
       default:
-        log.warning('Unsupported unified card type ${unifiedCard['type']} encountered');
+        Catcher.reportCheckedError('Unsupported unified card type ${unifiedCard['type']} encountered', null);
         return Container();
     }
   }
@@ -330,11 +331,12 @@ class TweetCard extends StatelessWidget {
         try {
           return _createUnifiedCard(context, card, imageKey, imageSize);
         } catch (e, stackTrace) {
-          log.severe('Unable to render the unified card', e, stackTrace);
+          log.severe('Unable to render the unified card');
+          Catcher.reportCheckedError(e, stackTrace);
           return Container();
         }
       default:
-        log.warning('Unknown card type ${card['name']} was encountered');
+        Catcher.reportCheckedError('Unknown card type ${card['name']} was encountered', null);
         return Container();
     }
   }

@@ -1,3 +1,4 @@
+import 'package:catcher/catcher.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_cache/flutter_cache.dart' as cache;
 import 'package:fritter/utils/misc.dart';
@@ -83,7 +84,8 @@ class TranslationAPI {
     } on DioError catch (e, stackTrace) {
       var response = e.response;
       if (response == null) {
-        log.severe(errorUnableTo, e, stackTrace);
+        log.severe(errorUnableTo);
+        Catcher.reportCheckedError(e, stackTrace);
         rethrow;
       }
 
@@ -113,7 +115,8 @@ class TranslationAPI {
 
       return TranslationAPIResult(success: false, body: response.data, errorMessage: message);
     } catch (e, stackTrace) {
-      log.severe('Unable to translate', e, stackTrace);
+      log.severe('Unable to translate');
+      Catcher.reportCheckedError(e, stackTrace);
       rethrow;
     }
   }

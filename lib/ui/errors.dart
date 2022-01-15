@@ -6,7 +6,6 @@ import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
-import 'package:logging/logging.dart';
 import 'package:fritter/generated/l10n.dart';
 
 void showSnackBar(BuildContext context, {required String icon, required String message}) {
@@ -45,10 +44,7 @@ _EmojiErrorWidget createEmojiError(TwitterError error) {
       message = L10n.current.account_suspended;
       break;
     default:
-      Logger.root.warning(
-        'Unsupported Twitter error code: ${error.code}',
-        error.message,
-      );
+      Catcher.reportCheckedError('Unsupported Twitter error code: ${error.code}. ${error.message}', null);
       emoji = '💥';
       message = L10n.current.catastrophic_failure;
       break;

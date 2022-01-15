@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fritter/catcher/nice_console_handler.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
@@ -81,10 +82,11 @@ Future checkForUpdates() async {
         }
       }
     } else {
-      Logger.root.severe('Unable to check for updates: ${response.body}');
+      Catcher.reportCheckedError('Unable to check for updates: ${response.body}', null);
     }
   } catch (e, stackTrace) {
-    Logger.root.severe('Unable to check for updates', e, stackTrace);
+    Logger.root.severe('Unable to check for updates');
+    Catcher.reportCheckedError(e, stackTrace);
   }
 }
 
@@ -157,7 +159,7 @@ Future<void> main() async {
   sentryHub.bindClient(sentryClient);
 
   CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
-    ConsoleHandler(),
+    NiceConsoleHandler(),
     FritterSentryHandler(
         sentryHub: sentryHub,
       sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
@@ -181,19 +183,7 @@ Future<void> main() async {
       enableLogger: false,
       runAppFunction: () async {
       Logger.root.onRecord.listen((event) async {
-            print(event.message);
-
-            if (event.error != null) {
-              print(event.error);
-              print(event.stackTrace);
-            }
-
-            if (event.level.value >= 900) {
-              // Don't report internal Catcher errors, as it'll cause a loop
-              if (event.loggerName != 'Catcher') {
-                Catcher.reportCheckedError(event.error, event.stackTrace);
-              }
-            }
+        log(event.message, error: event.error, stackTrace: event.stackTrace);
       });
 
         if (Platform.isAndroid) {
@@ -391,7 +381,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
-          log.severe('Something broke in Fritter.', details.exception, details.stack);
+          Catcher.reportCheckedError(details.exception, details.stack);
 
           return Scaffold(
             body: FullPageErrorWidget(

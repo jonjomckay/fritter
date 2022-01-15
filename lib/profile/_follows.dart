@@ -1,3 +1,4 @@
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
@@ -55,6 +56,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
         _pagingController.appendPage(result.users, result.cursorBottom);
       }
     } catch (e, stackTrace) {
+      Catcher.reportCheckedError(e, stackTrace);
       _pagingController.error = [e, stackTrace];
     }
   }

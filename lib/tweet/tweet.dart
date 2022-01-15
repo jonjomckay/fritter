@@ -132,7 +132,9 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         return showTranslationError('Your system language ($systemLocale) is not supported for translation');
       }
     } catch (e, stackTrace) {
-      log.severe('Unable to list the supported languages', e, stackTrace);
+      log.severe('Unable to list the supported languages');
+      Catcher.reportCheckedError(e, stackTrace);
+
       return showTranslationError('Failed to get the list of supported languages. Please check your connection, or try again later!');
     }
 
@@ -339,9 +341,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         : tweet.fullText;
 
     if (tweetText == null) {
-      var message = 'The tweet did not contain any text. This is unexpected';
-
-      log.severe(message);
+      Catcher.reportCheckedError('The tweet ${tweet.idStr} did not contain any text. This is unexpected', null);
 
       return Container(
         child: Text(

@@ -26,7 +26,7 @@ dependencies:
   provider: ^5.0.0
 
   auto_direction: ^0.0.5
-  catcher: ^0.6.8
+  catcher: ^0.6.9
   chewie: ^1.2.2
   dart_twitter_api: ^0.5.0
   device_info: ^2.0.0
@@ -53,21 +53,19 @@ dependencies:
   pref: ^2.0.2
   quiver: ^3.0.1
   scroll_to_index: ^2.1.0
-  sentry_flutter: ^5.1.0
+  sentry_flutter: ^6.2.2
   share: ^2.0.1
   simple_icons: ^4.22.0
   sqflite: ^2.0.0+3
+  sqflite_common: 2.1.0
   sqflite_migration_plan: ^0.1.0
   timeago: ^3.0.2
   uni_links2: ^0.6.0+2
   url_launcher: ^6.0.3
   uuid: ^3.0.4
+
   flutter_localizations:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +73,7 @@ dev_dependencies:
 
   flutter_launcher_icons: ^0.9.0
   flutter_oss_licenses: ^1.0.1
+  sqflite_common_ffi: ^2.0.0+3
 
 flutter_icons:
   android: "launcher_icon"

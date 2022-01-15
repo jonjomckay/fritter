@@ -1,6 +1,6 @@
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:logging/logging.dart';
 import 'package:fritter/generated/l10n.dart';
 
 class FutureBuilderWrapper<T> extends StatelessWidget {
@@ -18,8 +18,7 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
         var state = snapshot.connectionState;
 
         if (snapshot.hasError) {
-          Logger.root
-              .severe('Unexpected error', snapshot.error, snapshot.stackTrace);
+          Catcher.reportCheckedError(snapshot.error, snapshot.stackTrace);
           return Center(child: onError(snapshot.error, snapshot.stackTrace));
         }
 

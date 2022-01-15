@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:catcher/catcher.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
@@ -23,7 +25,6 @@ import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fritter/generated/l10n.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -153,12 +154,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       var pingUri = 'https://fritter.jonjomckay.com/ping';
 
                       try {
-                    var response = await http.post(Uri.parse(pingUri),
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: content
-                    ).timeout(Duration(seconds: 10));
+                        var response = await http
+                            .post(Uri.parse(pingUri), headers: {'Content-Type': 'application/json'}, body: content)
+                            .timeout(Duration(seconds: 10));
 
                         SnackBar snackBar;
 
@@ -170,30 +168,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
 
                           // Mark that we've said hello from this build version
-                      await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
+                          await prefService.set(OPTION_HELLO_LAST_BUILD, packageInfo.buildNumber);
                         } else if (response.statusCode == 403) {
                           snackBar = SnackBar(
                             content: Text(
-                              L10n.of(context)
-                                  .it_looks_like_you_have_already_sent_a_ping_recently,
+                              L10n.of(context).it_looks_like_you_have_already_sent_a_ping_recently,
                             ),
                           );
                         } else {
-                          log.severe('Unable to send the ping');
+                          Catcher.reportCheckedError('Unable to send the ping because the status code was ${response.statusCode}', null);
 
                           snackBar = SnackBar(
                             content: Text(
                               L10n.of(context)
-                                  .unable_to_send_the_ping_the_status_code_was_response_statusCode(
-                                      response.statusCode),
+                                  .unable_to_send_the_ping_the_status_code_was_response_statusCode(response.statusCode),
                             ),
                           );
                         }
 
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } on TimeoutException catch (e, stackTrace) {
-                        log.severe(
-                            'Timed out trying to send the ping', e, stackTrace);
+                        log.severe('Timed out trying to send the ping');
+                        Catcher.reportCheckedError(e, stackTrace);
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
@@ -201,12 +197,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ));
                       } catch (e, stackTrace) {
-                        log.severe('Unable to send', e, stackTrace);
+                        log.severe('Unable to send the ping');
+                        Catcher.reportCheckedError(e, stackTrace);
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            L10n.of(context)
-                                .unable_to_send_the_ping_e_to_string(e),
+                            L10n.of(context).unable_to_send_the_ping_e_to_string(e),
                           ),
                         ));
                       }
@@ -349,17 +345,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             TextButton(
                               child: Text(L10n.of(context).import),
                               onPressed: () async {
-                            var file = File(await getLegacyPath(legacyExportFileName));
+                                var file = File(await getLegacyPath(legacyExportFileName));
                                 if (await file.exists()) {
                                   try {
                                     await _importFromFile(file);
                                   } catch (e, stackTrace) {
-                                    log.severe(
-                                        'Unable to import the file on a legacy Android device',
-                                        e,
-                                        stackTrace);
+                                    log.severe('Unable to import the file on a legacy Android device');
+                                    Catcher.reportCheckedError(e, stackTrace);
 
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       content: Text('$e'),
                                     ));
                                   }

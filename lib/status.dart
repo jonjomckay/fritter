@@ -1,3 +1,4 @@
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -88,6 +89,7 @@ class _StatusScreenState extends State<_StatusScreen> {
         }
       }
     } catch (e, stackTrace) {
+      Catcher.reportCheckedError(e, stackTrace);
       _pagingController.error = [e, stackTrace];
     }
   }

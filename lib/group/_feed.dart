@@ -1,3 +1,4 @@
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
@@ -104,6 +105,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         }
       }
     } catch (e, stackTrace) {
+      Catcher.reportCheckedError(e, stackTrace);
       _pagingController.error = [e, stackTrace];
     }
   }

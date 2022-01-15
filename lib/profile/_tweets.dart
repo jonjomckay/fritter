@@ -1,3 +1,4 @@
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
         _pagingController.appendPage(result.chains, result.cursorBottom);
       }
     } catch (e, stackTrace) {
+      Catcher.reportCheckedError(e, stackTrace);
       _pagingController.error = [e, stackTrace];
     }
   }

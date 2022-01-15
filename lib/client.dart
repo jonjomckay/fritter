@@ -82,9 +82,7 @@ class _FritterTwitterClient extends TwitterClient {
       }
     }
 
-    var message = 'Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body;
-    log.severe(message);
-    throw new Exception(message);
+    throw new Exception('Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {

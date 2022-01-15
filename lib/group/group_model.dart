@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:fritter/constants.dart';
@@ -19,6 +20,7 @@ IconData? deserializeIconData(String iconData) {
       return icon;
     }
   } catch (e, stackTrace) {
+    Catcher.reportCheckedError(e, stackTrace);
     log('Unable to deserialize icon', error: e, stackTrace: stackTrace);
   }
 

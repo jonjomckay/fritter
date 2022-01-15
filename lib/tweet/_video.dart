@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:catcher/catcher.dart';
 import 'package:chewie/chewie.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ class _TweetVideoState extends State<TweetVideo> {
 
             await downloadUriToPickedFile(url, fileName,
               onError: (response) {
-                log.severe('Unable to save the media. The response was ${response.body}');
+                Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
