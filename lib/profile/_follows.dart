@@ -57,7 +57,9 @@ class _ProfileFollowsState extends State<ProfileFollows> {
       }
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);
-      _pagingController.error = [e, stackTrace];
+      if (mounted) {
+        _pagingController.error = [e, stackTrace];
+      }
     }
   }
 

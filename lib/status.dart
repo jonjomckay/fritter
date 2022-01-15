@@ -90,7 +90,9 @@ class _StatusScreenState extends State<_StatusScreen> {
       }
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);
-      _pagingController.error = [e, stackTrace];
+      if (mounted) {
+        _pagingController.error = [e, stackTrace];
+      }
     }
   }
 
