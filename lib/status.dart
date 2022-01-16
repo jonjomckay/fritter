@@ -44,7 +44,7 @@ class _StatusScreenState extends State<_StatusScreen> {
   final _pagingController = PagingController<String?, TweetChain>(firstPageKey: null);
   final _scrollController = AutoScrollController();
 
-  final _seenAlready = Set();
+  final _seenAlready = <String>{};
 
   @override
   void initState() {

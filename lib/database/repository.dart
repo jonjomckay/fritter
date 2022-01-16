@@ -5,22 +5,22 @@ import 'package:sqflite_migration_plan/migration/sql.dart';
 import 'package:sqflite_migration_plan/sqflite_migration_plan.dart';
 import 'package:uuid/uuid.dart';
 
-const String DATABASE_NAME = 'fritter.db';
+const String databaseName = 'fritter.db';
 
-const String TABLE_SAVED_TWEET = 'saved_tweet';
-const String TABLE_SUBSCRIPTION = 'subscription';
-const String TABLE_SUBSCRIPTION_GROUP = 'subscription_group';
-const String TABLE_SUBSCRIPTION_GROUP_MEMBER = 'subscription_group_member';
+const String tableSavedTweet = 'saved_tweet';
+const String tableSubscription = 'subscription';
+const String tableSubscriptionGroup = 'subscription_group';
+const String tableSubscriptionGroupMember = 'subscription_group_member';
 
 class Repository {
   static final log = Logger('Repository');
 
   static Future<Database> readOnly() async {
-    return openDatabase(DATABASE_NAME, readOnly: true, singleInstance: false);
+    return openDatabase(databaseName, readOnly: true, singleInstance: false);
   }
 
   static Future<Database> writable() async {
-    return openDatabase(DATABASE_NAME);
+    return openDatabase(databaseName);
   }
 
   Future<bool> migrate() async {
@@ -56,129 +56,129 @@ class Repository {
       ],
       6: [
         // Rename the old following tables to match the names in the UI
-        SqlMigration('ALTER TABLE following RENAME TO $TABLE_SUBSCRIPTION'),
+        SqlMigration('ALTER TABLE following RENAME TO $tableSubscription'),
         SqlMigration(
-            'ALTER TABLE following_group RENAME TO $TABLE_SUBSCRIPTION_GROUP'),
+            'ALTER TABLE following_group RENAME TO $tableSubscriptionGroup'),
         SqlMigration(
-            'ALTER TABLE following_group_profile RENAME TO $TABLE_SUBSCRIPTION_GROUP_MEMBER'),
+            'ALTER TABLE following_group_profile RENAME TO $tableSubscriptionGroupMember'),
       ],
       7: [
         // Add the table for saved tweets
         SqlMigration(
-            'CREATE TABLE IF NOT EXISTS $TABLE_SAVED_TWEET (id VARCHAR PRIMARY KEY, content TEXT NOT NULL, saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
-            reverseSql: 'DROP TABLE $TABLE_SAVED_TWEET')
+            'CREATE TABLE IF NOT EXISTS $tableSavedTweet (id VARCHAR PRIMARY KEY, content TEXT NOT NULL, saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
+            reverseSql: 'DROP TABLE $tableSavedTweet')
       ],
       8: [
         // Add a primary key to the $TABLE_SUBSCRIPTION_GROUP_MEMBER table to prevent duplicates
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER RENAME TO ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+            'ALTER TABLE $tableSubscriptionGroupMember RENAME TO ${tableSubscriptionGroupMember}_old'),
         SqlMigration(
-            'CREATE TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id INTEGER, profile_id VARCHAR, CONSTRAINT pk_$TABLE_SUBSCRIPTION_GROUP_MEMBER PRIMARY KEY (group_id, profile_id))'),
+            'CREATE TABLE $tableSubscriptionGroupMember (group_id INTEGER, profile_id VARCHAR, CONSTRAINT pk_$tableSubscriptionGroupMember PRIMARY KEY (group_id, profile_id))'),
         SqlMigration(
-            'INSERT INTO $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id, profile_id) SELECT group_id, profile_id FROM ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
-        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old')
+            'INSERT INTO $tableSubscriptionGroupMember (group_id, profile_id) SELECT group_id, profile_id FROM ${tableSubscriptionGroupMember}_old'),
+        SqlMigration('DROP TABLE ${tableSubscriptionGroupMember}_old')
       ],
       9: [
         // Add a new ID field for subscription groups for a UUID to determine uniqueness across devices
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN uuid VARCHAR NULL'),
+            'ALTER TABLE $tableSubscriptionGroup ADD COLUMN uuid VARCHAR NULL'),
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER ADD COLUMN group_uuid VARCHAR NULL'),
+            'ALTER TABLE $tableSubscriptionGroupMember ADD COLUMN group_uuid VARCHAR NULL'),
 
         // Generate a UUID for each existing subscription group
         Migration(Operation((db) async {
-          var uuid = Uuid();
+          var uuid = const Uuid();
 
           // Update the existing subscription group and all of its members with the new ID
-          var groups = await db.query(TABLE_SUBSCRIPTION_GROUP);
+          var groups = await db.query(tableSubscriptionGroup);
           for (var group in groups) {
             var oldId = group['id'];
             var newId = uuid.v4();
 
-            db.update(TABLE_SUBSCRIPTION_GROUP, {'uuid': newId},
+            db.update(tableSubscriptionGroup, {'uuid': newId},
                 where: 'id = ?', whereArgs: [oldId]);
 
-            db.update(TABLE_SUBSCRIPTION_GROUP_MEMBER, {'group_uuid': newId},
+            db.update(tableSubscriptionGroupMember, {'group_uuid': newId},
                 where: 'group_id = ?', whereArgs: [oldId]);
           }
         })),
 
         // Replace the old ID fields with the new ones
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP RENAME TO ${TABLE_SUBSCRIPTION_GROUP}_old'),
+            'ALTER TABLE $tableSubscriptionGroup RENAME TO ${tableSubscriptionGroup}_old'),
         SqlMigration(
-            'CREATE TABLE $TABLE_SUBSCRIPTION_GROUP (id VARCHAR PRIMARY KEY, name VARCHAR NOT NULL, icon VARCHAR NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
+            'CREATE TABLE $tableSubscriptionGroup (id VARCHAR PRIMARY KEY, name VARCHAR NOT NULL, icon VARCHAR NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
         SqlMigration(
-            'INSERT INTO $TABLE_SUBSCRIPTION_GROUP (id, name, icon, created_at) SELECT uuid, name, icon, created_at FROM ${TABLE_SUBSCRIPTION_GROUP}_old'),
+            'INSERT INTO $tableSubscriptionGroup (id, name, icon, created_at) SELECT uuid, name, icon, created_at FROM ${tableSubscriptionGroup}_old'),
 
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER RENAME TO ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+            'ALTER TABLE $tableSubscriptionGroupMember RENAME TO ${tableSubscriptionGroupMember}_old'),
         SqlMigration(
-            'CREATE TABLE $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id VARCHAR, profile_id VARCHAR, CONSTRAINT pk_$TABLE_SUBSCRIPTION_GROUP_MEMBER PRIMARY KEY (group_id, profile_id))'),
+            'CREATE TABLE $tableSubscriptionGroupMember (group_id VARCHAR, profile_id VARCHAR, CONSTRAINT pk_$tableSubscriptionGroupMember PRIMARY KEY (group_id, profile_id))'),
         SqlMigration(
-            'INSERT INTO $TABLE_SUBSCRIPTION_GROUP_MEMBER (group_id, profile_id) SELECT group_uuid, profile_id FROM ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+            'INSERT INTO $tableSubscriptionGroupMember (group_id, profile_id) SELECT group_uuid, profile_id FROM ${tableSubscriptionGroupMember}_old'),
       ],
       10: [
         // Drop the old subscription group tables now that we've replaced the IDs
-        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP}_old'),
-        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION_GROUP_MEMBER}_old'),
+        SqlMigration('DROP TABLE ${tableSubscriptionGroup}_old'),
+        SqlMigration('DROP TABLE ${tableSubscriptionGroupMember}_old'),
       ],
       11: [
         // Add columns for the subscription group settings
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_replies BOOLEAN DEFAULT true'),
+            'ALTER TABLE $tableSubscriptionGroup ADD COLUMN include_replies BOOLEAN DEFAULT true'),
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN include_retweets BOOLEAN DEFAULT true')
+            'ALTER TABLE $tableSubscriptionGroup ADD COLUMN include_retweets BOOLEAN DEFAULT true')
       ],
       12: [
         // Insert a dummy record for the "All" subscription group
         Migration(Operation((db) async {
-          await db.insert(TABLE_SUBSCRIPTION_GROUP,
+          await db.insert(tableSubscriptionGroup,
               {'id': '-1', 'name': 'All', 'icon': 'rss_feed'},
               conflictAlgorithm: ConflictAlgorithm.replace);
         }), reverse: Operation((db) async {
-          await db.delete(TABLE_SUBSCRIPTION_GROUP,
+          await db.delete(tableSubscriptionGroup,
               where: 'id = ?', whereArgs: ['-1']);
         })),
       ],
       13: [
         // Duplicate migration 12, as some people had deleted the "All" group when it displayed twice in the groups list
         Migration(Operation((db) async {
-          await db.insert(TABLE_SUBSCRIPTION_GROUP,
+          await db.insert(tableSubscriptionGroup,
               {'id': '-1', 'name': 'All', 'icon': 'rss_feed'},
               conflictAlgorithm: ConflictAlgorithm.replace);
         }), reverse: Operation((db) async {
-          await db.delete(TABLE_SUBSCRIPTION_GROUP,
+          await db.delete(tableSubscriptionGroup,
               where: 'id = ?', whereArgs: ['-1']);
         })),
       ],
       14: [
         // Add a "verified" column to the subscriptions table
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION ADD COLUMN verified BOOLEAN DEFAULT 0',
-            reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION DROP COLUMN verified')
+            'ALTER TABLE $tableSubscription ADD COLUMN verified BOOLEAN DEFAULT 0',
+            reverseSql: 'ALTER TABLE $tableSubscription DROP COLUMN verified')
       ],
       15: [
         // Re-apply migration 14 in a different way, as it looks like it didn't apply for some people
         SqlMigration(
-            'ALTER TABLE $TABLE_SUBSCRIPTION RENAME TO ${TABLE_SUBSCRIPTION}_old'),
+            'ALTER TABLE $tableSubscription RENAME TO ${tableSubscription}_old'),
         SqlMigration(
-            'CREATE TABLE $TABLE_SUBSCRIPTION (id VARCHAR PRIMARY KEY, screen_name VARCHAR, name VARCHAR, profile_image_url_https VARCHAR, verified BOOLEAN DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
+            'CREATE TABLE $tableSubscription (id VARCHAR PRIMARY KEY, screen_name VARCHAR, name VARCHAR, profile_image_url_https VARCHAR, verified BOOLEAN DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'),
         SqlMigration(
-            'INSERT INTO $TABLE_SUBSCRIPTION (id, screen_name, name, profile_image_url_https, created_at) SELECT id, screen_name, name, profile_image_url_https, created_at FROM ${TABLE_SUBSCRIPTION}_old'),
-        SqlMigration('DROP TABLE ${TABLE_SUBSCRIPTION}_old'),
+            'INSERT INTO $tableSubscription (id, screen_name, name, profile_image_url_https, created_at) SELECT id, screen_name, name, profile_image_url_https, created_at FROM ${tableSubscription}_old'),
+        SqlMigration('DROP TABLE ${tableSubscription}_old'),
       ],
       16: [
         // Add a "color" column to the subscription groups table, and set a default icon for existing groups
-        SqlMigration('ALTER TABLE $TABLE_SUBSCRIPTION_GROUP ADD COLUMN color INT DEFAULT NULL', reverseSql: 'ALTER TABLE $TABLE_SUBSCRIPTION_GROUP DROP COLUMN color'),
+        SqlMigration('ALTER TABLE $tableSubscriptionGroup ADD COLUMN color INT DEFAULT NULL', reverseSql: 'ALTER TABLE $tableSubscriptionGroup DROP COLUMN color'),
 
         Migration(Operation((db) async {
-          await db.update(TABLE_SUBSCRIPTION_GROUP, {'icon': defaultGroupIcon}, where: "icon IS NULL OR icon = '' OR icon = ?", whereArgs: ['rss_feed']);
+          await db.update(tableSubscriptionGroup, {'icon': defaultGroupIcon}, where: "icon IS NULL OR icon = '' OR icon = ?", whereArgs: ['rss_feed']);
         }))
       ]
     });
     await openDatabase(
-      DATABASE_NAME,
+      databaseName,
       version: 16,
       onUpgrade: myMigrationPlan,
       onCreate: myMigrationPlan,

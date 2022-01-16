@@ -11,15 +11,15 @@ class UsersModel extends ChangeNotifier {
   static final log = Logger('UsersModel');
 
   List<Subscription> _subscriptions = [];
-  Set<String> _subscriptionIds = Set();
+  Set<String> _subscriptionIds = <String>{};
 
   final BasePrefService _prefs;
   final GroupModel _groupModel;
 
   UsersModel(this._prefs, this._groupModel);
 
-  bool get orderSubscriptionsAscending => _prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING);
-  String get orderSubscriptions => _prefs.get(OPTION_SUBSCRIPTION_ORDER_BY_FIELD);
+  bool get orderSubscriptionsAscending => _prefs.get(optionSubscriptionOrderByAscending);
+  String get orderSubscriptions => _prefs.get(optionSubscriptionOrderByField);
   List<Subscription> get subscriptions => List.unmodifiable(_subscriptions);
   List<String> get subscriptionIds => List.unmodifiable(_subscriptionIds);
 
@@ -32,7 +32,7 @@ class UsersModel extends ChangeNotifier {
         ? 'COLLATE NOCASE ASC'
         : 'COLLATE NOCASE DESC';
 
-    _subscriptions = (await database.query(TABLE_SUBSCRIPTION, orderBy: '$orderSubscriptions $orderByDirection'))
+    _subscriptions = (await database.query(tableSubscription, orderBy: '$orderSubscriptions $orderByDirection'))
         .map((e) => Subscription.fromMap(e))
         .toList(growable: false);
 
@@ -44,7 +44,7 @@ class UsersModel extends ChangeNotifier {
   Future refreshSubscriptionData() async {
     var database = await Repository.writable();
 
-    var ids = (await database.query(TABLE_SUBSCRIPTION, columns: ['id']))
+    var ids = (await database.query(tableSubscription, columns: ['id']))
         .map((e) => e['id'] as String)
         .toList();
 
@@ -52,7 +52,7 @@ class UsersModel extends ChangeNotifier {
 
     var batch = database.batch();
     for (var user in users) {
-      batch.update(TABLE_SUBSCRIPTION, {
+      batch.update(tableSubscription, {
         'screen_name': user.screenName,
         'name': user.name,
         'profile_image_url_https': user.profileImageUrlHttps,
@@ -68,10 +68,10 @@ class UsersModel extends ChangeNotifier {
     var database = await Repository.writable();
 
     if (currentlyFollowed) {
-      await database.delete(TABLE_SUBSCRIPTION, where: 'id = ?', whereArgs: [id]);
-      await database.delete(TABLE_SUBSCRIPTION_GROUP_MEMBER, where: 'profile_id = ?', whereArgs: [id]);
+      await database.delete(tableSubscription, where: 'id = ?', whereArgs: [id]);
+      await database.delete(tableSubscriptionGroupMember, where: 'profile_id = ?', whereArgs: [id]);
     } else {
-      await database.insert(TABLE_SUBSCRIPTION, {
+      await database.insert(tableSubscription, {
         'id': id,
         'screen_name': screenName,
         'name': name,
@@ -85,12 +85,12 @@ class UsersModel extends ChangeNotifier {
   }
 
   void changeOrderSubscriptionsBy(String? value) async {
-    await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_FIELD, value ?? 'name');
+    await _prefs.set(optionSubscriptionOrderByField, value ?? 'name');
     await reloadSubscriptions();
   }
 
   void toggleOrderSubscriptionsAscending() async {
-    await _prefs.set(OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING, !orderSubscriptionsAscending);
+    await _prefs.set(optionSubscriptionOrderByAscending, !orderSubscriptionsAscending);
     await reloadSubscriptions();
   }
 }

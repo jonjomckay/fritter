@@ -52,7 +52,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
         onReady: (trends) {
           trends.sort((a, b) => a.name!.compareTo(b.name!));
 
-            var place = TrendLocation.fromJson(jsonDecode(prefs.get(OPTION_TRENDS_LOCATION)));
+            var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionTrendsLocation)));
 
           var countries = trends
               .sorted((a, b) => a.name!.compareTo(b.name!))
@@ -80,7 +80,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
               );
           };
 
-          return Container(
+          return SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: countries.length,

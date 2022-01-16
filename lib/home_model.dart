@@ -20,7 +20,7 @@ class HomeModel extends ChangeNotifier {
   Future<bool> isTweetSaved(String id) async {
     var database = await Repository.readOnly();
 
-    var result = await database.rawQuery('SELECT EXISTS (SELECT 1 FROM $TABLE_SAVED_TWEET WHERE id = ?)', [id]);
+    var result = await database.rawQuery('SELECT EXISTS (SELECT 1 FROM $tableSavedTweet WHERE id = ?)', [id]);
 
     return Sqflite.firstIntValue(result) == 1;
   }
@@ -28,7 +28,7 @@ class HomeModel extends ChangeNotifier {
   Future deleteSavedTweet(String id) async {
     var database = await Repository.writable();
 
-    await database.delete(TABLE_SAVED_TWEET, where: 'id = ?', whereArgs: [id]);
+    await database.delete(tableSavedTweet, where: 'id = ?', whereArgs: [id]);
 
     notifyListeners();
   }
@@ -38,7 +38,7 @@ class HomeModel extends ChangeNotifier {
 
     var database = await Repository.readOnly();
 
-    return (await database.query(TABLE_SAVED_TWEET, orderBy: 'saved_at DESC'))
+    return (await database.query(tableSavedTweet, orderBy: 'saved_at DESC'))
         .map((e) => SavedTweet(id: e['id'] as String, content: e['content'] as String))
         .toList(growable: false);
   }
@@ -46,7 +46,7 @@ class HomeModel extends ChangeNotifier {
   Future saveTweet(String id, Map<String, dynamic> content) async {
     var database = await Repository.writable();
 
-    await database.insert(TABLE_SAVED_TWEET, {
+    await database.insert(tableSavedTweet, {
       'id': id,
       'content': jsonEncode(content)
     });
@@ -75,7 +75,7 @@ class HomeModel extends ChangeNotifier {
   }
 
   Future setTrendLocation(TrendLocation item) async {
-    _prefs.set(OPTION_TRENDS_LOCATION, jsonEncode(item.toJson()));
+    _prefs.set(optionTrendsLocation, jsonEncode(item.toJson()));
 
     notifyListeners();
   }

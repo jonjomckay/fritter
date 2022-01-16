@@ -82,7 +82,7 @@ class _FritterTwitterClient extends TwitterClient {
       }
     }
 
-    throw new Exception('Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body);
+    throw Exception('Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
@@ -116,9 +116,9 @@ class _FritterTwitterClient extends TwitterClient {
 }
 
 class Twitter {
-  static TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
+  static final TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
-  static FFCache _cache = FFCache();
+  static final FFCache _cache = FFCache();
 
   static Map<String, String> defaultParams = {
     'include_profile_interstitial_type': '0',
@@ -317,7 +317,7 @@ class Twitter {
   }
 
   static Future<List<TrendLocation>> getTrendLocations() async {
-    var result = await _cache.getOrCreateAsJSON('trends.locations', Duration(days: 2), () async {
+    var result = await _cache.getOrCreateAsJSON('trends.locations', const Duration(days: 2), () async {
       var locations = await _twitterApi.trendsService.available();
 
       return jsonEncode(locations.map((e) => e.toJson()).toList());
@@ -329,7 +329,7 @@ class Twitter {
   }
 
   static Future<List<Trends>> getTrends(int location) async {
-    var result = await _cache.getOrCreateAsJSON('trends.$location', Duration(minutes: 2), () async {
+    var result = await _cache.getOrCreateAsJSON('trends.$location', const Duration(minutes: 2), () async {
       var trends = await _twitterApi.trendsService.place(
           id: location
       );
@@ -481,7 +481,7 @@ class Twitter {
         .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
         .toList();
 
-    return Map.fromIterable(tweets, key: (e) => e.idStr, value: (e) => e);
+    return { for (var e in tweets) e.idStr! : e };
   }
 }
 
@@ -495,6 +495,7 @@ class TweetWithCard extends Tweet {
 
   TweetWithCard();
 
+  @override
   Map<String, dynamic> toJson() {
     var json = super.toJson();
     json['card'] = card;

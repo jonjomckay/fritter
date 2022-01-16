@@ -255,7 +255,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
       child: Container(
         height: barHeight + 20,
         padding:
-        EdgeInsets.only(bottom: 10.0),
+        const EdgeInsets.only(bottom: 10.0),
         child: SafeArea(
           bottom: chewieController.isFullScreen,
           child: Column(
@@ -282,7 +282,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
               if (!chewieController.isLive)
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       right: 20,
                       left: 20,
                       bottom: 5.0,
@@ -556,8 +556,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
         },
         colors: chewieController.materialProgressColors ??
             ChewieProgressColors(
-              playedColor: Theme.of(context).accentColor,
-              handleColor: Theme.of(context).accentColor,
+              playedColor: Theme.of(context).colorScheme.secondary,
+              handleColor: Theme.of(context).colorScheme.secondary,
               bufferedColor: Theme.of(context).backgroundColor.withOpacity(0.5),
               backgroundColor: Theme.of(context).disabledColor.withOpacity(.5),
             ),

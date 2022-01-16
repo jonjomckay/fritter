@@ -93,7 +93,7 @@ class TranslationAPI {
 
       switch (response.statusCode) {
         case 400:
-          RegExp languageNotSupported = new RegExp(r"^\w+\ is\ not\ supported$");
+          RegExp languageNotSupported = RegExp(r"^\w+\ is\ not\ supported$");
 
           var error = response.data['error'];
           if (languageNotSupported.hasMatch(error)) {

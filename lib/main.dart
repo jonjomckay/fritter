@@ -39,7 +39,7 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future checkForUpdates() async {
-  L10n.load(Locale('en'));
+  L10n.load(const Locale('en'));
   Logger.root.info('Checking for updates');
 
   try {
@@ -60,7 +60,7 @@ Future checkForUpdates() async {
       Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
       if (int.parse(package.buildNumber) < latest) {
-        var details = NotificationDetails(android: AndroidNotificationDetails(
+        var details = const NotificationDetails(android: AndroidNotificationDetails(
                 'updates', 'Updates', 'When a new app update is available',
                 importance: Importance.max,
             largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
@@ -137,14 +137,14 @@ Future<void> main() async {
   setTimeagoLocales();
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
-    OPTION_MEDIA_SIZE: 'medium',
-    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING: false,
-    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD: 'name',
-    OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING: false,
-    OPTION_SUBSCRIPTION_ORDER_BY_FIELD: 'name',
-    OPTION_THEME_MODE: 'system',
-    OPTION_THEME_TRUE_BLACK: false,
-    OPTION_TRENDS_LOCATION: jsonEncode({
+    optionMediaSize: 'medium',
+    optionSubscriptionGroupsOrderByAscending: false,
+    optionSubscriptionGroupsOrderByField: 'name',
+    optionSubscriptionOrderByAscending: false,
+    optionSubscriptionOrderByField: 'name',
+    optionThemeMode: 'system',
+    optionThemeTrueBlack: false,
+    optionTrendsLocation: jsonEncode({
       'name': 'Worldwide',
       'woeid': 1
     }),
@@ -162,7 +162,7 @@ Future<void> main() async {
     NiceConsoleHandler(),
     FritterSentryHandler(
         sentryHub: sentryHub,
-      sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
+      sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled)
     )
   ], localizationOptions: [
     LocalizationOptions('en',
@@ -189,7 +189,7 @@ Future<void> main() async {
         if (Platform.isAndroid) {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
-          final InitializationSettings settings = InitializationSettings(
+          const InitializationSettings settings = InitializationSettings(
             android: AndroidInitializationSettings('@mipmap/launcher_icon')
         );
 
@@ -253,20 +253,20 @@ class _MyAppState extends State<MyApp> {
 
     // Set any already-enabled preferences
     setState(() {
-      this._themeMode = prefService.get(OPTION_THEME_MODE) ?? 'system';
-      this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK) ?? false;
+      _themeMode = prefService.get(optionThemeMode) ?? 'system';
+      _trueBlack = prefService.get(optionThemeTrueBlack) ?? false;
     });
 
     // Whenever the "true black" preference is toggled, apply the toggle
-    prefService.addKeyListener(OPTION_THEME_TRUE_BLACK, () {
+    prefService.addKeyListener(optionThemeTrueBlack, () {
       setState(() {
-        this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK);
+        _trueBlack = prefService.get(optionThemeTrueBlack);
       });
     });
 
-    prefService.addKeyListener(OPTION_THEME_MODE, () {
+    prefService.addKeyListener(optionThemeMode, () {
       setState(() {
-        this._themeMode = prefService.get(OPTION_THEME_MODE);
+        _themeMode = prefService.get(optionThemeMode);
       });
     });
   }
@@ -278,15 +278,15 @@ class _MyAppState extends State<MyApp> {
       description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: Color(0xFF320019),
+        primaryVariant: const Color(0xFF320019),
         secondary: Colors.blue[500]!,
-        secondaryVariant: Color(0xFF002411),
+        secondaryVariant: const Color(0xFF002411),
       ),
       dark: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: Color(0xFF775C69),
+        primaryVariant: const Color(0xFF775C69),
         secondary: Colors.blue[500]!,
-        secondaryVariant: Color(0xFF5C7267),
+        secondaryVariant: const Color(0xFF5C7267),
       ),
     );
 
@@ -350,9 +350,9 @@ class _MyAppState extends State<MyApp> {
             print('Nothing');
           }
         }
-        return Locale('en');
+        return const Locale('en');
       },
-      localizationsDelegates: [
+      localizationsDelegates: const [
         L10n.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -370,13 +370,13 @@ class _MyAppState extends State<MyApp> {
       themeMode: themeMode,
       initialRoute: '/',
       routes: {
-        '/': (context) => DefaultPage(),
-        ROUTE_GROUP: (context) => GroupScreen(),
-        ROUTE_PROFILE: (context) => ProfileScreen(),
-        ROUTE_SETTINGS: (context) => SettingsScreen(),
-        ROUTE_SETTINGS_EXPORT: (context) => SettingsExportScreen(),
-        ROUTE_STATUS: (context) => StatusScreen(),
-        ROUTE_SUBSCRIPTIONS_IMPORT: (context) => SubscriptionImportScreen()
+        '/': (context) => const DefaultPage(),
+        routeGroup: (context) => const GroupScreen(),
+        routeProfile: (context) => const ProfileScreen(),
+        routeSettings: (context) => const SettingsScreen(),
+        routeSettingsExport: (context) => const SettingsExportScreen(),
+        routeStatus: (context) => const StatusScreen(),
+        routeSubscriptionsImport: (context) => const SubscriptionImportScreen()
       },
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
@@ -399,6 +399,8 @@ class _MyAppState extends State<MyApp> {
 }
 
 class DefaultPage extends StatefulWidget {
+  const DefaultPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _DefaultPageState();
 }
@@ -409,7 +411,7 @@ class _DefaultPageState extends State<DefaultPage> {
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      Navigator.pushNamed(context, ROUTE_PROFILE, arguments: link.pathSegments.first);
+      Navigator.pushNamed(context, routeProfile, arguments: link.pathSegments.first);
       return;
     }
 
@@ -419,7 +421,7 @@ class _DefaultPageState extends State<DefaultPage> {
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
 
-        Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+        Navigator.pushNamed(context, routeStatus, arguments: StatusScreenArguments(
               id: statusId,
               username: username,
             ));
@@ -440,7 +442,6 @@ class _DefaultPageState extends State<DefaultPage> {
       // Attach a listener to the stream
       _sub = uriLinkStream.listen((link) => handleInitialLink(link!), onError: (err) {
         // TODO: Handle exception by warning the user their action did not succeed
-        int i = 0;
       });
     });
   }
@@ -455,7 +456,7 @@ class _DefaultPageState extends State<DefaultPage> {
         stackTrace: stackTrace,
         prefix: L10n.of(context).unable_to_run_the_database_migrations,
       ),
-      onReady: (data) => HomeScreen(),
+      onReady: (data) => const HomeScreen(),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/status.dart';
@@ -22,7 +23,6 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:fritter/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TweetTile extends StatefulWidget {
@@ -32,28 +32,27 @@ class TweetTile extends StatefulWidget {
   final bool isPinned;
   final bool isThread;
 
-  TweetTile({required this.clickable, this.currentUsername, required this.tweet, this.isPinned = false, this.isThread = false}) : super();
+  const TweetTile({Key? key, required this.clickable, this.currentUsername, required this.tweet, this.isPinned = false, this.isThread = false}) : super(key: key);
 
-  TweetTileState createState() => TweetTileState(clickable: this.clickable, currentUsername: currentUsername, tweet: tweet, isPinned: isPinned, isThread: isThread);
+  @override
+  TweetTileState createState() => TweetTileState();
 }
 
 class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
 
   final ScrollController scrollController = ScrollController();
-  final bool clickable;
-  final String? currentUsername;
-  final TweetWithCard tweet;
-  final bool isPinned;
-  final bool isThread;
+  late final bool clickable;
+  late final String? currentUsername;
+  late final TweetWithCard tweet;
+  late final bool isPinned;
+  late final bool isThread;
 
-  TranslationStatus _translationStatus = TranslationStatus.ORIGINAL;
+  TranslationStatus _translationStatus = TranslationStatus.original;
 
   List<TweetTextPart> _originalParts = [];
   List<TweetTextPart> _displayParts = [];
   List<TweetTextPart> _translatedParts = [];
-
-  TweetTileState({required this.clickable, this.currentUsername, required this.tweet, this.isPinned = false, this.isThread = false}) : super();
 
   String? _convertRunesToText(Iterable<int> runes, int start, [int? end]) {
     var string = runes.getRange(start, end).map((e) => String.fromCharCode(e)).join('');
@@ -91,7 +90,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     entities = _populateEntities(entities: entities, source: tweet.entities?.userMentions, getNewEntity: (UserMention mention) {
       return TweetUserMention(mention, () {
-        Navigator.pushNamed(context, ROUTE_PROFILE, arguments: mention.screenName!);
+        Navigator.pushNamed(context, routeProfile, arguments: mention.screenName!);
       });
     });
 
@@ -116,12 +115,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     if (_translatedParts.isNotEmpty) {
       return setState(() {
         _displayParts = _translatedParts;
-        _translationStatus = TranslationStatus.TRANSLATED;
+        _translationStatus = TranslationStatus.translated;
       });
     }
 
     setState(() {
-      _translationStatus = TranslationStatus.TRANSLATING;
+      _translationStatus = TranslationStatus.translating;
     });
 
     try {
@@ -148,7 +147,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       return setState(() {
         _displayParts = translatedParts;
         _translatedParts = translatedParts;
-        _translationStatus = TranslationStatus.TRANSLATED;
+        _translationStatus = TranslationStatus.translated;
       });
     } else {
       return showTranslationError(res.errorMessage ?? 'An unknown error occurred while translating');
@@ -157,7 +156,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
   void showTranslationError(String message) {
     setState(() {
-      _translationStatus = TranslationStatus.TRANSLATION_FAILED;
+      _translationStatus = TranslationStatus.translationFailed;
     });
 
     showSnackBar(context, icon: '💥', message: message);
@@ -166,7 +165,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   Future<void> onClickShowOriginal() async {
     setState(() {
       _displayParts = _originalParts;
-      _translationStatus = TranslationStatus.ORIGINAL;
+      _translationStatus = TranslationStatus.original;
     });
   }
 
@@ -188,6 +187,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   @override
   void initState() {
     super.initState();
+
+    clickable = widget.clickable;
+    currentUsername = widget.currentUsername;
+    tweet = widget.tweet;
+    isPinned = widget.isPinned;
+    isThread = widget.isThread;
 
     // Generate all the tweet entities (mentions, hashtags, etc.) from the tweet text
     Runes tweetText = Runes(tweet.fullText ?? tweet.text!);
@@ -265,12 +270,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       : this.tweet.retweetedStatusWithCard!;
 
     if (tweet.isTombstone ?? false) {
-      return Container(
+      return SizedBox(
         width: double.infinity,
         child: Card(
           child: Container(
-              padding: EdgeInsets.all(16),
-            child: Text(tweet.text!, style: TextStyle(
+            padding: const EdgeInsets.all(16),
+            child: Text(tweet.text!, style: const TextStyle(
               fontStyle: FontStyle.italic
             ))
           ),
@@ -315,7 +320,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
               ),
             ));
           } else {
-            Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+            Navigator.pushNamed(context, routeStatus, arguments: StatusScreenArguments(
                 id: replyToId,
                 username: replyTo
             ));
@@ -336,19 +341,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       );
     }
 
-    var tweetText = tweet.fullText == null
-        ? tweet.text
-        : tweet.fullText;
-
+    var tweetText = tweet.fullText ?? tweet.text;
     if (tweetText == null) {
       Catcher.reportCheckedError('The tweet ${tweet.idStr} did not contain any text. This is unexpected', null);
 
-      return Container(
-        child: Text(
-          L10n.of(context)
-              .the_tweet_did_not_contain_any_text_this_is_unexpected,
-        ),
-      );
+      return Text(L10n.of(context).the_tweet_did_not_contain_any_text_this_is_unexpected);
     }
 
     var quotedTweet = Container();
@@ -364,7 +361,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       } else {
         quotedTweetTile = Container(
           width: double.infinity,
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Text(
             L10n.of(context).this_tweet_is_unavailable,
             style: TextStyle(color: Theme.of(context).hintColor),
@@ -377,7 +374,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
             border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(8)
         ),
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Container(
           child: quotedTweetTile,
         ),
@@ -391,7 +388,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       content = Container(
         // Fill the width so both RTL and LTR text are displayed correctly
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: AutoDirection(
           text: tweetText,
           child: SelectableText.rich(
@@ -413,12 +410,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     Widget translateButton;
     switch (_translationStatus) {
-      case TranslationStatus.ORIGINAL:
+      case TranslationStatus.original:
         translateButton = _createFooterIconButton(Icons.translate, Colors.blue, () async => onClickTranslate());
         break;
-      case TranslationStatus.TRANSLATING:
-        translateButton = Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+      case TranslationStatus.translating:
+        translateButton = const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: SizedBox(
             width: 16,
             height: 16,
@@ -426,10 +423,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
           ),
         );
         break;
-      case TranslationStatus.TRANSLATION_FAILED:
+      case TranslationStatus.translationFailed:
         translateButton = _createFooterIconButton(Icons.translate, Colors.red, () async => onClickTranslate());
         break;
-      case TranslationStatus.TRANSLATED:
+      case TranslationStatus.translated:
         translateButton = _createFooterIconButton(Icons.translate, Colors.green, () async => onClickShowOriginal());
         break;
     }
@@ -468,11 +465,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   ListTile(
                     onTap: () {
                       // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                    if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
-                        return null;
+                      if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
+                        return;
                       }
 
-                    Navigator.pushNamed(context, ROUTE_PROFILE, arguments: tweet.user!.screenName!);
+                      Navigator.pushNamed(context, routeProfile, arguments: tweet.user!.screenName!);
                     },
                     title: Row(
                       children: [
@@ -481,19 +478,19 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             children: [
                             Flexible(child: Text(tweet.user!.name!,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w500))),
                               if (tweet.user!.verified ?? false)
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                               if (tweet.user!.verified ?? false)
                               Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
                             ],
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.more_horiz),
+                          icon: const Icon(Icons.more_horiz),
                           padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(minHeight: 32),
+                          constraints: const BoxConstraints(minHeight: 32),
                           onPressed: () async {
                           var createSheetButton = (title, icon, onTap) => ListTile(
                                       onTap: onTap,
@@ -574,7 +571,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                       Flexible(child: Text('@${tweet.user!.screenName!}',
                           overflow: TextOverflow.ellipsis,
                         )),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(timeago.format(tweet.createdAt!, locale: Intl.shortLocale(Intl.getCurrentLocale())),
                             style: Theme.of(context).textTheme.caption)
                       ],
@@ -589,14 +586,14 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                 quotedTweet,
                 TweetCard(tweet: tweet, card: tweet.card),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: ButtonBar(
                     buttonTextTheme: ButtonTextTheme.accent,
-                    buttonPadding: EdgeInsets.symmetric(horizontal: 0),
+                    buttonPadding: const EdgeInsets.symmetric(horizontal: 0),
                     children: [
                       if (tweet.replyCount != null)
                         _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                          Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
+                          Navigator.pushNamed(context, routeStatus, arguments: StatusScreenArguments(
                                     id: tweet.idStr!,
                               username: tweet.user!.screenName!
                           ));
@@ -630,25 +627,20 @@ class _TweetTileLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       child: InkWell(
-        onTap: this.onTap,
+        onTap: onTap,
         child: Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
-          child: Container(
-            child: RichText(
-              text: TextSpan(
-                  children: [
-                WidgetSpan(
-                    child: Icon(icon,
-                        size: 12, color: Theme.of(context).hintColor),
-                    alignment: PlaceholderAlignment.middle),
-                WidgetSpan(child: SizedBox(width: 16)),
-                ...children
-                  ]
-              ),
-            ),
+          padding: const EdgeInsets.only(bottom: 0, left: 52, right: 16, top: 0),
+          child: RichText(
+            text: TextSpan(children: [
+              WidgetSpan(
+                  child: Icon(icon, size: 12, color: Theme.of(context).hintColor),
+                  alignment: PlaceholderAlignment.middle),
+              const WidgetSpan(child: SizedBox(width: 16)),
+              ...children
+            ]),
           ),
         ),
       ),
@@ -669,8 +661,8 @@ class TweetTextPart {
 }
 
 enum TranslationStatus {
-  ORIGINAL,
-  TRANSLATING,
-  TRANSLATION_FAILED,
-  TRANSLATED
+  original,
+  translating,
+  translationFailed,
+  translated
 }

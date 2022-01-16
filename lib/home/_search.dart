@@ -38,7 +38,7 @@ class TweetSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      IconButton(icon: Icon(Icons.clear), onPressed: () {
+      IconButton(icon: const Icon(Icons.clear), onPressed: () {
             query = '';
           })
     ];
@@ -61,42 +61,38 @@ class TweetSearchDelegate extends SearchDelegate {
         initialIndex: initialTab,
         child: Column(
           children: [
-            Container(
-              child: Material(
-                color: Theme.of(context).appBarTheme.backgroundColor,
-                child: TabBar(tabs: [
-                  Tab(icon: Icon(Icons.person)),
-                  Tab(icon: Icon(Icons.comment)),
-                ]),
-              ),
+            Material(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: const TabBar(tabs: [
+                Tab(icon: Icon(Icons.person)),
+                Tab(icon: Icon(Icons.comment)),
+              ]),
             ),
-            Container(
-              child: Expanded(child: TabBarView(children: [
-                TweetSearchResultList<User>(
-                    query: query,
-                    future: (q) => searchUsers(context, q),
-                    itemBuilder: (context, item) {
-                      return UserTile(
-                        id: item.idStr!,
-                        name: item.name!,
-                        imageUri: item.profileImageUrlHttps!,
-                        screenName: item.screenName!,
-                        verified: item.verified!,
-                      );
-                    }
-                ),
-                TweetSearchResultList<TweetWithCard>(
-                    query: query,
-                    future: (q) => searchTweets(context, q),
-                    itemBuilder: (context, item) {
-                      return TweetTile(
-                          tweet: item,
-                          clickable: true
-                      );
-                    }
-                ),
-              ])),
-            )
+            Expanded(child: TabBarView(children: [
+              TweetSearchResultList<User>(
+                  query: query,
+                  future: (q) => searchUsers(context, q),
+                  itemBuilder: (context, item) {
+                    return UserTile(
+                      id: item.idStr!,
+                      name: item.name!,
+                      imageUri: item.profileImageUrlHttps!,
+                      screenName: item.screenName!,
+                      verified: item.verified!,
+                    );
+                  }
+              ),
+              TweetSearchResultList<TweetWithCard>(
+                  query: query,
+                  future: (q) => searchTweets(context, q),
+                  itemBuilder: (context, item) {
+                    return TweetTile(
+                        tweet: item,
+                        clickable: true
+                    );
+                  }
+              ),
+            ]))
           ],
         )
     );
@@ -134,7 +130,7 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
   }
 
   void fetchResults() {
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         _future = widget.future(widget.query);
       });

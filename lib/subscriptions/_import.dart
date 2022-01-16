@@ -57,7 +57,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         total = total + response.users.length;
 
         await homeModel.importData({
-          TABLE_SUBSCRIPTION: [
+          tableSubscription: [
             ...response.users.map((e) =>
                 Subscription(
                 id: e.idStr!,
@@ -93,7 +93,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         title: Text(L10n.of(context).import_subscriptions),
       ),
       body: Container(
-        margin: EdgeInsets.all(16),
+        margin: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -121,7 +121,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                     child: InkWell(
                   onTap: () async => launch(
                       'https://github.com/jonjomckay/fritter/issues/143'),
-                  child: Text('the GitHub issue (#143)',
+                  child: const Text('the GitHub issue (#143)',
                       style: TextStyle(
                         color: Colors.blue,
                       )),
@@ -136,7 +136,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
+                  border: const UnderlineInputBorder(),
                   hintText: L10n.of(context).enter_your_twitter_username,
                   helperText: L10n.of(context)
                       .your_profile_must_be_public_otherwise_the_import_will_not_work,
@@ -176,8 +176,8 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
+                            const Padding(
+                              padding: EdgeInsets.all(16),
                               child: CircularProgressIndicator(),
                             ),
                             Text(
@@ -192,8 +192,8 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
+                            const Padding(
+                              padding: EdgeInsets.all(16),
                               child: Icon(Icons.check_circle,
                                   size: 36, color: Colors.green),
                             ),
@@ -213,7 +213,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.import_export),
+        child: const Icon(Icons.import_export),
         onPressed: () async => await importSubscriptions(),
       ),
     );

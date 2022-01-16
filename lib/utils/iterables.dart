@@ -5,8 +5,8 @@ extension Iterables<E> on Iterable<E> {
       map..putIfAbsent(keyFunction(element), () => <E>[]).add(element));
 
   Iterable<E> getRange(int start, [int? end]) {
-    return (end != null ? this.take(end) : this).skip(start);
+    return (end != null ? take(end) : this).skip(start);
   }
 
-  Iterable<E> sorted(int compare(E a, E b)) => [...this]..sort(compare);
+  Iterable<E> sorted(int Function(E a, E b) compare) => [...this]..sort(compare);
 }

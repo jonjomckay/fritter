@@ -54,19 +54,19 @@ class FritterSentryHandler extends ReportHandler {
                     L10n.of(context)
                         .something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     L10n.of(context)
                         .would_you_like_to_enable_automatic_error_reporting,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     L10n.of(context)
                         .your_report_will_be_sent_to_fritter_sentry_project,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   InkWell(
-                child: Text('https://fritter.cc/privacy', style: TextStyle(
+                child: const Text('https://fritter.cc/privacy', style: TextStyle(
                   color: Colors.blue
                 )),
                 onTap: () async => await launch('https://fritter.cc/privacy'),
@@ -84,7 +84,7 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = true;
-                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, true);
+                PrefService.of(context).set(optionErrorsSentryEnabled, true);
                     Navigator.pop(context);
                   },
               child: Text(L10n.of(context).send_always),
@@ -99,14 +99,14 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = false;
-                PrefService.of(context).set(OPTION_ERRORS_SENTRY_ENABLED, false);
+                PrefService.of(context).set(optionErrorsSentryEnabled, false);
                     Navigator.pop(context);
                   },
                   child: Text(L10n.of(context).never_send),
                 )
               ],
             );
-      }, routeSettings: RouteSettings(
+      }, routeSettings: const RouteSettings(
         name: 'sentryRoute'
       ));
 

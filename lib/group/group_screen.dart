@@ -3,7 +3,6 @@ import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/_feed.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/home_model.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
@@ -37,16 +36,16 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
     var database = await Repository.readOnly();
 
     if (id == '-1') {
-      var subscriptions = (await database.query(TABLE_SUBSCRIPTION))
+      var subscriptions = (await database.query(tableSubscription))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
       return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
     } else {
-      var group = (await database.query(TABLE_SUBSCRIPTION_GROUP, where: 'id = ?', whereArgs: [id]))
+      var group = (await database.query(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]))
           .first;
 
-      var subscriptions = (await database.rawQuery('SELECT s.* FROM $TABLE_SUBSCRIPTION s LEFT JOIN $TABLE_SUBSCRIPTION_GROUP_MEMBER sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
+      var subscriptions = (await database.rawQuery('SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
@@ -108,43 +107,41 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
       appBar: AppBar(
           title: Text(widget.name),
           actions: [
-            IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
-              await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
+            IconButton(icon: const Icon(Icons.arrow_upward), onPressed: () async {
+              await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
             }),
-            IconButton(icon: Icon(Icons.refresh), onPressed: () async {
+            IconButton(icon: const Icon(Icons.refresh), onPressed: () async {
               // This is a dirty hack, and probably won't work if the child widgets ever become stateful
               setState(() {});
             }),
-            IconButton(icon: Icon(Icons.more_vert), onPressed: () {
+            IconButton(icon: const Icon(Icons.more_vert), onPressed: () {
               showModalBottomSheet(context: context, builder: (context) {
                     var theme = Theme.of(context);
 
-                    return Container(
+                    return SizedBox(
                       height: 220,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(25),
-                            topRight: const Radius.circular(25),
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25),
                           ),
                         ),
                         child: Column(
                           children: [
-                            Container(
-                                child: ListTile(
+                            ListTile(
                               leading: IconButton(
-                                  icon: Icon(Icons.arrow_back),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  }
+                              icon: const Icon(Icons.arrow_back),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }
                               ),
                               title: Text(L10n.of(context).filters),
                               tileColor: theme.colorScheme.primary,
-                            )
-                        ),
+                            ),
                             Container(
                               alignment: Alignment.centerLeft,
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                   bottom: 8, top: 16, left: 16, right: 16),
                               child: Text(
                                 L10n.of(context)

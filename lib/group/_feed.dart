@@ -71,7 +71,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
         // If we can add this user to the query and still be less than ~500 characters, do so
         if (query.length + queryToAdd.length < remainingLength) {
-          if (query.length > 0) {
+          if (query.isNotEmpty) {
             query += '+OR+';
           }
 

@@ -22,7 +22,7 @@ class ProfileTweets extends StatefulWidget {
 class _ProfileTweetsState extends State<ProfileTweets> {
   late PagingController<String?, TweetChain> _pagingController;
 
-  int _pageSize = 20;
+  final int _pageSize = 20;
 
   @override
   void initState() {

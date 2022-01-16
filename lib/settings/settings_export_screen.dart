@@ -89,7 +89,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
       floatingActionButton: noExportOptionSelected()
           ? null
           : FloatingActionButton(
-              child: Icon(Icons.save),
+              child: const Icon(Icons.save),
               onPressed: () async {
                 var homeModel = context.read<HomeModel>();
                 var groupModel = context.read<GroupModel>();
@@ -176,14 +176,14 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
               onError: (error, stackTrace) => InlineErrorWidget(error: error),
               onReady: (legacyExportPath) {
                 return Container(
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   child: Column(
                     children: [
                       Text(
                           L10n.of(context)
                               .your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to,
                           textAlign: TextAlign.center),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(legacyExportPath,
                           textAlign: TextAlign.center),
                     ],

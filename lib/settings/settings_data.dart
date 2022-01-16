@@ -8,7 +8,7 @@ const String legacyExportFileName = 'fritter.json';
 Future<String> getLegacyPath(String filename) async {
   var externalStorageDirectory = await p.getExternalStorageDirectory();
   if (externalStorageDirectory == null) {
-    throw new Exception('Unable to find the external storage directory');
+    throw Exception('Unable to find the external storage directory');
   }
 
   return path.join(externalStorageDirectory.path, filename);
@@ -16,7 +16,7 @@ Future<String> getLegacyPath(String filename) async {
 
 Future<bool> isLegacyAndroid() async {
   var deviceInfo = await DeviceInfoPlugin().androidInfo;
-  if (deviceInfo != null && deviceInfo.version.sdkInt < 19) {
+  if (deviceInfo.version.sdkInt < 19) {
     return true;
   }
 

@@ -13,7 +13,7 @@ void showSnackBar(BuildContext context, {required String icon, required String m
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(message, style: TextStyle(
+        Flexible(child: Text(message, style: const TextStyle(
           height: 1.5
         ))),
         Text(icon),
@@ -75,22 +75,22 @@ class _EmojiErrorWidget extends FritterErrorWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 16),
-            child: Text(emoji, style: TextStyle(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Text(emoji, style: const TextStyle(
                 fontSize: 36
             )),
           ),
-          Text(message, textAlign: TextAlign.center, style: TextStyle(
+          Text(message, textAlign: TextAlign.center, style: const TextStyle(
               fontSize: 18
           )),
           Container(
-            margin: EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: 12),
             child: Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(
                 color: Theme.of(context).hintColor
             )),
           ),
           Container(
-            margin: EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text(L10n.of(context).back),
               onPressed: () => Navigator.pop(context),
@@ -98,7 +98,7 @@ class _EmojiErrorWidget extends FritterErrorWidget {
           ),
           if (onRetry != null)
             Container(
-              margin: EdgeInsets.only(top: 12),
+              margin: const EdgeInsets.only(top: 12),
               child: ElevatedButton(
                 child: Text(L10n.of(context).retry),
                 onPressed: () => onRetry(),
@@ -118,19 +118,17 @@ class InlineErrorWidget extends FritterErrorWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(right: 8),
-            child: Icon(Icons.error, color: Colors.red),
+            margin: const EdgeInsets.only(right: 8),
+            child: const Icon(Icons.error, color: Colors.red),
           ),
-          Container(
-            child: Text('$error', textAlign: TextAlign.center, style: TextStyle(
-                color: Theme.of(context).hintColor
-            )),
-          ),
+          Text('$error', textAlign: TextAlign.center, style: TextStyle(
+              color: Theme.of(context).hintColor
+          )),
         ],
       ),
     );
@@ -225,34 +223,34 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 16),
-            child: Icon(Icons.error, color: Colors.red, size: 36),
+            margin: const EdgeInsets.only(bottom: 16),
+            child: const Icon(Icons.error, color: Colors.red, size: 36),
           ),
           Text(
             L10n.of(context).oops_something_went_wrong,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
           Container(
-            margin: EdgeInsets.only(top: 12),
-            child: Text('$prefix', textAlign: TextAlign.center, style: TextStyle(
+            margin: const EdgeInsets.only(top: 12),
+            child: Text(prefix, textAlign: TextAlign.center, style: TextStyle(
                 color: Theme.of(context).hintColor
             )),
           ),
           Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: 12),
             child: Text('$message', textAlign: TextAlign.left, style: TextStyle(
                 color: Theme.of(context).hintColor
             )),
           ),
           Container(
-            margin: EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text(L10n.of(context).report),
               onPressed: () => Catcher.reportCheckedError(
@@ -261,7 +259,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
           ),
           if (onRetry != null)
             Container(
-              margin: EdgeInsets.only(top: 12),
+              margin: const EdgeInsets.only(top: 12),
               child: ElevatedButton(
                 child: Text(L10n.of(context).retry),
                 onPressed: () => onRetry(),

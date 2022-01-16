@@ -19,6 +19,7 @@ class SavedTweet with ToMappable {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -53,6 +54,7 @@ class Subscription with ToMappable {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -100,6 +102,7 @@ class SubscriptionGroup with ToMappable {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -142,6 +145,7 @@ class SubscriptionGroupMember with ToMappable {
     );
   }
   
+  @override
   Map<String, dynamic> toMap() {
     return {
       'group_id': group,

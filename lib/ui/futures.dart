@@ -24,7 +24,7 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
 
         switch (state) {
           case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           case ConnectionState.done:
             var data = snapshot.data;
             if (data == null) {

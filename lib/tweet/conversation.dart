@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/tweet/tweet.dart';
@@ -32,23 +30,21 @@ class _TweetConversationState extends State<TweetConversation> {
       tiles.add(TweetTile(clickable: true, tweet: tweets[i], currentUsername: widget.username, isPinned: widget.isPinned, isThread: i == 0));
     }
 
-    return Container(
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-              color: Colors.white,
-              width: 4,
-            ),
-            Expanded(child: Column(
-              children: [
-                ...tiles,
-              ],
-            )),
-          ],
-        ),
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            color: Colors.white,
+            width: 4,
+          ),
+          Expanded(child: Column(
+            children: [
+              ...tiles,
+            ],
+          )),
+        ],
       ),
     );
   }

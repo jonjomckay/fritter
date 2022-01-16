@@ -13,16 +13,16 @@ class LoadingStack extends StatelessWidget {
       children: [
         AnimatedOpacity(
           opacity: loading ? 0.0 : 1.0,
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           child: child,
         ),
         Center(
           child: Padding(
-            padding: EdgeInsets.all(64),
+            padding: const EdgeInsets.all(64),
             child: AnimatedOpacity(
               opacity: loading ? 1.0 : 0.0,
-              duration: Duration(milliseconds: 200),
-              child: CircularProgressIndicator(),
+              duration: const Duration(milliseconds: 200),
+              child: const CircularProgressIndicator(),
             ),
           ),
         ),

@@ -59,7 +59,7 @@ class _TrendsListState extends State<TrendsList> {
 
         return ListView.builder(
           shrinkWrap: true,
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           itemCount: trends.length,
           itemBuilder: (context, index) {
             var trend = trends[index];
@@ -67,7 +67,7 @@ class _TrendsListState extends State<TrendsList> {
             return ListTile(
               dense: true,
               leading: Text('${++index}'),
-              title: Text('${trend.name!}'),
+              title: Text(trend.name!),
               subtitle: trend.tweetVolume == null
                   ? null
                   : Text(

@@ -72,6 +72,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons: ^0.9.0
+  flutter_lints:
   flutter_oss_licenses: ^1.0.1
   sqflite_common_ffi: ^2.0.0+3
 

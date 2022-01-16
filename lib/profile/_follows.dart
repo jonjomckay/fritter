@@ -20,7 +20,7 @@ class ProfileFollows extends StatefulWidget {
 class _ProfileFollowsState extends State<ProfileFollows> {
   late PagingController<int?, User> _pagingController;
 
-  int _pageSize = 200;
+  final int _pageSize = 200;
 
   @override
   void initState() {

@@ -3,20 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
-import 'package:fritter/generated/l10n.dart';
 
 class SavedScreen extends StatelessWidget {
+  const SavedScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var model = context.read<HomeModel>();
 
-    return Container(
-        child: FutureBuilderWrapper<List<SavedTweet>>(
+    return FutureBuilderWrapper<List<SavedTweet>>(
       future: model.listSavedTweets(),
       onError: (error, stackTrace) => FullPageErrorWidget(
         error: error,
@@ -25,8 +26,7 @@ class SavedScreen extends StatelessWidget {
       ),
       onReady: (data) {
         if (data.isEmpty) {
-          return Center(
-              child: Text(L10n.of(context).you_have_not_saved_any_tweets_yet));
+          return Center(child: Text(L10n.of(context).you_have_not_saved_any_tweets_yet));
         }
 
         return ListView.builder(
@@ -39,7 +39,6 @@ class SavedScreen extends StatelessWidget {
           },
         );
       },
-      )
     );
   }
 }

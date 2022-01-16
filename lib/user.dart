@@ -23,7 +23,7 @@ ExtendedImage createUserAvatar(String? uri, double size) {
       loadStateChanged: (state) {
         switch (state.extendedImageLoadState) {
           case LoadState.failed:
-            return Icon(Icons.error);
+            return const Icon(Icons.error);
           default:
             return state.completedWidget;
         }
@@ -65,18 +65,18 @@ class UserTile extends StatelessWidget {
         children: [
           Text(name),
           if (verified)
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
           if (verified)
-            Icon(Icons.verified, size: 14, color: Colors.blue)
+            const Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
       subtitle: Text('@$screenName'),
-      trailing: Container(
+      trailing: SizedBox(
         width: 36,
         child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, verified: verified),
       ),
       onTap: () {
-        Navigator.pushNamed(context, ROUTE_PROFILE, arguments: screenName);
+        Navigator.pushNamed(context, routeProfile, arguments: screenName);
       },
     );
   }
@@ -97,7 +97,7 @@ class FollowButton extends StatelessWidget {
     return Consumer2<GroupModel, UsersModel>(builder: (context, groupModel, usersModel, child) {
       var followed = usersModel.subscriptionIds.contains(id);
 
-      var icon = followed ? Icon(Icons.person_remove) : Icon(Icons.person_add);
+      var icon = followed ? const Icon(Icons.person_remove) : const Icon(Icons.person_add);
 
       var text =
           followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
@@ -132,26 +132,19 @@ class FollowButton extends StatelessWidget {
                           searchIcon: Icon(Icons.search, color: color),
                           closeSearchIcon: Icon(Icons.close, color: color),
                           itemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                          selectedColor: Theme.of(context).accentColor,
+                          selectedColor: Theme.of(context).colorScheme.secondary,
                           unselectedColor: color,
-                      selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                      items: groupModel.groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
+                          selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
+                          items: groupModel.groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
                           initialValue: existing,
                           onConfirm: (List<String> memberships) async {
                             // If we're not currently following the user, follow them first
                             if (followed == false) {
-                          await usersModel.toggleSubscribe(
-                              id,
-                              screenName,
-                              name,
-                              imageUri,
-                              verified,
-                              followed
-                          );
+                              await usersModel.toggleSubscribe(id, screenName, name, imageUri, verified, followed);
                             }
 
                             // Then add them to all the selected groups
-                        await groupModel.saveUserGroupMembership(id, memberships);
+                            await groupModel.saveUserGroupMembership(id, memberships);
                           },
                         );
                       },

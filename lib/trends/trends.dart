@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/trends/_list.dart';
 import 'package:fritter/trends/_settings.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
-import 'package:fritter/generated/l10n.dart';
 
 class TrendsScreen extends StatefulWidget {
+  const TrendsScreen({Key? key}) : super(key: key);
+
   @override
   _TrendsScreenState createState() => _TrendsScreenState();
 }
@@ -21,7 +23,7 @@ class _TrendsScreenState extends State<TrendsScreen> {
 
     return SingleChildScrollView(
       child: StreamBuilder<String>(
-        stream: prefs.stream(OPTION_TRENDS_LOCATION),
+        stream: prefs.stream(optionTrendsLocation),
         builder: (context, snapshot) {
           var error = snapshot.error;
           if (error != null) {
@@ -39,28 +41,27 @@ class _TrendsScreenState extends State<TrendsScreen> {
 
               return Column(
                 children: [
-                  Container(
-                    child: ListTile(
+                  ListTile(
                       title: Text('${place.name} ${L10n.of(context).trends}',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.settings),
-                              onPressed: () async => showDialog(context: context, builder: (context) {
-                                return TrendsSettings();
-                              }),
+                            icon: const Icon(Icons.settings),
+                            onPressed: () async => showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const TrendsSettings();
+                                }),
                           )
                         ],
-                        )
-                    ),
-                  ),
+                      )),
                   TrendsList(place: place),
                 ],
               );
             default:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
           }
         },
       ),

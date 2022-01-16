@@ -23,7 +23,7 @@ class TweetCard extends StatelessWidget {
 
   _createBaseCard(Widget child) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         width: double.infinity,
         child: Card(
           clipBehavior: Clip.antiAlias,
@@ -65,12 +65,12 @@ class TweetCard extends StatelessWidget {
 
   _createListTile(BuildContext context, String title, String? description, String? uri) {
     return Container(
-      padding: EdgeInsets.only(left: 12, right: 12, bottom: 4),
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 4),
+            margin: const EdgeInsets.only(top: 4),
             child: Text(
               title,
               overflow: TextOverflow.ellipsis,
@@ -84,7 +84,7 @@ class TweetCard extends StatelessWidget {
           ),
           if (description != null)
             Container(
-              margin: EdgeInsets.only(top: 4),
+              margin: const EdgeInsets.only(top: 4),
               child: Text(
                 description,
                 overflow: TextOverflow.ellipsis,
@@ -97,12 +97,12 @@ class TweetCard extends StatelessWidget {
             ),
           if (uri != null)
             Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.link, size: 12, color: Colors.white),
-                  SizedBox(width: 4),
+                  const Icon(Icons.link, size: 12, color: Colors.white),
+                  const SizedBox(width: 4),
                   Text(
                     uri,
                       style: Theme.of(context).textTheme.caption!.copyWith(
@@ -127,7 +127,7 @@ class TweetCard extends StatelessWidget {
         : Colors.white;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       child: Stack(alignment: Alignment.center, children: [
         SizedBox(
           height: 24,
@@ -140,7 +140,7 @@ class TweetCard extends StatelessWidget {
         ),
         Container(
             alignment: Alignment.centerLeft,
-            margin: EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             child: RichText(
               text: TextSpan(
                   children: [
@@ -178,7 +178,7 @@ class TweetCard extends StatelessWidget {
                         'height': image['original_info']['height'],
               }, BoxFit.contain),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: _createListTile(
                       context,
                   unifiedCard['component_objects']['details_1']['data']['title']['content'],
@@ -216,13 +216,13 @@ class TweetCard extends StatelessWidget {
     }
 
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             ...List.generate(numberOfChoices, (index) => _createVoteBar(context, card, total, ++index)),
             Container(
               alignment: Alignment.centerRight,
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               child: RichText(
                 text: TextSpan(children: [
                   TextSpan(
@@ -231,7 +231,7 @@ class TweetCard extends StatelessWidget {
                       numberFormat.format(total),
                     ),
                   ),
-                  TextSpan(text: ' • '),
+                  const TextSpan(text: ' • '),
                   TextSpan(text: endsAtText)
                     ]
                 ),
@@ -262,7 +262,7 @@ class TweetCard extends StatelessWidget {
     }
 
     var imageKey = '';
-    var imageSize = PrefService.of(context, listen: false).get(OPTION_MEDIA_SIZE);
+    var imageSize = PrefService.of(context, listen: false).get(optionMediaSize);
     if (imageSize == 'thumb') {
       imageKey = '_small';
     } else if (imageSize == 'medium') {
@@ -297,7 +297,7 @@ class TweetCard extends StatelessWidget {
                 if (imageSize != 'disabled')
                   _createImage(imageSize, image, BoxFit.contain),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: _createListTile(
                       context,
                       card['binding_values']['title']['string_value'],

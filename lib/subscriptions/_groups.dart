@@ -39,7 +39,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
       child: InkWell(
         onTap: () {
           // Open page with the group's feed
-          Navigator.pushNamed(context, ROUTE_GROUP, arguments: GroupScreenArguments(
+          Navigator.pushNamed(context, routeGroup, arguments: GroupScreenArguments(
               id: id,
               name: name
           ));
@@ -50,19 +50,19 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
             Container(
               color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Icon(deserializeIconData(icon), size: 16),
             ),
             Expanded(child: Container(
               alignment: Alignment.center,
               color: color != null ? color.withOpacity(0.4) : Colors.white10,
               width: double.infinity,
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               child: Text(title,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold
                   )
@@ -98,20 +98,16 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
             },
             child: DottedBorder(
               color: Theme.of(context).textTheme.caption!.color!,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      // color: Colors.white10,
-                      // width: double.infinity,
-                      child: Icon(Icons.add, size: 16),
-                    ),
-                    SizedBox(height: 4),
+                    const Icon(Icons.add, size: 16),
+                    const SizedBox(height: 4),
                     Text(
                       L10n.of(context).newTrans,
-                      style: TextStyle(fontSize: 11),
+                      style: const TextStyle(fontSize: 11),
                     )
                   ],
                 ),
@@ -144,7 +140,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
   late String? name;
   late String icon;
   Color? color;
-  Set<String> members = Set();
+  Set<String> members = <String>{};
 
   @override
   void initState() {
@@ -202,7 +198,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
     var group = _group;
     if (group == null) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     // Filter the Material icons to only the baseline ones
@@ -253,7 +249,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
       ],
       content: Form(
         key: _formKey,
-        child: Container(
+        child: SizedBox(
           width: double.maxFinite,
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -265,7 +261,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     child: TextFormField(
                       initialValue: group.name,
                       decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
+                        border: const UnderlineInputBorder(),
                         hintText: L10n.of(context).name,
                       ),
                       onChanged: (value) => setState(() {

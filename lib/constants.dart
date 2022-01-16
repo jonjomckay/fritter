@@ -1,24 +1,24 @@
-const OPTION_ERRORS_SENTRY_ENABLED = 'errors.sentry_enabled';
+const optionErrorsSentryEnabled = 'errors.sentry_enabled';
 
-const OPTION_HELLO_LAST_BUILD = 'hello.last_build';
+const optionHelloLastBuild = 'hello.last_build';
 
-const OPTION_HOME_INITIAL_TAB = 'home.initial_tab';
+const optionHomeInitialTab = 'home.initial_tab';
 
-const OPTION_MEDIA_SIZE = 'media.size';
+const optionMediaSize = 'media.size';
 
-const OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING = 'subscription_groups.order_by.ascending';
-const OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD = 'subscription_groups.order_by.field';
-const OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING = 'subscription.order_by.ascending';
-const OPTION_SUBSCRIPTION_ORDER_BY_FIELD = 'subscription.order_by.field';
+const optionSubscriptionGroupsOrderByAscending = 'subscription_groups.order_by.ascending';
+const optionSubscriptionGroupsOrderByField = 'subscription_groups.order_by.field';
+const optionSubscriptionOrderByAscending = 'subscription.order_by.ascending';
+const optionSubscriptionOrderByField = 'subscription.order_by.field';
 
-const OPTION_THEME_MODE = 'theme.mode';
-const OPTION_THEME_TRUE_BLACK = 'theme.true_black';
+const optionThemeMode = 'theme.mode';
+const optionThemeTrueBlack = 'theme.true_black';
 
-const OPTION_TRENDS_LOCATION = 'trends.location';
+const optionTrendsLocation = 'trends.location';
 
-const ROUTE_GROUP = '/group';
-const ROUTE_PROFILE = '/profile';
-const ROUTE_SETTINGS = '/settings';
-const ROUTE_SETTINGS_EXPORT = '/settings/export';
-const ROUTE_STATUS = '/status';
-const ROUTE_SUBSCRIPTIONS_IMPORT = '/subscriptions/import';
+const routeGroup = '/group';
+const routeProfile = '/profile';
+const routeSettings = '/settings';
+const routeSettingsExport = '/settings/export';
+const routeStatus = '/status';
+const routeSubscriptionsImport = '/subscriptions/import';

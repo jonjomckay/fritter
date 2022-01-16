@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
+  const SubscriptionsScreen({Key? key}) : super(key: key);
+
   @override
   _SubscriptionsScreenState createState() => _SubscriptionsScreenState();
 }
@@ -46,7 +48,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Consumer2<GroupModel, UsersModel>(builder: (context, groupModel, usersModel, child) {
@@ -58,7 +60,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               title: Text(L10n.of(context).groups),
               actions: [
                 PopupMenuButton<String>(
-                  icon: Icon(Icons.sort),
+                  icon: const Icon(Icons.sort),
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       child: Text(L10n.of(context).name),
@@ -72,7 +74,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               onSelected: (value) => groupModel.changeOrderSubscriptionGroupsBy(value),
                 ),
                 IconButton(
-                  icon: Icon(Icons.sort_by_alpha),
+                  icon: const Icon(Icons.sort_by_alpha),
               onPressed: () => groupModel.toggleOrderSubscriptionGroupsAscending(),
                 )
               ]),
@@ -82,15 +84,15 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             title: Text(L10n.of(context).subscriptions),
             actions: [
               IconButton(
-                icon: Icon(Icons.import_export),
-              onPressed: () => Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
+                icon: const Icon(Icons.import_export),
+              onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
               ),
               IconButton(
-                icon: Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh),
                 onPressed: () => _onRefresh(),
               ),
               PopupMenuButton<String>(
-                icon: Icon(Icons.sort),
+                icon: const Icon(Icons.sort),
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     child: Text(L10n.of(context).name),
@@ -108,11 +110,11 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               onSelected: (value) => usersModel.changeOrderSubscriptionsBy(value),
               ),
               IconButton(
-                icon: Icon(Icons.sort_by_alpha),
+                icon: const Icon(Icons.sort_by_alpha),
                 onPressed: () => usersModel.toggleOrderSubscriptionsAscending(),
               )
           ]),
-          SubscriptionUsers(),
+          const SubscriptionUsers(),
         ],
       );
     });

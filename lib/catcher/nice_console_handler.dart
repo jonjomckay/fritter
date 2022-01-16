@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:catcher/catcher.dart';
 import 'package:catcher/model/platform_type.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 
 class NiceConsoleHandler extends ReportHandler {
   @override

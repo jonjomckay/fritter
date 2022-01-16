@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:catcher/catcher.dart';
@@ -9,7 +8,6 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/downloads.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -33,7 +31,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
     super.initState();
 
     var mediaSize = PrefService.of(context, listen: false)
-        .get(OPTION_MEDIA_SIZE);
+        .get(optionMediaSize);
 
     if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
@@ -64,7 +62,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE);
+    var size = prefs.get(optionMediaSize);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -113,8 +111,8 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
           child: Container(
             alignment: Alignment.topRight,
             color: Colors.black38,
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(8),
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Text('${widget.index} / ${widget.total}'),
           ),
         )
@@ -143,7 +141,7 @@ class _TweetMediaState extends State<TweetMedia> {
         .reduce(math.max);
 
     return Container(
-      margin: EdgeInsets.only(top: 8, left: 16, right: 16),
+      margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
       child: AspectRatio(
         aspectRatio: largestAspectRatio,
         child: PageView.builder(
@@ -177,8 +175,6 @@ class TweetMediaView extends StatefulWidget {
 }
 
 class _TweetMediaViewState extends State<TweetMediaView> {
-  static final log = Logger('_TweetMediaViewState');
-
   late Media _media;
   late String _username;
 
@@ -186,14 +182,14 @@ class _TweetMediaViewState extends State<TweetMediaView> {
   void initState() {
     super.initState();
 
-    this._media = widget.media[widget.initialIndex];
-    this._username = widget.username;
+    _media = widget.media[widget.initialIndex];
+    _username = widget.username;
   }
 
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE);
+    var size = prefs.get(optionMediaSize);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -202,7 +198,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.file_download),
+            icon: const Icon(Icons.file_download),
             onPressed: () async {
               var url = path.basename(_media.mediaUrlHttps!);
               var fileName = '$_username-$url';
@@ -240,7 +236,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.media.length,
         itemBuilder: (BuildContext context, int index) {
-          var item = this.widget.media[index];
+          var item = widget.media[index];
 
           Widget media;
           if (item.type == 'animated_gif') {

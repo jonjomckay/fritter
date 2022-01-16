@@ -120,13 +120,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
           if (type == '@') {
             onTap = () async {
-              Navigator.pushNamed(context, ROUTE_PROFILE, arguments: full.substring(1));
+              Navigator.pushNamed(context, routeProfile, arguments: full.substring(1));
             };
           }
 
           contentWidgets.add(TextSpan(
               text: full,
-              style: TextStyle(color: Theme.of(context).accentColor),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
               recognizer: TapGestureRecognizer()
                 ..onTap = onTap
           ));
@@ -224,7 +224,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                   child: DefaultTextStyle.merge(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     child: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
@@ -242,7 +242,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -253,22 +253,22 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 4),
+                                        margin: const EdgeInsets.only(bottom: 4),
                                         child: Row(
                                           children: [
-                                            Text(profile.name!, style: TextStyle(
+                                            Text(profile.name!, style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w700
                                             )),
                                             if (profile.verified ?? false)
-                                              SizedBox(width: 6),
+                                              const SizedBox(width: 6),
                                             if (profile.verified ?? false)
-                                              Icon(Icons.verified, size: 24, color: Colors.blue)
+                                              const Icon(Icons.verified, size: 24, color: Colors.blue)
                                           ],
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 8),
+                                        margin: const EdgeInsets.only(bottom: 8),
                                         child: Text('@${(profile.screenName!)}', style: TextStyle(
                                             color: theme.primaryTextTheme.caption!.color
                                         )),
@@ -281,11 +281,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                             });
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(bottom: 4),
+                                            margin: const EdgeInsets.only(bottom: 4),
                                             child: RichText(
                                               maxLines: 3,
                                               text: TextSpan(
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   height: 1.4
                                                 ),
                                                 children: _addLinksToText(context, profile.description!)
@@ -305,24 +305,24 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                           children: [
                                             if (profile.location != null && profile.location!.isNotEmpty)
                                               Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.place, size: 12, color: Colors.white),
-                                                    SizedBox(width: 4),
+                                                    const Icon(Icons.place, size: 12, color: Colors.white),
+                                                    const SizedBox(width: 4),
                                                     Text(profile.location!),
                                                   ],
                                                 ),
                                               ),
                                             if (profile.url != null && profile.url!.isNotEmpty)
                                               Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.link, size: 12, color: Colors.white),
-                                                    SizedBox(width: 4),
+                                                    const Icon(Icons.link, size: 12, color: Colors.white),
+                                                    const SizedBox(width: 4),
                                                     Builder(builder: (context) {
                                                       var url = profile.entities?.url?.urls
                                                           ?.firstWhere((element) => element.url == profile.url);
@@ -332,7 +332,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                       }
 
                                                       return InkWell(
-                                                        child: Text('${url.displayUrl!}', style: TextStyle(
+                                                        child: Text(url.displayUrl!, style: const TextStyle(
                                                           color: Colors.blue
                                                         )),
                                                         onTap: () => launch(url.expandedUrl!),
@@ -343,12 +343,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                               ),
                                             if (profile.createdAt != null)
                                               Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.calendar_today, size: 12, color: Colors.white),
-                                                    SizedBox(width: 4),
+                                                    const Icon(Icons.calendar_today, size: 12, color: Colors.white),
+                                                    const SizedBox(width: 4),
                                                     Text(L10n.of(context).joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
                                                   ],
                                                 ),
