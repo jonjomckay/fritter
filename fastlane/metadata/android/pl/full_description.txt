@@ -1,0 +1,10 @@
+* Lokalne subskrypcje i grupy w stylu NewPipe, w tym z widokiem „strony głównej”
+* Lokalne zapisywanie tweetów umożliwiające czytanie w trybie offline
+* Przeglądanie profili
+* Przeglądanie tweetów i odpowiedzi
+* Oglądanie obrazów, wideo i GIF-ów w tweetach
+* Wyszukiwanie tweetów i użytkowników
+* Obsługuje bezpośrednie otwieranie linków z twitter.com
+* Obsługuje zawartość zapisaną od prawej do lewej (RTL)
+
+Fritter używa Sentry do opcjonalnego zgłaszania błędów, które nie jest domyślnie włączone.
