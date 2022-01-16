@@ -60,25 +60,21 @@ Future checkForUpdates() async {
       Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
       if (int.parse(package.buildNumber) < latest) {
-        var details = const NotificationDetails(android: AndroidNotificationDetails(
-                'updates', 'Updates', 'When a new app update is available',
+        var details = const NotificationDetails(
+            android: AndroidNotificationDetails('updates', 'Updates', 'When a new app update is available',
                 importance: Importance.max,
-            largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+                largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
                 priority: Priority.high,
-            showWhen: false
-        ));
+                showWhen: false));
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
-              0, 'An update for Fritter is available! 🚀',
-              'Tap to download ${release['version']}', details,
+              0, 'An update for Fritter is available! 🚀', 'Tap to download ${release['version']}', details,
               payload: release['apk']);
         } else {
-          await FlutterLocalNotificationsPlugin().show(
-              0, 'An update for Fritter is available! 🚀',
+          await FlutterLocalNotificationsPlugin().show(0, 'An update for Fritter is available! 🚀',
               'Update to ${release['version']} through your F-Droid client', details,
-              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/'
-          );
+              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/');
         }
       }
     } else {
@@ -144,10 +140,7 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
-    optionTrendsLocation: jsonEncode({
-      'name': 'Worldwide',
-      'woeid': 1
-    }),
+    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -161,16 +154,14 @@ Future<void> main() async {
   CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
     NiceConsoleHandler(),
     FritterSentryHandler(
-        sentryHub: sentryHub,
-      sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled)
-    )
+        sentryHub: sentryHub, sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled))
   ], localizationOptions: [
     LocalizationOptions('en',
-      dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
-      dialogReportModeTitle: 'Send report',
-      dialogReportModeAccept: 'Send',
-      dialogReportModeCancel: "Don't send"
-    )
+        dialogReportModeDescription:
+            'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+        dialogReportModeTitle: 'Send report',
+        dialogReportModeAccept: 'Send',
+        dialogReportModeCancel: "Don't send")
   ], explicitExceptionHandlersMap: {
     'SocketException': NullHandler()
   }, customParameters: {
@@ -182,18 +173,17 @@ Future<void> main() async {
       releaseConfig: catcherOptions,
       enableLogger: false,
       runAppFunction: () async {
-      Logger.root.onRecord.listen((event) async {
-        log(event.message, error: event.error, stackTrace: event.stackTrace);
-      });
+        Logger.root.onRecord.listen((event) async {
+          log(event.message, error: event.error, stackTrace: event.stackTrace);
+        });
 
         if (Platform.isAndroid) {
-        FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+          FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
-          const InitializationSettings settings = InitializationSettings(
-            android: AndroidInitializationSettings('@mipmap/launcher_icon')
-        );
+          const InitializationSettings settings =
+              InitializationSettings(android: AndroidInitializationSettings('@mipmap/launcher_icon'));
 
-        await notifications.initialize(settings, onSelectNotification: (payload) async {
+          await notifications.initialize(settings, onSelectNotification: (payload) async {
             if (payload != null && payload.startsWith('https://')) {
               await launch(payload);
             }
@@ -225,8 +215,7 @@ Future<void> main() async {
                 builder: (context) => MyApp(hub: sentryHub),
               ),
             ),
-          service: prefService
-      ));
+            service: prefService));
       });
 }
 
@@ -339,11 +328,9 @@ class _MyAppState extends State<MyApp> {
         for (var i = 0; i < locales.length; i++) {
           if (supportedLocalesCountryCode.contains(localesCountryCode[i]) &&
               supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
-            print(
-                'Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
+            print('Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
             return Locale(localesLanguageCode[i], localesCountryCode[i]);
-          } else if (supportedLocalesLanguageCode
-              .contains(localesLanguageCode[i])) {
+          } else if (supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
             print('Yes language: ${localesLanguageCode[i]}');
             return Locale(localesLanguageCode[i]);
           } else {
@@ -361,9 +348,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: L10n.delegate.supportedLocales,
       locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
-      navigatorObservers: [
-        SentryNavigatorObserver(hub: widget.hub)
-      ],
+      navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
@@ -421,7 +406,8 @@ class _DefaultPageState extends State<DefaultPage> {
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
 
-        Navigator.pushNamed(context, routeStatus, arguments: StatusScreenArguments(
+        Navigator.pushNamed(context, routeStatus,
+            arguments: StatusScreenArguments(
               id: statusId,
               username: username,
             ));

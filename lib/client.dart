@@ -13,17 +13,13 @@ import 'package:logging/logging.dart';
 import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 10);
-const String _bearerToken = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
+const String _bearerToken =
+    'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 
 class _FritterTwitterClient extends TwitterClient {
   static final log = Logger('_FritterTwitterClient');
 
-  _FritterTwitterClient() : super(
-    consumerKey: '',
-    consumerSecret: '',
-    token: '',
-    secret: ''
-  );
+  _FritterTwitterClient() : super(consumerKey: '', consumerSecret: '', token: '', secret: '');
 
   static Object? _token;
   static int _expiresAt = -1;
@@ -32,9 +28,7 @@ class _FritterTwitterClient extends TwitterClient {
 
   @override
   Future<http.Response> get(Uri uri, {Map<String, String>? headers, Duration? timeout}) {
-    return fetch(uri, headers: headers)
-        .timeout(timeout ?? _defaultTimeout)
-        .then((response) {
+    return fetch(uri, headers: headers).timeout(timeout ?? _defaultTimeout).then((response) {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
@@ -82,7 +76,8 @@ class _FritterTwitterClient extends TwitterClient {
       }
     }
 
-    throw Exception('Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body);
+    throw Exception(
+        'Unable to refresh the token. The response (${response.statusCode}) from Twitter was: ' + response.body);
   }
 
   static Future<http.Response> fetch(Uri uri, {Map<String, String>? headers}) async {
@@ -112,7 +107,6 @@ class _FritterTwitterClient extends TwitterClient {
 
     return response;
   }
-
 }
 
 class Twitter {
@@ -147,10 +141,7 @@ class Twitter {
 
   static Future<User> getProfile(String username) async {
     var uri = Uri.https('twitter.com', '/i/api/graphql/Vf8si2dfZ1zmah8ePYPjDQ/UserByScreenNameWithoutResults', {
-      'variables': jsonEncode({
-        'screen_name': username,
-        'withHighlightedLabel': true
-      })
+      'variables': jsonEncode({'screen_name': username, 'withHighlightedLabel': true})
     });
 
     var response = await _twitterApi.client.get(uri);
@@ -166,22 +157,20 @@ class Twitter {
       }
     }
 
-    return User.fromJson({
-      ...content['data']['user']['legacy'],
-      'id_str': content['data']['user']['rest_id']
-    });
+    return User.fromJson({...content['data']['user']['legacy'], 'id_str': content['data']['user']['rest_id']});
   }
 
-  static Future<Follows> getProfileFollows(String screenName, String type, { int? cursor, int? count = 200 }) async {
+  static Future<Follows> getProfileFollows(String screenName, String type, {int? cursor, int? count = 200}) async {
     var response = type == 'following'
-      ? await _twitterApi.userService.friendsList(screenName: screenName, cursor: cursor, count: count, skipStatus: true)
-      : await _twitterApi.userService.followersList(screenName: screenName, cursor: cursor, count: count, skipStatus: true);
+        ? await _twitterApi.userService
+            .friendsList(screenName: screenName, cursor: cursor, count: count, skipStatus: true)
+        : await _twitterApi.userService
+            .followersList(screenName: screenName, cursor: cursor, count: count, skipStatus: true);
 
     return Follows(
-      cursorBottom: int.parse(response.nextCursorStr ?? '-1'),
-      cursorTop: int.parse(response.previousCursorStr ?? '-1'),
-      users: response.users ?? []
-    );
+        cursorBottom: int.parse(response.nextCursorStr ?? '-1'),
+        cursorTop: int.parse(response.previousCursorStr ?? '-1'),
+        users: response.users ?? []);
   }
 
   static List<TweetChain> createTweetChains(dynamic globalTweets, dynamic globalUsers, dynamic instructions) {
@@ -192,7 +181,10 @@ class Twitter {
       if (entryId.startsWith('tweet-')) {
         var id = entry['content']['item']['content']['tweet']['id'];
 
-        replies.add(TweetChain(id: id, tweets: [TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id])], isPinned: false));
+        replies.add(TweetChain(
+            id: id,
+            tweets: [TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id])],
+            isPinned: false));
       }
 
       if (entryId.startsWith('cursor-bottom') || entryId.startsWith('cursor-showMore')) {
@@ -232,9 +224,8 @@ class Twitter {
       query['cursor'] = cursor;
     }
 
-    var response = await _twitterApi.client.get(
-        Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', query)
-    );
+    var response =
+        await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', query));
 
     var result = json.decode(response.body);
 
@@ -258,20 +249,19 @@ class Twitter {
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
-  static Future<TweetStatus> searchTweets(String query, {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
-    var response = await _twitterApi.client.get(
-        Uri.https('api.twitter.com', '/2/search/adaptive.json', {
-          ...defaultParams,
-          'count': limit.toString(),
-          'cursor': cursor,
-          'max_id': maxId,
-          'q': query,
-          'query_source': 'typed_query',
-          'pc': '1',
-          'tweet_search_mode': mode,
-          'spelling_corrections': '1',
-        })
-    );
+  static Future<TweetStatus> searchTweets(String query,
+      {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', {
+      ...defaultParams,
+      'count': limit.toString(),
+      'cursor': cursor,
+      'max_id': maxId,
+      'q': query,
+      'query_source': 'typed_query',
+      'pc': '1',
+      'tweet_search_mode': mode,
+      'spelling_corrections': '1',
+    }));
 
     var result = json.decode(response.body);
 
@@ -294,9 +284,8 @@ class Twitter {
       queryParameters['cursor'] = cursor;
     }
 
-    var response = await _twitterApi.client.get(
-        Uri.https('api.twitter.com', '/2/search/adaptive.json', queryParameters)
-    );
+    var response =
+        await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', queryParameters));
 
     var result = json.decode(response.body);
 
@@ -309,11 +298,11 @@ class Twitter {
     var users = result['globalObjects']['users'] as Map<String, dynamic>;
 
     return List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'])
-      .where((element) => element['entryId'].startsWith('user-'))
-      .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
-      .map((e) => users[e['content']['item']['content']['user']['id']])
-      .map((e) => User.fromJson(e))
-      .toList();
+        .where((element) => element['entryId'].startsWith('user-'))
+        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
+        .map((e) => users[e['content']['item']['content']['user']['id']])
+        .map((e) => User.fromJson(e))
+        .toList();
   }
 
   static Future<List<TrendLocation>> getTrendLocations() async {
@@ -323,26 +312,21 @@ class Twitter {
       return jsonEncode(locations.map((e) => e.toJson()).toList());
     });
 
-    return List.from(jsonDecode(result))
-        .map((e) => TrendLocation.fromJson(e))
-        .toList(growable: false);
+    return List.from(jsonDecode(result)).map((e) => TrendLocation.fromJson(e)).toList(growable: false);
   }
 
   static Future<List<Trends>> getTrends(int location) async {
     var result = await _cache.getOrCreateAsJSON('trends.$location', const Duration(minutes: 2), () async {
-      var trends = await _twitterApi.trendsService.place(
-          id: location
-      );
+      var trends = await _twitterApi.trendsService.place(id: location);
 
       return jsonEncode(trends.map((e) => e.toJson()).toList());
     });
 
-    return List.from(jsonDecode(result))
-      .map((e) => Trends.fromJson(e))
-      .toList(growable: false);
+    return List.from(jsonDecode(result)).map((e) => Trends.fromJson(e)).toList(growable: false);
   }
 
-  static Future<TweetStatus> getTweets(String id, String type, { int count = 10, String? cursor, bool includeReplies = true, bool includeRetweets = true }) async {
+  static Future<TweetStatus> getTweets(String id, String type,
+      {int count = 10, String? cursor, bool includeReplies = true, bool includeRetweets = true}) async {
     var query = {
       ...defaultParams,
       'include_tweet_replies': includeReplies ? '1' : '0',
@@ -354,9 +338,7 @@ class Twitter {
       query['cursor'] = cursor;
     }
 
-    var response = await _twitterApi.client.get(
-      Uri.https('api.twitter.com', '/2/timeline/$type/$id.json', query)
-    );
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/timeline/$type/$id.json', query));
 
     var result = json.decode(response.body);
 
@@ -366,15 +348,14 @@ class Twitter {
   static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
     String? cursor;
 
-    var cursorEntry = addEntries
-        .firstWhere((e) => e['entryId'].contains(name), orElse: () => null);
+    var cursorEntry = addEntries.firstWhere((e) => e['entryId'].contains(name), orElse: () => null);
 
     if (cursorEntry != null) {
       cursor = cursorEntry['content']['operation']['cursor']['value'];
     } else {
       // Look for a "replaceEntry" with the cursor
-      var cursorReplaceEntry = repEntries
-          .firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(name), orElse: () => null);
+      var cursorReplaceEntry =
+          repEntries.firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(name), orElse: () => null);
 
       if (cursorReplaceEntry != null) {
         cursor = cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
@@ -384,7 +365,8 @@ class Twitter {
     return cursor;
   }
 
-  static TweetStatus createUnconversationedChains(dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
+  static TweetStatus createUnconversationedChains(
+      dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
     var instructions = List.from(result['timeline']['instructions']);
     if (instructions.isEmpty) {
       return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
@@ -406,27 +388,22 @@ class Twitter {
         .cast<String>()
         .toList();
 
-    Map<String, List<TweetWithCard>> conversations = tweets
-        .values
-        .where((e) => tweetEntries.contains(e.idStr))
-        .groupBy((e) {
-          // TODO: I don't think a flag is the right way to handle this
-          if (mapToThreads) {
-            // Then group the tweets-to-display by their conversation ID
-            return e.conversationIdStr;
-          }
+    Map<String, List<TweetWithCard>> conversations =
+        tweets.values.where((e) => tweetEntries.contains(e.idStr)).groupBy((e) {
+      // TODO: I don't think a flag is the right way to handle this
+      if (mapToThreads) {
+        // Then group the tweets-to-display by their conversation ID
+        return e.conversationIdStr;
+      }
 
-          return e.idStr;
-        })
-        .cast<String, List<TweetWithCard>>();
+      return e.idStr;
+    }).cast<String, List<TweetWithCard>>();
 
     List<TweetChain> chains = [];
 
     // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
     for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
-      var chainTweets = conversation.value
-          .sorted((a, b) => a.idStr!.compareTo(b.idStr!))
-          .toList();
+      var chainTweets = conversation.value.sorted((a, b) => a.idStr!.compareTo(b.idStr!)).toList();
 
       chains.add(TweetChain(id: conversation.key, tweets: chainTweets, isPinned: false));
     }
@@ -456,9 +433,7 @@ class Twitter {
       futures.add(_getUsersPage(group));
     }
 
-    return (await Future.wait(futures))
-        .expand((element) => element)
-        .toList();
+    return (await Future.wait(futures)).expand((element) => element).toList();
   }
 
   static Future<List<User>> _getUsersPage(Iterable<String> ids) async {
@@ -468,20 +443,16 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return List.from(result)
-        .map((e) => User.fromJson(e))
-        .toList(growable: false);
+    return List.from(result).map((e) => User.fromJson(e)).toList(growable: false);
   }
 
   static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var globalUsers = result['globalObjects']['users'];
 
-    var tweets = globalTweets.values
-        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
-        .toList();
+    var tweets = globalTweets.values.map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e)).toList();
 
-    return { for (var e in tweets) e.idStr! : e };
+    return {for (var e in tweets) e.idStr!: e};
   }
 }
 
@@ -534,19 +505,22 @@ class TweetWithCard extends Tweet {
     tweetWithCard.inReplyToScreenName = tweet.inReplyToScreenName;
     tweetWithCard.inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
     tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
-    tweetWithCard.inReplyToWithCard = e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
+    tweetWithCard.inReplyToWithCard =
+        e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
     tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
     tweetWithCard.isTombstone = e['is_tombstone'];
     tweetWithCard.lang = tweet.lang;
     tweetWithCard.quoteCount = tweet.quoteCount;
     tweetWithCard.quotedStatusIdStr = tweet.quotedStatusIdStr;
     tweetWithCard.quotedStatusPermalink = tweet.quotedStatusPermalink;
-    tweetWithCard.quotedStatusWithCard = e['quotedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['quotedStatusWithCard']);
+    tweetWithCard.quotedStatusWithCard =
+        e['quotedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['quotedStatusWithCard']);
     tweetWithCard.replyCount = tweet.replyCount;
     tweetWithCard.retweetCount = tweet.retweetCount;
     tweetWithCard.retweeted = tweet.retweeted;
     tweetWithCard.retweetedStatus = tweet.retweetedStatus;
-    tweetWithCard.retweetedStatusWithCard = e['retweetedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['retweetedStatusWithCard']);
+    tweetWithCard.retweetedStatusWithCard =
+        e['retweetedStatusWithCard'] == null ? null : TweetWithCard.fromJson(e['retweetedStatusWithCard']);
     tweetWithCard.source = tweet.source;
     tweetWithCard.text = tweet.text;
     tweetWithCard.user = tweet.user;
@@ -579,7 +553,8 @@ class TweetWithCard extends Tweet {
     tweet.lang = e['lang'] as String?;
     tweet.quoteCount = e['quote_count'] as int?;
     tweet.quotedStatusIdStr = e['quoted_status_id_str'] as String?;
-    tweet.quotedStatusPermalink = e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
+    tweet.quotedStatusPermalink =
+        e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
     tweet.replyCount = e['reply_count'] as int?;
     tweet.retweetCount = e['retweet_count'] as int?;
     tweet.retweeted = e['retweeted'] as bool?;
@@ -587,7 +562,9 @@ class TweetWithCard extends Tweet {
     tweet.text = e['text'] ?? e['full_text'] as String?;
     tweet.user = e['user_id_str'] == null ? null : User.fromJson(users[e['user_id_str']]);
 
-    var retweetedStatus = e['retweeted_status_id_str'] == null ? null : TweetWithCard.fromCardJson(tweets, users, tweets[e['retweeted_status_id_str']]);
+    var retweetedStatus = e['retweeted_status_id_str'] == null
+        ? null
+        : TweetWithCard.fromCardJson(tweets, users, tweets[e['retweeted_status_id_str']]);
     tweet.retweetedStatus = retweetedStatus;
     tweet.retweetedStatusWithCard = retweetedStatus;
 
@@ -607,9 +584,7 @@ class TweetWithCard extends Tweet {
       tweet.inReplyToWithCard = inReplyTo;
     }
 
-    tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)
-        ?.map((e) => e as int)
-        .toList();
+    tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)?.map((e) => e as int).toList();
 
     // TODO
     tweet.coordinates = null;
@@ -652,5 +627,5 @@ class TwitterError {
   final int code;
   final String message;
 
-  TwitterError({ required this.code, required this.message });
+  TwitterError({required this.code, required this.message});
 }

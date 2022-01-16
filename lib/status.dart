@@ -70,9 +70,7 @@ class _StatusScreenState extends State<_StatusScreen> {
         _pagingController.appendLastPage([]);
       } else {
         // Twitter sometimes sends the original replies with all pages, so we need to manually exclude ones that we've already seen
-        var chains = result.chains
-            .skipWhile((element) => _seenAlready.contains(element.id))
-            .toList();
+        var chains = result.chains.skipWhile((element) => _seenAlready.contains(element.id)).toList();
 
         for (var chain in chains) {
           _seenAlready.add(chain.id);

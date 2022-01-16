@@ -36,20 +36,21 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
     var database = await Repository.readOnly();
 
     if (id == '-1') {
-      var subscriptions = (await database.query(tableSubscription))
-          .map((e) => Subscription.fromMap(e))
-          .toList(growable: false);
+      var subscriptions =
+          (await database.query(tableSubscription)).map((e) => Subscription.fromMap(e)).toList(growable: false);
 
       return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
     } else {
-      var group = (await database.query(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]))
-          .first;
+      var group = (await database.query(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id])).first;
 
-      var subscriptions = (await database.rawQuery('SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
+      var subscriptions = (await database.rawQuery(
+              'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
+              [id]))
           .map((e) => Subscription.fromMap(e))
           .toList(growable: false);
 
-      return SubscriptionGroupGet(id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions);
+      return SubscriptionGroupGet(
+          id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions);
     }
   }
 
@@ -59,9 +60,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
       return FutureBuilderWrapper<SubscriptionGroupGet>(
         future: _findSubscriptionGroup(id),
         onError: (error, stackTrace) => ScaffoldErrorWidget(
-            error: error,
-            stackTrace: stackTrace,
-            prefix: L10n.of(context).unable_to_load_the_group),
+            error: error, stackTrace: stackTrace, prefix: L10n.of(context).unable_to_load_the_group),
         onReady: (group) {
           var users = group.subscriptions.map((e) => e.screenName).toList();
 
@@ -104,18 +103,24 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(widget.name),
-          actions: [
-            IconButton(icon: const Icon(Icons.arrow_upward), onPressed: () async {
+      appBar: AppBar(title: Text(widget.name), actions: [
+        IconButton(
+            icon: const Icon(Icons.arrow_upward),
+            onPressed: () async {
               await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
             }),
-            IconButton(icon: const Icon(Icons.refresh), onPressed: () async {
+        IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () async {
               // This is a dirty hack, and probably won't work if the child widgets ever become stateful
               setState(() {});
             }),
-            IconButton(icon: const Icon(Icons.more_vert), onPressed: () {
-              showModalBottomSheet(context: context, builder: (context) {
+        IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
                     var theme = Theme.of(context);
 
                     return SizedBox(
@@ -131,29 +136,26 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                           children: [
                             ListTile(
                               leading: IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }
-                              ),
+                                  icon: const Icon(Icons.arrow_back),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }),
                               title: Text(L10n.of(context).filters),
                               tileColor: theme.colorScheme.primary,
                             ),
                             Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.only(
-                                  bottom: 8, top: 16, left: 16, right: 16),
-                              child: Text(
-                                L10n.of(context)
-                                    .note_due_to_a_twitter_limitation_not_all_tweets_may_be_included,
-                                style: TextStyle(
-                                  color: Theme.of(context).disabledColor,
-                                ),
-                            )),
-                        Consumer<GroupModel>(builder: (context, model, child) {
-                          return FutureBuilderWrapper<SubscriptionGroupSettings>(
-                            future: model.loadSubscriptionGroupSettings(widget.id),
-                            onError: (error, stackTrace) => InlineErrorWidget(error: error),
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
+                                child: Text(
+                                  L10n.of(context).note_due_to_a_twitter_limitation_not_all_tweets_may_be_included,
+                                  style: TextStyle(
+                                    color: Theme.of(context).disabledColor,
+                                  ),
+                                )),
+                            Consumer<GroupModel>(builder: (context, model, child) {
+                              return FutureBuilderWrapper<SubscriptionGroupSettings>(
+                                future: model.loadSubscriptionGroupSettings(widget.id),
+                                onError: (error, stackTrace) => InlineErrorWidget(error: error),
                                 onReady: (settings) => Column(
                                   children: [
                                     CheckboxListTile(
@@ -162,9 +164,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                         ),
                                         value: settings.includeReplies,
                                         onChanged: (value) async {
-                                          await model
-                                              .toggleSubscriptionGroupIncludeReplies(
-                                                  widget.id, value ?? false);
+                                          await model.toggleSubscriptionGroupIncludeReplies(widget.id, value ?? false);
                                         }),
                                     CheckboxListTile(
                                         title: Text(
@@ -172,9 +172,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                                         ),
                                         value: settings.includeRetweets,
                                         onChanged: (value) async {
-                                          await model
-                                              .toggleSubscriptionGroupIncludeRetweets(
-                                                  widget.id, value ?? false);
+                                          await model.toggleSubscriptionGroupIncludeRetweets(widget.id, value ?? false);
                                         }),
                                   ],
                                 ),
@@ -186,8 +184,7 @@ class _SubscriptionGroupScreenState extends State<_SubscriptionGroupScreen> {
                     );
                   });
             })
-          ]
-      ),
+      ]),
       body: SubscriptionGroupScreenContent(
         id: widget.id,
         scrollController: _scrollController,

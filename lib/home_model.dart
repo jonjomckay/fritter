@@ -46,10 +46,7 @@ class HomeModel extends ChangeNotifier {
   Future saveTweet(String id, Map<String, dynamic> content) async {
     var database = await Repository.writable();
 
-    await database.insert(tableSavedTweet, {
-      'id': id,
-      'content': jsonEncode(content)
-    });
+    await database.insert(tableSavedTweet, {'id': id, 'content': jsonEncode(content)});
 
     notifyListeners();
   }

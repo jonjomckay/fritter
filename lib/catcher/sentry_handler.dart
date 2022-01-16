@@ -41,7 +41,9 @@ class FritterSentryHandler extends ReportHandler {
         return true;
       }
 
-      await showDialog(context: context, builder: (context) {
+      await showDialog(
+          context: context,
+          builder: (context) {
             _isModalOpen = true;
 
             return AlertDialog(
@@ -51,25 +53,20 @@ class FritterSentryHandler extends ReportHandler {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    L10n.of(context)
-                        .something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
+                    L10n.of(context).something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    L10n.of(context)
-                        .would_you_like_to_enable_automatic_error_reporting,
+                    L10n.of(context).would_you_like_to_enable_automatic_error_reporting,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    L10n.of(context)
-                        .your_report_will_be_sent_to_fritter_sentry_project,
+                    L10n.of(context).your_report_will_be_sent_to_fritter_sentry_project,
                   ),
                   const SizedBox(height: 16),
                   InkWell(
-                child: const Text('https://fritter.cc/privacy', style: TextStyle(
-                  color: Colors.blue
-                )),
-                onTap: () async => await launch('https://fritter.cc/privacy'),
+                    child: const Text('https://fritter.cc/privacy', style: TextStyle(color: Colors.blue)),
+                    onTap: () async => await launch('https://fritter.cc/privacy'),
                   )
                 ],
               ),
@@ -84,10 +81,10 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = true;
-                PrefService.of(context).set(optionErrorsSentryEnabled, true);
+                    PrefService.of(context).set(optionErrorsSentryEnabled, true);
                     Navigator.pop(context);
                   },
-              child: Text(L10n.of(context).send_always),
+                  child: Text(L10n.of(context).send_always),
                 ),
                 TextButton(
                   onPressed: () {
@@ -99,16 +96,15 @@ class FritterSentryHandler extends ReportHandler {
                 TextButton(
                   onPressed: () {
                     sendThisTime = false;
-                PrefService.of(context).set(optionErrorsSentryEnabled, false);
+                    PrefService.of(context).set(optionErrorsSentryEnabled, false);
                     Navigator.pop(context);
                   },
                   child: Text(L10n.of(context).never_send),
                 )
               ],
             );
-      }, routeSettings: const RouteSettings(
-        name: 'sentryRoute'
-      ));
+          },
+          routeSettings: const RouteSettings(name: 'sentryRoute'));
 
       _isModalOpen = false;
     }
@@ -120,7 +116,16 @@ class FritterSentryHandler extends ReportHandler {
     try {
       var nestedError = error.error;
       if (nestedError is ManuallyReportedException) {
-        error = Report(nestedError.exception, error.stackTrace, error.dateTime, error.deviceParameters, error.applicationParameters, error.customParameters, error.errorDetails, error.platformType, error.screenshot);
+        error = Report(
+            nestedError.exception,
+            error.stackTrace,
+            error.dateTime,
+            error.deviceParameters,
+            error.applicationParameters,
+            error.customParameters,
+            error.errorDetails,
+            error.platformType,
+            error.screenshot);
       }
 
       final tags = <String, dynamic>{};
@@ -138,7 +143,8 @@ class FritterSentryHandler extends ReportHandler {
         }
 
         if (isEnabled == null || isEnabled == false) {
-          showSnackBar(context, icon: '💖', message: L10n.of(context).thanks_for_reporting_we_will_try_and_fix_it_in_no_time);
+          showSnackBar(context,
+              icon: '💖', message: L10n.of(context).thanks_for_reporting_we_will_try_and_fix_it_in_no_time);
         }
       }
 

@@ -39,7 +39,6 @@ class _ProfileFollowsState extends State<ProfileFollows> {
   }
 
   Future _loadFollows(int? cursor) async {
-
     try {
       var result = await Twitter.getProfileFollows(
         widget.user.screenName!,

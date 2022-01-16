@@ -8,7 +8,8 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
   final FritterErrorWidget Function(Object? error, StackTrace? stackTrace) onError;
   final Widget Function(T data) onReady;
 
-  const FutureBuilderWrapper({Key? key, required this.future, required this.onError, required this.onReady}) : super(key: key);
+  const FutureBuilderWrapper({Key? key, required this.future, required this.onError, required this.onReady})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,7 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
             if (data == null) {
               return Center(
                 child: Text(
-                  L10n.of(context)
-                      .no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible,
+                  L10n.of(context).no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible,
                 ),
               );
             }
@@ -40,8 +40,7 @@ class FutureBuilderWrapper<T> extends StatelessWidget {
           default:
             return Center(
               child: Text(
-                L10n.of(context)
-                    .the_connection_state_state_is_not_supported(state),
+                L10n.of(context).the_connection_state_state_is_not_supported(state),
               ),
             );
         }

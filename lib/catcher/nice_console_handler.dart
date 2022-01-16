@@ -19,9 +19,7 @@ class NiceConsoleHandler extends ReportHandler {
   Future<bool> handle(Report error, BuildContext? context) async {
     var details = error.errorDetails;
 
-    var message = details == null
-      ? 'Unexepected error'
-      : details.toStringShort();
+    var message = details == null ? 'Unexepected error' : details.toStringShort();
 
     log(message, error: error.error, stackTrace: error.stackTrace);
 

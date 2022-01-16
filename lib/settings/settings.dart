@@ -106,8 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var helloBuild = prefService.get(optionHelloLastBuild);
     if (helloBuild != null && helloBuild == packageInfo.buildNumber) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(L10n.of(context)
-            .it_looks_like_you_have_already_said_hello_from_this_version_of_fritter),
+        content: Text(L10n.of(context).it_looks_like_you_have_already_said_hello_from_this_version_of_fritter),
       ));
 
       return;
@@ -141,7 +140,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       };
     }
 
-    showDialog(context: context, builder: (context) {
+    showDialog(
+        context: context,
+        builder: (context) {
           var content = JsonEncoder.withIndent(' ' * 2).convert(metadata);
 
           return AlertDialog(
@@ -178,7 +179,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         } else {
-                          Catcher.reportCheckedError('Unable to send the ping because the status code was ${response.statusCode}', null);
+                          Catcher.reportCheckedError(
+                              'Unable to send the ping because the status code was ${response.statusCode}', null);
 
                           snackBar = SnackBar(
                             content: Text(
@@ -223,12 +225,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future,
                   ),
                   const SizedBox(height: 16),
-              Text(content, style: const TextStyle(
-                  fontFamily: 'monospace'
-              ))
+                  Text(content, style: const TextStyle(fontFamily: 'monospace'))
                 ],
-          )
-      );
+              ));
         });
   }
 
@@ -267,10 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   L10n.of(context).which_tab_is_shown_when_the_app_opens,
                 ),
                 pref: optionHomeInitialTab,
-                items: homeTabs
-                    .map((e) => DropdownMenuItem(child: Text(e.title), value: e.id))
-                    .toList()
-            ),
+                items: homeTabs.map((e) => DropdownMenuItem(child: Text(e.title), value: e.id)).toList()),
             PrefDropdown(
                 fullWidth: false,
                 title: Text(L10n.of(context).media_size),
@@ -301,24 +297,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ]),
             PrefTitle(title: Text(L10n.of(context).theme)),
-            PrefDropdown(
-                fullWidth: false,
-                title: Text(L10n.of(context).theme),
-                pref: optionThemeMode,
-                items: [
-                  DropdownMenuItem(
-                    child: Text(L10n.of(context).system),
-                    value: 'system',
-                  ),
-                  DropdownMenuItem(
-                    child: Text(L10n.of(context).light),
-                    value: 'light',
-                  ),
-                  DropdownMenuItem(
-                    child: Text(L10n.of(context).dark),
-                    value: 'dark',
-                  ),
-                ]),
+            PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
+              DropdownMenuItem(
+                child: Text(L10n.of(context).system),
+                value: 'system',
+              ),
+              DropdownMenuItem(
+                child: Text(L10n.of(context).light),
+                value: 'light',
+              ),
+              DropdownMenuItem(
+                child: Text(L10n.of(context).dark),
+                value: 'dark',
+              ),
+            ]),
             PrefSwitch(
               title: Text(L10n.of(context).true_black),
               pref: optionThemeTrueBlack,
@@ -336,7 +328,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () async {
                 var isLegacy = await isLegacyAndroid();
                 if (isLegacy) {
-                  showDialog(context: context, builder: (context) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
                         return AlertDialog(
                           title: Text(L10n.of(context).legacy_android_import),
                           actions: [
@@ -378,9 +372,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           content: FutureBuilderWrapper<String>(
                             future: getLegacyPath(legacyExportFileName),
                             onError: (error, stackTrace) => FullPageErrorWidget(
-                                error: error,
-                                stackTrace: stackTrace,
-                                prefix: L10n.of(context).prefix),
+                                error: error, stackTrace: stackTrace, prefix: L10n.of(context).prefix),
                             onReady: (legacyExportPath) => Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -390,8 +382,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   textAlign: TextAlign.left,
                                 ),
                                 const SizedBox(height: 16),
-                                Text(legacyExportPath,
-                                    textAlign: TextAlign.left),
+                                Text(legacyExportPath, textAlign: TextAlign.left),
                                 const SizedBox(height: 16),
                                 Text(
                                   L10n.of(context)
@@ -450,8 +441,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Text(
                 L10n.of(context).let_the_developers_know_if_something_is_broken,
               ),
-              onTap: () =>
-                  launch('https://github.com/jonjomckay/fritter/issues'),
+              onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
             ),
             if (getFlavor() != 'play')
               PrefLabel(
@@ -470,15 +460,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               title: Text('Bitcoin'),
                             ),
                             onPressed: () async {
-                          await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+                              await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
                               Navigator.pop(context);
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    L10n.of(context)
-                                        .copied_address_to_clipboard,
+                                    L10n.of(context).copied_address_to_clipboard,
                                   ),
                                 ),
                               );
@@ -489,21 +478,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               leading: Icon(SimpleIcons.github),
                               title: Text('GitHub'),
                             ),
-                        onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
+                            onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.liberapay),
                               title: Text('Liberapay'),
                             ),
-                        onPressed: () => launch('https://liberapay.com/jonjomckay'),
+                            onPressed: () => launch('https://liberapay.com/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.paypal),
                               title: Text('PayPal'),
                             ),
-                        onPressed: () => launch('https://paypal.me/jonjomckay'),
+                            onPressed: () => launch('https://paypal.me/jonjomckay'),
                           )
                         ],
                       );
@@ -512,14 +501,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             PrefLabel(
               leading: const Icon(Icons.copyright),
               title: Text(L10n.of(context).licenses),
-              subtitle:
-                  Text(L10n.of(context).all_the_great_software_used_by_fritter),
+              subtitle: Text(L10n.of(context).all_the_great_software_used_by_fritter),
               onTap: () => showLicensePage(
                   context: context,
                   applicationName: L10n.of(context).fritter,
                   applicationVersion: version,
-                  applicationLegalese:
-                      L10n.of(context).released_under_the_mit_license,
+                  applicationLegalese: L10n.of(context).released_under_the_mit_license,
                   applicationIcon: Container(
                     margin: const EdgeInsets.all(12),
                     child: ClipRRect(
@@ -530,8 +517,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )
-              ),
+                  )),
             ),
           ]);
         },

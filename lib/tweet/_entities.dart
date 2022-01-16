@@ -22,17 +22,17 @@ class TweetHashtag extends TweetEntity {
   final Hashtag hashtag;
   final Function onTap;
 
-  TweetHashtag(this.hashtag, this.onTap): super(hashtag.indices);
+  TweetHashtag(this.hashtag, this.onTap) : super(hashtag.indices);
 
   @override
   InlineSpan getContent() {
     return TextSpan(
         text: '#${hashtag.text}',
         style: const TextStyle(color: Colors.blue),
-        recognizer: TapGestureRecognizer()..onTap = () {
-          onTap();
-        }
-    );
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            onTap();
+          });
   }
 }
 
@@ -40,17 +40,17 @@ class TweetUserMention extends TweetEntity {
   final UserMention mention;
   final Function onTap;
 
-  TweetUserMention(this.mention, this.onTap): super(mention.indices);
+  TweetUserMention(this.mention, this.onTap) : super(mention.indices);
 
   @override
   InlineSpan getContent() {
     return TextSpan(
         text: '@${mention.screenName}',
         style: const TextStyle(color: Colors.blue),
-        recognizer: TapGestureRecognizer()..onTap = () {
-          onTap();
-        }
-    );
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            onTap();
+          });
   }
 }
 
@@ -58,16 +58,16 @@ class TweetUrl extends TweetEntity {
   final Url url;
   final Function onTap;
 
-  TweetUrl(this.url, this.onTap): super(url.indices);
+  TweetUrl(this.url, this.onTap) : super(url.indices);
 
   @override
   InlineSpan getContent() {
     return TextSpan(
         text: url.displayUrl,
         style: const TextStyle(color: Colors.blue),
-        recognizer: TapGestureRecognizer()..onTap = () {
-          onTap();
-        }
-    );
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            onTap();
+          });
   }
 }

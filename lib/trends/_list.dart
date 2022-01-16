@@ -40,8 +40,7 @@ class _TrendsListState extends State<TrendsList> {
       onError: (error, stackTrace) => FullPageErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix:
-            L10n.of(context).unable_to_load_the_trends_for_widget_place_name(
+        prefix: L10n.of(context).unable_to_load_the_trends_for_widget_place_name(
           widget.place.name!,
         ),
         onRetry: () => fetchTrends(),
@@ -50,8 +49,7 @@ class _TrendsListState extends State<TrendsList> {
         var trends = data[0].trends;
         if (trends == null) {
           return Text(
-            L10n.of(context)
-                .there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible,
+            L10n.of(context).there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible,
           );
         }
 
@@ -79,11 +77,8 @@ class _TrendsListState extends State<TrendsList> {
               onTap: () async {
                 await showSearch(
                     context: context,
-                    delegate: TweetSearchDelegate(
-                        initialTab: 1
-                    ),
-                    query: Uri.decodeQueryComponent(trend.query!)
-                );
+                    delegate: TweetSearchDelegate(initialTab: 1),
+                    query: Uri.decodeQueryComponent(trend.query!));
               },
             );
           },

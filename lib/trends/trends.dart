@@ -30,8 +30,7 @@ class _TrendsScreenState extends State<TrendsScreen> {
             return FullPageErrorWidget(
               error: error,
               stackTrace: snapshot.stackTrace,
-              prefix: L10n.of(context)
-                  .unable_to_stream_the_trend_location_preference,
+              prefix: L10n.of(context).unable_to_stream_the_trend_location_preference,
             );
           }
 

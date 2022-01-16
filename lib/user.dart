@@ -51,7 +51,9 @@ class UserTile extends StatelessWidget {
   final String? imageUri;
   final bool verified;
 
-  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
+  const UserTile(
+      {Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,8 @@ class UserTile extends StatelessWidget {
       title: Row(
         children: [
           Text(name),
-          if (verified)
-            const SizedBox(width: 6),
-          if (verified)
-            const Icon(Icons.verified, size: 14, color: Colors.blue)
+          if (verified) const SizedBox(width: 6),
+          if (verified) const Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
       subtitle: Text('@$screenName'),
@@ -80,7 +80,6 @@ class UserTile extends StatelessWidget {
       },
     );
   }
-
 }
 
 class FollowButton extends StatelessWidget {
@@ -90,7 +89,9 @@ class FollowButton extends StatelessWidget {
   final String? imageUri;
   final bool verified;
 
-  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
+  const FollowButton(
+      {Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +100,7 @@ class FollowButton extends StatelessWidget {
 
       var icon = followed ? const Icon(Icons.person_remove) : const Icon(Icons.person_add);
 
-      var text =
-          followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
+      var text = followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
 
       return PopupMenuButton<String>(
         icon: icon,
@@ -114,19 +114,18 @@ class FollowButton extends StatelessWidget {
         onSelected: (value) async {
           switch (value) {
             case 'add_to_group':
-              showDialog(context: context, builder: (context) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
                     return FutureBuilderWrapper<List<String>>(
                       future: groupModel.listGroupsForUser(id),
                       onError: (error, stackTrace) => FullPageErrorWidget(
                         error: error,
                         stackTrace: stackTrace,
-                        prefix:
-                            L10n.of(context).unable_to_load_subscription_groups,
+                        prefix: L10n.of(context).unable_to_load_subscription_groups,
                       ),
                       onReady: (existing) {
-                    var color = Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white70
-                                : Colors.black54;
+                        var color = Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black54;
 
                         return MultiSelectDialog(
                           searchIcon: Icon(Icons.search, color: color),
@@ -152,14 +151,7 @@ class FollowButton extends StatelessWidget {
                   });
               break;
             case 'toggle_subscribe':
-              await usersModel.toggleSubscribe(
-                  id,
-                  screenName,
-                  name,
-                  imageUri,
-                  verified,
-                  followed
-              );
+              await usersModel.toggleSubscribe(id, screenName, name, imageUri, verified, followed);
               break;
           }
         },

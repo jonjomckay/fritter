@@ -13,18 +13,12 @@ class SavedTweet with ToMappable {
   SavedTweet({required this.id, required this.content});
 
   factory SavedTweet.fromMap(Map<String, Object?> map) {
-    return SavedTweet(
-      id: map['id'] as String,
-      content: map['content'] as String
-    );
+    return SavedTweet(id: map['id'] as String, content: map['content'] as String);
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'content': content
-    };
+    return {'id': id, 'content': content};
   }
 }
 
@@ -35,7 +29,12 @@ class Subscription with ToMappable {
   final String? profileImageUrlHttps;
   final bool verified;
 
-  Subscription({ required this.id, required this.screenName, required this.name, required this.profileImageUrlHttps, required this.verified });
+  Subscription(
+      {required this.id,
+      required this.screenName,
+      required this.name,
+      required this.profileImageUrlHttps,
+      required this.verified});
 
   factory Subscription.fromMap(Map<String, Object?> map) {
     // TODO: Remove this after a while, as it's to handle broken exports from v2.10.0
@@ -43,33 +42,25 @@ class Subscription with ToMappable {
     var verifiedIsInt = map['verified'] is int;
 
     return Subscription(
-      id: map['id'] as String,
-      screenName: map['screen_name'] as String,
-      name: map['name'] as String,
-      profileImageUrlHttps: map['profile_image_url_https'] as String?,
-      verified:
-        verifiedIsBool ? map['verified'] as bool :
-        verifiedIsInt ? map['verified'] == 1 :
-        false
-    );
+        id: map['id'] as String,
+        screenName: map['screen_name'] as String,
+        name: map['name'] as String,
+        profileImageUrlHttps: map['profile_image_url_https'] as String?,
+        verified: verifiedIsBool
+            ? map['verified'] as bool
+            : verifiedIsInt
+                ? map['verified'] == 1
+                : false);
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'screen_name': screenName,
-      'name': name,
-      'verified': verified ? 1 : 0
-    };
+    return {'id': id, 'screen_name': screenName, 'name': name, 'verified': verified ? 1 : 0};
   }
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Subscription &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      identical(this, other) || other is Subscription && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -83,7 +74,13 @@ class SubscriptionGroup with ToMappable {
   final int numberOfMembers;
   final DateTime createdAt;
 
-  SubscriptionGroup({required this.id, required this.name, required this.icon, required this.color, required this.numberOfMembers, required this.createdAt});
+  SubscriptionGroup(
+      {required this.id,
+      required this.name,
+      required this.icon,
+      required this.color,
+      required this.numberOfMembers,
+      required this.createdAt});
 
   factory SubscriptionGroup.fromMap(Map<String, Object?> json) {
     // This is here to handle imports of data from before v2.15.0
@@ -93,24 +90,17 @@ class SubscriptionGroup with ToMappable {
     }
 
     return SubscriptionGroup(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      icon: icon,
-      color: json['color'] == null ? null : Color(json['color'] as int),
-      numberOfMembers: json['number_of_members'] == null ? 0 : json['number_of_members'] as int,
-      createdAt: DateTime.parse(json['created_at'] as String)
-    );
+        id: json['id'] as String,
+        name: json['name'] as String,
+        icon: icon,
+        color: json['color'] == null ? null : Color(json['color'] as int),
+        numberOfMembers: json['number_of_members'] == null ? 0 : json['number_of_members'] as int,
+        createdAt: DateTime.parse(json['created_at'] as String));
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'icon': icon,
-      'color': color?.value,
-      'created_at': createdAt.toIso8601String()
-    };
+    return {'id': id, 'name': name, 'icon': icon, 'color': color?.value, 'created_at': createdAt.toIso8601String()};
   }
 }
 
@@ -129,7 +119,8 @@ class SubscriptionGroupEdit {
   Color? color;
   Set<String> members;
 
-  SubscriptionGroupEdit({required this.id, required this.name, required this.icon, required this.color, required this.members});
+  SubscriptionGroupEdit(
+      {required this.id, required this.name, required this.icon, required this.color, required this.members});
 }
 
 class SubscriptionGroupMember with ToMappable {
@@ -139,18 +130,12 @@ class SubscriptionGroupMember with ToMappable {
   SubscriptionGroupMember({required this.group, required this.profile});
 
   factory SubscriptionGroupMember.fromMap(Map<String, Object?> json) {
-    return SubscriptionGroupMember(
-      group: json['group_id'] as String,
-      profile: json['profile_id'] as String
-    );
+    return SubscriptionGroupMember(group: json['group_id'] as String, profile: json['profile_id'] as String);
   }
-  
+
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'group_id': group,
-      'profile_id': profile
-    };
+    return {'group_id': group, 'profile_id': profile};
   }
 }
 

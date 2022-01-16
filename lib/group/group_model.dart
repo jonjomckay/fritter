@@ -57,15 +57,12 @@ class GroupModel extends ChangeNotifier {
 
     var database = await Repository.readOnly();
 
-    var orderByDirection = orderGroupsAscending
-        ? 'COLLATE NOCASE ASC'
-        : 'COLLATE NOCASE DESC';
+    var orderByDirection = orderGroupsAscending ? 'COLLATE NOCASE ASC' : 'COLLATE NOCASE DESC';
 
-    var query = "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $tableSubscriptionGroup g LEFT JOIN $tableSubscriptionGroupMember gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
+    var query =
+        "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $tableSubscriptionGroup g LEFT JOIN $tableSubscriptionGroupMember gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
 
-    _groups = (await database.rawQuery(query))
-        .map((e) => SubscriptionGroup.fromMap(e))
-        .toList(growable: false);
+    _groups = (await database.rawQuery(query)).map((e) => SubscriptionGroup.fromMap(e)).toList(growable: false);
 
     notifyListeners();
   }
@@ -81,7 +78,8 @@ class GroupModel extends ChangeNotifier {
   Future<List<String>> listGroupsForUser(String user) async {
     var database = await Repository.readOnly();
 
-    return (await database.query(tableSubscriptionGroupMember, columns: ['group_id'], where: 'profile_id = ?', whereArgs: [user]))
+    return (await database.query(tableSubscriptionGroupMember,
+            columns: ['group_id'], where: 'profile_id = ?', whereArgs: [user]))
         .map((e) => e['group_id'] as String)
         .toList(growable: false);
   }
@@ -96,10 +94,7 @@ class GroupModel extends ChangeNotifier {
 
     // Then add all the new memberships
     for (var group in memberships) {
-      batch.insert(tableSubscriptionGroupMember, {
-        'group_id': group,
-        'profile_id': user
-      });
+      batch.insert(tableSubscriptionGroupMember, {'group_id': group, 'profile_id': user});
     }
 
     await batch.commit();
@@ -111,11 +106,11 @@ class GroupModel extends ChangeNotifier {
 
     if (id == null) {
       return SubscriptionGroupEdit(
-          id: null,
-          name: '',
-          icon: defaultGroupIcon,
-          color: null,
-          members: <String>{},
+        id: null,
+        name: '',
+        icon: defaultGroupIcon,
+        color: null,
+        members: <String>{},
       );
     }
 
@@ -135,11 +130,11 @@ class GroupModel extends ChangeNotifier {
         .toSet();
 
     return SubscriptionGroupEdit(
-        id: group.first['id'] as String,
-        name: group.first['name'] as String,
-        icon: group.first['icon'] as String,
-        color: group.first['color'] == null ? null : Color(group.first['color'] as int),
-        members: members,
+      id: group.first['id'] as String,
+      name: group.first['name'] as String,
+      icon: group.first['icon'] as String,
+      color: group.first['color'] == null ? null : Color(group.first['color'] as int),
+      members: members,
     );
   }
 
@@ -150,18 +145,17 @@ class GroupModel extends ChangeNotifier {
     if (id == null) {
       id = const Uuid().v4();
 
-      await database.insert(tableSubscriptionGroup, {
-        'id': id,
-        'name': name,
-        'color': color?.value,
-        'icon': icon
-      });
+      await database.insert(tableSubscriptionGroup, {'id': id, 'name': name, 'color': color?.value, 'icon': icon});
     } else {
-      await database.update(tableSubscriptionGroup, {
-        'name': name,
-        'color': color?.value,
-        'icon': icon,
-      }, where: 'id = ?', whereArgs: [id]);
+      await database.update(
+          tableSubscriptionGroup,
+          {
+            'name': name,
+            'color': color?.value,
+            'icon': icon,
+          },
+          where: 'id = ?',
+          whereArgs: [id]);
     }
 
     // Then clear out any existing subscriptions for the group and add our new set
@@ -169,10 +163,7 @@ class GroupModel extends ChangeNotifier {
 
     var batch = database.batch();
     for (var subscription in subscriptions) {
-      batch.insert(tableSubscriptionGroupMember, {
-        'group_id': id,
-        'profile_id': subscription
-      });
+      batch.insert(tableSubscriptionGroupMember, {'group_id': id, 'profile_id': subscription});
     }
 
     await batch.commit(noResult: true);
@@ -200,8 +191,10 @@ class GroupModel extends ChangeNotifier {
   Future<SubscriptionGroupSettings> loadSubscriptionGroupSettings(String id) async {
     var database = await Repository.readOnly();
 
-    return (await database.rawQuery('SELECT include_replies, include_retweets FROM $tableSubscriptionGroup WHERE id = ?', [id]))
-        .map((e) => SubscriptionGroupSettings(includeReplies: e['include_replies'] == 1, includeRetweets: e['include_retweets'] == 1))
+    return (await database
+            .rawQuery('SELECT include_replies, include_retweets FROM $tableSubscriptionGroup WHERE id = ?', [id]))
+        .map((e) => SubscriptionGroupSettings(
+            includeReplies: e['include_replies'] == 1, includeRetweets: e['include_retweets'] == 1))
         .first;
   }
 

@@ -15,7 +15,14 @@ class SubscriptionGroupFeed extends StatefulWidget {
   final bool includeRetweets;
   final ScrollController? scrollController;
 
-  const SubscriptionGroupFeed({Key? key, required this.group, required this.users, required this.includeReplies, required this.includeRetweets, this.scrollController}) : super(key: key);
+  const SubscriptionGroupFeed(
+      {Key? key,
+      required this.group,
+      required this.users,
+      required this.includeReplies,
+      required this.includeRetweets,
+      this.scrollController})
+      : super(key: key);
 
   @override
   _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
@@ -44,8 +51,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
   void didUpdateWidget(SubscriptionGroupFeed oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.includeReplies != widget.includeReplies ||
-        oldWidget.includeRetweets != widget.includeRetweets) {
+    if (oldWidget.includeReplies != widget.includeReplies || oldWidget.includeRetweets != widget.includeRetweets) {
       _pagingController.refresh();
     }
   }
@@ -133,7 +139,8 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         addAutomaticKeepAlives: false,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, conversation, index) {
-            return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
+            return TweetConversation(
+                id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
           },
           newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],

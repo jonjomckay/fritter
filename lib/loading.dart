@@ -29,5 +29,4 @@ class LoadingStack extends StatelessWidget {
       ],
     );
   }
-
 }

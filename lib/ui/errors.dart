@@ -13,9 +13,7 @@ void showSnackBar(BuildContext context, {required String icon, required String m
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(message, style: const TextStyle(
-          height: 1.5
-        ))),
+        Flexible(child: Text(message, style: const TextStyle(height: 1.5))),
         Text(icon),
       ],
     ),
@@ -50,11 +48,7 @@ _EmojiErrorWidget createEmojiError(TwitterError error) {
       break;
   }
 
-  return _EmojiErrorWidget(
-      emoji: emoji,
-      message: message,
-      errorMessage: error.message
-  );
+  return _EmojiErrorWidget(emoji: emoji, message: message, errorMessage: error.message);
 }
 
 class _EmojiErrorWidget extends FritterErrorWidget {
@@ -63,7 +57,9 @@ class _EmojiErrorWidget extends FritterErrorWidget {
   final String errorMessage;
   final Function? onRetry;
 
-  const _EmojiErrorWidget({Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry}) : super(key: key);
+  const _EmojiErrorWidget(
+      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,18 +72,13 @@ class _EmojiErrorWidget extends FritterErrorWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 16),
-            child: Text(emoji, style: const TextStyle(
-                fontSize: 36
-            )),
+            child: Text(emoji, style: const TextStyle(fontSize: 36)),
           ),
-          Text(message, textAlign: TextAlign.center, style: const TextStyle(
-              fontSize: 18
-          )),
+          Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 18)),
           Container(
             margin: const EdgeInsets.only(top: 12),
-            child: Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(
-                color: Theme.of(context).hintColor
-            )),
+            child:
+                Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
           Container(
             margin: const EdgeInsets.only(top: 12),
@@ -126,9 +117,7 @@ class InlineErrorWidget extends FritterErrorWidget {
             margin: const EdgeInsets.only(right: 8),
             child: const Icon(Icons.error, color: Colors.red),
           ),
-          Text('$error', textAlign: TextAlign.center, style: TextStyle(
-              color: Theme.of(context).hintColor
-          )),
+          Text('$error', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
         ],
       ),
     );
@@ -140,7 +129,8 @@ class AlertErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
 
-  const AlertErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
+  const AlertErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +145,8 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
 
-  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix}) : super(key: key);
+  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +163,9 @@ class FullPageErrorWidget extends FritterErrorWidget {
   final String prefix;
   final Function? onRetry;
 
-  const FullPageErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry}) : super(key: key);
+  const FullPageErrorWidget(
+      {Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +176,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
       return _EmojiErrorWidget(
         emoji: '🔌',
         message: L10n.of(context).could_not_contact_twitter,
-        errorMessage: L10n.of(context)
-            .please_check_your_internet_connection_error_message(error.message),
+        errorMessage: L10n.of(context).please_check_your_internet_connection_error_message(error.message),
         onRetry: onRetry,
       );
     }
@@ -201,10 +193,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
       if (hasErrors && content['errors'] != null) {
         var errors = List.from(content['errors']);
         if (errors.isNotEmpty) {
-          return createEmojiError(TwitterError(
-            code: errors.first['code'],
-            message: errors.first['message']
-          ));
+          return createEmojiError(TwitterError(code: errors.first['code'], message: errors.first['message']));
         }
       }
 
@@ -215,8 +204,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
       return _EmojiErrorWidget(
         emoji: '⏱️',
         message: L10n.of(context).timed_out,
-        errorMessage: L10n.of(context)
-            .this_took_too_long_to_load_please_check_your_network_connection,
+        errorMessage: L10n.of(context).this_took_too_long_to_load_please_check_your_network_connection,
         onRetry: onRetry,
       );
     }
@@ -238,23 +226,18 @@ class FullPageErrorWidget extends FritterErrorWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 12),
-            child: Text(prefix, textAlign: TextAlign.center, style: TextStyle(
-                color: Theme.of(context).hintColor
-            )),
+            child: Text(prefix, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
           Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.only(top: 12),
-            child: Text('$message', textAlign: TextAlign.left, style: TextStyle(
-                color: Theme.of(context).hintColor
-            )),
+            child: Text('$message', textAlign: TextAlign.left, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
           Container(
             margin: const EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text(L10n.of(context).report),
-              onPressed: () => Catcher.reportCheckedError(
-                  ManuallyReportedException(error), stackTrace),
+              onPressed: () => Catcher.reportCheckedError(ManuallyReportedException(error), stackTrace),
             ),
           ),
           if (onRetry != null)

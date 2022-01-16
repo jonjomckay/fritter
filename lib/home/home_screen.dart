@@ -76,20 +76,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         title: Text(homeTabs[_tabController.index].title),
         actions: [
           if (_tabController.index == feedTabIndex)
-            IconButton(icon: const Icon(Icons.arrow_upward), onPressed: () async {
-              await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+            IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                onPressed: () async {
+                  await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
                 }),
           if (_tabController.index == feedTabIndex)
-            IconButton(icon: const Icon(Icons.refresh), onPressed: () async {
+            IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
                   // This is a dirty hack, and probably won't work if the child widgets ever become stateful
                   setState(() {});
                 }),
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: TweetSearchDelegate(
-                initialTab: 0
-              ));
+              showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 0));
             },
           ),
           IconButton(
@@ -99,14 +101,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             },
           )
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
+        bottom: TabBar(controller: _tabController, tabs: [
           ...homeTabs.map((e) => Tab(
                 icon: Icon(e.icon),
               ))
-          ]
-        ),
+        ]),
       ),
       body: TabBarView(
         controller: _tabController,

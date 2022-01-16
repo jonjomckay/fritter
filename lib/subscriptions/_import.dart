@@ -58,14 +58,12 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
 
         await homeModel.importData({
           tableSubscription: [
-            ...response.users.map((e) =>
-                Subscription(
+            ...response.users.map((e) => Subscription(
                 id: e.idStr!,
                 name: e.name!,
                 profileImageUrlHttps: e.profileImageUrlHttps,
                 screenName: e.screenName!,
-                    verified: e.verified ?? false
-                ))
+                verified: e.verified ?? false))
           ]
         });
 
@@ -100,8 +98,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Text(
-                L10n.of(context)
-                    .to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below,
+                L10n.of(context).to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below,
               ),
             ),
             Padding(
@@ -114,13 +111,10 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Text.rich(TextSpan(children: [
-                TextSpan(
-                    text:
-                        '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
+                TextSpan(text: '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
                 WidgetSpan(
                     child: InkWell(
-                  onTap: () async => launch(
-                      'https://github.com/jonjomckay/fritter/issues/143'),
+                  onTap: () async => launch('https://github.com/jonjomckay/fritter/issues/143'),
                   child: const Text('the GitHub issue (#143)',
                       style: TextStyle(
                         color: Colors.blue,
@@ -138,15 +132,12 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                 decoration: InputDecoration(
                   border: const UnderlineInputBorder(),
                   hintText: L10n.of(context).enter_your_twitter_username,
-                  helperText: L10n.of(context)
-                      .your_profile_must_be_public_otherwise_the_import_will_not_work,
+                  helperText: L10n.of(context).your_profile_must_be_public_otherwise_the_import_will_not_work,
                   prefixText: '@',
                   labelText: L10n.of(context).username,
                 ),
                 maxLength: 15,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))
-                ],
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))],
                 onChanged: (value) {
                   setState(() {
                     _screenName = value;
@@ -181,8 +172,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                               child: CircularProgressIndicator(),
                             ),
                             Text(
-                              L10n.of(context)
-                                  .imported_snapshot_data_users_so_far(
+                              L10n.of(context).imported_snapshot_data_users_so_far(
                                 snapshot.data.toString(),
                               ),
                             )
@@ -194,8 +184,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(16),
-                              child: Icon(Icons.check_circle,
-                                  size: 36, color: Colors.green),
+                              child: Icon(Icons.check_circle, size: 36, color: Colors.green),
                             ),
                             Text(
                               L10n.of(context).finished_with_snapshotData_users(

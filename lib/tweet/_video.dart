@@ -29,7 +29,7 @@ class _TweetVideoState extends State<TweetVideo> {
     var url = widget.media.videoInfo!.variants![0].url!;
 
     double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-        ?  _videoController.value.aspectRatio
+        ? _videoController.value.aspectRatio
         : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
 
     _videoController = VideoPlayerController.network(url);
@@ -44,15 +44,16 @@ class _TweetVideoState extends State<TweetVideo> {
           onTap: () async {
             var fileName = path.basename(url);
 
-            await downloadUriToPickedFile(url, fileName,
+            await downloadUriToPickedFile(
+              url,
+              fileName,
               onError: (response) {
                 Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                     L10n.of(context)
-                        .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
-                            response.statusCode),
+                        .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
                   ),
                 ));
               },

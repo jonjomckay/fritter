@@ -30,15 +30,13 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   void initState() {
     super.initState();
 
-    var mediaSize = PrefService.of(context, listen: false)
-        .get(optionMediaSize);
+    var mediaSize = PrefService.of(context, listen: false).get(optionMediaSize);
 
     if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
-      cachedImageExists(widget.media.mediaUrlHttps!)
-          .then((value) => setState(() {
-                _showMedia = value;
-              }));
+      cachedImageExists(widget.media.mediaUrlHttps!).then((value) => setState(() {
+            _showMedia = value;
+          }));
     } else {
       setState(() {
         _showMedia = true;
@@ -87,8 +85,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
           color: Colors.black26,
           child: Center(
             child: Text(
-              L10n.of(context)
-                  .tap_to_show_getMediaType_item_type(getMediaType(item.type)),
+              L10n.of(context).tap_to_show_getMediaType_item_type(getMediaType(item.type)),
             ),
           ),
         ),
@@ -136,9 +133,8 @@ class _TweetMediaState extends State<TweetMedia> {
 
   @override
   Widget build(BuildContext context) {
-    var largestAspectRatio = widget.media
-        .map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1))
-        .reduce(math.max);
+    var largestAspectRatio =
+        widget.media.map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1)).reduce(math.max);
 
     return Container(
       margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
@@ -152,8 +148,11 @@ class _TweetMediaState extends State<TweetMedia> {
             var item = widget.media[index];
 
             return GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TweetMediaView(initialIndex: index, media: widget.media, username: widget.username ))),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
               child: TweetMediaItem(media: item, index: index + 1, total: widget.media.length),
             );
           },
@@ -168,7 +167,8 @@ class TweetMediaView extends StatefulWidget {
   final List<Media> media;
   final String username;
 
-  const TweetMediaView({Key? key, required this.initialIndex, required this.media, required this.username}) : super(key: key);
+  const TweetMediaView({Key? key, required this.initialIndex, required this.media, required this.username})
+      : super(key: key);
 
   @override
   _TweetMediaViewState createState() => _TweetMediaViewState();
@@ -204,15 +204,16 @@ class _TweetMediaViewState extends State<TweetMediaView> {
               var fileName = '$_username-$url';
               var uri = '${_media.mediaUrlHttps}:orig';
 
-              await downloadUriToPickedFile(uri, fileName,
+              await downloadUriToPickedFile(
+                uri,
+                fileName,
                 onError: (response) {
                   Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
-                      L10n.of(context)
-                          .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
-                              response.statusCode),
+                      L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
+                          response.statusCode),
                     ),
                   ));
                 },
@@ -223,8 +224,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
                 },
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text(L10n.of(context).successfully_saved_the_media),
+                    content: Text(L10n.of(context).successfully_saved_the_media),
                   ));
                 },
               );

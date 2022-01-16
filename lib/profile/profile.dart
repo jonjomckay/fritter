@@ -17,7 +17,6 @@ import 'package:measured_size/measured_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fritter/generated/l10n.dart';
 
-
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -97,50 +96,37 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     List<InlineSpan> contentWidgets = [];
 
     // Split the string by any mentions or hashtags, and turn those into links
-    content.splitMapJoin(RegExp(r'(#|(?<=\W|^)@)\w+'),
-        onMatch: (match) {
-          var full = match.group(0);
-          var type = match.group(1);
-          if (type == null || full == null) {
-            return '';
-          }
+    content.splitMapJoin(RegExp(r'(#|(?<=\W|^)@)\w+'), onMatch: (match) {
+      var full = match.group(0);
+      var type = match.group(1);
+      if (type == null || full == null) {
+        return '';
+      }
 
-          var onTap = () async {};
-          if (type == '#') {
-            onTap = () async {
-              await showSearch(
-                context: context,
-                delegate: TweetSearchDelegate(
-                    initialTab: 1
-                ),
-                query: full
-              );
-            };
-          }
+      var onTap = () async {};
+      if (type == '#') {
+        onTap = () async {
+          await showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 1), query: full);
+        };
+      }
 
-          if (type == '@') {
-            onTap = () async {
-              Navigator.pushNamed(context, routeProfile, arguments: full.substring(1));
-            };
-          }
+      if (type == '@') {
+        onTap = () async {
+          Navigator.pushNamed(context, routeProfile, arguments: full.substring(1));
+        };
+      }
 
-          contentWidgets.add(TextSpan(
-              text: full,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = onTap
-          ));
+      contentWidgets.add(TextSpan(
+          text: full,
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+          recognizer: TapGestureRecognizer()..onTap = onTap));
 
-          return type;
-        },
-        onNonMatch: (text) {
-          contentWidgets.add(TextSpan(
-              text: text
-          ));
+      return type;
+    }, onNonMatch: (text) {
+      contentWidgets.add(TextSpan(text: text));
 
-          return text;
-        }
-    );
+      return text;
+    });
 
     return contentWidgets;
   }
@@ -172,134 +158,121 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: appBarHeight,
-              floating: true,
-              pinned: true,
-              snap: false,
-              forceElevated: innerBoxIsScrolled,
-              actions: [
-                FollowButton(id: profile.idStr!,
-                  name: profile.name!,
-                  screenName: profile.screenName!,
-                  imageUri: profile.profileImageUrlHttps,
-                  verified: profile.verified!,
-                )
-              ],
-              bottom: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                tabs: [
-                  Tab(
-                    child: Text(
-                      L10n.of(context).tweets,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      L10n.of(context).tweets_and_replies,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      L10n.of(context).media,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      L10n.of(context).following,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      L10n.of(context).followers,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                expandedHeight: appBarHeight,
+                floating: true,
+                pinned: true,
+                snap: false,
+                forceElevated: innerBoxIsScrolled,
+                actions: [
+                  FollowButton(
+                    id: profile.idStr!,
+                    name: profile.name!,
+                    screenName: profile.screenName!,
+                    imageUri: profile.profileImageUrlHttps,
+                    verified: profile.verified!,
+                  )
                 ],
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                background: SafeArea(
+                bottom: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        L10n.of(context).tweets,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        L10n.of(context).tweets_and_replies,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        L10n.of(context).media,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        L10n.of(context).following,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        L10n.of(context).followers,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                    background: SafeArea(
                   child: DefaultTextStyle.merge(
                     style: const TextStyle(color: Colors.white),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.topCenter,
-                          child: bannerImage
-                        ),
-                        const DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: <Color>[Color(0xDD000000), Color(0x80000000)],
-                            ),
+                    child: Stack(fit: StackFit.expand, children: <Widget>[
+                      Container(alignment: Alignment.topCenter, child: bannerImage),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: <Color>[Color(0xDD000000), Color(0x80000000)],
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(bottom: 4),
-                                        child: Row(
-                                          children: [
-                                            Text(profile.name!, style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700
-                                            )),
-                                            if (profile.verified ?? false)
-                                              const SizedBox(width: 6),
-                                            if (profile.verified ?? false)
-                                              const Icon(Icons.verified, size: 24, color: Colors.blue)
-                                          ],
-                                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 4),
+                                      child: Row(
+                                        children: [
+                                          Text(profile.name!,
+                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                          if (profile.verified ?? false) const SizedBox(width: 6),
+                                          if (profile.verified ?? false)
+                                            const Icon(Icons.verified, size: 24, color: Colors.blue)
+                                        ],
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.only(bottom: 8),
-                                        child: Text('@${(profile.screenName!)}', style: TextStyle(
-                                            color: theme.primaryTextTheme.caption!.color
-                                        )),
-                                      ),
-                                      if (profile.description != null && profile.description!.isNotEmpty)
-                                        MeasuredSize(
-                                          onChange: (size) {
-                                            setState(() {
-                                              descriptionHeight = size.height;
-                                            });
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(bottom: 4),
-                                            child: RichText(
-                                              maxLines: 3,
-                                              text: TextSpan(
-                                                style: const TextStyle(
-                                                  height: 1.4
-                                                ),
-                                                children: _addLinksToText(context, profile.description!)
-                                              )
-                                            )
-                                          ),
-                                        ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 8),
+                                      child: Text('@${(profile.screenName!)}',
+                                          style: TextStyle(color: theme.primaryTextTheme.caption!.color)),
+                                    ),
+                                    if (profile.description != null && profile.description!.isNotEmpty)
                                       MeasuredSize(
                                         onChange: (size) {
                                           setState(() {
-                                            metadataHeight = size.height;
+                                            descriptionHeight = size.height;
                                           });
                                         },
-                                        child: Column(
+                                        child: Container(
+                                            margin: const EdgeInsets.only(bottom: 4),
+                                            child: RichText(
+                                                maxLines: 3,
+                                                text: TextSpan(
+                                                    style: const TextStyle(height: 1.4),
+                                                    children: _addLinksToText(context, profile.description!)))),
+                                      ),
+                                    MeasuredSize(
+                                      onChange: (size) {
+                                        setState(() {
+                                          metadataHeight = size.height;
+                                        });
+                                      },
+                                      child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
@@ -332,9 +305,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                       }
 
                                                       return InkWell(
-                                                        child: Text(url.displayUrl!, style: const TextStyle(
-                                                          color: Colors.blue
-                                                        )),
+                                                        child: Text(url.displayUrl!,
+                                                            style: const TextStyle(color: Colors.blue)),
                                                         onTap: () => launch(url.expandedUrl!),
                                                       );
                                                     }),
@@ -349,39 +321,35 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                   children: [
                                                     const Icon(Icons.calendar_today, size: 12, color: Colors.white),
                                                     const SizedBox(width: 4),
-                                                    Text(L10n.of(context).joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
+                                                    Text(L10n.of(context)
+                                                        .joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
                                                   ],
                                                 ),
                                               ),
-                                          ]
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                          ]),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
+                            radius: 48,
                           ),
                         ),
-
-                        Container(
-                          alignment: Alignment.topRight,
-                          margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                              backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
-                              radius: 48,
-                            ),
-                          ),
-                        )
-                      ]
-                    ),
+                      )
+                    ]),
                   ),
-                )
-              )
-            )
+                )))
           ];
         },
         body: TabBarView(

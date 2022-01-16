@@ -33,8 +33,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            L10n.of(context)
-                .unable_to_refresh_the_subscriptions_the_error_was_e(e),
+            L10n.of(context).unable_to_refresh_the_subscriptions_the_error_was_e(e),
           ),
         ),
       );
@@ -55,64 +54,58 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       return CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverAppBar(
-              pinned: true,
-              title: Text(L10n.of(context).groups),
-              actions: [
-                PopupMenuButton<String>(
-                  icon: const Icon(Icons.sort),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Text(L10n.of(context).name),
-                      value: 'name',
-                    ),
-                    PopupMenuItem(
-                      child: Text(L10n.of(context).date_created),
-                      value: 'created_at',
-                    ),
-                  ],
-              onSelected: (value) => groupModel.changeOrderSubscriptionGroupsBy(value),
+          SliverAppBar(pinned: true, title: Text(L10n.of(context).groups), actions: [
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.sort),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text(L10n.of(context).name),
+                  value: 'name',
                 ),
-                IconButton(
-                  icon: const Icon(Icons.sort_by_alpha),
+                PopupMenuItem(
+                  child: Text(L10n.of(context).date_created),
+                  value: 'created_at',
+                ),
+              ],
+              onSelected: (value) => groupModel.changeOrderSubscriptionGroupsBy(value),
+            ),
+            IconButton(
+              icon: const Icon(Icons.sort_by_alpha),
               onPressed: () => groupModel.toggleOrderSubscriptionGroupsAscending(),
-                )
-              ]),
+            )
+          ]),
           SubscriptionGroups(controller: _scrollController),
-          SliverAppBar(
-            pinned: true,
-            title: Text(L10n.of(context).subscriptions),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.import_export),
+          SliverAppBar(pinned: true, title: Text(L10n.of(context).subscriptions), actions: [
+            IconButton(
+              icon: const Icon(Icons.import_export),
               onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
-              ),
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: () => _onRefresh(),
-              ),
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.sort),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: Text(L10n.of(context).name),
-                    value: 'name',
-                  ),
-                  PopupMenuItem(
-                    child: Text(L10n.of(context).username),
-                    value: 'screen_name',
-                  ),
-                  PopupMenuItem(
-                    child: Text(L10n.of(context).date_subscribed),
-                    value: 'created_at',
-                  ),
-                ],
+            ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () => _onRefresh(),
+            ),
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.sort),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text(L10n.of(context).name),
+                  value: 'name',
+                ),
+                PopupMenuItem(
+                  child: Text(L10n.of(context).username),
+                  value: 'screen_name',
+                ),
+                PopupMenuItem(
+                  child: Text(L10n.of(context).date_subscribed),
+                  value: 'created_at',
+                ),
+              ],
               onSelected: (value) => usersModel.changeOrderSubscriptionsBy(value),
-              ),
-              IconButton(
-                icon: const Icon(Icons.sort_by_alpha),
-                onPressed: () => usersModel.toggleOrderSubscriptionsAscending(),
-              )
+            ),
+            IconButton(
+              icon: const Icon(Icons.sort_by_alpha),
+              onPressed: () => usersModel.toggleOrderSubscriptionsAscending(),
+            )
           ]),
           const SubscriptionUsers(),
         ],

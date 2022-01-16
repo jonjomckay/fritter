@@ -5,7 +5,10 @@ import 'package:fritter/settings/settings_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
-Future downloadUriToPickedFile(String uri, String fileName, { required Function(http.Response response) onError, required Function() onStart, required Function() onSuccess }) async {
+Future downloadUriToPickedFile(String uri, String fileName,
+    {required Function(http.Response response) onError,
+    required Function() onStart,
+    required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   var downloadFile = () async {
@@ -36,7 +39,8 @@ Future downloadUriToPickedFile(String uri, String fileName, { required Function(
 
     var response = await downloadFile();
 
-    var fileInfo = await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
+    var fileInfo =
+        await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
     if (fileInfo == null) {
       return;
     }

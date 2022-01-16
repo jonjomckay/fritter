@@ -19,7 +19,7 @@ class TranslationAPIResult {
   final dynamic body;
   final String? errorMessage;
 
-  TranslationAPIResult({ required this.success, required this.body, this.errorMessage });
+  TranslationAPIResult({required this.success, required this.body, this.errorMessage});
 }
 
 class TranslationAPI {
@@ -34,28 +34,23 @@ class TranslationAPI {
     var key = 'translation.supported_languages';
 
     // return cacheRequest(key, () async {
-      return sendRequest('/languages', 'Unable to get supported languages');
+    return sendRequest('/languages', 'Unable to get supported languages');
     // });
   }
 
   static Future<TranslationAPIResult> translate(String id, List<String> text, String sourceLanguage) async {
-    var formData = {
-      'q': text,
-      'source': sourceLanguage,
-      'target': getShortSystemLocale()
-    };
+    var formData = {'q': text, 'source': sourceLanguage, 'target': getShortSystemLocale()};
 
     var key = 'translation.$sourceLanguage.$id';
 
     // return cacheRequest(key, () async {
-      return sendRequest('/translate', 'Unable to send translation request',
-          data: formData,
-          options: Options(method: 'POST')
-      );
+    return sendRequest('/translate', 'Unable to send translation request',
+        data: formData, options: Options(method: 'POST'));
     // });
   }
 
-  static Future<TranslationAPIResult> cacheRequest(String key, Future<TranslationAPIResult> Function() makeRequest) async {
+  static Future<TranslationAPIResult> cacheRequest(
+      String key, Future<TranslationAPIResult> Function() makeRequest) async {
     var result = await cache.load(key);
     if (result != null) {
       // If we have a cached result, return it
@@ -76,7 +71,8 @@ class TranslationAPI {
     return response;
   }
 
-  static Future<TranslationAPIResult> sendRequest(String path, String errorUnableTo, {Options? options, Object? data}) async {
+  static Future<TranslationAPIResult> sendRequest(String path, String errorUnableTo,
+      {Options? options, Object? data}) async {
     try {
       var response = await _dio.request(path, data: data, options: options);
 

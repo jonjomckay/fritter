@@ -7,11 +7,14 @@ class TweetPhoto extends StatelessWidget {
   final String size;
   final bool inPageView;
 
-  const TweetPhoto({Key? key, required this.uri, this.fit = BoxFit.fitWidth, required this.size, this.inPageView = false}) : super(key: key);
+  const TweetPhoto(
+      {Key? key, required this.uri, this.fit = BoxFit.fitWidth, required this.size, this.inPageView = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedImage.network('$uri:$size',
+    return ExtendedImage.network(
+      '$uri:$size',
       cache: true,
       width: 5000,
       height: 5000,
@@ -33,4 +36,3 @@ class TweetPhoto extends StatelessWidget {
     );
   }
 }
-
