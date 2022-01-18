@@ -235,7 +235,7 @@
   "@to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below": {},
   "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts": "Pamiętaj, że metoda, której używa Fritter do importowania subskrypcji, jest mocno ograniczona przez Twittera, więc może się to nie udać, jeśli masz dużo obserwowanych kont.",
   "@please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts": {},
-  "if_you_have_any_feedback_on_this_feature_please_leave_it_on": "Jeśli masz jakieś uwagi na temat tej funkcji, pozostaw to włączone",
+  "if_you_have_any_feedback_on_this_feature_please_leave_it_on": "Jeśli masz jakieś uwagi na temat tej funkcji, zgłoś je w",
   "@if_you_have_any_feedback_on_this_feature_please_leave_it_on": {},
   "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "Wybieranie poszczególnych kont do zaimportowania i przypisywanie grup są już zaplanowane na przyszłość!",
   "@selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": {},
