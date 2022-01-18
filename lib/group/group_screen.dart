@@ -13,6 +13,11 @@ class GroupScreenArguments {
   final String name;
 
   GroupScreenArguments({required this.id, required this.name});
+
+  @override
+  String toString() {
+    return 'GroupScreenArguments{id: $id, name: $name}';
+  }
 }
 
 class GroupScreen extends StatelessWidget {
