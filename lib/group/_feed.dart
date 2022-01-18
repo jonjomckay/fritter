@@ -97,7 +97,16 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       var threads = result
           .map((e) => e.chains)
           .expand((element) => element)
-          .sorted((a, b) => b.tweets[0].createdAt!.compareTo(a.tweets[0].createdAt!))
+          .sorted((a, b) {
+            var aCreatedAt = a.tweets[0].createdAt;
+            var bCreatedAt = b.tweets[0].createdAt;
+
+            if (aCreatedAt == null || bCreatedAt == null) {
+              return 0;
+            }
+
+            return bCreatedAt.compareTo(aCreatedAt);
+          })
           .toList();
 
       if (result.isEmpty) {
