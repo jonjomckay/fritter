@@ -1,1 +1,0 @@
-* Fixed a null pointer when opening groups or the feed (#313)
