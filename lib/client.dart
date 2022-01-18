@@ -628,4 +628,9 @@ class TwitterError {
   final String message;
 
   TwitterError({required this.code, required this.message});
+
+  @override
+  String toString() {
+    return 'TwitterError{code: $code, message: $message}';
+  }
 }
