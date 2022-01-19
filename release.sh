@@ -14,8 +14,22 @@ else
   exit 1
 fi
 
+VERSION_NUMBER=""
+
+generate_version_number() {
+  delta=$1
+
+  VERSION_NUMBER=$(date --date="+$delta days" +%Y%m%d)
+
+  if [ -e fastlane/metadata/android/en-US/changelogs/"$VERSION_NUMBER.txt" ]; then
+    echo "The version $VERSION_NUMBER already exists, so incrementing it"
+    generate_version_number $((delta + 1))
+  fi
+}
+
+generate_version_number 0
+
 VERSION_NAME=$1
-VERSION_NUMBER=$(date +%Y%m%d)
 VERSION_FLUTTER="2.8.1"
 
 FULL_VERSION="$VERSION_NAME"+"$VERSION_NUMBER"
