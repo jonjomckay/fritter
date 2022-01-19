@@ -368,12 +368,10 @@ class _MyAppState extends State<MyApp> {
         ErrorWidget.builder = (FlutterErrorDetails details) {
           Catcher.reportCheckedError(details.exception, details.stack);
 
-          return Scaffold(
-            body: FullPageErrorWidget(
-              error: details.exception,
-              stackTrace: details.stack,
-              prefix: L10n.of(context).something_broke_in_fritter,
-            ),
+          return FullPageErrorWidget(
+            error: details.exception,
+            stackTrace: details.stack,
+            prefix: L10n.of(context).something_broke_in_fritter,
           );
         };
 
