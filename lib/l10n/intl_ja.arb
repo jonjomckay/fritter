@@ -5,7 +5,7 @@
   "@unable_to_load_the_tweet": {},
   "unable_to_load_subscription_groups": "購読グループの読み込みに失敗しました",
   "@unable_to_load_subscription_groups": {},
-  "would_you_like_to_enable_automatic_error_reporting": "自動エラー報告を有効化しますか？",
+  "would_you_like_to_enable_automatic_error_reporting": "自動エラー報告を有効にしますか？",
   "@would_you_like_to_enable_automatic_error_reporting": {},
   "your_report_will_be_sent_to_fritter_sentry_project": "レポートはFritterのSentryプロジェクトに送信されます。プライバシーの詳細は以下の通りです：",
   "@your_report_will_be_sent_to_fritter_sentry_project": {},
