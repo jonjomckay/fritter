@@ -11,6 +11,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
+import 'package:fritter/tweet/tweet_exceptions.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
@@ -414,6 +415,14 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         break;
     }
 
+    DateTime? createdAt;
+    if (tweet.createdAt != null) {
+      createdAt = tweet.createdAt;
+    } else {
+      // Report an error if we're missing the creation date for some reason
+      Catcher.reportCheckedError(TweetMissingDataException(tweet.idStr, ['createdAt']), null);
+    }
+
     return Consumer<HomeModel>(
         builder: (context, model, child) => Card(
               child: IntrinsicHeight(
@@ -548,8 +557,9 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                 overflow: TextOverflow.ellipsis,
                               )),
                               const SizedBox(width: 4),
-                              Text(timeago.format(tweet.createdAt!, locale: Intl.shortLocale(Intl.getCurrentLocale())),
-                                  style: Theme.of(context).textTheme.caption)
+                              if (createdAt != null)
+                                Text(timeago.format(createdAt, locale: Intl.shortLocale(Intl.getCurrentLocale())),
+                                    style: Theme.of(context).textTheme.caption)
                             ],
                           ),
                           leading: ClipRRect(
