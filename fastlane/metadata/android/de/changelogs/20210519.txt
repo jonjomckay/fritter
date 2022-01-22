@@ -1,0 +1,5 @@
+* Hinzugefügt: Unterstützung für die Sortierung von Abonnementgruppen
+* Hinzugefügt: Zoomen und Herunterladen von Fotos
+* Hinzugefügt: Herunterladen von Videos und GIFs
+* Hinzugefügt: Symbole für verifizierte Benutzer bei der Anzeige von Tweets
+* Verbesserte Videosteuerung mit Fortschrittsbalken, Wiedergabegeschwindigkeit, Lautstärke und Vollbildmodus

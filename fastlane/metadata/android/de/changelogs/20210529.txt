@@ -1,0 +1,2 @@
+- Behoben: Die "Alle"-Abonnementgruppe funktioniert nicht nach manuellem Löschen der Gruppe
+- Es wird nun verhindert, dass die Gruppe "Alle" gelöscht und/oder doppelt angezeigt wird

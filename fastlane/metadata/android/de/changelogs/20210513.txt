@@ -1,0 +1,1 @@
+* Behoben: Profile wurden nicht geladen, nachdem Twitter einen Endpunkt deaktiviert hatte

@@ -1,0 +1,4 @@
+* Behoben: Tippen auf Nutzernamen in Tweets öffnet zwei Bildschirme
+    * Antworten können jetzt durch Antippen des Antwortsymbols unter einem Tweet angezeigt werden.
+* Behoben: Tweet-Fußzeile und die Profil-Tab-Leiste quellen auf kleineren Bildschirmen über den vorgesehenen Bereich hinaus.
+    * Sie sind jetzt beide horizontal scrollbar
