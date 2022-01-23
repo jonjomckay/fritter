@@ -14,7 +14,7 @@ import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 10);
 const String _bearerToken =
-    'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
+    'Bearer AAAAAAAAAAAAAAAAAAAAAPYXBAAAAAAACLXUNDekMxqa8h%2F40K4moUkGsoc%3DTYfbDKbT3jJPCEVnMYqilB28NHfOPqkca3qaAxGfsyKCs0wRbw';
 
 class _FritterTwitterClient extends TwitterClient {
   static final log = Logger('_FritterTwitterClient');
@@ -194,14 +194,14 @@ class Twitter {
       if (entryId.startsWith('conversationThread')) {
         List<TweetWithCard> tweets = [];
 
-        for (var item in entry['content']['timelineModule']['items']) {
-          if (item['entryId'].startsWith('tweet')) {
-            var content = item['item']['content'] as Map<String, dynamic>;
-            if (content.containsKey('tombstone')) {
-              tweets.add(TweetWithCard.tombstone(content['tombstone']['tombstoneInfo']));
-            } else {
-              tweets.add(TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[content['tweet']['id']]));
-            }
+        for (var item in entry['content']['item']['content']['conversationThread']['conversationComponents']) {
+          var tweet = item['conversationTweetComponent']['tweet'];
+
+          var content = tweet as Map<String, dynamic>;
+          if (content.containsKey('tombstone')) {
+            tweets.add(TweetWithCard.tombstone(content['tombstone']['tombstoneInfo']));
+          } else {
+            tweets.add(TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[tweet['id']]));
           }
         }
 
@@ -243,8 +243,8 @@ class Twitter {
     // TODO: Could this use createUnconversationedChains at some point?
     var chains = createTweetChains(globalTweets, globalUsers, instructions);
 
-    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
-    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
 
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
@@ -345,17 +345,26 @@ class Twitter {
     return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false);
   }
 
-  static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
+  static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String legacyType, String type) {
     String? cursor;
 
-    var cursorEntry = addEntries.firstWhere((e) => e['entryId'].contains(name), orElse: () => null);
+    Map<String, dynamic>? cursorEntry;
+
+    var isLegacyCursor = addEntries.any((element) => element['entryId'].startsWith('cursor'));
+    if (isLegacyCursor) {
+      cursorEntry = addEntries.firstWhere((e) => e['entryId'].contains(legacyType), orElse: () => null);
+    } else {
+      cursorEntry = addEntries
+          .where((e) => e['entryId'].startsWith('sq-C'))
+          .firstWhere((e) => e['content']['operation']['cursor']['cursorType'] == type, orElse: () => null);
+    }
 
     if (cursorEntry != null) {
       cursor = cursorEntry['content']['operation']['cursor']['value'];
     } else {
       // Look for a "replaceEntry" with the cursor
       var cursorReplaceEntry =
-          repEntries.firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(name), orElse: () => null);
+          repEntries.firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(type), orElse: () => null);
 
       if (cursorReplaceEntry != null) {
         cursor = cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
@@ -375,8 +384,8 @@ class Twitter {
     var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
     var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
 
-    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom');
-    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top');
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
 
     var tweets = _createTweets(tweetIndicator, result);
 
