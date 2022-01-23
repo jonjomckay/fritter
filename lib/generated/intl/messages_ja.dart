@@ -352,7 +352,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage("アプリを起動したときにどのタブを表示するか"),
         "would_you_like_to_enable_automatic_error_reporting":
-            MessageLookupByLibrary.simpleMessage("自動エラー報告を有効化しますか？"),
+            MessageLookupByLibrary.simpleMessage("自動エラー報告を有効にしますか？"),
         "yes": MessageLookupByLibrary.simpleMessage("はい"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("まだツイートを保存していません！"),

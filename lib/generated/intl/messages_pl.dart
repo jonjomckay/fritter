@@ -170,7 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Oto dane, które zostaną wysłane. Zostaną wykorzystane tylko do określenia, które urządzenia i języki będą obsługiwane we Fritterze w przyszłości."),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
-                "Jeśli masz jakieś uwagi na temat tej funkcji, pozostaw to włączone"),
+                "Jeśli masz jakieś uwagi na temat tej funkcji, zgłoś je w"),
         "import": MessageLookupByLibrary.simpleMessage("Importuj"),
         "import_data_from_another_device": MessageLookupByLibrary.simpleMessage(
             "Zaimportuj dane z innego urządzenia"),
