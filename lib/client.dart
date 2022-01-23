@@ -345,6 +345,18 @@ class Twitter {
     return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false);
   }
 
+  static Future<TweetStatus> getTweetsUsingSearch(String screenName, String type,
+      {int count = 10, String? cursor, bool includeReplies = true, bool includeRetweets = true}) async {
+    var query = "from:" + screenName;
+    if (!includeReplies) {
+      query += " -filter:replies";
+    }
+    if (includeRetweets) {
+      query += " include:nativeretweets";
+    }
+    return Twitter.searchTweets(query, limit: count, cursor: cursor, mode: 'live');
+  }
+
   static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String name) {
     String? cursor;
 

@@ -43,8 +43,14 @@ class _ProfileTweetsState extends State<ProfileTweets> {
 
   Future _loadTweets(String? cursor) async {
     try {
-      var result = await Twitter.getTweets(widget.user.idStr!, widget.type,
-          cursor: cursor, count: _pageSize, includeReplies: widget.includeReplies);
+      var result;
+      if (widget.type == 'profile') {
+        result = await Twitter.getTweetsUsingSearch(widget.user.screenName!, widget.type,
+            cursor: cursor, count: _pageSize, includeReplies: widget.includeReplies);
+      } else {
+        result = await Twitter.getTweets(widget.user.idStr!, widget.type,
+            cursor: cursor, count: _pageSize, includeReplies: widget.includeReplies);
+      }
 
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
