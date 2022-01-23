@@ -133,7 +133,7 @@ packages:
       name: dart_twitter_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.5+1"
   device_frame:
     dependency: transitive
     description:
