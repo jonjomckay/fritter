@@ -2045,6 +2045,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Check for updates`
+  String get should_check_for_updates_label {
+    return Intl.message(
+      'Check for updates',
+      name: 'should_check_for_updates_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable to check for updates when Fritter starts`
+  String get should_check_for_updates_description {
+    return Intl.message(
+      'Enable to check for updates when Fritter starts',
+      name: 'should_check_for_updates_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

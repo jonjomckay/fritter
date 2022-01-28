@@ -39,7 +39,6 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future checkForUpdates() async {
-  L10n.load(const Locale('en'));
   Logger.root.info('Checking for updates');
 
   try {
@@ -49,10 +48,6 @@ Future checkForUpdates() async {
       var result = jsonDecode(response.body);
 
       var flavor = getFlavor();
-      if (flavor == 'play') {
-        // Don't check for updates for the Play Store build
-        return;
-      }
 
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
@@ -132,7 +127,10 @@ Future<void> main() async {
 
   setTimeagoLocales();
 
+  L10n.load(const Locale('en'));
+
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    optionShouldCheckForUpdates: true,
     optionMediaSize: 'medium',
     optionSubscriptionGroupsOrderByAscending: false,
     optionSubscriptionGroupsOrderByField: 'name',
@@ -189,7 +187,12 @@ Future<void> main() async {
             }
           });
 
-          checkForUpdates();
+          var flavor = getFlavor();
+          var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+          if (flavor != 'play' && shouldCheckForUpdates) {
+            // Don't check for updates for the Play Store build or if user disabled it.
+            checkForUpdates();
+          }
         }
 
         // Run the migrations early, so models work. We also do this later on so we can display errors to the user
@@ -231,6 +234,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   static final log = Logger('_MyAppState');
 
+  bool _shouldCheckForUpdates = true;
   String _themeMode = 'system';
   bool _trueBlack = false;
 
@@ -242,8 +246,15 @@ class _MyAppState extends State<MyApp> {
 
     // Set any already-enabled preferences
     setState(() {
+      _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
       _themeMode = prefService.get(optionThemeMode) ?? 'system';
       _trueBlack = prefService.get(optionThemeTrueBlack) ?? false;
+    });
+
+    prefService.addKeyListener(optionShouldCheckForUpdates, () {
+      setState(() {
+        _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+      });
     });
 
     // Whenever the "true black" preference is toggled, apply the toggle
