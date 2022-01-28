@@ -171,6 +171,7 @@
     "save": "Save",
     "share_tweet_content": "Share tweet content",
     "share_tweet_link": "Share tweet link",
+    "share_tweet_content_and_link": "Share tweet content and link",
     "private_profile": "Private profile",
     "user_not_found": "User not found",
     "account_suspended": "Account suspended",

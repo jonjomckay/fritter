@@ -530,6 +530,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                                   'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
                                               Navigator.pop(context);
                                             }),
+                                            createSheetButton(L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
+                                              Share.share(
+                                                  '${tweetText}\n\nhttps://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                              Navigator.pop(context);
+                                            }),
                                             const Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 16),
                                               child: Divider(
