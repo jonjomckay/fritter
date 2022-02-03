@@ -1,0 +1,2 @@
+* Corrigido respostas não aparecendo na tela do perfil
+* Ordem de assinatura fixa, adicionando a capacidade de classificá-los manualmente
