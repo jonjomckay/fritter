@@ -195,7 +195,7 @@
   "@contribute": {},
   "whether_errors_should_be_reported_to_sentry": "是否向Sentry发送错误？👀",
   "@whether_errors_should_be_reported_to_sentry": {},
-  "enable_sentry": "启用 Sentry？👀",
+  "enable_sentry": "启用 Sentry？",
   "@enable_sentry": {},
   "report_a_bug": "报告bug🐞",
   "@report_a_bug": {},
