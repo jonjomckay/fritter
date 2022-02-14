@@ -39,7 +39,7 @@
   "@send": {},
   "say_hello": "Sag Hallo",
   "@say_hello": {},
-  "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Schicken Sie einen Ping, der Ihre Identität nicht preisgibt, um mir mitzuteilen, dass Sie Fritter benutzen - und um die zukünftige Entwicklung zu unterstützen.",
+  "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Schicken Sie einen Ping, der Ihre Identität nicht preisgibt, um mir mitzuteilen, dass Sie Fritter benutzen - und um die zukünftige Entwicklung zu unterstützen",
   "@send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": {},
   "general": "Allgemeines",
   "@general": {},
