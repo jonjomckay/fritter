@@ -357,7 +357,7 @@
   "@ends_timeago_format_endsAt_allowFromNow_true": {},
   "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": "Nepodařilo se uložit média. Twitter vrátil stav {responseStatusCode}",
   "@unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": {},
-  "successfully_saved_the_media": "Média úspěšně uložena!",
+  "successfully_saved_the_media": "Média uložena.",
   "@successfully_saved_the_media": {},
   "unknown": "Neznámé",
   "@unknown": {},
