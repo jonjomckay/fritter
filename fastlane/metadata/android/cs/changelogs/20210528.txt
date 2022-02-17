@@ -1,0 +1,3 @@
+- Vylepšeno zacházení s chybami po celé aplikaci
+- Přidána možnost odeslání hlášení o pádu
+- Přidána možnost opakovat selhané žádosti na Twitter
