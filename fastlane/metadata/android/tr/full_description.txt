@@ -6,3 +6,5 @@
 * Tweet ve kullanıcı arama
 * twitter.com bağlantılarını doğrudan açmayı destekler
 * Sağdan sola (RTL) içeriği destekler
+
+Fritter, öntanımlı olarak etkinleştirilmeyen, gönüllü hata bildirimi için Sentry kullanmaktadır.
