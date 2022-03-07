@@ -341,7 +341,7 @@
   "@downloading_media": {},
   "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": "メディアを保存できませんでした。Twitterから返されたステータス：{responseStatusCode}",
   "@unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": {},
-  "successfully_saved_the_media": "メディアの保存に成功しました！",
+  "successfully_saved_the_media": "メディアが保存されました。",
   "@successfully_saved_the_media": {},
   "unknown": "不明",
   "@unknown": {},
