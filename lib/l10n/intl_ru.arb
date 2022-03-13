@@ -95,7 +95,7 @@
   "@trends": {},
   "ends_timeago_format_endsAt_allowFromNow_true": "Завершится через {timeagoFormat}",
   "@ends_timeago_format_endsAt_allowFromNow_true": {},
-  "successfully_saved_the_media": "Файл успешно сохранён!",
+  "successfully_saved_the_media": "Файл сохранён.",
   "@successfully_saved_the_media": {},
   "playback_speed": "Скорость воспроизведения",
   "@playback_speed": {},
