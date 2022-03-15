@@ -234,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "prefix": MessageLookupByLibrary.simpleMessage("prefix"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Private profile"),
+        "regex_filter": MessageLookupByLibrary.simpleMessage("Filter tweets via regex"),
         "released_under_the_mit_license": MessageLookupByLibrary.simpleMessage(
             "Released under the MIT License"),
         "replying_to": MessageLookupByLibrary.simpleMessage("Replying to"),
