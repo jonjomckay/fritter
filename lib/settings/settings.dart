@@ -296,6 +296,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: 'large',
                   ),
                 ]),
+            PrefText(
+                label: L10n.of(context).regex_filter,
+                pref: optionRegexFilter,
+                // TODO: Add regex validator
+                hintText: "ExampleFilter1|ExampleFilter[2-3]"),
             PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
