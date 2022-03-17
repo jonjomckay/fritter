@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pref/pref.dart';
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
@@ -276,6 +277,25 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     var numberFormat = NumberFormat.compact();
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
+    
+    // Get filter string from options:
+    var prefService = PrefService.of(context);
+    var regexFilterString = prefService.get(optionRegexFilter);
+
+    if (regexFilterString != null && regexFilterString.isNotEmpty){
+      RegExp regexFilter = RegExp('$regexFilterString', caseSensitive: false, multiLine: true);
+     
+      // Check if regex filter matches tweet text:
+      if (regexFilter.hasMatch( tweet.fullText.toString() )) {
+        
+        // TODO: completely remove the card instead of showing "This tweet was filtered"
+        tweet.text = L10n.of(context).this_tweet_was_filtered;
+        tweet.fullText = L10n.of(context).this_tweet_was_filtered;
+        tweet.idStr = '';
+        tweet.isTombstone = true;
+        return const SizedBox.shrink(); // Empty widget
+      }
+    }
 
     if (tweet.isTombstone ?? false) {
       return SizedBox(

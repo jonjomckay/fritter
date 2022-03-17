@@ -1741,6 +1741,16 @@ class L10n {
       args: [],
     );
   }
+  
+  /// `This tweet was filtered`
+  String get this_tweet_was_filtered {
+    return Intl.message(
+      'This tweet was filtered',
+      name: 'this_tweet_was_filtered',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `This tweet is unavailable`
   String get this_tweet_is_unavailable {

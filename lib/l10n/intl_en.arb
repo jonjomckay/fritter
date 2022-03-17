@@ -193,5 +193,6 @@
     "fritter_blue": "Fritter blue",
     "blue_theme_based_on_the_twitter_color_scheme": "Blue theme based on the Twitter color scheme",
     "something_broke_in_fritter": "Something broke in Fritter.",
-    "unable_to_run_the_database_migrations": "Unable to run the database migrations"
+    "unable_to_run_the_database_migrations": "Unable to run the database migrations",
+    "regex_filter": "Filter tweets via regex"
 }

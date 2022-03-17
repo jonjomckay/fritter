@@ -408,6 +408,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Text(L10n.of(context).export_your_data),
               onTap: () => Navigator.pushNamed(context, routeSettingsExport),
             ),
+            PrefTitle(title: Text(L10n.of(context).filters)),
+            PrefText(
+                label: L10n.of(context).regex_filter,
+                pref: optionRegexFilter,
+                // TODO: Add regex validator
+                hintText: "ExampleFilter1|ExampleFilter[2-3]"),
             PrefTitle(title: Text(L10n.of(context).logging)),
             PrefCheckbox(
               title: Text(L10n.of(context).enable_sentry),
