@@ -68,5 +68,7 @@
   "never_send": "Nunca envíes",
   "@never_send": {},
   "an_error_was_reported_to_sentry_thank_you": "Se ha comunicado un error a Sentry. Gracias!",
-  "@an_error_was_reported_to_sentry_thank_you": {}
+  "@an_error_was_reported_to_sentry_thank_you": {},
+  "this_user_does_not_follow_anyone": "¡Este usuario no sigue a nadie!",
+  "@this_user_does_not_follow_anyone": {}
 }
