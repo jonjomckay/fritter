@@ -115,7 +115,7 @@
   "@feed": {},
   "trending": "Tren",
   "@trending": {},
-  "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Kirim ping tidak mengidentifikasi untuk memberi tahu saya bahwa Anda menggunakan Fritter, dan untuk membantu pengembangan di masa mendatang",
+  "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": "Kirim ping tak-mengidentifikasi untuk memberi tahu saya bahwa Anda menggunakan Fritter, dan untuk membantu pengembangan di masa mendatang",
   "@send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": {},
   "which_tab_is_shown_when_the_app_opens": "Bilah mana yang ditampilkan ketika aplikasi dibuka",
   "@which_tab_is_shown_when_the_app_opens": {},
@@ -380,5 +380,7 @@
   "unable_to_load_the_group_settings": "Tidak bisa memuat pengaturan grup",
   "@unable_to_load_the_group_settings": {},
   "large": "Besar",
-  "@large": {}
+  "@large": {},
+  "tweets_number": "{num, plural, zero{tidak ada cuitan} one{1 cuitan} two{2 cuitan} few{{numFormatted} cuitan} many{{numFormatted} cuitan} other{{numFormatted} cuitan}}",
+  "@tweets_number": {}
 }
