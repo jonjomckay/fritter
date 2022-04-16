@@ -1872,6 +1872,16 @@ class L10n {
     );
   }
 
+  /// `Share tweet content and link`
+  String get share_tweet_content_and_link {
+    return Intl.message(
+      'Share tweet content and link',
+      name: 'share_tweet_content_and_link',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Private profile`
   String get private_profile {
     return Intl.message(
