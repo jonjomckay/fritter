@@ -204,9 +204,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
               var fileName = '$_username-$url';
               var uri = '${_media.mediaUrlHttps}:orig';
 
-              await downloadUriToPickedFile(
-                uri,
-                fileName,
+              await downloadUriToPickedFile(context, uri, fileName,
                 onError: (response) {
                   Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
 

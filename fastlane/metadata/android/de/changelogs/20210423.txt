@@ -1,0 +1,1 @@
+* Korrektur: Migrationen wurden nicht angewendet bei vorhergehender Installation einer Vorabversion (pre-release)

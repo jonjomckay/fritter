@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
   static String m0(name) =>
-      "Êtes-vous sûr(e) de vouloir supprimer le groupe d\'abonnement ${name} ?";
+      "Voulez-vous vraiment supprimer le groupe d\'abonnement ${name} ?";
 
   static String m1(fileName) => "Données exportées vers ${fileName}";
 
@@ -35,7 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Terminé avec les utilisateurs ${snapshotData}";
 
   static String m6(snapshotData) =>
-      "Utilisateurs ${snapshotData} importés jusqu’à présent";
+      "${snapshotData} utilisateurs importés jusqu\'à présent";
 
   static String m7(date) => "S\'est inscrit·e le ${date}";
 
@@ -109,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Adresse copiée dans le presse-papiers"),
         "copied_version_to_clipboard": MessageLookupByLibrary.simpleMessage(
-            "Version copiée dans le presse-papiers"),
+            "Copie de la version dans le presse-papiers"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
             "Impossible de contacter Twitter"),
         "could_not_find_any_tweets_by_this_user":
@@ -139,7 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Téléchargement des médias…"),
         "enable_sentry":
-            MessageLookupByLibrary.simpleMessage("Activer Sentry ?"),
+            MessageLookupByLibrary.simpleMessage("Activer Sentry ?"),
         "ended_timeago_format_endsAt_allowFromNow_true": m3,
         "ends_timeago_format_endsAt_allowFromNow_true": m4,
         "enter_your_twitter_username": MessageLookupByLibrary.simpleMessage(
@@ -237,7 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Veuillez entrer un nom"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
             MessageLookupByLibrary.simpleMessage(
-                "Assurez-vous que les données que vous souhaitez importer s’y trouvent, puis appuyez sur le bouton d’importation ci-dessous."),
+                "Assurez-vous que les données que vous souhaitez importer s\'y trouvent, puis appuyez sur le bouton d\'importation ci-dessous."),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Veuillez noter que la méthode utilisée par Fritter pour importer les abonnements est fortement limitée par Twitter, cela peut donc échouer si vous avez beaucoup de comptes suivis."),
@@ -283,8 +283,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscribe": MessageLookupByLibrary.simpleMessage("S\'abonner"),
         "subscriptions": MessageLookupByLibrary.simpleMessage("Abonnements"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Sous-titres"),
-        "successfully_saved_the_media": MessageLookupByLibrary.simpleMessage(
-            "Le média a été sauvegardé avec succès !"),
+        "successfully_saved_the_media":
+            MessageLookupByLibrary.simpleMessage("Média sauvegardé."),
         "system": MessageLookupByLibrary.simpleMessage("Système"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,

@@ -1,0 +1,7 @@
+- Hinzugefügt: Schaltfläche zur manuellen Aktualisierung der Abo-Infos
+- Behoben: Konstantes Laden, obwohl keine Profil-Tweets mehr existieren
+- Behoben: Profilbilder sind nach dem Importieren von Abonnements leer
+- Behoben: Feeds, die beim Speichern eines Tweets eine Aktualisierung erzwingen
+- Behoben: Titel des Startbildschirm ändert sich nicht
+- Behoben: Lange Profil- und Bildschirmnamen ragen in den Bereich des Tweet-Datums hinein
+- Behoben: Der Fehlermeldungsdialog wird zu häufig angezeigt

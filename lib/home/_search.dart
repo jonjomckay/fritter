@@ -19,7 +19,7 @@ class TweetSearchDelegate extends SearchDelegate {
       return [];
     } else {
       // TODO: Is this right?
-      return (await Twitter.searchTweets(query)).chains.map((e) => e.tweets).expand((element) => element).toList();
+      return (await Twitter.searchTweets(query, true)).chains.map((e) => e.tweets).expand((element) => element).toList();
     }
   }
 

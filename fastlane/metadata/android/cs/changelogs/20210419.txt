@@ -1,0 +1,7 @@
+* Přidána podpora pro lokální odběry a skupiny
+* Přidána podpora pro citované tweety
+* Přidána celosvětová stránka trendů
+* Odebrána podpora Nitteru a přímé použití API Twitteru
+* Vylepšen výkon zobrazení profilu
+* Vylepšen celkový výkon obrázků
+* Opravena nemožnost zobrazení některých médií (fotky, GIFy, videa)

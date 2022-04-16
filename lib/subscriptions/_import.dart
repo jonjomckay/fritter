@@ -115,7 +115,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                 WidgetSpan(
                     child: InkWell(
                   onTap: () async => launch('https://github.com/jonjomckay/fritter/issues/143'),
-                  child: const Text('the GitHub issue (#143)',
+                  child: Text(L10n.of(context).the_github_issue,
                       style: TextStyle(
                         color: Colors.blue,
                       )),

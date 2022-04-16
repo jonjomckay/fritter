@@ -1,0 +1,2 @@
+- Hinzugefügt: Verifizierungssymbol neben den Benutzern in Such- und Abonnementsansicht
+- Hinzugefügt: "Hallo"-Nachricht wurde mit Hinweis zur Build-Variante "gewürzt"

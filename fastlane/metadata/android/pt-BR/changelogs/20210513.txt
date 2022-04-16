@@ -1,0 +1,1 @@
+* Corrigidos perfis que não carregavam depois que o Twitter desativou um endpoint

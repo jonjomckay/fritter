@@ -2,9 +2,17 @@ const optionErrorsSentryEnabled = 'errors.sentry_enabled';
 
 const optionHelloLastBuild = 'hello.last_build';
 
+const optionShouldCheckForUpdates = 'should_check_for_updates';
+
 const optionHomeInitialTab = 'home.initial_tab';
 
 const optionMediaSize = 'media.size';
+
+const optionDownloadType = 'download.type';
+const optionDownloadPath = 'download.path';
+
+const optionDownloadTypeDirectory = 'directory';
+const optionDownloadTypeAsk = 'ask';
 
 const optionSubscriptionGroupsOrderByAscending = 'subscription_groups.order_by.ascending';
 const optionSubscriptionGroupsOrderByField = 'subscription_groups.order_by.field';

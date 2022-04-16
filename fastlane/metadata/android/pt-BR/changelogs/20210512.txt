@@ -1,0 +1,4 @@
+* Corrigido tocar em nomes de usuários em tweets abrindo duas telas
+     * As respostas agora podem ser visualizadas tocando no ícone de respostas abaixo de um tweet
+* Corrigido o rodapé do tweet e a barra de guias do perfil transbordando em telas menores.
+     * Agora ambos são roláveis horizontalmente

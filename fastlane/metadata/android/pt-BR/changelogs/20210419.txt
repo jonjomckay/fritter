@@ -1,0 +1,9 @@
+<b>Registro de alterações</b>
+
+* Adicionado suporte para inscrições e grupos locais
+* Adicionado suporte para tweets citados
+* Adicionada página de tendências mundiais
+* Removido o suporte do Nitter em favor do uso da API do Twitter diretamente
+* Melhor desempenho de visualização de perfil
+* Melhor desempenho geral da imagem
+* Corrigido não poder visualizar algumas mídias

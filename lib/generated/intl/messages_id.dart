@@ -53,6 +53,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(thisTweetUserName) => "${thisTweetUserName} mencuit ulang";
 
+  static String m15(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'tidak ada cuitan', one: '1 cuitan', two: '2 cuitan', few: '${numFormatted} cuitan', many: '${numFormatted} cuitan', other: '${numFormatted} cuitan')}";
+
   static String m16(widgetPlaceName) =>
       "Tidak bisa memuat tren untuk ${widgetPlaceName}";
 
@@ -256,7 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Kirim"),
         "send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development":
             MessageLookupByLibrary.simpleMessage(
-                "Kirim ping tidak mengidentifikasi untuk memberi tahu saya bahwa Anda menggunakan Fritter, dan untuk membantu pengembangan di masa mendatang"),
+                "Kirim ping tak-mengidentifikasi untuk memberi tahu saya bahwa Anda menggunakan Fritter, dan untuk membantu pengembangan di masa mendatang"),
         "send_always": MessageLookupByLibrary.simpleMessage("Kirim selalu"),
         "send_once": MessageLookupByLibrary.simpleMessage("Kirim sekali"),
         "share_tweet_content":
@@ -325,6 +328,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Cuitan"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Cuitan & Balasan"),
+        "tweets_number": m15,
         "unable_to_check_if_this_is_a_legacy_Android_device":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memeriksa apakah ini adalah perangkat Android lawas."),

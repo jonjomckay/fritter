@@ -103,9 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Katastrofalna awaria"),
         "contribute": MessageLookupByLibrary.simpleMessage("Wnieś swój wkład"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("Adres skopiowany do schowka"),
+            MessageLookupByLibrary.simpleMessage("Skopiowano adres do schowka"),
         "copied_version_to_clipboard": MessageLookupByLibrary.simpleMessage(
-            "Wersja skopiowana do schowka"),
+            "Skopiowano wersję do schowka"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
             "Nie udało się połączyć z Twitterem"),
         "could_not_find_any_tweets_by_this_user":

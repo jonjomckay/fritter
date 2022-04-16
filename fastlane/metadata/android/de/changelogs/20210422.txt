@@ -1,0 +1,5 @@
+* Es wurde eine Option hinzugefügt, um das Thema der App manuell auszuwählen
+* Unterstützung für das Öffnen von Hashtags, Erwähnungen und URLs wurde hinzugefügt
+* Verbesserte Leistung von Foto- und Videoanhängen
+* Die Anzeige von Retweets in Timelines wurde korrigiert
+* Tweets von gesperrten Konten führen jetzt nicht mehr zu Profilproblemen

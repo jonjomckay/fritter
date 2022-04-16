@@ -1,0 +1,5 @@
+* Přidána podpora řazení skupin odběrů
+* Přidána podpora přibližování a stahování fotek
+* Přidána podpora stahování videí a GIFů
+* Přidána ikona ověřených uživatelů při prohlížení tweetů
+* Vylepšeno ovládání videa, přidána lišta postupu a rychlost přehrávání, hlasitost a celoobrazovkové ovládání

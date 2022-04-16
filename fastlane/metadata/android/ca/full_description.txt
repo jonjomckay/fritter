@@ -1,0 +1,10 @@
+* Subscripcions i grups al dispositiu en local, a l'estil de NewPipe, incloent una visualització de canal de continguts
+* Desar tuits al dispositiu en local, permetent la lectura fora de línia
+* Visualització de perfils
+* Veure tweets i respostes
+* Veure imatges, vídeos i GIF en tuits
+* Cerca de tuits i usuaris
+* Admet obrir enllaços a twitter.com directament
+* Suporta contingut RTL
+
+Fritter utilitza Sentry per a l'informe d'errors voluntari, el cual no està habilitat per defecte.

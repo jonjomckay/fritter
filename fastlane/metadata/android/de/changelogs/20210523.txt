@@ -1,0 +1,1 @@
+* Behoben: Bei einigen älteren Android-Versionen auftretender leerer Bildschirm oder Datenbankfehler

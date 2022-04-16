@@ -45,6 +45,7 @@ class _TweetVideoState extends State<TweetVideo> {
             var fileName = path.basename(url);
 
             await downloadUriToPickedFile(
+              context,
               url,
               fileName,
               onError: (response) {

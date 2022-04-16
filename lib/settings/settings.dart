@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:device_info/device_info.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -21,6 +22,7 @@ import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
@@ -242,7 +244,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           stackTrace: stackTrace,
           prefix: L10n.of(context).unable_to_find_the_app_package_info,
         ),
-        // Complete translation from here @ManeraKai
         onReady: (packageInfo) {
           var version = _createVersionString(packageInfo);
 
@@ -256,6 +257,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               onTap: _sendPing,
             ),
+            if (getFlavor() != 'play')
+              PrefSwitch(
+                title: Text(L10n.of(context).should_check_for_updates_label),
+                pref: optionShouldCheckForUpdates,
+                subtitle:
+                    Text(L10n.of(context).should_check_for_updates_description),
+              ),
             PrefTitle(
               title: Text(L10n.of(context).general),
             ),
@@ -296,6 +304,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: 'large',
                   ),
                 ]),
+            const DownloadTypeSetting(),
             PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
@@ -517,11 +526,72 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )),
+                  )
+              ),
             ),
           ]);
         },
       ),
+    );
+  }
+}
+
+class DownloadTypeSetting extends StatefulWidget {
+  const DownloadTypeSetting({Key? key}) : super(key: key);
+
+  @override
+  DownloadTypeSettingState createState() => DownloadTypeSettingState();
+}
+
+class DownloadTypeSettingState extends State<DownloadTypeSetting> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        PrefDropdown(
+          onChange: (value) {
+            setState(() {});
+          },
+          fullWidth: false,
+          title: Text(L10n.current.download_handling),
+          subtitle: Text(L10n.current.download_handling_description),
+          pref: optionDownloadType,
+          items: [
+            DropdownMenuItem(child: Text(L10n.current.download_handling_type_ask), value: optionDownloadTypeAsk),
+            DropdownMenuItem(child: Text(L10n.current.download_handling_type_directory), value: optionDownloadTypeDirectory),
+          ],
+        ),
+        if (PrefService.of(context).get(optionDownloadType) == optionDownloadTypeDirectory)
+          PrefButton(
+            onTap: () async {
+              var storagePermission = await Permission.storage.request();
+              if (storagePermission.isGranted) {
+                String? directoryPath = await FilePicker.platform.getDirectoryPath();
+
+                setState(() {
+                  PrefService.of(context).set(optionDownloadPath, directoryPath);
+                });
+              } else if (storagePermission.isPermanentlyDenied) {
+                await openAppSettings();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(L10n.current.permission_not_granted),
+                    action: SnackBarAction(
+                      label: L10n.current.open_app_settings,
+                      onPressed: openAppSettings,
+                    )));
+              }
+            },
+            title: Text(L10n.current.download_path),
+            subtitle: Text(
+              PrefService.of(context).get(optionDownloadPath) == ''
+                  ? L10n.current.not_set
+                  : PrefService.of(context).get(optionDownloadPath),
+            ),
+            child: Text(L10n.current.choose),
+          )
+      ],
     );
   }
 }

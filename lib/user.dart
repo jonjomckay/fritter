@@ -128,6 +128,10 @@ class FollowButton extends StatelessWidget {
                         var color = Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black54;
 
                         return MultiSelectDialog(
+                          title: Text(L10n.of(context).select),
+                          searchHint: L10n.of(context).search,
+                          confirmText: Text(L10n.of(context).ok),
+                          cancelText: Text(L10n.of(context).cancel),
                           searchIcon: Icon(Icons.search, color: color),
                           closeSearchIcon: Icon(Icons.close, color: color),
                           itemsTextStyle: Theme.of(context).textTheme.bodyText1,

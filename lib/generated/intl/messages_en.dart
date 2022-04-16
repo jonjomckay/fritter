@@ -33,7 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "Finished with ${snapshotData} users";
 
-  static String m6(snapshotData) => "Imported ${snapshotData} users so far";
+  static String m6(snapshotData) => "${snapshotData} users imported so far";
 
   static String m7(date) => "Joined ${date}";
 
@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "Tap to show ${getMediaType}";
 
-  static String m12(state) => "The connection state ${state} is not supported";
+  static String m12(state) => "The ${state} connection state is not supported";
 
   static String m13(filePath) =>
       "The file does not exist. Please ensure it is located at ${filePath}";
@@ -100,9 +100,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Catastrophic failure"),
+        "choose": MessageLookupByLibrary.simpleMessage("Choose"),
+        "close": MessageLookupByLibrary.simpleMessage("Close"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribute"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("Copied address to clipboard"),
+            MessageLookupByLibrary.simpleMessage("Address copied to clipboard"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Copied version to clipboard"),
         "could_not_contact_twitter":
@@ -129,6 +131,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Don\'t send"),
         "donate": MessageLookupByLibrary.simpleMessage("Donate"),
         "download": MessageLookupByLibrary.simpleMessage("Download"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Download handling"),
+        "download_handling_description":
+            MessageLookupByLibrary.simpleMessage("How downloading should work"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Always ask"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Save to directory"),
+        "download_path": MessageLookupByLibrary.simpleMessage("Download path"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Downloading media..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage("Enable Sentry?"),
@@ -208,9 +219,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "No data was returned, which should never happen. Please report a bug, if possible!"),
         "no_results": MessageLookupByLibrary.simpleMessage("No results"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("No results for:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "No subscriptions. Try searching or importing some!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Not set"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Note: Due to a Twitter limitation, not all tweets may be included"),
@@ -218,7 +232,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oops! Something went wrong 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Open app settings"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Permission not granted. Please try again after granting!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("Pick a color!"),
+        "pick_an_icon": MessageLookupByLibrary.simpleMessage("Pick an icon!"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Pinned tweet"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Playback speed"),
@@ -249,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Say Hello"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Say Hello 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "Selecting individual accounts to import, and assigning groups are both planned for the future already!"),
@@ -264,6 +285,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "Share tweet content and link"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Share tweet link"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Check for updates when Fritter starts"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("Check for updates"),
         "small": MessageLookupByLibrary.simpleMessage("Small"),
         "something_broke_in_fritter":
             MessageLookupByLibrary.simpleMessage("Something broke in Fritter."),
@@ -276,8 +302,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscribe": MessageLookupByLibrary.simpleMessage("Subscribe"),
         "subscriptions": MessageLookupByLibrary.simpleMessage("Subscriptions"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Subtitles"),
-        "successfully_saved_the_media": MessageLookupByLibrary.simpleMessage(
-            "Successfully saved the media!"),
+        "successfully_saved_the_media":
+            MessageLookupByLibrary.simpleMessage("Media saved."),
         "system": MessageLookupByLibrary.simpleMessage("System"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -288,6 +314,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Thanks for reporting. We\'ll try and fix it in no time!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("the GitHub issue (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "The tweet did not contain any text. This is unexpected"),

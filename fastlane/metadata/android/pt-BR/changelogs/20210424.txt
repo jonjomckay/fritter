@@ -1,0 +1,6 @@
+* Adicionado suporte para carregar todos os tweets em perfis
+* Conteúdo do tweet selecionável
+* Corrigidas contagens ausentes nos tweets (respostas, retuítes, citações e favoritos)
+* Correção de links para recursos de sub-tweet (fotos, mídia) para abrir o tweet em vez da tela de tendências
+* Corrigidas as respostas aos tweets que não podem ser abertas
+* Proporções inválidas corrigidas para alguns vídeos
