@@ -1,0 +1,8 @@
+* Added a new profile screen, including bio and metadata (#204, #223)
+* Added support for translating Fritter's UI (#259). Massive thanks to @ManeraKai and all translators!
+* Added support for translating tweets (#132, #199). Massive thanks to @HampusMat!
+* Fixed not being able to save groups (#284)
+* Fixed not being able to toggle group members (#278)
+* Fixed infinite follower loading (#283)
+* Fixed truncated filenames when saving media (#255)
+* Fixed some characters being unsupported when searching for users (#209)

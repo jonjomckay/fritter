@@ -1,0 +1,10 @@
+Hinzugefügt: 
+* Auswahl einer Ortsvorgabe für die Trendseite
+* Auswahl des Standard-Tabs beim Öffnen der App
+* Auswahl der Mediengröße
+* Unterstützung zum Filtern v. Antworten und Retweets von Gruppen
+* Anzeige, auf wen ein Tweet antwortet
+* Anstelle stummer Abbrüche werden Fehler nun öfter angezeigt 
+* Einstellungsbildschirm erscheint aufgeräumter
+* Behoben: Auswahl von Hashtags mit nicht-lateinischen Zeichen unmöglich
+* Behoben: Such-Tabs sind im hellen Modus nicht sichtbar

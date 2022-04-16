@@ -6,3 +6,5 @@
 * Recherche de tweets et d'utilisateurs
 * Prise en charge de l'ouverture directe des liens twitter.com
 * Prise en charge du contenu RTL
+
+Fritter utilise Sentry pour optimiser les repports d'erreurs, qui est désactivé par défaut.

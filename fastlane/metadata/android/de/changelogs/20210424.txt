@@ -1,0 +1,6 @@
+* Neu: Unterstützung für das Laden aller Tweets auf Profilen
+* Inhalt von Tweets kann nun ausgewählt werden
+* Behoben: Fehlende Zahlangaben unter Tweets (Antworten, Retweets, Zitate und Favoriten) 
+* Behoben: Links zu Sub-Tweet-Ressourcen (Fotos, Medien) öffnen Tweet und nicht die Trending-Seite
+* Behoben: Antworten auf Tweets konnten nicht geöffnet werden
+* Behoben: Ungültige Auflösungen für einige Videos

@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:file_picker_writable/file_picker_writable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +9,10 @@ import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(BuildContext context, String uri, String fileName, {required Function(http.Response response) onError, required Function() onStart, required Function() onSuccess}) async {
+Future downloadUriToPickedFile(BuildContext context, String uri, String fileName,
+    {required Function(http.Response response) onError,
+    required Function() onStart,
+    required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   var downloadFile = () async {
@@ -40,8 +42,8 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
     onStart();
     var response = await downloadFile();
 
-    final prefDownloadType = PrefService.of(context).get(OPTION_DOWNLOAD_TYPE);
-    final prefDownloadPath = PrefService.of(context).get(OPTION_DOWNLOAD_PATH);
+    final prefDownloadType = PrefService.of(context).get(optionDownloadType);
+    final prefDownloadPath = PrefService.of(context).get(optionDownloadPath);
 
     if (prefDownloadType == 'save_files_to' && prefDownloadPath != '') {
       if (await Permission.manageExternalStorage.request().isGranted ||
@@ -65,20 +67,15 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
         print('can not write anything, opening Settings');
       }
     } else {
-      var fileInfo = await FilePickerWritable().openFileForCreate(
-          fileName: sanitizedFilename,
-          writer: (file) async {
+      var response = await downloadFile();
 
-            var response = await downloadFile();
-            if (response != null) {
-              await file.writeAsBytes(response);
-              print(file.path);
-            }
-          });
-
-      if (fileInfo != null) {
-        onSuccess();
+      var fileInfo =
+          await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
+      if (fileInfo == null) {
+        return;
       }
     }
+
+    onSuccess();
   }
 }

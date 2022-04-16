@@ -1,0 +1,2 @@
+* Behoben: Öffnen von Tweets beim Antippen
+* Entfernt: t.co URLs, die am Ende von Tweets mit Medien oder Links angezeigt wurden

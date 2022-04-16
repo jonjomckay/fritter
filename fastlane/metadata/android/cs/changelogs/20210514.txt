@@ -1,0 +1,5 @@
+* Odběry jsou nyní zobrazovány na první stránce místo v trendech
+* Uživatel je nyní upozorněn při dostupné aktualizaci aplikace
+* Přidány karty "Tweety" a "Tweety a odpovědi" na profily
+* Přidána podpora pro zobrazování anket
+* Opravena nemožnost importu dat s žádnými odběry, skupinami nebo členy

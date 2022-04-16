@@ -1,9 +1,11 @@
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class ProfileFollows extends StatefulWidget {
   final User user;
@@ -18,7 +20,7 @@ class ProfileFollows extends StatefulWidget {
 class _ProfileFollowsState extends State<ProfileFollows> {
   late PagingController<int?, User> _pagingController;
 
-  int _pageSize = 200;
+  final int _pageSize = 200;
 
   @override
   void initState() {
@@ -37,22 +39,26 @@ class _ProfileFollowsState extends State<ProfileFollows> {
   }
 
   Future _loadFollows(int? cursor) async {
-
     try {
       var result = await Twitter.getProfileFollows(
-          widget.user.screenName!,
-          widget.type,
-          cursor: cursor,
-          count: _pageSize,
+        widget.user.screenName!,
+        widget.type,
+        cursor: cursor,
+        count: _pageSize,
       );
 
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
+      } else if (result.cursorBottom == 0) {
+        _pagingController.appendLastPage(result.users);
       } else {
         _pagingController.appendPage(result.users, result.cursorBottom);
       }
     } catch (e, stackTrace) {
-      _pagingController.error = [e, stackTrace];
+      Catcher.reportCheckedError(e, stackTrace);
+      if (mounted) {
+        _pagingController.error = [e, stackTrace];
+      }
     }
   }
 
@@ -75,19 +81,19 @@ class _ProfileFollowsState extends State<ProfileFollows> {
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the list of follows',
+          prefix: L10n.of(context).unable_to_load_the_list_of_follows,
           onRetry: () => _loadFollows(_pagingController.firstPageKey),
         ),
         newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],
-          prefix: 'Unable to load the next page of follows',
+          prefix: L10n.of(context).unable_to_load_the_next_page_of_follows,
           onRetry: () => _loadFollows(_pagingController.nextPageKey),
         ),
         noItemsFoundIndicatorBuilder: (context) {
           var text = widget.type == 'following'
-            ? 'This user does not follow anyone!'
-            : 'This user does not have anyone following them!';
+              ? L10n.of(context).this_user_does_not_follow_anyone
+              : L10n.of(context).this_user_does_not_have_anyone_following_them;
 
           return Center(
             child: Text(text),

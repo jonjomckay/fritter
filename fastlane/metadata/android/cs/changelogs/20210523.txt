@@ -1,0 +1,1 @@
+* Opravena prázdná obrazovka nebo chyby ohledně databáze, které byly vidět na starších verzích Androidu

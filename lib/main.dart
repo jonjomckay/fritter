@@ -9,6 +9,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fritter/catcher/nice_console_handler.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
@@ -33,6 +35,8 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future checkForUpdates() async {
   Logger.root.info('Checking for updates');
@@ -44,10 +48,6 @@ Future checkForUpdates() async {
       var result = jsonDecode(response.body);
 
       var flavor = getFlavor();
-      if (flavor == 'play') {
-        // Don't check for updates for the Play Store build
-        return;
-      }
 
       var release = result['versions'][flavor]['stable'];
       var latest = release['versionCode'];
@@ -55,52 +55,92 @@ Future checkForUpdates() async {
       Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
       if (int.parse(package.buildNumber) < latest) {
-        var details = NotificationDetails(android: AndroidNotificationDetails(
-            'updates', 'Updates', 'When a new app update is available',
-            importance: Importance.max,
-            largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
-            priority: Priority.high,
-            showWhen: false
-        ));
+        var details = const NotificationDetails(
+            android: AndroidNotificationDetails('updates', 'Updates', 'When a new app update is available',
+                importance: Importance.max,
+                largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+                priority: Priority.high,
+                showWhen: false));
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
-              0, 'An update for Fritter is available! 🚀',
-              'Tap to download ${release['version']}', details,
+              0, 'An update for Fritter is available! 🚀', 'Tap to download ${release['version']}', details,
               payload: release['apk']);
         } else {
-          await FlutterLocalNotificationsPlugin().show(
-              0, 'An update for Fritter is available! 🚀',
+          await FlutterLocalNotificationsPlugin().show(0, 'An update for Fritter is available! 🚀',
               'Update to ${release['version']} through your F-Droid client', details,
-              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/'
-          );
+              payload: 'https://f-droid.org/packages/com.jonjomckay.fritter/');
         }
       }
     } else {
-      Logger.root.severe('Unable to check for updates: ${response.body}');
+      Catcher.reportCheckedError('Unable to check for updates: ${response.body}', null);
     }
   } catch (e, stackTrace) {
-    Logger.root.severe('Unable to check for updates', e, stackTrace);
+    Logger.root.severe('Unable to check for updates');
+    Catcher.reportCheckedError(e, stackTrace);
   }
+}
+
+setTimeagoLocales() {
+  timeago.setLocaleMessages('ar', timeago.ArMessages());
+  timeago.setLocaleMessages('az', timeago.AzMessages());
+  timeago.setLocaleMessages('ca', timeago.CaMessages());
+  timeago.setLocaleMessages('cs', timeago.CsMessages());
+  timeago.setLocaleMessages('da', timeago.DaMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('dv', timeago.DvMessages());
+  timeago.setLocaleMessages('en', timeago.EnMessages());
+  timeago.setLocaleMessages('es', timeago.EsMessages());
+  timeago.setLocaleMessages('fa', timeago.FaMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('gr', timeago.GrMessages());
+  timeago.setLocaleMessages('he', timeago.HeMessages());
+  timeago.setLocaleMessages('he', timeago.HeMessages());
+  timeago.setLocaleMessages('hi', timeago.HiMessages());
+  timeago.setLocaleMessages('id', timeago.IdMessages());
+  timeago.setLocaleMessages('it', timeago.ItMessages());
+  timeago.setLocaleMessages('ja', timeago.JaMessages());
+  timeago.setLocaleMessages('km', timeago.KmMessages());
+  timeago.setLocaleMessages('ko', timeago.KoMessages());
+  timeago.setLocaleMessages('ku', timeago.KuMessages());
+  timeago.setLocaleMessages('mn', timeago.MnMessages());
+  timeago.setLocaleMessages('ms_MY', timeago.MsMyMessages());
+  timeago.setLocaleMessages('nb_NO', timeago.NbNoMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('nn_NO', timeago.NnNoMessages());
+  timeago.setLocaleMessages('pl', timeago.PlMessages());
+  timeago.setLocaleMessages('pt_BR', timeago.PtBrMessages());
+  timeago.setLocaleMessages('ro', timeago.RoMessages());
+  timeago.setLocaleMessages('ru', timeago.RuMessages());
+  timeago.setLocaleMessages('sv', timeago.SvMessages());
+  timeago.setLocaleMessages('ta', timeago.TaMessages());
+  timeago.setLocaleMessages('th', timeago.ThMessages());
+  timeago.setLocaleMessages('tr', timeago.TrMessages());
+  timeago.setLocaleMessages('uk', timeago.UkMessages());
+  timeago.setLocaleMessages('vi', timeago.ViMessages());
+  timeago.setLocaleMessages('zh_CN', timeago.ZhCnMessages());
+  timeago.setLocaleMessages('zh', timeago.ZhMessages());
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  setTimeagoLocales();
+
+  L10n.load(const Locale('en'));
+
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
-    OPTION_MEDIA_SIZE: 'medium',
-    OPTION_DOWNLOAD_TYPE: 'always_ask',
-    OPTION_DOWNLOAD_PATH: '',
-    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_ASCENDING: false,
-    OPTION_SUBSCRIPTION_GROUPS_ORDER_BY_FIELD: 'name',
-    OPTION_SUBSCRIPTION_ORDER_BY_ASCENDING: false,
-    OPTION_SUBSCRIPTION_ORDER_BY_FIELD: 'name',
-    OPTION_THEME_MODE: 'system',
-    OPTION_THEME_TRUE_BLACK: false,
-    OPTION_TRENDS_LOCATION: jsonEncode({
-      'name': 'Worldwide',
-      'woeid': 1
-    }),
+    optionDownloadPath: '',
+    optionDownloadType: 'always_ask',
+    optionMediaSize: 'medium',
+    optionShouldCheckForUpdates: true,
+    optionSubscriptionGroupsOrderByAscending: false,
+    optionSubscriptionGroupsOrderByField: 'name',
+    optionSubscriptionOrderByAscending: false,
+    optionSubscriptionOrderByField: 'name',
+    optionThemeMode: 'system',
+    optionThemeTrueBlack: false,
+    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -112,18 +152,16 @@ Future<void> main() async {
   sentryHub.bindClient(sentryClient);
 
   CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
-    ConsoleHandler(),
+    NiceConsoleHandler(),
     FritterSentryHandler(
-      sentryHub: sentryHub,
-      sentryEnabledStream: prefService.stream<bool?>(OPTION_ERRORS_SENTRY_ENABLED)
-    )
+        sentryHub: sentryHub, sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled))
   ], localizationOptions: [
     LocalizationOptions('en',
-      dialogReportModeDescription: 'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
-      dialogReportModeTitle: 'Send report',
-      dialogReportModeAccept: 'Send',
-      dialogReportModeCancel: "Don't send"
-    )
+        dialogReportModeDescription:
+            'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+        dialogReportModeTitle: 'Send report',
+        dialogReportModeAccept: 'Send',
+        dialogReportModeCancel: "Don't send")
   ], explicitExceptionHandlersMap: {
     'SocketException': NullHandler()
   }, customParameters: {
@@ -131,68 +169,59 @@ Future<void> main() async {
   });
 
   Catcher(
-    debugConfig: catcherOptions,
-    releaseConfig: catcherOptions,
-    enableLogger: false,
-    runAppFunction: () async {
-      Logger.root.onRecord.listen((event) async {
-        print(event.message);
-
-        if (event.error != null) {
-          print(event.error);
-          print(event.stackTrace);
-        }
-
-        if (event.level.value >= 900) {
-          // Don't report internal Catcher errors, as it'll cause a loop
-          if (event.loggerName != 'Catcher') {
-            Catcher.reportCheckedError(event.error, event.stackTrace);
-          }
-        }
-      });
-
-      if (Platform.isAndroid) {
-        FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
-
-        final InitializationSettings settings = InitializationSettings(
-            android: AndroidInitializationSettings('@mipmap/launcher_icon')
-        );
-
-        await notifications.initialize(settings, onSelectNotification: (payload) async {
-          if (payload != null && payload.startsWith('https://')) {
-            await launch(payload);
-          }
+      debugConfig: catcherOptions,
+      releaseConfig: catcherOptions,
+      enableLogger: false,
+      runAppFunction: () async {
+        Logger.root.onRecord.listen((event) async {
+          log(event.message, error: event.error, stackTrace: event.stackTrace);
         });
 
-        checkForUpdates();
-      }
+        if (Platform.isAndroid) {
+          FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
-      // Run the migrations early, so models work. We also do this later on so we can display errors to the user
-      await Repository().migrate();
+          const InitializationSettings settings =
+              InitializationSettings(android: AndroidInitializationSettings('@mipmap/launcher_icon'));
 
-      var homeModel = HomeModel(prefService);
+          await notifications.initialize(settings, onSelectNotification: (payload) async {
+            if (payload != null && payload.startsWith('https://')) {
+              await launch(payload);
+            }
+          });
 
-      var groupModel = GroupModel(prefService);
-      await groupModel.reloadGroups();
+          var flavor = getFlavor();
+          var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+          if (flavor != 'play' && shouldCheckForUpdates) {
+            // Don't check for updates for the Play Store build or if user disabled it.
+            checkForUpdates();
+          }
+        }
 
-      var usersModel = UsersModel(prefService, groupModel);
-      await usersModel.reloadSubscriptions();
+        // Run the migrations early, so models work. We also do this later on so we can display errors to the user
+        await Repository().migrate();
 
-      runApp(PrefService(
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (context) => groupModel),
-              ChangeNotifierProvider(create: (context) => homeModel),
-              ChangeNotifierProvider(create: (context) => usersModel),
-            ],
-            child: DevicePreview(
-              enabled: !kReleaseMode,
-              builder: (context) => MyApp(hub: sentryHub),
+        var homeModel = HomeModel(prefService);
+
+        var groupModel = GroupModel(prefService);
+        await groupModel.reloadGroups();
+
+        var usersModel = UsersModel(prefService, groupModel);
+        await usersModel.reloadSubscriptions();
+
+        runApp(PrefService(
+            child: MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => groupModel),
+                ChangeNotifierProvider(create: (context) => homeModel),
+                ChangeNotifierProvider(create: (context) => usersModel),
+              ],
+              child: DevicePreview(
+                enabled: !kReleaseMode,
+                builder: (context) => MyApp(hub: sentryHub),
+              ),
             ),
-          ),
-          service: prefService
-      ));
-    });
+            service: prefService));
+      });
 }
 
 class MyApp extends StatefulWidget {
@@ -207,31 +236,39 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   static final log = Logger('_MyAppState');
 
+  bool _shouldCheckForUpdates = true;
   String _themeMode = 'system';
   bool _trueBlack = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     var prefService = PrefService.of(context);
 
     // Set any already-enabled preferences
     setState(() {
-      this._themeMode = prefService.get(OPTION_THEME_MODE) ?? 'system';
-      this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK) ?? false;
+      _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+      _themeMode = prefService.get(optionThemeMode) ?? 'system';
+      _trueBlack = prefService.get(optionThemeTrueBlack) ?? false;
     });
 
-    // Whenever the "true black" preference is toggled, apply the toggle
-    prefService.addKeyListener(OPTION_THEME_TRUE_BLACK, () {
+    prefService.addKeyListener(optionShouldCheckForUpdates, () {
       setState(() {
-        this._trueBlack = prefService.get(OPTION_THEME_TRUE_BLACK);
+        _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
       });
     });
 
-    prefService.addKeyListener(OPTION_THEME_MODE, () {
+    // Whenever the "true black" preference is toggled, apply the toggle
+    prefService.addKeyListener(optionThemeTrueBlack, () {
       setState(() {
-        this._themeMode = prefService.get(OPTION_THEME_MODE);
+        _trueBlack = prefService.get(optionThemeTrueBlack);
+      });
+    });
+
+    prefService.addKeyListener(optionThemeMode, () {
+      setState(() {
+        _themeMode = prefService.get(optionThemeMode);
       });
     });
   }
@@ -239,19 +276,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     FlexSchemeData fritterColorScheme = FlexSchemeData(
-      name: 'Fritter blue',
-      description: 'Blue theme based on the Twitter color scheme',
+      name: L10n.current.fritter_blue,
+      description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: Color(0xFF320019),
+        primaryVariant: const Color(0xFF320019),
         secondary: Colors.blue[500]!,
-        secondaryVariant: Color(0xFF002411),
+        secondaryVariant: const Color(0xFF002411),
       ),
       dark: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: Color(0xFF775C69),
+        primaryVariant: const Color(0xFF775C69),
         secondary: Colors.blue[500]!,
-        secondaryVariant: Color(0xFF5C7267),
+        secondaryVariant: const Color(0xFF5C7267),
       ),
     );
 
@@ -267,38 +304,87 @@ class _MyAppState extends State<MyApp> {
         themeMode = ThemeMode.system;
         break;
       default:
-        log.warning('Unknown theme mode preference: '+ _themeMode);
+        log.warning('Unknown theme mode preference: ' + _themeMode);
         themeMode = ThemeMode.system;
         break;
     }
 
     return MaterialApp(
+      localeListResolutionCallback: (locales, supportedLocales) {
+        List supportedLocalesCountryCode = [];
+        for (var item in supportedLocales) {
+          supportedLocalesCountryCode.add(item.countryCode);
+        }
+
+        List supportedLocalesLanguageCode = [];
+        for (var item in supportedLocales) {
+          supportedLocalesLanguageCode.add(item.languageCode);
+        }
+
+        locales!;
+        List localesCountryCode = [];
+        for (var item in locales) {
+          localesCountryCode.add(item.countryCode);
+        }
+
+        List localesLanguageCode = [];
+        for (var item in locales) {
+          localesLanguageCode.add(item.languageCode);
+        }
+
+        // print('Supported Locales CountryCode: $supportedLocalesCountryCode');
+        // print('Supported Locales LanguageCode: $supportedLocalesLanguageCode');
+
+        // print('Locales CountryCode: $localesCountryCode');
+        // print('Locales LanguageCode: $localesLanguageCode');
+
+        for (var i = 0; i < locales.length; i++) {
+          if (supportedLocalesCountryCode.contains(localesCountryCode[i]) &&
+              supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
+            print('Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
+            return Locale(localesLanguageCode[i], localesCountryCode[i]);
+          } else if (supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
+            print('Yes language: ${localesLanguageCode[i]}');
+            return Locale(localesLanguageCode[i]);
+          } else {
+            print('Nothing');
+          }
+        }
+        return const Locale('en');
+      },
+      localizationsDelegates: const [
+        L10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: L10n.delegate.supportedLocales,
       locale: DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
-      navigatorObservers: [
-        SentryNavigatorObserver(hub: widget.hub)
-      ],
+      navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
       theme: FlexColorScheme.light(colors: fritterColorScheme.light).toTheme,
       darkTheme: FlexColorScheme.dark(colors: fritterColorScheme.dark, darkIsTrueBlack: _trueBlack).toTheme,
       themeMode: themeMode,
       initialRoute: '/',
       routes: {
-        '/': (context) => DefaultPage(),
-        ROUTE_GROUP: (context) => GroupScreen(),
-        ROUTE_PROFILE: (context) => ProfileScreen(),
-        ROUTE_SETTINGS: (context) => SettingsScreen(),
-        ROUTE_SETTINGS_EXPORT: (context) => SettingsExportScreen(),
-        ROUTE_STATUS: (context) => StatusScreen(),
-        ROUTE_SUBSCRIPTIONS_IMPORT: (context) => SubscriptionImportScreen()
+        '/': (context) => const DefaultPage(),
+        routeGroup: (context) => const GroupScreen(),
+        routeProfile: (context) => const ProfileScreen(),
+        routeSettings: (context) => const SettingsScreen(),
+        routeSettingsExport: (context) => const SettingsExportScreen(),
+        routeStatus: (context) => const StatusScreen(),
+        routeSubscriptionsImport: (context) => const SubscriptionImportScreen()
       },
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) {
-          log.severe('Something broke in Fritter.', details.exception, details.stack);
+          Catcher.reportCheckedError(details.exception, details.stack);
 
-          return Scaffold(
-            body: FullPageErrorWidget(error: details.exception, stackTrace: details.stack, prefix: 'Something broke in Fritter.'),
+          return FullPageErrorWidget(
+            error: details.exception,
+            stackTrace: details.stack,
+            prefix: L10n.of(context).something_broke_in_fritter,
           );
         };
 
@@ -309,6 +395,8 @@ class _MyAppState extends State<MyApp> {
 }
 
 class DefaultPage extends StatefulWidget {
+  const DefaultPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _DefaultPageState();
 }
@@ -319,7 +407,7 @@ class _DefaultPageState extends State<DefaultPage> {
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      Navigator.pushNamed(context, ROUTE_PROFILE, arguments: link.pathSegments.first);
+      Navigator.pushNamed(context, routeProfile, arguments: link.pathSegments.first);
       return;
     }
 
@@ -329,10 +417,11 @@ class _DefaultPageState extends State<DefaultPage> {
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
 
-        Navigator.pushNamed(context, ROUTE_STATUS, arguments: StatusScreenArguments(
-          id: statusId,
-          username: username,
-        ));
+        Navigator.pushNamed(context, routeStatus,
+            arguments: StatusScreenArguments(
+              id: statusId,
+              username: username,
+            ));
         return;
       }
     }
@@ -350,7 +439,6 @@ class _DefaultPageState extends State<DefaultPage> {
       // Attach a listener to the stream
       _sub = uriLinkStream.listen((link) => handleInitialLink(link!), onError: (err) {
         // TODO: Handle exception by warning the user their action did not succeed
-        int i = 0;
       });
     });
   }
@@ -363,9 +451,9 @@ class _DefaultPageState extends State<DefaultPage> {
       onError: (error, stackTrace) => ScaffoldErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix: 'Unable to run the database migrations',
+        prefix: L10n.of(context).unable_to_run_the_database_migrations,
       ),
-      onReady: (data) => HomeScreen(),
+      onReady: (data) => const HomeScreen(),
     );
   }
 

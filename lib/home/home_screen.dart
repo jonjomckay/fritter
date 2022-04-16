@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/group/_settings.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/trends/trends.dart';
 import 'package:pref/pref.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class _Tab {
   final String id;
@@ -16,15 +18,17 @@ class _Tab {
 }
 
 final List<_Tab> homeTabs = [
-  _Tab('feed', 'Feed', Icons.rss_feed),
-  _Tab('subscriptions', 'Subscriptions', Icons.people),
-  _Tab('trending', 'Trending', Icons.trending_up),
-  _Tab('saved', 'Saved', Icons.bookmark),
+  _Tab('feed', L10n.current.feed, Icons.rss_feed),
+  _Tab('subscriptions', L10n.current.subscriptions, Icons.people),
+  _Tab('trending', L10n.current.trending, Icons.trending_up),
+  _Tab('saved', L10n.current.saved, Icons.bookmark),
 ];
 
 final int feedTabIndex = homeTabs.indexWhere((element) => element.id == 'feed');
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -43,15 +47,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     // If we have an initial tab set, use it as the initial index
     var prefs = PrefService.of(context, listen: false);
-    if (prefs.getKeys().contains(OPTION_HOME_INITIAL_TAB)) {
-      initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(OPTION_HOME_INITIAL_TAB));
+    if (prefs.getKeys().contains(optionHomeInitialTab)) {
+      initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
     }
 
     _children = [
       FeedScreen(scrollController: _scrollController),
-      SubscriptionsScreen(),
-      TrendsScreen(),
-      SavedScreen(),
+      const SubscriptionsScreen(),
+      const TrendsScreen(),
+      const SavedScreen(),
     ];
 
     _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
@@ -60,11 +64,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
- @override
- void dispose() {
-   _tabController.dispose();
-   super.dispose();
- }
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,37 +77,40 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         title: Text(homeTabs[_tabController.index].title),
         actions: [
           if (_tabController.index == feedTabIndex)
-            IconButton(icon: Icon(Icons.arrow_upward), onPressed: () async {
-              await _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOut);
-            }),
+            IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () => showFeedSettings(context, "-1")),
           if (_tabController.index == feedTabIndex)
-            IconButton(icon: Icon(Icons.refresh), onPressed: () async {
-              // This is a dirty hack, and probably won't work if the child widgets ever become stateful
-              setState(() {});
-            }),
+            IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                onPressed: () async {
+                  await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+                }),
+          if (_tabController.index == feedTabIndex)
+            IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () async {
+                  // This is a dirty hack, and probably won't work if the child widgets ever become stateful
+                  setState(() {});
+                }),
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: TweetSearchDelegate(
-                initialTab: 0
-              ));
+              showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 0));
             },
           ),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, ROUTE_SETTINGS);
+              Navigator.pushNamed(context, routeSettings);
             },
           )
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            ...homeTabs.map((e) => Tab(
-              icon: Icon(e.icon),
-            ))
-          ]
-        ),
+        bottom: TabBar(controller: _tabController, tabs: [
+          ...homeTabs.map((e) => Tab(
+                icon: Icon(e.icon),
+              ))
+        ]),
       ),
       body: TabBarView(
         controller: _tabController,

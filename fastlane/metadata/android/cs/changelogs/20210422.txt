@@ -1,0 +1,5 @@
+* Přidána možnost ručního výběru tématu aplikace
+* Přidána podpora otevírání hashtagů, zmínek a adres URL
+* Vylepšen výkon příloh fotek a videí
+* Opraveno zobrazování retweetů v časových osách
+* Opraveno rozbíjení profilů kvůli některých tweetům od pozastavených účtů

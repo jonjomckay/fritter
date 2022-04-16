@@ -1,0 +1,5 @@
+* Neu: Unterstützung für das Anklicken von Links zu Erwähnungen
+* Neu: Wahlmöglichkeit dazu, welche Nitter-Instanzen verwendet werden sollen
+* Unterstützung für RTL-Sprachen hinzugefügt
+* Neu: Unterstützung für echtes Schwarz im dark mode
+* Korrektur der fehlenden Anzeige bestimmter Videos in Tweets

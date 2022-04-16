@@ -1,6 +1,6 @@
-import 'dart:developer';
 import 'dart:math' as math;
 
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,9 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/downloads.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetMediaItem extends StatefulWidget {
   final int index;
@@ -30,15 +30,13 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   void initState() {
     super.initState();
 
-    var mediaSize = PrefService.of(context, listen: false)
-        .get(OPTION_MEDIA_SIZE);
+    var mediaSize = PrefService.of(context, listen: false).get(optionMediaSize);
 
     if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
-      cachedImageExists(widget.media.mediaUrlHttps!)
-          .then((value) => setState(() {
-        _showMedia = value;
-      }));
+      cachedImageExists(widget.media.mediaUrlHttps!).then((value) => setState(() {
+            _showMedia = value;
+          }));
     } else {
       setState(() {
         _showMedia = true;
@@ -62,7 +60,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE);
+    var size = prefs.get(optionMediaSize);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -79,14 +77,16 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
       } else if (item.type == 'photo') {
         media = TweetPhoto(size: size, uri: item.mediaUrlHttps!);
       } else {
-        media = Text('Unknown');
+        media = Text(L10n.of(context).unknown);
       }
     } else {
       media = GestureDetector(
         child: Container(
           color: Colors.black26,
           child: Center(
-            child: Text('Tap to show ${getMediaType(item.type)}'),
+            child: Text(
+              L10n.of(context).tap_to_show_getMediaType_item_type(getMediaType(item.type)),
+            ),
           ),
         ),
         onTap: () => setState(() {
@@ -108,8 +108,8 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
           child: Container(
             alignment: Alignment.topRight,
             color: Colors.black38,
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(8),
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Text('${widget.index} / ${widget.total}'),
           ),
         )
@@ -133,12 +133,11 @@ class _TweetMediaState extends State<TweetMedia> {
 
   @override
   Widget build(BuildContext context) {
-    var largestAspectRatio = widget.media
-        .map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1))
-        .reduce(math.max);
+    var largestAspectRatio =
+        widget.media.map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1)).reduce(math.max);
 
     return Container(
-      margin: EdgeInsets.only(top: 8, left: 16, right: 16),
+      margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
       child: AspectRatio(
         aspectRatio: largestAspectRatio,
         child: PageView.builder(
@@ -149,8 +148,11 @@ class _TweetMediaState extends State<TweetMedia> {
             var item = widget.media[index];
 
             return GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TweetMediaView(initialIndex: index, media: widget.media, username: widget.username ))),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
               child: TweetMediaItem(media: item, index: index + 1, total: widget.media.length),
             );
           },
@@ -165,15 +167,14 @@ class TweetMediaView extends StatefulWidget {
   final List<Media> media;
   final String username;
 
-  const TweetMediaView({Key? key, required this.initialIndex, required this.media, required this.username}) : super(key: key);
+  const TweetMediaView({Key? key, required this.initialIndex, required this.media, required this.username})
+      : super(key: key);
 
   @override
   _TweetMediaViewState createState() => _TweetMediaViewState();
 }
 
 class _TweetMediaViewState extends State<TweetMediaView> {
-  static final log = Logger('_TweetMediaViewState');
-
   late Media _media;
   late String _username;
 
@@ -181,14 +182,14 @@ class _TweetMediaViewState extends State<TweetMediaView> {
   void initState() {
     super.initState();
 
-    this._media = widget.media[widget.initialIndex];
-    this._username = widget.username;
+    _media = widget.media[widget.initialIndex];
+    _username = widget.username;
   }
 
   @override
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
-    var size = prefs.get(OPTION_MEDIA_SIZE);
+    var size = prefs.get(optionMediaSize);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -197,7 +198,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.file_download),
+            icon: const Icon(Icons.file_download),
             onPressed: () async {
               var url = path.basename(_media.mediaUrlHttps!);
               var fileName = '$_username-$url';
@@ -205,20 +206,23 @@ class _TweetMediaViewState extends State<TweetMediaView> {
 
               await downloadUriToPickedFile(context, uri, fileName,
                 onError: (response) {
-                  log.severe('Unable to save the media. The response was ${response.body}');
+                  Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Unable to save the media. Twitter returned a status of ${response.statusCode}'),
+                    content: Text(
+                      L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
+                          response.statusCode),
+                    ),
                   ));
                 },
                 onStart: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Downloading media...'),
+                    content: Text(L10n.of(context).downloading_media),
                   ));
                 },
                 onSuccess: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Successfully saved the media!'),
+                    content: Text(L10n.of(context).successfully_saved_the_media),
                   ));
                 },
               );
@@ -230,7 +234,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.media.length,
         itemBuilder: (BuildContext context, int index) {
-          var item = this.widget.media[index];
+          var item = widget.media[index];
 
           Widget media;
           if (item.type == 'animated_gif') {
@@ -240,7 +244,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
           } else if (item.type == 'photo') {
             media = TweetPhoto(inPageView: true, size: size, uri: item.mediaUrlHttps!);
           } else {
-            media = Text('Unknown');
+            media = Text(L10n.of(context).unknown);
           }
 
           return media;

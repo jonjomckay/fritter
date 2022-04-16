@@ -1,0 +1,5 @@
+* S'ha afegit la implementació per fer clic a les mencions
+* S'ha afegit la capacitat de seleccionar quines instàncies de Nitter utilitzar
+* S'ha afegit la implementació per a les llengües RTL
+* S'ha afegit la capacitat d'utilitzar el negre real en mode fosc
+* S'ha esmenat la incapacitat de veure certs vídeos en els tuits

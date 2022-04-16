@@ -3,6 +3,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class SubscriptionUsers extends StatefulWidget {
   const SubscriptionUsers({Key? key}) : super(key: key);
@@ -16,34 +17,33 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
   Widget build(BuildContext context) {
     var model = context.read<UsersModel>();
     if (model.subscriptions.isEmpty) {
-      return SliverToBoxAdapter(child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Text('¯\\_(ツ)_/¯', style: TextStyle(
-                    fontSize: 32
-                )),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Text('No subscriptions. Try searching or importing some!', textAlign: TextAlign.center, style: TextStyle(
-                    color: Theme.of(context).hintColor,
-                )),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: ElevatedButton(
-                  child: Text('Import from Twitter'),
-                  onPressed: () => Navigator.pushNamed(context, ROUTE_SUBSCRIPTIONS_IMPORT),
-                ),
-              )
-            ])
-        )
-      );
+      return SliverToBoxAdapter(
+          child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text('¯\\_(ツ)_/¯', style: TextStyle(fontSize: 32)),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(L10n.of(context).no_subscriptions_try_searching_or_importing_some,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context).hintColor,
+                          )),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: ElevatedButton(
+                        child: Text(L10n.of(context).import_from_twitter),
+                        onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
+                      ),
+                    )
+                  ])));
     }
 
     return SliverList(

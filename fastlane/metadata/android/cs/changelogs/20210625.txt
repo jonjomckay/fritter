@@ -1,0 +1,7 @@
+- Added the ability to view a user's following and follower lists (#64)
+- Added a dedicated widget for socket errors to help users diagnose
+- Fixed a logging error that occurred on startup for some users
+- Fixed profiles that have a pinned tweet that no longer exists (#173)
+- Fixed loading profiles that do not exist for various reasons (#174)
+- Fixed error caused by missing profile pictures
+- Fixed video controls causing the app to freeze (#147)

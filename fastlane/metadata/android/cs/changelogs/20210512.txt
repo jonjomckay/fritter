@@ -1,0 +1,4 @@
+* Opraveno otevírání dvou obrazovek při klepnutí na uživatelské jméno v tweetu
+    * Odpovědi se nyní dají zobrazit klepnutím na ikonu odpovědí pod tweetem
+* Opraveno zápatí tweetů a přetékání profilové lišty na menších obrazovkách.
+    * Obě se nyní dají horizontálně posouvat

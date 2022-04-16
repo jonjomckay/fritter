@@ -1,0 +1,2 @@
+* Fixed profiles not loading after Twitter blocked the API key (#319)
+* Fixed dates not loading due to a third-party library bug (#313)

@@ -20,5 +20,4 @@ class NullHandler extends ReportHandler {
       PlatformType.windows,
     ];
   }
-
 }

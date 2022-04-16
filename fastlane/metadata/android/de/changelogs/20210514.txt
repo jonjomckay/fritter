@@ -1,0 +1,5 @@
+* Anzeige von Abonnements auf der ersten Seite anstelle von Trends
+* Benachrichtigung des Nutzers, wenn ein Update für die App verfügbar ist
+* Hinzugefügt: Tabs "Tweets" und "Tweets & Antworten" zu den Profilen 
+* Unterstützung für die Anzeige von Umfragen hinzugefügt
+* Behebung des Problems, dass Daten ohne Abonnements, Gruppen oder Mitglieder nicht importiert werden konnten

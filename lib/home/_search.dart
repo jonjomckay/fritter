@@ -7,22 +7,19 @@ import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class TweetSearchDelegate extends SearchDelegate {
   final int initialTab;
 
-  TweetSearchDelegate({ required this.initialTab });
+  TweetSearchDelegate({required this.initialTab});
 
   Future<List<TweetWithCard>> searchTweets(BuildContext context, String query) async {
     if (query.isEmpty) {
       return [];
     } else {
       // TODO: Is this right?
-      return (await Twitter.searchTweets(query))
-          .chains
-          .map((e) => e.tweets)
-          .expand((element) => element)
-          .toList();
+      return (await Twitter.searchTweets(query, true)).chains.map((e) => e.tweets).expand((element) => element).toList();
     }
   }
 
@@ -37,9 +34,11 @@ class TweetSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      IconButton(icon: Icon(Icons.clear), onPressed: () {
-        query = '';
-      })
+      IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            query = '';
+          })
     ];
   }
 
@@ -49,8 +48,7 @@ class TweetSearchDelegate extends SearchDelegate {
         icon: AnimatedIcon(icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
         onPressed: () {
           close(context, null);
-        }
-    );
+        });
   }
 
   @override
@@ -60,45 +58,36 @@ class TweetSearchDelegate extends SearchDelegate {
         initialIndex: initialTab,
         child: Column(
           children: [
-            Container(
-              child: Material(
-                color: Theme.of(context).appBarTheme.backgroundColor,
-                child: TabBar(tabs: [
-                  Tab(icon: Icon(Icons.person)),
-                  Tab(icon: Icon(Icons.comment)),
-                ]),
-              ),
+            Material(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: const TabBar(tabs: [
+                Tab(icon: Icon(Icons.person)),
+                Tab(icon: Icon(Icons.comment)),
+              ]),
             ),
-            Container(
-              child: Expanded(child: TabBarView(children: [
-                TweetSearchResultList<User>(
+            Expanded(
+                child: TabBarView(children: [
+              TweetSearchResultList<User>(
                   query: query,
-                    future: (q) => searchUsers(context, q),
-                    itemBuilder: (context, item) {
-                      return UserTile(
-                        id: item.idStr!,
-                        name: item.name!,
-                        imageUri: item.profileImageUrlHttps!,
-                        screenName: item.screenName!,
-                        verified: item.verified!,
-                      );
-                    }
-                ),
-                TweetSearchResultList<TweetWithCard>(
-                    query: query,
-                    future: (q) => searchTweets(context, q),
-                    itemBuilder: (context, item) {
-                      return TweetTile(
-                          tweet: item,
-                          clickable: true
-                      );
-                    }
-                ),
-              ])),
-            )
+                  future: (q) => searchUsers(context, q),
+                  itemBuilder: (context, item) {
+                    return UserTile(
+                      id: item.idStr!,
+                      name: item.name!,
+                      imageUri: item.profileImageUrlHttps!,
+                      screenName: item.screenName!,
+                      verified: item.verified!,
+                    );
+                  }),
+              TweetSearchResultList<TweetWithCard>(
+                  query: query,
+                  future: (q) => searchTweets(context, q),
+                  itemBuilder: (context, item) {
+                    return TweetTile(tweet: item, clickable: true);
+                  }),
+            ]))
           ],
-        )
-    );
+        ));
   }
 
   @override
@@ -110,12 +99,12 @@ class TweetSearchDelegate extends SearchDelegate {
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 class TweetSearchResultList<T> extends StatefulWidget {
-
   final String query;
   final Future<List<T>> Function(String query) future;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const TweetSearchResultList({Key? key, required this.query, required this.future, required this.itemBuilder}) : super(key: key);
+  const TweetSearchResultList({Key? key, required this.query, required this.future, required this.itemBuilder})
+      : super(key: key);
 
   @override
   _TweetSearchResultListState<T> createState() => _TweetSearchResultListState<T>();
@@ -133,7 +122,7 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
   }
 
   void fetchResults() {
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         _future = widget.future(widget.query);
       });
@@ -164,12 +153,12 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
       onError: (error, stackTrace) => FullPageErrorWidget(
         error: error,
         stackTrace: stackTrace,
-        prefix: 'Unable to load the search results.',
+        prefix: L10n.of(context).unable_to_load_the_search_results,
         onRetry: () => fetchResults(),
       ),
       onReady: (items) {
         if (items.isEmpty) {
-          return Center(child: Text('No results'));
+          return Center(child: Text(L10n.of(context).no_results));
         }
 
         return ListView.builder(

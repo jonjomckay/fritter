@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Force usage of the file picker library even on SDKs < 19, as we handle it at runtime -->
-    <uses-sdk tools:overrideLibrary="codeux.design.filepicker.file_picker_writable" />
+    <uses-sdk tools:overrideLibrary="com.kineapps.flutter_file_dialog" />
 
     <!-- Required for importing and exporting on older versions of Android (<19?) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>

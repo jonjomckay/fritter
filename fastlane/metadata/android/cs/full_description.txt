@@ -1,0 +1,10 @@
+* Lokální odběry a skupiny, styl NewPipe, včetně zobrazení zdroje
+* Lokální ukládání tweetů, umožňující offline čtení
+* Prohlížení profilů
+* Prohlížení tweetů a odpovědí
+* Prohlížení obrázků, videí a GIFů v tweetech
+* Hledání tweetů a uživatelů
+* Podporuje přímé otevírání twitter.com odkazů
+* Podporuje RTL obsah
+
+Fritter používá Sentry pro volitelné hlášení chyb, které není ve výchozím nastavení zapnuto.

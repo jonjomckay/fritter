@@ -1,10 +1,10 @@
 extension Iterables<E> on Iterable<E> {
-  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) => fold(
-      <K, List<E>>{},
-          (Map<K, List<E>> map, E element) =>
-      map..putIfAbsent(keyFunction(element), () => <E>[]).add(element));
-}
+  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) => fold(<K, List<E>>{},
+      (Map<K, List<E>> map, E element) => map..putIfAbsent(keyFunction(element), () => <E>[]).add(element));
 
-extension ListSorted<T> on Iterable<T> {
-  Iterable<T> sorted(int compare(T a, T b)) => [...this]..sort(compare);
+  Iterable<E> getRange(int start, [int? end]) {
+    return (end != null ? take(end) : this).skip(start);
+  }
+
+  Iterable<E> sorted(int Function(E a, E b) compare) => [...this]..sort(compare);
 }

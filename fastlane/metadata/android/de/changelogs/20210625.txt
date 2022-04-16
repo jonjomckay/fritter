@@ -1,0 +1,7 @@
+- Hinzugefügt: Möglichkeit, die Follower und Follower-Listen eines Benutzers einzusehen (#64)
+- Hinzugefügt: Spezielles Widget für Socket-Fehler, um Benutzern die Diagnostik zu erleichtern
+- Behoben: Logging-Fehler beim Start bei einigen Nutzern
+- Behoben: Profile mit gepinnten, nicht mehr existierenden Tweets (#173)
+- Behoben: Fehler beim Laden von nicht existenten Profilen (#174)
+- Behoben: Fehler durch fehlende Profilbilder
+- Behoben: Videosteuerung führt zum Einfrieren der App (#147)

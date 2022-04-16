@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/material/widgets/playback_speed_dialog.dart';
+import 'package:fritter/generated/l10n.dart';
 
 /// This is pretty much 99.9% the MaterialDesktopControls widget from Chewie, released
 /// under the MIT License. It fixes some padding issues, and makes the widget
@@ -29,8 +30,7 @@ class MaterialDesktopControls extends StatefulWidget {
   }
 }
 
-class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
-    with SingleTickerProviderStateMixin {
+class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with SingleTickerProviderStateMixin {
   late PlayerNotifier notifier;
   late VideoPlayerValue _latestValue;
   double? _latestVolume;
@@ -60,9 +60,9 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   Widget build(BuildContext context) {
     if (_latestValue.hasError) {
       return chewieController.errorBuilder?.call(
-        context,
-        chewieController.videoPlayerController.value.errorDescription!,
-      ) ??
+            context,
+            chewieController.videoPlayerController.value.errorDescription!,
+          ) ??
           const Center(
             child: Icon(
               Icons.error,
@@ -93,10 +93,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
                 children: <Widget>[
                   if (_subtitleOn)
                     Transform.translate(
-                      offset: Offset(
-                          0.0, notifier.hideStuff ? barHeight * 0.8 : 0.0),
-                      child:
-                      _buildSubtitles(context, chewieController.subtitle!),
+                      offset: Offset(0.0, notifier.hideStuff ? barHeight * 0.8 : 0.0),
+                      child: _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
                 ],
@@ -146,30 +144,24 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
           _onSpeedButtonTap();
         },
         iconData: Icons.speed,
-        title: chewieController.optionsTranslation?.playbackSpeedButtonText ??
-            'Playback speed',
+        title: chewieController.optionsTranslation?.playbackSpeedButtonText ?? L10n.of(context).playback_speed,
       )
     ];
 
-    if (chewieController.subtitle != null &&
-        chewieController.subtitle!.isNotEmpty) {
+    if (chewieController.subtitle != null && chewieController.subtitle!.isNotEmpty) {
       options.add(
         OptionItem(
           onTap: () {
             _onSubtitleTap();
             Navigator.pop(context);
           },
-          iconData: _subtitleOn
-              ? Icons.closed_caption
-              : Icons.closed_caption_off_outlined,
-          title: chewieController.optionsTranslation?.subtitlesButtonText ??
-              'Subtitles',
+          iconData: _subtitleOn ? Icons.closed_caption : Icons.closed_caption_off_outlined,
+          title: chewieController.optionsTranslation?.subtitlesButtonText ?? L10n.of(context).subtitles,
         ),
       );
     }
 
-    if (chewieController.additionalOptions != null &&
-        chewieController.additionalOptions!(context).isNotEmpty) {
+    if (chewieController.additionalOptions != null && chewieController.additionalOptions!(context).isNotEmpty) {
       options.addAll(chewieController.additionalOptions!(context));
     }
 
@@ -190,8 +182,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
               useRootNavigator: true,
               builder: (context) => OptionsDialog(
                 options: options,
-                cancelButtonText:
-                chewieController.optionsTranslation?.cancelButtonText,
+                cancelButtonText: chewieController.optionsTranslation?.cancelButtonText,
               ),
             );
           }
@@ -244,8 +235,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   }
 
   AnimatedOpacity _buildBottomBar(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     final iconColor = Theme.of(context).textTheme.button!.color;
 
     return AnimatedOpacity(
@@ -253,8 +244,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
       duration: const Duration(milliseconds: 300),
       child: Container(
         height: barHeight + 20,
-        padding:
-        EdgeInsets.only(bottom: 10.0),
+        padding: const EdgeInsets.only(bottom: 10.0),
         child: SafeArea(
           bottom: chewieController.isFullScreen,
           child: Column(
@@ -268,12 +258,11 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
                     _buildPlayPause(controller),
                     _buildMuteButton(controller),
                     if (chewieController.isLive)
-                      const Expanded(child: Text('LIVE'))
+                      Expanded(child: Text(L10n.of(context).live))
                     else
                       _buildPosition(iconColor),
                     const Spacer(),
-                    if (chewieController.showOptions)
-                      _buildOptionsButton(icon: Icons.settings),
+                    if (chewieController.showOptions) _buildOptionsButton(icon: Icons.settings),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
                   ],
                 ),
@@ -281,7 +270,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
               if (!chewieController.isLive)
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       right: 20,
                       left: 20,
                       bottom: 5.0,
@@ -315,9 +304,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
           ),
           child: Center(
             child: Icon(
-              chewieController.isFullScreen
-                  ? Icons.fullscreen_exit
-                  : Icons.fullscreen,
+              chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
               color: Colors.white,
             ),
           ),
@@ -381,8 +368,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
   }
 
   GestureDetector _buildMuteButton(
-      VideoPlayerController controller,
-      ) {
+    VideoPlayerController controller,
+  ) {
     return GestureDetector(
       onTap: () {
         _cancelAndRestartTimer();
@@ -485,12 +472,11 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
       notifier.hideStuff = true;
 
       chewieController.toggleFullScreen();
-      _showAfterExpandCollapseTimer =
-          Timer(const Duration(milliseconds: 300), () {
-            setState(() {
-              _cancelAndRestartTimer();
-            });
-          });
+      _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
+        setState(() {
+          _cancelAndRestartTimer();
+        });
+      });
     });
   }
 
@@ -555,8 +541,8 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls>
         },
         colors: chewieController.materialProgressColors ??
             ChewieProgressColors(
-              playedColor: Theme.of(context).accentColor,
-              handleColor: Theme.of(context).accentColor,
+              playedColor: Theme.of(context).colorScheme.secondary,
+              handleColor: Theme.of(context).colorScheme.secondary,
               bufferedColor: Theme.of(context).backgroundColor.withOpacity(0.5),
               backgroundColor: Theme.of(context).disabledColor.withOpacity(.5),
             ),

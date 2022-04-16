@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.15.1+20211019
+version: 2.16.3+20220123
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -26,26 +26,24 @@ dependencies:
   provider: ^5.0.0
 
   auto_direction: ^0.0.5
-  catcher: ^0.6.8
+  catcher: ^0.6.9
   chewie: ^1.2.2
-  dart_twitter_api: ^0.5.0
+  dart_twitter_api: ^0.5.5+1
   device_info: ^2.0.0
   device_preview: ^0.7.4
+  dio: ^4.0.0
   dotted_border: ^2.0.0-nullsafety.0
   extended_image: ^4.0.1
   faker: ^2.0.0-rc.2
   ffcache: ^1.0.0
   flex_color_scheme: ^2.1.1
+  flutter_cache: ^0.1.0
   file_picker: ^4.1.6
   permission_handler: ^8.2.5
-  file_picker_writable:
-    git:
-      url: https://github.com/jonjomckay/file_picker_writable.git
-      ref: 45b55f13266de97e7f02fb05b49dbccfb492c4cc
   flutter_colorpicker: ^0.6.0
-  flutter_iconpicker: ^3.0.4
+  flutter_file_dialog: ^2.3.0
+  flutter_iconpicker: ^3.1.2
   flutter_local_notifications: ^5.0.0+4
-  fluttertoast: ^8.0.7
   html_unescape: ^2.0.0
   http: ^0.13.1
   infinite_scroll_pagination: ^3.0.1
@@ -57,26 +55,29 @@ dependencies:
   pref: ^2.0.2
   quiver: ^3.0.1
   scroll_to_index: ^2.1.0
-  sentry_flutter: ^5.1.0
+  sentry_flutter: ^6.2.2
   share: ^2.0.1
   simple_icons: ^4.22.0
   sqflite: ^2.0.0+3
+  sqflite_common: 2.1.0
   sqflite_migration_plan: ^0.1.0
   timeago: ^3.0.2
   uni_links2: ^0.6.0+2
   url_launcher: ^6.0.3
   uuid: ^3.0.4
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_launcher_icons: ^0.9.0
+  flutter_lints:
   flutter_oss_licenses: ^1.0.1
+  intl_utils: ^2.6.1
+  sqflite_common_ffi: ^2.0.0+3
 
 flutter_icons:
   android: "launcher_icon"
@@ -85,7 +86,6 @@ flutter_icons:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -100,10 +100,8 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -123,3 +121,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  generate: true
+
+flutter_intl:
+  enabled: true
+  class_name: L10n

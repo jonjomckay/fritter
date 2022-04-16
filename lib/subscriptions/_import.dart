@@ -12,6 +12,7 @@ import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fritter/generated/l10n.dart';
 
 class SubscriptionImportScreen extends StatefulWidget {
   const SubscriptionImportScreen({Key? key}) : super(key: key);
@@ -56,15 +57,13 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         total = total + response.users.length;
 
         await homeModel.importData({
-          TABLE_SUBSCRIPTION: [
-            ...response.users.map((e) =>
-                Subscription(
-                    id: e.idStr!,
-                    name: e.name!,
-                    profileImageUrlHttps: e.profileImageUrlHttps,
-                    screenName: e.screenName!,
-                    verified: e.verified ?? false
-                ))
+          tableSubscription: [
+            ...response.users.map((e) => Subscription(
+                id: e.idStr!,
+                name: e.name!,
+                profileImageUrlHttps: e.profileImageUrlHttps,
+                screenName: e.screenName!,
+                verified: e.verified ?? false))
           ]
         });
 
@@ -84,59 +83,61 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       _streamController?.addError(e, stackTrace);
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Import subscriptions'),
+        title: Text(L10n.of(context).import_subscriptions),
       ),
       body: Container(
-        margin: EdgeInsets.all(16),
+        margin: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Text('To import subscriptions from an existing Twitter account, enter your username below.'),
+              child: Text(
+                L10n.of(context).to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Text('Please note that the method Fritter uses to import subscriptions is heavily rate-limited by Twitter, so this may fail if you have a lot of followed accounts.'),
+              child: Text(
+                L10n.of(context)
+                    .please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(text: 'If you have any feedback on this feature, please leave it on '),
-                  WidgetSpan(
+              child: Text.rich(TextSpan(children: [
+                TextSpan(text: '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
+                WidgetSpan(
                     child: InkWell(
-                      onTap: () async => launch('https://github.com/jonjomckay/fritter/issues/143'),
-                      child: Text('the GitHub issue (#143)', style: TextStyle(
+                  onTap: () async => launch('https://github.com/jonjomckay/fritter/issues/143'),
+                  child: Text(L10n.of(context).the_github_issue,
+                      style: TextStyle(
                         color: Colors.blue,
                       )),
-                    )
-                  ),
-                    TextSpan(text: '. Selecting individual accounts to import, and assigning groups are both planned for the future already!')
-                  ]
+                )),
+                TextSpan(
+                  text:
+                      '. ${L10n.of(context).selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already}',
                 )
-              ),
+              ])),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: 'Enter your Twitter username',
-                  helperText: 'Your profile must be public, otherwise the import will not work',
+                  border: const UnderlineInputBorder(),
+                  hintText: L10n.of(context).enter_your_twitter_username,
+                  helperText: L10n.of(context).your_profile_must_be_public_otherwise_the_import_will_not_work,
                   prefixText: '@',
-                  labelText: 'Username'
+                  labelText: L10n.of(context).username,
                 ),
                 maxLength: 15,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))
-                ],
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))],
                 onChanged: (value) {
                   setState(() {
                     _screenName = value;
@@ -154,7 +155,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                       return FullPageErrorWidget(
                         error: snapshot.error,
                         stackTrace: snapshot.stackTrace,
-                        prefix: 'Unable to import'
+                        prefix: L10n.of(context).unable_to_import,
                       );
                     }
 
@@ -166,22 +167,30 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
+                            const Padding(
+                              padding: EdgeInsets.all(16),
                               child: CircularProgressIndicator(),
                             ),
-                            Text('Imported ${snapshot.data} users so far')
+                            Text(
+                              L10n.of(context).imported_snapshot_data_users_so_far(
+                                snapshot.data.toString(),
+                              ),
+                            )
                           ],
                         );
                       default:
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
+                            const Padding(
+                              padding: EdgeInsets.all(16),
                               child: Icon(Icons.check_circle, size: 36, color: Colors.green),
                             ),
-                            Text('Finished with ${snapshot.data} users')
+                            Text(
+                              L10n.of(context).finished_with_snapshotData_users(
+                                snapshot.data.toString(),
+                              ),
+                            )
                           ],
                         );
                     }
@@ -193,7 +202,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.import_export),
+        child: const Icon(Icons.import_export),
         onPressed: () async => await importSubscriptions(),
       ),
     );

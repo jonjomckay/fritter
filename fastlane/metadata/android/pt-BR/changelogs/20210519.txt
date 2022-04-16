@@ -1,0 +1,5 @@
+* Adicionado suporte para classificação de grupos de assinatura
+* Adicionado suporte para zoom e download de fotos
+* Adicionado suporte para baixar vídeos e GIFs
+* Adicionados ícones de usuários verificados ao visualizar tweets
+* Controles de vídeo aprimorados, adicionando uma barra de progresso e controles de velocidade de reprodução, volume e tela cheia

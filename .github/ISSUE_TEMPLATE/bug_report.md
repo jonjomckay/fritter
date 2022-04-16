@@ -22,4 +22,4 @@ Steps to reproduce the behavior:
 If applicable, add screenshots to help explain your problem.
 
 **Device**
-Your device model, OS version and Fritter version.
+Your device model, OS version, device locale/language and Fritter version.

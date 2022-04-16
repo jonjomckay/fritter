@@ -1,6 +1,8 @@
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/iterables.dart';
@@ -13,7 +15,14 @@ class SubscriptionGroupFeed extends StatefulWidget {
   final bool includeRetweets;
   final ScrollController? scrollController;
 
-  const SubscriptionGroupFeed({Key? key, required this.group, required this.users, required this.includeReplies, required this.includeRetweets, this.scrollController}) : super(key: key);
+  const SubscriptionGroupFeed(
+      {Key? key,
+      required this.group,
+      required this.users,
+      required this.includeReplies,
+      required this.includeRetweets,
+      this.scrollController})
+      : super(key: key);
 
   @override
   _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
@@ -42,8 +51,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
   void didUpdateWidget(SubscriptionGroupFeed oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.includeReplies != widget.includeReplies ||
-        oldWidget.includeRetweets != widget.includeRetweets) {
+    if (oldWidget.includeReplies != widget.includeReplies || oldWidget.includeRetweets != widget.includeRetweets) {
       _pagingController.refresh();
     }
   }
@@ -69,27 +77,36 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
         // If we can add this user to the query and still be less than ~500 characters, do so
         if (query.length + queryToAdd.length < remainingLength) {
-          if (query.length > 0) {
+          if (query.isNotEmpty) {
             query += '+OR+';
           }
 
           query += queryToAdd;
         } else {
           // Otherwise, add the search future and start a new one
-          futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
+          futures.add(Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: cursor, mode: 'live'));
 
           query = queryToAdd;
         }
       }
 
       // Add any remaining query as a search future too
-      futures.add(Twitter.searchTweets(query, limit: 100, cursor: cursor, mode: 'live'));
+      futures.add(Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: cursor, mode: 'live'));
 
       var result = (await Future.wait(futures));
       var threads = result
           .map((e) => e.chains)
           .expand((element) => element)
-          .sorted((a, b) => b.tweets[0].createdAt!.compareTo(a.tweets[0].createdAt!))
+          .sorted((a, b) {
+            var aCreatedAt = a.tweets[0].createdAt;
+            var bCreatedAt = b.tweets[0].createdAt;
+
+            if (aCreatedAt == null || bCreatedAt == null) {
+              return 0;
+            }
+
+            return bCreatedAt.compareTo(aCreatedAt);
+          })
           .toList();
 
       if (result.isEmpty) {
@@ -103,7 +120,10 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         }
       }
     } catch (e, stackTrace) {
-      _pagingController.error = [e, stackTrace];
+      Catcher.reportCheckedError(e, stackTrace);
+      if (mounted) {
+        _pagingController.error = [e, stackTrace];
+      }
     }
   }
 
@@ -112,7 +132,9 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     if (widget.users.isEmpty) {
       return Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('This group contains no subscriptions!')),
+        body: Center(
+          child: Text(L10n.of(context).this_group_contains_no_subscriptions),
+        ),
       );
     }
 
@@ -126,22 +148,25 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         addAutomaticKeepAlives: false,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, conversation, index) {
-            return TweetConversation(id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
+            return TweetConversation(
+                id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
           },
           newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: 'Unable to load the next page of tweets',
+            prefix: L10n.of(context).unable_to_load_the_next_page_of_tweets,
             onRetry: () => _listTweets(_pagingController.firstPageKey),
           ),
           firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
-            prefix: 'Unable to load the tweets for the feed',
+            prefix: L10n.of(context).unable_to_load_the_tweets_for_the_feed,
             onRetry: () => _listTweets(_pagingController.nextPageKey),
           ),
           noItemsFoundIndicatorBuilder: (context) => Center(
-            child: Text('Couldn\'t find any tweets from the last 7 days!'),
+            child: Text(
+              L10n.of(context).could_not_find_any_tweets_from_the_last_7_days,
+            ),
           ),
         ),
       ),

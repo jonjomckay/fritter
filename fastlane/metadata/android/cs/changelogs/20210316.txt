@@ -1,0 +1,5 @@
+* Přidána podpora pro klikání na zmínky
+* Přidána možnost výběru instance Nitteru
+* Přidána podpora pro RTL jazyky
+* Přidána možnost použít plně černou v tmavém režimu
+* Opravena nemožnost zobrazení určitých videí ve tweetech
