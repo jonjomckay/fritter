@@ -303,7 +303,7 @@
   "@unsave": {},
   "save": "Zapisz",
   "@save": {},
-  "share_tweet_content": "Udostępnij zawartość tweeta",
+  "share_tweet_content": "Udostępnij treść tweeta",
   "@share_tweet_content": {},
   "share_tweet_link": "Udostępnij link do tweeta",
   "@share_tweet_link": {},
@@ -404,5 +404,9 @@
   "close": "Zamknij",
   "@close": {},
   "should_check_for_updates_label": "Sprawdzaj aktualizacje",
-  "@should_check_for_updates_label": {}
+  "@should_check_for_updates_label": {},
+  "share_tweet_content_and_link": "Udostępnij treść tweeta i link",
+  "@share_tweet_content_and_link": {},
+  "download_handling": "Obsługa pobierania",
+  "@download_handling": {}
 }
