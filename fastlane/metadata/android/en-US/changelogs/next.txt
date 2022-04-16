@@ -1,1 +1,2 @@
 * Now displaying "All" group options on the Feed screen (#274)
+* Fixed some replies not being filtered out in groups (#344)

@@ -8,7 +8,7 @@ void main() {
   testWidgets('Converting a list of tweets and replies to a list of threads', (WidgetTester tester) async {
     var content = jsonDecode(File('test/tweets-carmack-replies.json').readAsStringSync());
 
-    var tweets = Twitter.createUnconversationedChains(content, 'tweet', true, false);
+    var tweets = Twitter.createUnconversationedChains(content, 'tweet', true, false, true);
 
     // Ensure we have the previous and next page cursors
     expect(tweets.cursorBottom, equals('HBaMgL2dt42W+SYAAA=='));

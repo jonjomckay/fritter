@@ -249,7 +249,7 @@ class Twitter {
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
-  static Future<TweetStatus> searchTweets(String query,
+  static Future<TweetStatus> searchTweets(String query, bool includeReplies,
       {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
     var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', {
       ...defaultParams,
@@ -265,7 +265,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return createUnconversationedChains(result, 'sq-I-t', false, true);
+    return createUnconversationedChains(result, 'sq-I-t', false, true, includeReplies);
   }
 
   static Future<List<User>> searchUsers(String query, {int limit = 25, String? maxId, String? cursor}) async {
@@ -342,7 +342,7 @@ class Twitter {
 
     var result = json.decode(response.body);
 
-    return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false);
+    return createUnconversationedChains(result, 'tweet', cursor == null, includeReplies == false, includeReplies);
   }
 
   static String? getCursor(List<dynamic> addEntries, List<dynamic> repEntries, String legacyType, String type) {
@@ -375,7 +375,7 @@ class Twitter {
   }
 
   static TweetStatus createUnconversationedChains(
-      dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads) {
+      dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads, bool includeReplies) {
     var instructions = List.from(result['timeline']['instructions']);
     if (instructions.isEmpty) {
       return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
@@ -387,7 +387,8 @@ class Twitter {
     String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
     String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
 
-    var tweets = _createTweets(tweetIndicator, result);
+    var tweets = _createTweets(tweetIndicator, result, includeReplies);
+
 
     // First, get all the IDs of the tweets we need to display
     var tweetEntries = addEntries
@@ -455,11 +456,21 @@ class Twitter {
     return List.from(result).map((e) => User.fromJson(e)).toList(growable: false);
   }
 
-  static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result) {
+  static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result, bool includeReplies) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var globalUsers = result['globalObjects']['users'];
+    
+    bool includeTweet(dynamic t) {
+      if (includeReplies) {
+        return true;
+      }
 
-    var tweets = globalTweets.values.map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e)).toList();
+      return t['in_reply_to_status_id'] == null || t['in_reply_to_user_id'] == null;
+    }
+
+    var tweets = globalTweets.values
+        .where(includeTweet)
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e)).toList();
 
     return {for (var e in tweets) e.idStr!: e};
   }
