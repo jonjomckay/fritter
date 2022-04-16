@@ -131,7 +131,7 @@ Future<void> main() async {
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     optionDownloadPath: '',
-    optionDownloadType: 'always_ask',
+    optionDownloadType: optionDownloadTypeAsk,
     optionMediaSize: 'medium',
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,

@@ -244,7 +244,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           stackTrace: stackTrace,
           prefix: L10n.of(context).unable_to_find_the_app_package_info,
         ),
-        // Complete translation from here @ManeraKai
         onReady: (packageInfo) {
           var version = _createVersionString(packageInfo);
 
@@ -305,8 +304,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: 'large',
                   ),
                 ]),
-            // Complete from here. Add a download location button
-            const DownloadPath(),
+            const DownloadTypeSetting(),
             PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
@@ -473,7 +471,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onPressed: () async {
                               await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                          Navigator.pop(context);
+                              Navigator.pop(context);
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -538,15 +536,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-class DownloadPath extends StatefulWidget {
-  const DownloadPath({Key? key}) : super(key: key);
+class DownloadTypeSetting extends StatefulWidget {
+  const DownloadTypeSetting({Key? key}) : super(key: key);
 
   @override
-  DownloadPathState createState() => DownloadPathState();
+  DownloadTypeSettingState createState() => DownloadTypeSettingState();
 }
 
-class DownloadPathState extends State<DownloadPath> {
-  late bool isSaveFilesTo;
+class DownloadTypeSettingState extends State<DownloadTypeSetting> {
 
   @override
   Widget build(BuildContext context) {
@@ -557,59 +554,42 @@ class DownloadPathState extends State<DownloadPath> {
             setState(() {});
           },
           fullWidth: false,
-          title: Text('Download location'),
-          subtitle: Text('Should it always ask you where or a preset path'),
+          title: Text(L10n.current.download_handling),
+          subtitle: Text(L10n.current.download_handling_description),
           pref: optionDownloadType,
           items: [
-            DropdownMenuItem(child: Text('Always ask'), value: 'always_ask'),
-            DropdownMenuItem(
-                child: Text('Save files to'), value: 'save_files_to'),
+            DropdownMenuItem(child: Text(L10n.current.download_handling_type_ask), value: optionDownloadTypeAsk),
+            DropdownMenuItem(child: Text(L10n.current.download_handling_type_directory), value: optionDownloadTypeDirectory),
           ],
         ),
-        if (PrefService.of(context).get(optionDownloadType) ==
-            'save_files_to')
+        if (PrefService.of(context).get(optionDownloadType) == optionDownloadTypeDirectory)
           PrefButton(
             onTap: () async {
-              setDirectory() async {
-                String? directoryPath =
-                await FilePicker.platform.getDirectoryPath();
+              var storagePermission = await Permission.storage.request();
+              if (storagePermission.isGranted) {
+                String? directoryPath = await FilePicker.platform.getDirectoryPath();
+
                 setState(() {
-                  PrefService.of(context)
-                      .set(optionDownloadPath, directoryPath);
+                  PrefService.of(context).set(optionDownloadPath, directoryPath);
                 });
-                print('Custom path is: ${directoryPath ?? 'Not set'}');
-              }
-
-              print('checking storage permission');
-              print('checking manage storage permission');
-
-              if (await Permission.manageExternalStorage.request().isGranted)
-                await setDirectory();
-              else if (await Permission
-                  .manageExternalStorage.isPermanentlyDenied)
+              } else if (storagePermission.isPermanentlyDenied) {
                 await openAppSettings();
-              else if (await Permission.storage.request().isGranted) {
-                await setDirectory();
-              } else if (await Permission.storage.isPermanentlyDenied)
-                await openAppSettings();
-              else {
+              } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Not granted'),
+                    content: Text(L10n.current.permission_not_granted),
                     action: SnackBarAction(
-                      label: 'Open App settings',
+                      label: L10n.current.open_app_settings,
                       onPressed: openAppSettings,
-                    )
-                ));
-                print('Access Storage not granted');
+                    )));
               }
             },
-            title: Text('Path'),
+            title: Text(L10n.current.download_path),
             subtitle: Text(
               PrefService.of(context).get(optionDownloadPath) == ''
-                  ? 'Not set'
+                  ? L10n.current.not_set
                   : PrefService.of(context).get(optionDownloadPath),
             ),
-            child: Text('Change'),
+            child: Text(L10n.current.choose),
           )
       ],
     );

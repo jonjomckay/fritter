@@ -396,5 +396,14 @@
   "unable_to_run_the_database_migrations": "Unable to run the database migrations",
   "@unable_to_run_the_database_migrations": {},
   "should_check_for_updates_label": "Check for updates",
-  "should_check_for_updates_description": "Check for updates when Fritter starts"
+  "should_check_for_updates_description": "Check for updates when Fritter starts",
+  "download_handling": "Download handling",
+  "download_handling_description": "How downloading should work",
+  "download_handling_type_ask": "Always ask",
+  "download_handling_type_directory": "Save to directory",
+  "download_path": "Download path",
+  "permission_not_granted": "Permission not granted. Please try again after granting!",
+  "open_app_settings": "Open app settings",
+  "choose": "Choose",
+  "not_set": "Not set"
 }

@@ -2125,6 +2125,96 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Download handling`
+  String get download_handling {
+    return Intl.message(
+      'Download handling',
+      name: 'download_handling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `How downloading should work`
+  String get download_handling_description {
+    return Intl.message(
+      'How downloading should work',
+      name: 'download_handling_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always ask`
+  String get download_handling_type_ask {
+    return Intl.message(
+      'Always ask',
+      name: 'download_handling_type_ask',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save to directory`
+  String get download_handling_type_directory {
+    return Intl.message(
+      'Save to directory',
+      name: 'download_handling_type_directory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Download path`
+  String get download_path {
+    return Intl.message(
+      'Download path',
+      name: 'download_path',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission not granted. Please try again after granting!`
+  String get permission_not_granted {
+    return Intl.message(
+      'Permission not granted. Please try again after granting!',
+      name: 'permission_not_granted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open app settings`
+  String get open_app_settings {
+    return Intl.message(
+      'Open app settings',
+      name: 'open_app_settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose`
+  String get choose {
+    return Intl.message(
+      'Choose',
+      name: 'choose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not set`
+  String get not_set {
+    return Intl.message(
+      'Not set',
+      name: 'not_set',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

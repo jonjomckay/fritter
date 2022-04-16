@@ -100,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Catastrophic failure"),
+        "choose": MessageLookupByLibrary.simpleMessage("Choose"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribute"),
         "copied_address_to_clipboard":
@@ -130,6 +131,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Don\'t send"),
         "donate": MessageLookupByLibrary.simpleMessage("Donate"),
         "download": MessageLookupByLibrary.simpleMessage("Download"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Download handling"),
+        "download_handling_description":
+            MessageLookupByLibrary.simpleMessage("How downloading should work"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Always ask"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Save to directory"),
+        "download_path": MessageLookupByLibrary.simpleMessage("Download path"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Downloading media..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage("Enable Sentry?"),
@@ -214,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "No subscriptions. Try searching or importing some!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Not set"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Note: Due to a Twitter limitation, not all tweets may be included"),
@@ -221,6 +232,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oops! Something went wrong 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Open app settings"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Permission not granted. Please try again after granting!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("Pick a color!"),
         "pick_an_icon": MessageLookupByLibrary.simpleMessage("Pick an icon!"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Pinned tweet"),
