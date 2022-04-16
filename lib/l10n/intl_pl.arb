@@ -408,5 +408,21 @@
   "share_tweet_content_and_link": "Udostępnij treść tweeta i link",
   "@share_tweet_content_and_link": {},
   "download_handling": "Obsługa pobierania",
-  "@download_handling": {}
+  "@download_handling": {},
+  "download_handling_type_ask": "Zawsze pytaj",
+  "@download_handling_type_ask": {},
+  "download_handling_type_directory": "Zapisuj w katalogu",
+  "@download_handling_type_directory": {},
+  "download_path": "Ścieżka pobierania",
+  "@download_path": {},
+  "choose": "Wybierz",
+  "@choose": {},
+  "not_set": "Nie ustawiono",
+  "@not_set": {},
+  "download_handling_description": "Jak powinno działać pobieranie",
+  "@download_handling_description": {},
+  "permission_not_granted": "Nie przyznano uprawnienia. Spróbuj ponownie po przyznaniu!",
+  "@permission_not_granted": {},
+  "open_app_settings": "Otwórz ustawienia aplikacji",
+  "@open_app_settings": {}
 }
