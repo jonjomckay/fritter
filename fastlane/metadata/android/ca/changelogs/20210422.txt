@@ -1,0 +1,5 @@
+* S'ha afegit una opció per seleccionar manualment el tema de l'aplicació
+* S'ha afegit el suport per obrir etiquetes, mencions i URL
+* Rendiment millorat dels adjunts de foto i vídeo
+* S'ha arreglat la visualització dels retweets en línies de temps
+* S'han arreglat alguns tuits de comptes suspesos que trencaven perfils

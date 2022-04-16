@@ -1,0 +1,5 @@
+* Adicionado suporte para clicar em menções
+* Adicionada a capacidade de selecionar quais instâncias do Nitter usar
+* Adicionado suporte para idiomas RTL
+* Adicionado a capacidade de usar preto verdadeiro no modo escuro
+* Corrigida a incapacidade de visualizar determinados vídeos em tweets

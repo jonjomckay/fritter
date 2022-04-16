@@ -1,0 +1,1 @@
+* Einige Fehler für einige Benutzer mit fehlerhaften Metadaten aus v2.10.0 wurden behoben (#167, #170)

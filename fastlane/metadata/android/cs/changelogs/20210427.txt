@@ -1,0 +1,2 @@
+* Opraveno otevírání tweetů při klepnutí
+* Odebrány adresy URL t.co, které byly zobrazeny na konci tweetů obsahujících média nebo odkazy

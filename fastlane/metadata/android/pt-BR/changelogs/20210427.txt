@@ -1,0 +1,2 @@
+* Corrigidos tweets que não abrem quando tocados
+* Removidos os URLs t.co que estavam sendo exibidos no final de tweets contendo mídia ou links

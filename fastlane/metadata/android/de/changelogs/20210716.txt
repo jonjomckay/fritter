@@ -1,0 +1,3 @@
+- Unterstützung für den Import von Abonnements aus einem bestehenden Twitter-Konto hinzugefügt (beta, #143)
+- Verbesserte Behandlung von unerwarteten Antworten von Twitter
+- Behoben: Behandlung von Twitter-Tokens unterschiedlichen Typs (#187)

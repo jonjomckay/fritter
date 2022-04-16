@@ -1,0 +1,2 @@
+* Behoben: Profile wurden nach der Sperrung des API-Schüssels durch Twitter nicht geladen (#319)
+* Behoben: Daten konnten aufgrund eines Fehlers in einer Drittanbieter-Bibliothek nicht geladen werden (#313)

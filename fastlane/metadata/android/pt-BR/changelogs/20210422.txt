@@ -1,0 +1,5 @@
+* Adicionada uma opção para selecionar manualmente o tema do aplicativo
+* Adicionado suporte para abrir hashtags, menções e URLs
+* Melhor desempenho de anexos de fotos e vídeos
+* Corrigida a exibição de retuítes nas linhas do tempo
+* Corrigidos alguns tweets de contas suspensas quebrando perfis

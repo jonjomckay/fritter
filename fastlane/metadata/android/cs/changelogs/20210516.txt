@@ -1,0 +1,9 @@
+* Přidána podpora pro výběr lokace trendů
+* Přidána podpora výběru výchozí karty při otevření aplikace
+* Přidána podpora výběru velikosti médií
+* Přidána podpora filtrování odpovědí a retweetů ze skupin
+* Nyní je zobrazováno, na který tweet odpověď odpovídá
+* Nyní jsou na více místech zobrazovány chyby místo tichého selhání
+* Vyčištěna obrazovka nastavení
+* Opravena nemožnost vybrat nelatinské hashtagy
+* Opravena neviditelnost hledání ve světlém režimu

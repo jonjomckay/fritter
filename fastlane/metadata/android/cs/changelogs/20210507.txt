@@ -1,0 +1,8 @@
+* Přidána podpora importu a exportu odběrů, skupin, tweetů a nastavení
+* Přidána podpora lokálního ukládání tweetů
+* Přidána podpora sdílení odkazů na tweety a sdílení obsahu tweetů
+* Přidáno tlačítko pro odeslání jednorázového neidentifikovatelného pingu pro pomoc s budoucím vývojem
+* Přidána detailnější zpráva při nemožnosti obnovení API tokenu Twitteru
+* Přidána možnost přepnutí všech odběrů při vytváření skupiny
+* Nyní je zobrazován počet odběrů celkově a podle skupin
+* Spousty dalších oprav

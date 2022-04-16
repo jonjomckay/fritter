@@ -1,0 +1,1 @@
+* Opraveno neaplikování migrací, když bylo dříve nainstalováno předběžné vydání

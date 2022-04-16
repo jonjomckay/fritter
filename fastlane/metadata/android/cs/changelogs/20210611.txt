@@ -1,0 +1,8 @@
+- Added the ability to add a user to a group when subscribing
+- Added the "All" feed as a home screen tab
+- Added support for automatic searching when text is entered
+- Added a "Media" tab to profiles
+- Improved the layout of the video player, making it possible to seek on narrower screens
+- Improved displaying of retweets for smaller devices
+- Fixed poll colors hiding text in light mode
+- Fixed tweets not opening when a profile, search, or tweet screen is already open

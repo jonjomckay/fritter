@@ -1,0 +1,6 @@
+* Přidána podpora pro načítání všech tweetů na profilech
+* Obsah tweetů se nyní dá označit
+* Opraveny chybějící počty pod tweety (odpovědi, retweety, citace a oblíbené)
+* Opraveny odkazy na podtweetové zdroje (fotky, média), aby otevíraly tweet místo obrazovky trendů
+* Opravena nemožnost otevřít odpovědi na tweety
+* Opraveny neplatné poměry stran u některých videí

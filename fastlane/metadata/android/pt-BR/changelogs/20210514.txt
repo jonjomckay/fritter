@@ -1,0 +1,5 @@
+* Agora exibindo assinaturas como a primeira página em vez de tendências
+* Agora notificando o usuário quando uma atualização do aplicativo estiver disponível
+* Adicionadas guias "Tweets" e "Tweets & Replies" aos perfis
+* Adicionado suporte para exibir enquetes
+* Corrigido não poder importar dados sem assinaturas, grupos ou membros

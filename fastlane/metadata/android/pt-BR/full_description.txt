@@ -1,0 +1,10 @@
+* Inscrições e grupos locais do dispositivo, estilo NewPipe, incluindo uma visualização de feed
+* Salvamento de tweets no dispositivo local, permitindo leitura offline
+* Visualização perfis
+* Visualização de tweets e respostas
+* Visualização de fotos, vídeos e GIFs em tweets
+* Pesquisa por tweets e usuários
+* Suporte a abertura de links do twitter.com diretamente
+* Suporte a conteúdo RTL
+
+Fritter usa o Sentry para relatórios de erro opt-in, que não está habilitado por padrão.
