@@ -110,6 +110,16 @@ class L10n {
     );
   }
 
+  /// `Select`
+  String get select {
+    return Intl.message(
+      'Select',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Unsubscribe`
   String get unsubscribe {
     return Intl.message(
@@ -1146,10 +1156,10 @@ class L10n {
     );
   }
 
-  /// `Copied address to clipboard`
+  /// `Address copied to clipboard`
   String get copied_address_to_clipboard {
     return Intl.message(
-      'Copied address to clipboard',
+      'Address copied to clipboard',
       name: 'copied_address_to_clipboard',
       desc: '',
       args: [],
@@ -1318,6 +1328,46 @@ class L10n {
     );
   }
 
+  /// `Pick an icon!`
+  String get pick_an_icon {
+    return Intl.message(
+      'Pick an icon!',
+      name: 'pick_an_icon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No results for:`
+  String get no_results_for {
+    return Intl.message(
+      'No results for:',
+      name: 'no_results_for',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Import subscriptions`
   String get import_subscriptions {
     return Intl.message(
@@ -1357,6 +1407,16 @@ class L10n {
     return Intl.message(
       'If you have any feedback on this feature, please leave it on',
       name: 'if_you_have_any_feedback_on_this_feature_please_leave_it_on',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `the GitHub issue (#143)`
+  String get the_github_issue {
+    return Intl.message(
+      'the GitHub issue (#143)',
+      name: 'the_github_issue',
       desc: '',
       args: [],
     );
@@ -1414,10 +1474,10 @@ class L10n {
     );
   }
 
-  /// `Imported {snapshotData} users so far`
+  /// `{snapshotData} users imported so far`
   String imported_snapshot_data_users_so_far(Object snapshotData) {
     return Intl.message(
-      'Imported $snapshotData users so far',
+      '$snapshotData users imported so far',
       name: 'imported_snapshot_data_users_so_far',
       desc: '',
       args: [snapshotData],
@@ -1642,10 +1702,10 @@ class L10n {
     );
   }
 
-  /// `Successfully saved the media!`
+  /// `Media saved.`
   String get successfully_saved_the_media {
     return Intl.message(
-      'Successfully saved the media!',
+      'Media saved.',
       name: 'successfully_saved_the_media',
       desc: '',
       args: [],
@@ -1945,10 +2005,10 @@ class L10n {
     );
   }
 
-  /// `The connection state {state} is not supported`
+  /// `The {state} connection state is not supported`
   String the_connection_state_state_is_not_supported(Object state) {
     return Intl.message(
-      'The connection state $state is not supported',
+      'The $state connection state is not supported',
       name: 'the_connection_state_state_is_not_supported',
       desc: '',
       args: [state],
@@ -2056,10 +2116,10 @@ class L10n {
     );
   }
 
-  /// `Enable to check for updates when Fritter starts`
+  /// `Check for updates when Fritter starts`
   String get should_check_for_updates_description {
     return Intl.message(
-      'Enable to check for updates when Fritter starts',
+      'Check for updates when Fritter starts',
       name: 'should_check_for_updates_description',
       desc: '',
       args: [],
@@ -2074,18 +2134,23 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'ar'),
+      Locale.fromSubtags(languageCode: 'ca'),
+      Locale.fromSubtags(languageCode: 'cs'),
       Locale.fromSubtags(languageCode: 'de'),
       Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'et'),
       Locale.fromSubtags(languageCode: 'fr'),
       Locale.fromSubtags(languageCode: 'id'),
       Locale.fromSubtags(languageCode: 'it'),
       Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'ko'),
       Locale.fromSubtags(languageCode: 'ml'),
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
       Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
       Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'tr'),
+      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
     ];
   }
 

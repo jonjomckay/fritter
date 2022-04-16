@@ -231,7 +231,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Por favor, digite um nome"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
             MessageLookupByLibrary.simpleMessage(
-                "Verifique se os dados que você deseja importar estão localizados lá e pressione o botão de importação abaixo."),
+                "Certifique-se de que os dados que deseja importar estão localizados lá e pressione o botão de importação abaixo."),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Observe que o método que o Fritter usa para importar inscrições é fortemente limitado pelo Twitter, portanto, isso pode falhar se você estiver seguindo muitas contas."),
@@ -280,7 +280,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Inscrições"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Legendas"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Mídia salva com sucesso!"),
+            MessageLookupByLibrary.simpleMessage("Mídia salva."),
         "system": MessageLookupByLibrary.simpleMessage("Sistema"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,

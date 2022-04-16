@@ -20,7 +20,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
-  static String m0(name) => "購読グループ${name}を削除してもよろしいですか？";
+  static String m0(name) => "登録グループ${name}を削除してもよろしいですか？";
 
   static String m1(fileName) => "データが${fileName}にエクスポートされました";
 
@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m16(widgetPlaceName) => "${widgetPlaceName}のトレンドを読み込めませんでした";
 
-  static String m17(e) => "購読を更新できませんでした。エラー：${e}";
+  static String m17(e) => "登録アカウントを更新できませんでした。エラー：${e}";
 
   static String m18(responseStatusCode) =>
       "メディアを保存できませんでした。Twitterから返されたステータス：${responseStatusCode}";
@@ -74,13 +74,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "add_to_group": MessageLookupByLibrary.simpleMessage("グループに追加"),
         "all": MessageLookupByLibrary.simpleMessage("すべて"),
         "all_the_great_software_used_by_fritter":
-            MessageLookupByLibrary.simpleMessage("Fritterが使用するすばらしいソフトウェア"),
+            MessageLookupByLibrary.simpleMessage("Fritterで使用する偉大なソフトウェア"),
         "an_error_was_reported_to_sentry_thank_you":
             MessageLookupByLibrary.simpleMessage(
                 "エラーがSentoryに送信されました。ありがとうございました！"),
         "an_update_for_fritter_is_available":
             MessageLookupByLibrary.simpleMessage("Fritterの更新が利用可能です！🚀"),
-        "are_you_sure": MessageLookupByLibrary.simpleMessage("よろしいですか？"),
+        "are_you_sure": MessageLookupByLibrary.simpleMessage("確認"),
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("戻る"),
@@ -107,7 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "data_imported_successfully":
             MessageLookupByLibrary.simpleMessage("データのインポートに成功しました"),
         "date_created": MessageLookupByLibrary.simpleMessage("作成日"),
-        "date_subscribed": MessageLookupByLibrary.simpleMessage("購読開始日"),
+        "date_subscribed": MessageLookupByLibrary.simpleMessage("登録日"),
         "default_tab": MessageLookupByLibrary.simpleMessage("デフォルトのタブ"),
         "delete": MessageLookupByLibrary.simpleMessage("削除"),
         "disabled": MessageLookupByLibrary.simpleMessage("無効"),
@@ -116,7 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("ダウンロード"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("メディアをダウンロード中..."),
-        "enable_sentry": MessageLookupByLibrary.simpleMessage("Sentryを有効化する？"),
+        "enable_sentry": MessageLookupByLibrary.simpleMessage("Sentryを有効化？"),
         "ended_timeago_format_endsAt_allowFromNow_true": m3,
         "ends_timeago_format_endsAt_allowFromNow_true": m4,
         "enter_your_twitter_username":
@@ -124,11 +124,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "export": MessageLookupByLibrary.simpleMessage("エクスポート"),
         "export_settings": MessageLookupByLibrary.simpleMessage("設定をエクスポート？"),
         "export_subscription_group_members":
-            MessageLookupByLibrary.simpleMessage("購読グループのメンバーをエクスポート？"),
+            MessageLookupByLibrary.simpleMessage("登録グループのアカウントをエクスポート？"),
         "export_subscription_groups":
-            MessageLookupByLibrary.simpleMessage("購読グループをエクスポート？"),
+            MessageLookupByLibrary.simpleMessage("登録グループをエクスポート？"),
         "export_subscriptions":
-            MessageLookupByLibrary.simpleMessage("購読をエクスポート？"),
+            MessageLookupByLibrary.simpleMessage("登録アカウントをエクスポート？"),
         "export_tweets": MessageLookupByLibrary.simpleMessage("ツイートをエクスポート？"),
         "export_your_data": MessageLookupByLibrary.simpleMessage("データのエクスポート"),
         "feed": MessageLookupByLibrary.simpleMessage("フィード"),
@@ -156,13 +156,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "import_from_twitter":
             MessageLookupByLibrary.simpleMessage("Twitterからインポート"),
         "import_subscriptions":
-            MessageLookupByLibrary.simpleMessage("購読をインポートする"),
+            MessageLookupByLibrary.simpleMessage("登録アカウントをインポートする"),
         "imported_snapshot_data_users_so_far": m6,
         "include_replies": MessageLookupByLibrary.simpleMessage("返信を含める"),
         "include_retweets": MessageLookupByLibrary.simpleMessage("リツイートを含める"),
         "it_looks_like_you_have_already_said_hello_from_this_version_of_fritter":
             MessageLookupByLibrary.simpleMessage(
-                "既にこのバージョンのFritterからあいさつを送っているようです！"),
+                "既にこのバージョンのFritterから挨拶を送っているようです！"),
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage("既に最近pingを送信しているようです。🤔"),
         "joined": m7,
@@ -188,10 +188,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_results": MessageLookupByLibrary.simpleMessage("結果なし"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
-                "購読がありません。検索するか、インポートしてみてください！"),
+                "登録アカウントがありません。検索するか、インポートしてみてください！"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
-                "注意：ツイッターの制限により、全てのツイートが含まれない可能性があります"),
+                "注意：Twitterの制限により全てのツイートが含まれない可能性があります"),
         "numberFormat_format_total_votes": m8,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong":
@@ -207,7 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "インポートしたいデータが存在することを確認し、下のインポートボタンを押してください。"),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
-                "Fritterが購読をインポートする際に使うメソッドはTwitterにより厳しくレート制限されているため、フォローアカウントが多い場合は失敗する可能性があります。"),
+                "Fritterが登録アカウントをインポートする際に使うメソッドはTwitterが厳しくレート制限しているため、フォローアカウントが多い場合は失敗する可能性があります。"),
         "prefix": MessageLookupByLibrary.simpleMessage("プレフィックス"),
         "private_profile": MessageLookupByLibrary.simpleMessage("非公開プロフィール"),
         "released_under_the_mit_license":
@@ -220,9 +220,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage("小さい画像を使用すると通信容量を削減できます"),
-        "saved": MessageLookupByLibrary.simpleMessage("保存したツイート"),
-        "say_hello": MessageLookupByLibrary.simpleMessage("あいさつする"),
-        "say_hello_emoji": MessageLookupByLibrary.simpleMessage("あいさつする👋"),
+        "saved": MessageLookupByLibrary.simpleMessage("保存ツイート"),
+        "say_hello": MessageLookupByLibrary.simpleMessage("挨拶する"),
+        "say_hello_emoji": MessageLookupByLibrary.simpleMessage("こんにちは👋"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "インポートするアカウントの選択やグループへの割り当ては今後対応予定です！"),
@@ -243,11 +243,11 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Fritterに問題が発生し、エラーレポートが作成されました。問題を修正するため、開発者にレポートを送信することができます。"),
         "sorry_the_replied_tweet_could_not_be_found":
             MessageLookupByLibrary.simpleMessage("返信ツイートが見つかりませんでした！"),
-        "subscribe": MessageLookupByLibrary.simpleMessage("購読する"),
-        "subscriptions": MessageLookupByLibrary.simpleMessage("購読"),
+        "subscribe": MessageLookupByLibrary.simpleMessage("登録する"),
+        "subscriptions": MessageLookupByLibrary.simpleMessage("登録アカウント"),
         "subtitles": MessageLookupByLibrary.simpleMessage("字幕"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("メディアの保存に成功しました！"),
+            MessageLookupByLibrary.simpleMessage("メディアが保存されました。"),
         "system": MessageLookupByLibrary.simpleMessage("システム"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -283,11 +283,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pingの送信がタイムアウトしました😢"),
         "to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below":
             MessageLookupByLibrary.simpleMessage(
-                "Twitterアカウントから購読をインポートするには、以下にユーザ名を入力してください。"),
+                "Twitterアカウントから登録アカウントをインポートするには、以下にユーザ名を入力してください。"),
         "toggle_all": MessageLookupByLibrary.simpleMessage("全て選択"),
         "trending": MessageLookupByLibrary.simpleMessage("トレンド"),
         "trends": MessageLookupByLibrary.simpleMessage("トレンド"),
-        "true_black": MessageLookupByLibrary.simpleMessage("完全な黒？"),
+        "true_black": MessageLookupByLibrary.simpleMessage("トゥルーブラック？"),
         "tweets": MessageLookupByLibrary.simpleMessage("ツイート"),
         "tweets_and_replies": MessageLookupByLibrary.simpleMessage("ツイートと返信"),
         "tweets_number": m15,
@@ -302,7 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("インポートできませんでした"),
         "unable_to_load_subscription_groups":
-            MessageLookupByLibrary.simpleMessage("購読グループの読み込みに失敗しました"),
+            MessageLookupByLibrary.simpleMessage("登録グループの読み込みに失敗しました"),
         "unable_to_load_the_group":
             MessageLookupByLibrary.simpleMessage("グループの読み込みに失敗しました"),
         "unable_to_load_the_group_settings":
@@ -337,7 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トレンドの地域設定をストリームできませんでした"),
         "unknown": MessageLookupByLibrary.simpleMessage("不明"),
         "unsave": MessageLookupByLibrary.simpleMessage("保存取り消し"),
-        "unsubscribe": MessageLookupByLibrary.simpleMessage("購読を解除する"),
+        "unsubscribe": MessageLookupByLibrary.simpleMessage("登録解除する"),
         "update_to_release_version_through_your_fdroid_client": m21,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
@@ -348,9 +348,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "when_a_new_app_update_is_available":
             MessageLookupByLibrary.simpleMessage("新しいアプリの更新が利用可能なとき"),
         "whether_errors_should_be_reported_to_sentry":
-            MessageLookupByLibrary.simpleMessage("エラーをSentryに送信するか"),
+            MessageLookupByLibrary.simpleMessage("エラーをSentryに送信する"),
         "which_tab_is_shown_when_the_app_opens":
-            MessageLookupByLibrary.simpleMessage("アプリを起動したときにどのタブを表示するか"),
+            MessageLookupByLibrary.simpleMessage("アプリの起動時に表示するタブ"),
         "would_you_like_to_enable_automatic_error_reporting":
             MessageLookupByLibrary.simpleMessage("自動エラー報告を有効にしますか？"),
         "yes": MessageLookupByLibrary.simpleMessage("はい"),
@@ -363,7 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "KitKat (4.4)以前のAndroidバージョンで動作しているため、エクスポートでは以下の場所のみに保存できます："),
         "your_profile_must_be_public_otherwise_the_import_will_not_work":
-            MessageLookupByLibrary.simpleMessage("インポートにはアカウントが公開されている必要があります"),
+            MessageLookupByLibrary.simpleMessage("公開アカウントである必要があります"),
         "your_report_will_be_sent_to_fritter_sentry_project":
             MessageLookupByLibrary.simpleMessage(
                 "レポートはFritterのSentryプロジェクトに送信されます。プライバシーの詳細は以下の通りです：")

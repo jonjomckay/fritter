@@ -11,6 +11,7 @@
   "@unable_to_load_subscription_groups": {},
   "add_to_group": "Add to group",
   "@add_to_group": {},
+  "select": "Select",
   "unsubscribe": "Unsubscribe",
   "@unsubscribe": {},
   "subscribe": "Subscribe",
@@ -249,6 +250,10 @@
   "@please_enter_a_name": {},
   "pick_a_color": "Pick a color!",
   "@pick_a_color": {},
+  "pick_an_icon": "Pick an icon!",
+  "search": "Search",
+  "no_results_for": "No results for:",
+  "close": "Close",
   "import_subscriptions": "Import subscriptions",
   "@import_subscriptions": {},
   "to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below": "To import subscriptions from an existing Twitter account, enter your username below.",
@@ -257,6 +262,7 @@
   "@please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts": {},
   "if_you_have_any_feedback_on_this_feature_please_leave_it_on": "If you have any feedback on this feature, please leave it on",
   "@if_you_have_any_feedback_on_this_feature_please_leave_it_on": {},
+  "the_github_issue": "the GitHub issue (#143)",
   "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "Selecting individual accounts to import, and assigning groups are both planned for the future already!",
   "@selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": {},
   "enter_your_twitter_username": "Enter your Twitter username",
@@ -388,5 +394,7 @@
   "something_broke_in_fritter": "Something broke in Fritter.",
   "@something_broke_in_fritter": {},
   "unable_to_run_the_database_migrations": "Unable to run the database migrations",
-  "@unable_to_run_the_database_migrations": {}
+  "@unable_to_run_the_database_migrations": {},
+  "should_check_for_updates_label": "Check for updates",
+  "should_check_for_updates_description": "Check for updates when Fritter starts"
 }

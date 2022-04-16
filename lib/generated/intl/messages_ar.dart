@@ -32,7 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "تم الانتهاء بـ${snapshotData} مستخدم";
 
-  static String m6(snapshotData) => "استورد ${snapshotData} مستخدم لحد الآن";
+  static String m6(snapshotData) =>
+      "${snapshotData} المستخدمين المستوردون حتى الآن";
 
   static String m7(date) => "انضم ${date}";
 
@@ -46,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "انقر للعرض ${getMediaType}";
 
-  static String m12(state) => "حالة اتصال الـ${state} غير مدعومة";
+  static String m12(state) => "حالة الاتصال ${state} غير معتمدة";
 
   static String m13(filePath) =>
       "الملف غير موجود. رجائاً تأكد أنه موجو في ${filePath}";
@@ -100,7 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("فشل ذريع"),
         "contribute": MessageLookupByLibrary.simpleMessage("المساهمة"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("نُسخ العنوان إلى الحافظة"),
+            MessageLookupByLibrary.simpleMessage("تم نسخ العنوان إلى الحافظة"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("نُسخ الإصدار إلى الحافظة"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
@@ -273,7 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("الإشتراكات"),
         "subtitles": MessageLookupByLibrary.simpleMessage("السطرجة"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("تم حفظ الوسائط بنجاح!!"),
+            MessageLookupByLibrary.simpleMessage("تم حفظ الوسائط."),
         "system": MessageLookupByLibrary.simpleMessage("النظام"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
