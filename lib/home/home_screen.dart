@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/group/_settings.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
@@ -75,6 +76,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       appBar: AppBar(
         title: Text(homeTabs[_tabController.index].title),
         actions: [
+          if (_tabController.index == feedTabIndex)
+            IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () => showFeedSettings(context, "-1")),
           if (_tabController.index == feedTabIndex)
             IconButton(
                 icon: const Icon(Icons.arrow_upward),
