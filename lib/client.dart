@@ -195,12 +195,11 @@ class Twitter {
         List<TweetWithCard> tweets = [];
 
         for (var item in entry['content']['item']['content']['conversationThread']['conversationComponents']) {
-          var tweet = item['conversationTweetComponent']['tweet'];
-
-          var content = tweet as Map<String, dynamic>;
-          if (content.containsKey('tombstone')) {
-            tweets.add(TweetWithCard.tombstone(content['tombstone']['tombstoneInfo']));
+          var tombstone = item['tombstoneComponent'] ?? item['conversationTweetComponent']['tweet']['tombstone'];
+          if (tombstone != null) {
+            tweets.add(TweetWithCard.tombstone(tombstone['tombstoneInfo']));
           } else {
+            var tweet = item['conversationTweetComponent']['tweet'];
             tweets.add(TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[tweet['id']]));
           }
         }
