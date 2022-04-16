@@ -388,5 +388,21 @@
   "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible": "Nenhum dado foi retornado, o que nunca deveria acontecer. Por favor, reporte um bug, se possível!",
   "@no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible": {},
   "something_broke_in_fritter": "Algo quebrou no Fritter.",
-  "@something_broke_in_fritter": {}
+  "@something_broke_in_fritter": {},
+  "search": "Buscar",
+  "@search": {},
+  "close": "Fechar",
+  "@close": {},
+  "the_github_issue": "o problema do GitHub (#143)",
+  "@the_github_issue": {},
+  "select": "Selecionar",
+  "@select": {},
+  "pick_an_icon": "Escolher um ícone!",
+  "@pick_an_icon": {},
+  "should_check_for_updates_label": "Verificar se há atualizações",
+  "@should_check_for_updates_label": {},
+  "no_results_for": "Sem resultados para:",
+  "@no_results_for": {},
+  "should_check_for_updates_description": "Verificar se há atualizações quando o Fritter iniciar",
+  "@should_check_for_updates_description": {}
 }
