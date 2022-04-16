@@ -281,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Send once"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Share tweet content"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "Share tweet content and link"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Share tweet link"),
         "should_check_for_updates_description":

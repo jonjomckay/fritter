@@ -349,6 +349,7 @@
   "@share_tweet_content": {},
   "share_tweet_link": "Share tweet link",
   "@share_tweet_link": {},
+  "share_tweet_content_and_link": "Share tweet content and link",
   "private_profile": "Private profile",
   "@private_profile": {},
   "user_not_found": "User not found",
