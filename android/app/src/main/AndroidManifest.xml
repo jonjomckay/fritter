@@ -56,16 +56,187 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
-                    android:host="twitter.com" />
+                    android:host="twitter.com"
+                    android:scheme="https" />
 
                 <data
-                    android:scheme="https"
-                    android:host="mobile.twitter.com" />
+                    android:host="mobile.twitter.com"
+                    android:scheme="https" />
 
                 <data
-                    android:scheme="https"
-                    android:host="www.twitter.com" />
+                    android:host="www.twitter.com"
+                    android:scheme="https" />
+
+                <!-- Nitter instances from https://github.com/zedeus/nitter/wiki/Instances -->
+
+                <data
+                    android:host="nitter.42l.fr"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.pussthecat.org"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.nixnet.services"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.fdn.fr"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.1d4.us"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.kavin.rocks"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.unixfox.eu"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.domain.glass"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.eu"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.namazso.eu"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.actionsack.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="birdsite.xanny.family"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.hu"
+                    android:scheme="https" />
+
+                <data
+                    android:host="twitr.gq"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.moomoo.me"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nittereu.moomoo.me"
+                    android:scheme="https" />
+
+                <data
+                    android:host="bird.trom.tf"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.it"
+                    android:scheme="https" />
+
+                <data
+                    android:host="twitter.censors.us"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.grimneko.de"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.koyu.space"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.alefvanoon.xyz"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.ir"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.autarkic.org"
+                    android:scheme="https" />
+
+                <data
+                    android:host="n.hyperborea.cloud"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.ca"
+                    android:scheme="https" />
+
+                <data
+                    android:host="twitter.076.ne.jp"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.mstdn.social"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.fly.dev"
+                    android:scheme="https" />
+
+                <data
+                    android:host="notabird.site"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.weiler.rocks"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.silkky.cloud"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.sethforprivacy.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nttr.stream"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.cutelab.space"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.nl"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.mint.lgbt"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.tokhmi.xyz"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.bus-hit.me"
+                    android:scheme="https" />
+
+                <data
+                    android:host="fuckthesacklers.network"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.govt.land"
+                    android:scheme="https" />
+
+                <data
+                    android:host="nitter.datatunnel.xyz"
+                    android:scheme="https" />
+
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
