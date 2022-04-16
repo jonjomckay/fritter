@@ -388,5 +388,21 @@
   "logging": "Günlük tutma",
   "@logging": {},
   "update_to_release_version_through_your_fdroid_client": "F-Droid istemciniz aracılığıyla {releaseVersion} sürümüne güncelleyin",
-  "@update_to_release_version_through_your_fdroid_client": {}
+  "@update_to_release_version_through_your_fdroid_client": {},
+  "should_check_for_updates_description": "Fritter başladığında güncellemeleri denetle",
+  "@should_check_for_updates_description": {},
+  "no_results_for": "Sonuç bulunamadı:",
+  "@no_results_for": {},
+  "close": "Kapat",
+  "@close": {},
+  "the_github_issue": "GitHub sorunu (#143)",
+  "@the_github_issue": {},
+  "select": "Seç",
+  "@select": {},
+  "pick_an_icon": "Bir simge seçin!",
+  "@pick_an_icon": {},
+  "search": "Ara",
+  "@search": {},
+  "should_check_for_updates_label": "Güncellemeleri denetle",
+  "@should_check_for_updates_label": {}
 }
