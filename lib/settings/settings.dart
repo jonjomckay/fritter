@@ -256,6 +256,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               onTap: _sendPing,
             ),
+            if (getFlavor() != 'play')
+              PrefSwitch(
+                title: Text(L10n.of(context).should_check_for_updates_label),
+                pref: optionShouldCheckForUpdates,
+                subtitle:
+                    Text(L10n.of(context).should_check_for_updates_description),
+              ),
             PrefTitle(
               title: Text(L10n.of(context).general),
             ),

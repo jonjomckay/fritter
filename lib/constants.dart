@@ -2,6 +2,8 @@ const optionErrorsSentryEnabled = 'errors.sentry_enabled';
 
 const optionHelloLastBuild = 'hello.last_build';
 
+const optionShouldCheckForUpdates = 'should_check_for_updates';
+
 const optionHomeInitialTab = 'home.initial_tab';
 
 const optionMediaSize = 'media.size';
