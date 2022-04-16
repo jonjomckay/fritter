@@ -8,6 +8,9 @@ const optionHomeInitialTab = 'home.initial_tab';
 
 const optionMediaSize = 'media.size';
 
+const optionDownloadType = 'download.type';
+const optionDownloadPath = 'download.path';
+
 const optionSubscriptionGroupsOrderByAscending = 'subscription_groups.order_by.ascending';
 const optionSubscriptionGroupsOrderByField = 'subscription_groups.order_by.field';
 const optionSubscriptionOrderByAscending = 'subscription.order_by.ascending';

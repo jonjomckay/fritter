@@ -130,8 +130,10 @@ Future<void> main() async {
   L10n.load(const Locale('en'));
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
-    optionShouldCheckForUpdates: true,
+    optionDownloadPath: '',
+    optionDownloadType: 'always_ask',
     optionMediaSize: 'medium',
+    optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
     optionSubscriptionGroupsOrderByField: 'name',
     optionSubscriptionOrderByAscending: false,

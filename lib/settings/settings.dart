@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:device_info/device_info.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -21,6 +22,7 @@ import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
@@ -303,6 +305,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: 'large',
                   ),
                 ]),
+            // Complete from here. Add a download location button
+            const DownloadPath(),
             PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
@@ -469,7 +473,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onPressed: () async {
                               await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
 
-                              Navigator.pop(context);
+                          Navigator.pop(context);
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -524,11 +528,90 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )),
+                  )
+              ),
             ),
           ]);
         },
       ),
+    );
+  }
+}
+
+class DownloadPath extends StatefulWidget {
+  const DownloadPath({Key? key}) : super(key: key);
+
+  @override
+  DownloadPathState createState() => DownloadPathState();
+}
+
+class DownloadPathState extends State<DownloadPath> {
+  late bool isSaveFilesTo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        PrefDropdown(
+          onChange: (value) {
+            setState(() {});
+          },
+          fullWidth: false,
+          title: Text('Download location'),
+          subtitle: Text('Should it always ask you where or a preset path'),
+          pref: optionDownloadType,
+          items: [
+            DropdownMenuItem(child: Text('Always ask'), value: 'always_ask'),
+            DropdownMenuItem(
+                child: Text('Save files to'), value: 'save_files_to'),
+          ],
+        ),
+        if (PrefService.of(context).get(optionDownloadType) ==
+            'save_files_to')
+          PrefButton(
+            onTap: () async {
+              setDirectory() async {
+                String? directoryPath =
+                await FilePicker.platform.getDirectoryPath();
+                setState(() {
+                  PrefService.of(context)
+                      .set(optionDownloadPath, directoryPath);
+                });
+                print('Custom path is: ${directoryPath ?? 'Not set'}');
+              }
+
+              print('checking storage permission');
+              print('checking manage storage permission');
+
+              if (await Permission.manageExternalStorage.request().isGranted)
+                await setDirectory();
+              else if (await Permission
+                  .manageExternalStorage.isPermanentlyDenied)
+                await openAppSettings();
+              else if (await Permission.storage.request().isGranted) {
+                await setDirectory();
+              } else if (await Permission.storage.isPermanentlyDenied)
+                await openAppSettings();
+              else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Not granted'),
+                    action: SnackBarAction(
+                      label: 'Open App settings',
+                      onPressed: openAppSettings,
+                    )
+                ));
+                print('Access Storage not granted');
+              }
+            },
+            title: Text('Path'),
+            subtitle: Text(
+              PrefService.of(context).get(optionDownloadPath) == ''
+                  ? 'Not set'
+                  : PrefService.of(context).get(optionDownloadPath),
+            ),
+            child: Text('Change'),
+          )
+      ],
     );
   }
 }
