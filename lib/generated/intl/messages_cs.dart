@@ -100,6 +100,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Zrušit"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Katastrofické selhání"),
+        "choose": MessageLookupByLibrary.simpleMessage("Vybrat"),
+        "close": MessageLookupByLibrary.simpleMessage("Zavřít"),
         "contribute": MessageLookupByLibrary.simpleMessage("Pomoct s vývojem"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Adresa zkopírována do schránky"),
@@ -128,6 +130,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Neposílat"),
         "donate": MessageLookupByLibrary.simpleMessage("Přispět"),
         "download": MessageLookupByLibrary.simpleMessage("Stáhnout"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Způsob stahování"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "Způsob, jakým by mělo fungovat stahování"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Vždy se zeptat"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Uložit do adresáře"),
+        "download_path":
+            MessageLookupByLibrary.simpleMessage("Cesta pro stažené"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Stahování médií..."),
         "enable_sentry":
@@ -210,9 +222,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Nebyla vrácena žádná data, což by se nikdy nemělo stát. Pokud je to možné, nahlaste to prosím jako chybu!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Žádné výsledky"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Žádné výsledky pro:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "Žádné odběry. Zkuste nějaké vyhledat nebo importovat!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Nenastaveno"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Poznámka: kvuli imitaci Twitteru nemusí byt zahrnuty všechny tweety"),
@@ -220,8 +235,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("Jejda! Něco se pokazilo 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Otevřít nastavení aplikace"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Oprávnění nebylo uděleno. Zkuste to prosím znovu po jeho udělení!"),
         "pick_a_color":
             MessageLookupByLibrary.simpleMessage("Vyberte si barvu!"),
+        "pick_an_icon":
+            MessageLookupByLibrary.simpleMessage("Vyberte si ikonu!"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Připnutý tweet"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Rychlost přehrávání"),
@@ -254,6 +275,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello": MessageLookupByLibrary.simpleMessage("Řekněte ahoj"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Řekněte ahoj 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Hledat"),
+        "select": MessageLookupByLibrary.simpleMessage("Vybrat"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "Vybírání individuálních účtů pro import a přidělování skupin jsou již v plánu!"),
@@ -265,8 +288,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Poslat jednou"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Sdílet obsah tweetu"),
+        "share_tweet_content_and_link":
+            MessageLookupByLibrary.simpleMessage("Sdílet obsah tweetu a odkaz"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Sdílet odkaz na tweet"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Zkontrolovat aktualizace při spuštění Fritteru"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("Zkontrolovat aktualizace"),
         "small": MessageLookupByLibrary.simpleMessage("Malý"),
         "something_broke_in_fritter": MessageLookupByLibrary.simpleMessage(
             "Něco se pokazilo ve Fritteru."),
@@ -291,6 +321,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Děkujeme za nahlášení. Chybu se pokusíme opravit co nejdříve budeme moct!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("problém na GitHubu (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Tweety neobsahoval žádný text. Toto je neočekávané"),

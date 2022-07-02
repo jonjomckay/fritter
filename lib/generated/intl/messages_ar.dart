@@ -99,6 +99,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("الغاء"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("فشل ذريع"),
+        "choose": MessageLookupByLibrary.simpleMessage("أختر"),
+        "close": MessageLookupByLibrary.simpleMessage("اغلاق"),
         "contribute": MessageLookupByLibrary.simpleMessage("المساهمة"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("تم نسخ العنوان إلى الحافظة"),
@@ -129,6 +131,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("لا تبعث"),
         "donate": MessageLookupByLibrary.simpleMessage("التبرع"),
         "download": MessageLookupByLibrary.simpleMessage("تحميل"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("التعامل مع التحميل"),
+        "download_handling_description":
+            MessageLookupByLibrary.simpleMessage("كيفية عمل التنزيل"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("اسأل دائما"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("حفظ في المسار"),
+        "download_path": MessageLookupByLibrary.simpleMessage("مسار التنزيل"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("تحميل الوسائط..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage("تفعيل الحارس؟"),
@@ -208,9 +219,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "لم يتم إرجاع أي بيانات، وهو ما لا ينبغي أن يحدث أبدا. يرجى الإبلاغ عن وجود خلل، إذا كان ذلك ممكنا!"),
         "no_results": MessageLookupByLibrary.simpleMessage("لا نتائج"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("لا توجد نتائج لـ:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "لا اشتراكات. حاول أن تبحث أو أن تستورد البعض!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("لم يتم تعيينه"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "ملاحظة: نظراً لقَيد معين من تويتر، قد لا يتم تضمين جميع التغريدات"),
@@ -218,7 +232,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("تمام"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("أوبسي! حدث خطأ ما 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("افتح إعدادات التطبيق"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "الإذن غير ممنوح. يرجى المحاولة مرة أخرى بعد منحه!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("اختر لون!"),
+        "pick_an_icon": MessageLookupByLibrary.simpleMessage("اختر أيقونة!"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("التغريدة المثبتة"),
         "playback_speed": MessageLookupByLibrary.simpleMessage("سرعة التشغيل"),
@@ -248,6 +267,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("المحفوظ"),
         "say_hello": MessageLookupByLibrary.simpleMessage("سَلّم"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("سَلّم 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("البحث"),
+        "select": MessageLookupByLibrary.simpleMessage("اختيار"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "تحديد حسابات مفردة، وتعيين مجموعات هما ميزات قد خُطط لها بالفعل للمستقبل!"),
@@ -259,8 +280,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("ابعث مرة واحدة"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("مشاركة محتوى التغريدة"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "مشاركة محتوى التغريدة والرابط"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("مشاركة رابط التغريدة"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "تحقق من وجود تحديثات عندما يبدأ Fritter"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("التحقق من وجود تحديثات"),
         "small": MessageLookupByLibrary.simpleMessage("صغير"),
         "something_broke_in_fritter":
             MessageLookupByLibrary.simpleMessage("حدث خطأ ما في فريتر."),
@@ -285,6 +313,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "شكراً علي تبليغك لنا. سنحاول أن نصحله بأسرع ما يمكن!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("مشكلة جيثب (# 143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "التغريدة لا تحتوي على أي نص. هذا غير متوقع"),

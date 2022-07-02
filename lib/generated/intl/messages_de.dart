@@ -106,6 +106,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Totaler Ausfall"),
+        "choose": MessageLookupByLibrary.simpleMessage("Wählen"),
+        "close": MessageLookupByLibrary.simpleMessage("Schließen"),
         "contribute": MessageLookupByLibrary.simpleMessage("Beitragen"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Adresse in die Zwischenablage kopiert"),
@@ -137,6 +139,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Nicht Senden"),
         "donate": MessageLookupByLibrary.simpleMessage("Spenden"),
         "download": MessageLookupByLibrary.simpleMessage("Herunterladen"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "So sollte das Herunterladen funktionieren"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Immer fragen"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Im Verzeichnis speichern"),
+        "download_path":
+            MessageLookupByLibrary.simpleMessage("Herunterladen-Pfad"),
         "downloading_media": MessageLookupByLibrary.simpleMessage(
             "Medien werden heruntergeladen..."),
         "enable_sentry":
@@ -219,9 +229,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Keine Daten empfangen - das sollte niemals passieren. Bitte Fehler melden, wenn möglich!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Keine Ergebnisse"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Keine Ergebnisse für:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "Keine Abonnements. Suchen oder importieren Sie welche!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Nicht festgelegt"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Hinweis: Aufgrund einer Beschränkung seitens Twitter sind möglicherweise nicht alle Tweets enthalten"),
@@ -229,8 +242,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oh nein! Ein Fehler ist aufgetreten 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("App-Einstellungen öffnen"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Erlaubnis nicht erteilt. Bitte versuchen Sie es nach der Erteilung erneut!"),
         "pick_a_color":
             MessageLookupByLibrary.simpleMessage("Wählen Sie eine Farbe!"),
+        "pick_an_icon":
+            MessageLookupByLibrary.simpleMessage("Wählen Sie ein Symbol!"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Angehefteter Tweet"),
         "playback_speed":
@@ -262,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Gespeichert"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Sag Hallo"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Sag Hallo 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Suche"),
+        "select": MessageLookupByLibrary.simpleMessage("Auswählen"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "Die Auswahl einzelner Importkonten und die Zuweisung zu Gruppen sind bereits für die Zukunft geplant!"),
@@ -273,8 +294,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Einmalig Senden"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Tweetinhalt teilen"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "Tweet-Inhalt und Link teilen"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Link zum Tweet teilen"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Beim Start von Fritter nach Aktualisierungen suchen"),
+        "should_check_for_updates_label": MessageLookupByLibrary.simpleMessage(
+            "Nach Aktualisierungen suchen"),
         "small": MessageLookupByLibrary.simpleMessage("Klein"),
         "something_broke_in_fritter": MessageLookupByLibrary.simpleMessage(
             "Etwas in Fritter ist kaputt."),
@@ -299,6 +327,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Danke für die Meldung. Wir versuchen, das Problem schnellstmöglich zu beheben!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue": MessageLookupByLibrary.simpleMessage(
+            "die GitHub-Ausgabe (Nr. 143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Der Tweet hat keinen Textinhalt. Dies kommt unerwartet"),

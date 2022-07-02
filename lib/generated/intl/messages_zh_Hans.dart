@@ -87,6 +87,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("基于Twitter配色方案的蓝色主题"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "catastrophic_failure": MessageLookupByLibrary.simpleMessage("致命问题"),
+        "choose": MessageLookupByLibrary.simpleMessage("选择"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "contribute": MessageLookupByLibrary.simpleMessage("贡献💖"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("已将地址复制到剪切板"),
@@ -113,6 +115,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("不要发送"),
         "donate": MessageLookupByLibrary.simpleMessage("捐赠"),
         "download": MessageLookupByLibrary.simpleMessage("下载"),
+        "download_handling": MessageLookupByLibrary.simpleMessage("下载处理"),
+        "download_handling_description":
+            MessageLookupByLibrary.simpleMessage("下载应该如何工作"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("始终询问"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("保存到目录"),
+        "download_path": MessageLookupByLibrary.simpleMessage("下载路径"),
         "downloading_media": MessageLookupByLibrary.simpleMessage("正在下载媒体..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage("启用 Sentry？"),
         "ended_timeago_format_endsAt_allowFromNow_true": m3,
@@ -180,15 +190,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "没有数据被返回，这不应该发生。如果可能的话，请报告一个错误!"),
         "no_results": MessageLookupByLibrary.simpleMessage("没有结果"),
+        "no_results_for": MessageLookupByLibrary.simpleMessage("搜索词无结果："),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage("没有订阅。尝试搜索或导入一些!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("未设置"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage("注意：由于Twitter的限制，可能不会包括所有的推文"),
         "numberFormat_format_total_votes": m8,
         "ok": MessageLookupByLibrary.simpleMessage("确定"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("哎呀! 出了点差错😥"),
+        "open_app_settings": MessageLookupByLibrary.simpleMessage("打开应用设置"),
+        "permission_not_granted":
+            MessageLookupByLibrary.simpleMessage("未授予权限。 请在授权后重试！"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("挑一种颜色吧！"),
+        "pick_an_icon": MessageLookupByLibrary.simpleMessage("挑选图标！"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("固定推文"),
         "playback_speed": MessageLookupByLibrary.simpleMessage("播放速度"),
         "please_check_your_internet_connection_error_message": m9,
@@ -214,6 +230,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("保存"),
         "say_hello": MessageLookupByLibrary.simpleMessage("问候"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("你好👋"),
+        "search": MessageLookupByLibrary.simpleMessage("搜索"),
+        "select": MessageLookupByLibrary.simpleMessage("选择"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage("未来我们会支持导入单个账号到指定组！"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),
@@ -223,7 +241,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_always": MessageLookupByLibrary.simpleMessage("总是发送"),
         "send_once": MessageLookupByLibrary.simpleMessage("发送一次"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage("分享推特内容"),
+        "share_tweet_content_and_link":
+            MessageLookupByLibrary.simpleMessage("分享推文内容和链接"),
         "share_tweet_link": MessageLookupByLibrary.simpleMessage("分享推特链接"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage("Fritter 启动时检查更新"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("检查更新"),
         "small": MessageLookupByLibrary.simpleMessage("低"),
         "something_broke_in_fritter":
             MessageLookupByLibrary.simpleMessage("Fritter发生异常。"),
@@ -246,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("谢谢你的报告。我们会试着在短时间内修复它!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("GitHub 问题 (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage("该推文没有包含任何文字。令人感叹"),
         "theme": MessageLookupByLibrary.simpleMessage("主题"),

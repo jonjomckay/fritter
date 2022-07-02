@@ -105,6 +105,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Katkesta"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Kõik läks ikka väga viltu"),
+        "choose": MessageLookupByLibrary.simpleMessage("Vali"),
+        "close": MessageLookupByLibrary.simpleMessage("Sulge"),
         "contribute": MessageLookupByLibrary.simpleMessage("Osale arenduses"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Aadress on kopeeritud lõikelauale"),
@@ -134,6 +136,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Ära saada"),
         "donate": MessageLookupByLibrary.simpleMessage("Toeta rahaliselt"),
         "download": MessageLookupByLibrary.simpleMessage("Laadi alla"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Allalaadimiste seadistused"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "Kuidas allalaadimine peaks toimima"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Alati küsi"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Salvesta kausta"),
+        "download_path":
+            MessageLookupByLibrary.simpleMessage("Allalaadimiste kaust"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Laadin alla meediat..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage(
@@ -218,9 +230,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Vastuses ei leidunud andmeid ning midagi sellist ei tohiks juhtuda. Kui saad, siis palun anna meile sellest veast teada!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Tumemusi pole"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Otsingutulemused puuduvad:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "Tellimusi ei leidu. Kas lisa mõni otsingust või impordi!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Seadistamata"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Märkus: Twitteri määratud piirangute tõttu ei pruugi kõik säutsud olla kaasatud"),
@@ -228,8 +243,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("Sobib"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Hopsti! Midagi läks nüüd viltu 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Ava rakenduse seadistused"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Õigusi pole. Palun proovi pärast loa andmist uuesti!"),
         "pick_a_color":
             MessageLookupByLibrary.simpleMessage("Palun vali värv!"),
+        "pick_an_icon": MessageLookupByLibrary.simpleMessage("Vali ikoon!"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Klammerdatud säuts"),
         "playback_speed":
@@ -262,6 +282,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello": MessageLookupByLibrary.simpleMessage("Ütle meile tere"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Ütle meile tere 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Otsi"),
+        "select": MessageLookupByLibrary.simpleMessage("Vali"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "Nii üksikute kontode valimine importimiseks, kui gruppide määramine on kavandatud järgmiste arendustena!"),
@@ -274,8 +296,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Saada vaid sel korral"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Jaga säutsu sisu"),
+        "share_tweet_content_and_link":
+            MessageLookupByLibrary.simpleMessage("Jaga säutsu sisu ja linki"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Jaga säutsu linki"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Fritter\'i käivitumisel kontrolli uuenduste olemasolu"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("Kontrolli uuendusi"),
         "small": MessageLookupByLibrary.simpleMessage("Väikesed pildid"),
         "something_broke_in_fritter": MessageLookupByLibrary.simpleMessage(
             "Midagi läks nüüd Fritter\'is katki."),
@@ -300,6 +329,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Tänud teatamast. Õige pea proovime põhjuse tuvastada ning vea parandada!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue": MessageLookupByLibrary.simpleMessage(
+            "veakirjeldus GitHub\'is (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Säutsus puudus sisu. See on nüüd küll ootamatu"),

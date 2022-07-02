@@ -101,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("İptal et"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Feci arıza"),
+        "choose": MessageLookupByLibrary.simpleMessage("Seç"),
+        "close": MessageLookupByLibrary.simpleMessage("Kapat"),
         "contribute": MessageLookupByLibrary.simpleMessage("Katkıda bulunun"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Adres panoya kopyalandı"),
@@ -131,6 +133,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Gönderme"),
         "donate": MessageLookupByLibrary.simpleMessage("Bağış yapın"),
         "download": MessageLookupByLibrary.simpleMessage("İndir"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("İndirmelerin ele alınması"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "İndirmeler nasıl ele alınmalı"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Her zaman sor"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Dizine kaydet"),
+        "download_path": MessageLookupByLibrary.simpleMessage("İndirme yolu"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Medya indiriliyor..."),
         "enable_sentry":
@@ -212,9 +223,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Hiçbir veri dönmedi, bu asla olmamalıydı. Mümkünse lütfen bir hata bildirin!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Sonuç yok"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Sonuç bulunamadı:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "Abonelik yok. Bazılarını aramayı veya içe aktarmayı deneyin!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Ayarlanmadı"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Not: Twitter\'ın sınırlaması nedeniyle, tüm tweet\'ler dahil edilmeyebilir"),
@@ -222,7 +236,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("TAMAM"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Hop! Bir şeyler ters gitti 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Uygulama ayarlarını aç"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "İzin verilmedi. Lütfen verdikten sonra tekrar deneyin!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("Bir renk seçin!"),
+        "pick_an_icon":
+            MessageLookupByLibrary.simpleMessage("Bir simge seçin!"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Sabitlenmiş tweet"),
         "playback_speed": MessageLookupByLibrary.simpleMessage("Oynatma hızı"),
@@ -252,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello": MessageLookupByLibrary.simpleMessage("Merhaba deyin"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Merhaba deyin 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Ara"),
+        "select": MessageLookupByLibrary.simpleMessage("Seç"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "İçe aktarılacak bireysel hesapların seçilmesi ve grupların atanması şimdiden gelecek için planlanmıştır!"),
@@ -263,8 +285,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Bir kez gönder"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Tweet içeriğini paylaş"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "Tweet içeriğini ve bağlantısını paylaş"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Tweet bağlantısını paylaş"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Fritter başladığında güncellemeleri denetle"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("Güncellemeleri denetle"),
         "small": MessageLookupByLibrary.simpleMessage("Küçük"),
         "something_broke_in_fritter": MessageLookupByLibrary.simpleMessage(
             "Fritter\'da bir şey bozuldu."),
@@ -289,6 +318,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Raporladığınz için teşekkürler. En kısa sürede düzeltmeye çalışacağız!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("GitHub sorunu (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Tweet\'te herhangi bir metin yoktu. Bu beklenmedik bir şey"),

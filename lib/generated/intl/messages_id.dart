@@ -34,7 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(snapshotData) => "Selesai dengan ${snapshotData} pengguna";
 
   static String m6(snapshotData) =>
-      "Mengimpor ${snapshotData} pengguna sejauh ini";
+      "${snapshotData} pengguna terimpor sejauh ini";
 
   static String m7(date) => "Bergabung ${date}";
 
@@ -100,9 +100,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Batal"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Kegagalan serius"),
+        "choose": MessageLookupByLibrary.simpleMessage("Pilih"),
+        "close": MessageLookupByLibrary.simpleMessage("Tutup"),
         "contribute": MessageLookupByLibrary.simpleMessage("Kontribusi"),
-        "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("Salin alamat ke papan klip"),
+        "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
+            "Alamat disalin ke papan klip"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Salin versi ke papan klip"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
@@ -129,6 +131,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("Jangan kirim"),
         "donate": MessageLookupByLibrary.simpleMessage("Donasi"),
         "download": MessageLookupByLibrary.simpleMessage("Unduh"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Penanganan unduhan"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "Bagaimana unduhan seharusnya bekerja"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Selalu tanya"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Simpan ke direktori"),
+        "download_path": MessageLookupByLibrary.simpleMessage("Jalur unduhan"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Mengunduh media..."),
         "enable_sentry":
@@ -210,17 +221,25 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tidak ada data yang dikembalikan, yang seharusnya tidak pernah terjadi. Silakan laporkan masalah, jika mungkin!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Tidak ada hasil"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Tidak ada hasil untuk:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak ada langganan. Coba mencari atau mengimpor beberapa!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("Tidak diatur"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Catatan: Karena batasan Twitter, tidak semua cuitan akan disertakan"),
         "ok": MessageLookupByLibrary.simpleMessage("Oke"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Aduh! Ada yang tidak beres 🥲"),
+        "open_app_settings":
+            MessageLookupByLibrary.simpleMessage("Buka pengaturan aplikasi"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "Izin tidak diberikan. Coba lagi setelah memberikannya!"),
         "pick_a_color":
             MessageLookupByLibrary.simpleMessage("Pilih sebuah warna!"),
+        "pick_an_icon": MessageLookupByLibrary.simpleMessage("Pilih ikon!"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Cuitan yang disematkan"),
         "playback_speed":
@@ -253,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Disimpan"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Sapa"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Sapa 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Cari"),
+        "select": MessageLookupByLibrary.simpleMessage("Pilih"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "Memilih akun individu untuk diimpor, dan menetapkan grup sudah direncanakan untuk masa mendatang!"),
@@ -264,8 +285,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Kirim sekali"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Bagi konten cuitan"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "Bagi konten dan tautan cuitan"),
         "share_tweet_link":
             MessageLookupByLibrary.simpleMessage("Bagi tautan cuitan"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Periksa pembaruan ketika Fritter dimulai"),
+        "should_check_for_updates_label":
+            MessageLookupByLibrary.simpleMessage("Periksa pembaruan"),
         "small": MessageLookupByLibrary.simpleMessage("Kecil"),
         "something_broke_in_fritter":
             MessageLookupByLibrary.simpleMessage("Sesuatu rusak di Fritter."),
@@ -279,7 +307,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Langganan"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Takarir"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Berhasil menyimpan media!"),
+            MessageLookupByLibrary.simpleMessage("Media tersimpan."),
         "system": MessageLookupByLibrary.simpleMessage("Sistem"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -290,6 +318,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Terima kasih telah melaporkan. Kami akan mencoba dan memperbaikinya secepatnya!"),
         "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_github_issue":
+            MessageLookupByLibrary.simpleMessage("isu GitHub (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Cuitan tidak mengandung teks apa pun. Ini tidak diduga"),
