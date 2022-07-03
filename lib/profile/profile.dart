@@ -80,10 +80,12 @@ class ProfileScreenBody extends StatefulWidget {
 }
 
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
+  static const defaultHeight = 256.12345;
+
   late TabController _tabController;
 
-  double descriptionHeight = 0;
-  double metadataHeight = 0;
+  double descriptionHeight = defaultHeight;
+  double metadataHeight = defaultHeight;
 
   @override
   void initState() {
@@ -154,215 +156,224 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 48 + descriptionHeight;
 
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-                expandedHeight: appBarHeight,
-                floating: true,
-                pinned: true,
-                snap: false,
-                forceElevated: innerBoxIsScrolled,
-                actions: [
-                  FollowButton(
-                    id: profile.idStr!,
-                    name: profile.name!,
-                    screenName: profile.screenName!,
-                    imageUri: profile.profileImageUrlHttps,
-                    verified: profile.verified!,
-                  )
-                ],
-                bottom: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        L10n.of(context).tweets,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        L10n.of(context).tweets_and_replies,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        L10n.of(context).media,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        L10n.of(context).following,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        L10n.of(context).followers,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+      body: Stack(children: [
+        NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                  expandedHeight: appBarHeight,
+                  floating: true,
+                  pinned: true,
+                  snap: false,
+                  forceElevated: innerBoxIsScrolled,
+                  actions: [
+                    FollowButton(
+                      id: profile.idStr!,
+                      name: profile.name!,
+                      screenName: profile.screenName!,
+                      imageUri: profile.profileImageUrlHttps,
+                      verified: profile.verified!,
+                    )
                   ],
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                    background: SafeArea(
-                  child: DefaultTextStyle.merge(
-                    style: const TextStyle(color: Colors.white),
-                    child: Stack(fit: StackFit.expand, children: <Widget>[
-                      Container(alignment: Alignment.topCenter, child: bannerImage),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: <Color>[Color(0xDD000000), Color(0x80000000)],
-                          ),
+                  bottom: TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(
+                        child: Text(
+                          L10n.of(context).tweets,
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Text(profile.name!,
-                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                                          if (profile.verified ?? false) const SizedBox(width: 6),
-                                          if (profile.verified ?? false)
-                                            const Icon(Icons.verified, size: 24, color: Colors.blue)
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 8),
-                                      child: Text('@${(profile.screenName!)}',
-                                          style: TextStyle(color: theme.primaryTextTheme.caption!.color)),
-                                    ),
-                                    if (profile.description != null && profile.description!.isNotEmpty)
-                                      MeasuredSize(
-                                        onChange: (size) {
-                                          setState(() {
-                                            descriptionHeight = size.height;
-                                          });
-                                        },
-                                        child: Container(
-                                            margin: const EdgeInsets.only(bottom: 4),
-                                            child: RichText(
-                                                maxLines: 3,
-                                                text: TextSpan(
-                                                    style: const TextStyle(height: 1.4),
-                                                    children: _addLinksToText(context, profile.description!)))),
-                                      ),
-                                    MeasuredSize(
-                                      onChange: (size) {
-                                        setState(() {
-                                          metadataHeight = size.height;
-                                        });
-                                      },
-                                      child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            if (profile.location != null && profile.location!.isNotEmpty)
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(Icons.place, size: 12, color: Colors.white),
-                                                    const SizedBox(width: 4),
-                                                    Text(profile.location!),
-                                                  ],
-                                                ),
-                                              ),
-                                            if (profile.url != null && profile.url!.isNotEmpty)
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(Icons.link, size: 12, color: Colors.white),
-                                                    const SizedBox(width: 4),
-                                                    Builder(builder: (context) {
-                                                      var url = profile.entities?.url?.urls
-                                                          ?.firstWhere((element) => element.url == profile.url);
-
-                                                      if (url == null) {
-                                                        return Container();
-                                                      }
-
-                                                      return InkWell(
-                                                        child: Text(url.displayUrl!,
-                                                            style: const TextStyle(color: Colors.blue)),
-                                                        onTap: () => launch(url.expandedUrl!),
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                              ),
-                                            if (profile.createdAt != null)
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(Icons.calendar_today, size: 12, color: Colors.white),
-                                                    const SizedBox(width: 4),
-                                                    Text(L10n.of(context)
-                                                        .joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
-                                                  ],
-                                                ),
-                                              ),
-                                          ]),
-                                    ),
-                                  ],
+                      Tab(
+                        child: Text(
+                          L10n.of(context).tweets_and_replies,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          L10n.of(context).media,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          L10n.of(context).following,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          L10n.of(context).followers,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  flexibleSpace: FlexibleSpaceBar(
+                      background: SafeArea(
+                        child: DefaultTextStyle.merge(
+                          style: const TextStyle(color: Colors.white),
+                          child: Stack(fit: StackFit.expand, children: <Widget>[
+                            Container(alignment: Alignment.topCenter, child: bannerImage),
+                            const DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: <Color>[Color(0xDD000000), Color(0x80000000)],
                                 ),
                               ),
                             ),
-                          ],
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Text(profile.name!,
+                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                                if (profile.verified ?? false) const SizedBox(width: 6),
+                                                if (profile.verified ?? false)
+                                                  const Icon(Icons.verified, size: 24, color: Colors.blue)
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.only(bottom: 8),
+                                            child: Text('@${(profile.screenName!)}',
+                                                style: TextStyle(color: theme.primaryTextTheme.caption!.color)),
+                                          ),
+                                          if (profile.description != null && profile.description!.isNotEmpty)
+                                            MeasuredSize(
+                                              onChange: (size) {
+                                                setState(() {
+                                                  descriptionHeight = size.height;
+                                                });
+                                              },
+                                              child: Container(
+                                                  margin: const EdgeInsets.only(bottom: 4),
+                                                  child: RichText(
+                                                      maxLines: 3,
+                                                      text: TextSpan(
+                                                          style: const TextStyle(height: 1.4),
+                                                          children: _addLinksToText(context, profile.description!)))),
+                                            ),
+                                          MeasuredSize(
+                                            onChange: (size) {
+                                              setState(() {
+                                                metadataHeight = size.height;
+                                              });
+                                            },
+                                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  if (profile.location != null && profile.location!.isNotEmpty)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.place, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text(profile.location!),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  if (profile.url != null && profile.url!.isNotEmpty)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.link, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Builder(builder: (context) {
+                                                            var url = profile.entities?.url?.urls
+                                                                ?.firstWhere((element) => element.url == profile.url);
+
+                                                            if (url == null) {
+                                                              return Container();
+                                                            }
+
+                                                            return InkWell(
+                                                              child: Text(url.displayUrl!,
+                                                                  style: const TextStyle(color: Colors.blue)),
+                                                              onTap: () => launch(url.expandedUrl!),
+                                                            );
+                                                          }),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  if (profile.createdAt != null)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.calendar_today, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text(L10n.of(context)
+                                                              .joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                ]),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                  backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
+                                  radius: 48,
+                                ),
+                              ),
+                            )
+                          ]),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
-                            radius: 48,
-                          ),
-                        ),
-                      )
-                    ]),
-                  ),
-                )))
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            ProfileTweets(user: profile, type: 'profile', includeReplies: false),
-            ProfileTweets(user: profile, type: 'profile', includeReplies: true),
-            ProfileTweets(user: profile, type: 'media', includeReplies: false),
-            ProfileFollows(user: profile, type: 'following'),
-            ProfileFollows(user: profile, type: 'followers'),
-          ],
+                      )))
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              ProfileTweets(user: profile, type: 'profile', includeReplies: false),
+              ProfileTweets(user: profile, type: 'profile', includeReplies: true),
+              ProfileTweets(user: profile, type: 'media', includeReplies: false),
+              ProfileFollows(user: profile, type: 'following'),
+              ProfileFollows(user: profile, type: 'followers'),
+            ],
+          ),
         ),
-      ),
+
+        // If we haven't resized the description widget yet, display an overlay container so we don't see the resize
+        if (descriptionHeight == defaultHeight && metadataHeight == defaultHeight)
+          Container(
+            height: double.infinity,
+            color: Theme.of(context).backgroundColor,
+          ),
+      ]),
     );
   }
 }
