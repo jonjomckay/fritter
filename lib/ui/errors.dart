@@ -24,7 +24,7 @@ abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
-_EmojiErrorWidget createEmojiError(TwitterError error) {
+EmojiErrorWidget createEmojiError(TwitterError error) {
   String emoji;
   String message;
 
@@ -48,16 +48,16 @@ _EmojiErrorWidget createEmojiError(TwitterError error) {
       break;
   }
 
-  return _EmojiErrorWidget(emoji: emoji, message: message, errorMessage: error.message);
+  return EmojiErrorWidget(emoji: emoji, message: message, errorMessage: error.message);
 }
 
-class _EmojiErrorWidget extends FritterErrorWidget {
+class EmojiErrorWidget extends FritterErrorWidget {
   final String emoji;
   final String message;
   final String errorMessage;
   final Function? onRetry;
 
-  const _EmojiErrorWidget(
+  const EmojiErrorWidget(
       {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry})
       : super(key: key);
 
@@ -173,7 +173,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     var error = this.error;
     if (error is SocketException) {
-      return _EmojiErrorWidget(
+      return EmojiErrorWidget(
         emoji: '🔌',
         message: L10n.of(context).could_not_contact_twitter,
         errorMessage: L10n.of(context).please_check_your_internet_connection_error_message(error.message),
@@ -201,7 +201,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
     }
 
     if (message is TimeoutException) {
-      return _EmojiErrorWidget(
+      return EmojiErrorWidget(
         emoji: '⏱️',
         message: L10n.of(context).timed_out,
         errorMessage: L10n.of(context).this_took_too_long_to_load_please_check_your_network_connection,

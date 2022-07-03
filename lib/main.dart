@@ -40,7 +40,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uni_links2/uni_links.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 Future checkForUpdates() async {
   Logger.root.info('Checking for updates');
@@ -200,7 +200,7 @@ Future<void> main() async {
 
           await notifications.initialize(settings, onSelectNotification: (payload) async {
             if (payload != null && payload.startsWith('https://')) {
-              await launch(payload);
+              await launchUrlString(payload);
             }
           });
 
@@ -230,6 +230,7 @@ Future<void> main() async {
         var trendLocationModel = TrendLocationModel(prefService);
 
         runApp(PrefService(
+            service: prefService,
             child: MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (context) => groupModel),
@@ -244,8 +245,7 @@ Future<void> main() async {
                 enabled: !kReleaseMode,
                 builder: (context) => MyApp(hub: sentryHub),
               ),
-            ),
-            service: prefService));
+            )));
       });
 }
 
@@ -255,13 +255,12 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key, required this.hub}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   static final log = Logger('_MyAppState');
 
-  bool _shouldCheckForUpdates = true;
   String _themeMode = 'system';
   bool _trueBlack = false;
 
@@ -273,14 +272,12 @@ class _MyAppState extends State<MyApp> {
 
     // Set any already-enabled preferences
     setState(() {
-      _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
       _themeMode = prefService.get(optionThemeMode) ?? 'system';
       _trueBlack = prefService.get(optionThemeTrueBlack) ?? false;
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
       setState(() {
-        _shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
       });
     });
 
@@ -305,15 +302,15 @@ class _MyAppState extends State<MyApp> {
       description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
       light: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: const Color(0xFF320019),
+        primaryContainer: const Color(0xFF320019),
         secondary: Colors.blue[500]!,
-        secondaryVariant: const Color(0xFF002411),
+        secondaryContainer: const Color(0xFF002411),
       ),
       dark: FlexSchemeColor(
         primary: Colors.blue,
-        primaryVariant: const Color(0xFF775C69),
+        primaryContainer: const Color(0xFF775C69),
         secondary: Colors.blue[500]!,
-        secondaryVariant: const Color(0xFF5C7267),
+        secondaryContainer: const Color(0xFF5C7267),
       ),
     );
 
@@ -329,7 +326,7 @@ class _MyAppState extends State<MyApp> {
         themeMode = ThemeMode.system;
         break;
       default:
-        log.warning('Unknown theme mode preference: ' + _themeMode);
+        log.warning('Unknown theme mode preference: $_themeMode');
         themeMode = ThemeMode.system;
         break;
     }
@@ -366,13 +363,13 @@ class _MyAppState extends State<MyApp> {
         for (var i = 0; i < locales.length; i++) {
           if (supportedLocalesCountryCode.contains(localesCountryCode[i]) &&
               supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
-            print('Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
+            log.info('Yes country: ${localesCountryCode[i]}, ${localesLanguageCode[i]}');
             return Locale(localesLanguageCode[i], localesCountryCode[i]);
           } else if (supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
-            print('Yes language: ${localesLanguageCode[i]}');
+            log.info('Yes language: ${localesLanguageCode[i]}');
             return Locale(localesLanguageCode[i]);
           } else {
-            print('Nothing');
+            log.info('Nothing');
           }
         }
         return const Locale('en');

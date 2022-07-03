@@ -20,7 +20,7 @@ class SettingsExportScreen extends StatefulWidget {
   const SettingsExportScreen({Key? key}) : super(key: key);
 
   @override
-  _SettingsExportScreenState createState() => _SettingsExportScreenState();
+  State<SettingsExportScreen> createState() => _SettingsExportScreenState();
 }
 
 class _SettingsExportScreenState extends State<SettingsExportScreen> {

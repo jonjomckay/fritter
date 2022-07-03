@@ -17,7 +17,7 @@ class ProfileTweets extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProfileTweetsState createState() => _ProfileTweetsState();
+  State<ProfileTweets> createState() => _ProfileTweetsState();
 }
 
 class _ProfileTweetsState extends State<ProfileTweets> {

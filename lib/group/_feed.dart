@@ -25,7 +25,7 @@ class SubscriptionGroupFeed extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SubscriptionGroupFeedState createState() => _SubscriptionGroupFeedState();
+  State<SubscriptionGroupFeed> createState() => _SubscriptionGroupFeedState();
 }
 
 class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {

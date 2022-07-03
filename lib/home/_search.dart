@@ -107,7 +107,7 @@ class TweetSearchResultList<T> extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TweetSearchResultListState<T> createState() => _TweetSearchResultListState<T>();
+  State<TweetSearchResultList<T>> createState() => _TweetSearchResultListState<T>();
 }
 
 class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {

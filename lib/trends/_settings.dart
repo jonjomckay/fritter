@@ -15,7 +15,7 @@ class TrendsSettings extends StatefulWidget {
   const TrendsSettings({Key? key}) : super(key: key);
 
   @override
-  _TrendsSettingsState createState() => _TrendsSettingsState();
+  State<TrendsSettings> createState() => _TrendsSettingsState();
 }
 
 class _TrendsSettingsState extends State<TrendsSettings> {
@@ -48,7 +48,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
 
           var names = countries.keys.sorted((a, b) => a!.compareTo(b!)).toList();
 
-          var _createLocationTile = (TrendLocation item) {
+          createLocationTile(TrendLocation item) {
             var subtitle = item.parentid == 1 ? Text(L10n.of(context).country) : null;
 
             return RadioListTile<int?>(
@@ -61,7 +61,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                   await context.read<TrendLocationModel>().setTrendLocation(item);
                   Navigator.pop(context);
                 });
-          };
+          }
 
           return SizedBox(
               width: double.maxFinite,
@@ -71,12 +71,12 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                   var name = names[index]!;
                   if (name == '') {
                     // If there's no country name, assume it's "Worldwide"
-                    return _createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
+                    return createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
                   }
 
                   return ExpansionTile(
                     title: Text(name),
-                    children: [...countries[name]!.map((item) => _createLocationTile(item))],
+                    children: [...countries[name]!.map((item) => createLocationTile(item))],
                   );
                 },
               ));

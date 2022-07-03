@@ -26,7 +26,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -248,13 +248,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           return PrefPage(children: [
             PrefButton(
-              child: Text(L10n.of(context).say_hello_emoji),
               title: Text(L10n.of(context).say_hello),
               subtitle: Text(
                 L10n.of(context)
                     .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
               ),
               onTap: _sendPing,
+              child: Text(L10n.of(context).say_hello_emoji),
             ),
             if (getFlavor() != 'play')
               PrefSwitch(
@@ -273,7 +273,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   L10n.of(context).which_tab_is_shown_when_the_app_opens,
                 ),
                 pref: optionHomeInitialTab,
-                items: pages.map((e) => DropdownMenuItem(child: Text(e.title), value: e.id)).toList()),
+                items: pages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
             PrefDropdown(
                 fullWidth: false,
                 title: Text(L10n.of(context).media_size),
@@ -283,40 +283,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 pref: optionMediaSize,
                 items: [
                   DropdownMenuItem(
-                    child: Text(L10n.of(context).disabled),
                     value: 'disabled',
+                    child: Text(L10n.of(context).disabled),
                   ),
                   DropdownMenuItem(
-                    child: Text(L10n.of(context).thumbnail),
                     value: 'thumb',
+                    child: Text(L10n.of(context).thumbnail),
                   ),
                   DropdownMenuItem(
-                    child: Text(L10n.of(context).small),
                     value: 'small',
+                    child: Text(L10n.of(context).small),
                   ),
                   DropdownMenuItem(
-                    child: Text(L10n.of(context).medium),
                     value: 'medium',
+                    child: Text(L10n.of(context).medium),
                   ),
                   DropdownMenuItem(
-                    child: Text(L10n.of(context).large),
                     value: 'large',
+                    child: Text(L10n.of(context).large),
                   ),
                 ]),
             const DownloadTypeSetting(),
             PrefTitle(title: Text(L10n.of(context).theme)),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
-                child: Text(L10n.of(context).system),
                 value: 'system',
+                child: Text(L10n.of(context).system),
               ),
               DropdownMenuItem(
-                child: Text(L10n.of(context).light),
                 value: 'light',
+                child: Text(L10n.of(context).light),
               ),
               DropdownMenuItem(
-                child: Text(L10n.of(context).dark),
                 value: 'dark',
+                child: Text(L10n.of(context).dark),
               ),
             ]),
             PrefSwitch(
@@ -441,7 +441,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               leading: const Icon(Icons.favorite),
               title: Text(L10n.of(context).contribute),
               subtitle: Text(L10n.of(context).help_make_fritter_even_better),
-              onTap: () => launch('https://github.com/jonjomckay/fritter'),
+              onTap: () => launchUrlString('https://github.com/jonjomckay/fritter'),
             ),
             PrefLabel(
               leading: const Icon(Icons.bug_report),
@@ -449,7 +449,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Text(
                 L10n.of(context).let_the_developers_know_if_something_is_broken,
               ),
-              onTap: () => launch('https://github.com/jonjomckay/fritter/issues'),
+              onTap: () => launchUrlString('https://github.com/jonjomckay/fritter/issues'),
             ),
             if (getFlavor() != 'play')
               PrefLabel(
@@ -486,21 +486,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               leading: Icon(SimpleIcons.github),
                               title: Text('GitHub'),
                             ),
-                            onPressed: () => launch('https://github.com/sponsors/jonjomckay'),
+                            onPressed: () => launchUrlString('https://github.com/sponsors/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.liberapay),
                               title: Text('Liberapay'),
                             ),
-                            onPressed: () => launch('https://liberapay.com/jonjomckay'),
+                            onPressed: () => launchUrlString('https://liberapay.com/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.paypal),
                               title: Text('PayPal'),
                             ),
-                            onPressed: () => launch('https://paypal.me/jonjomckay'),
+                            onPressed: () => launchUrlString('https://paypal.me/jonjomckay'),
                           )
                         ],
                       );
@@ -557,8 +557,8 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
           subtitle: Text(L10n.current.download_handling_description),
           pref: optionDownloadType,
           items: [
-            DropdownMenuItem(child: Text(L10n.current.download_handling_type_ask), value: optionDownloadTypeAsk),
-            DropdownMenuItem(child: Text(L10n.current.download_handling_type_directory), value: optionDownloadTypeDirectory),
+            DropdownMenuItem(value: optionDownloadTypeAsk, child: Text(L10n.current.download_handling_type_ask)),
+            DropdownMenuItem(value: optionDownloadTypeDirectory, child: Text(L10n.current.download_handling_type_directory)),
           ],
         ),
         if (PrefService.of(context).get(optionDownloadType) == optionDownloadTypeDirectory)

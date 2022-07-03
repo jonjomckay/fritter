@@ -20,7 +20,7 @@ class TweetMediaItem extends StatefulWidget {
   const TweetMediaItem({Key? key, required this.index, required this.total, required this.media}) : super(key: key);
 
   @override
-  _TweetMediaItemState createState() => _TweetMediaItemState();
+  State<TweetMediaItem> createState() => _TweetMediaItemState();
 }
 
 class _TweetMediaItemState extends State<TweetMediaItem> {
@@ -125,7 +125,7 @@ class TweetMedia extends StatefulWidget {
   const TweetMedia({Key? key, required this.media, required this.username}) : super(key: key);
 
   @override
-  _TweetMediaState createState() => _TweetMediaState();
+  State<TweetMedia> createState() => _TweetMediaState();
 }
 
 class _TweetMediaState extends State<TweetMedia> {
@@ -171,7 +171,7 @@ class TweetMediaView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TweetMediaViewState createState() => _TweetMediaViewState();
+  State<TweetMediaView> createState() => _TweetMediaViewState();
 }
 
 class _TweetMediaViewState extends State<TweetMediaView> {

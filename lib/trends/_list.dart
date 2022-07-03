@@ -12,7 +12,7 @@ class TrendsList extends StatefulWidget {
   const TrendsList({Key? key}) : super(key: key);
 
   @override
-  _TrendsListState createState() => _TrendsListState();
+  State<TrendsList> createState() => _TrendsListState();
 }
 
 class _TrendsListState extends State<TrendsList> {

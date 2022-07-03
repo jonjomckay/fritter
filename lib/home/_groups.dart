@@ -3,7 +3,6 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/subscriptions/_groups.dart';
-import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:provider/provider.dart';
 
 class GroupsScreen extends StatelessWidget with AppBarMixin {

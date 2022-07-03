@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class TweetCard extends StatelessWidget {
   static final log = Logger('TweetCard');
@@ -35,7 +35,7 @@ class TweetCard extends StatelessWidget {
   _createCard(String? url, Widget child) {
     return GestureDetector(
       child: _createBaseCard(child),
-      onTap: () => url == null ? null : launch(url),
+      onTap: () => url == null ? null : launchUrlString(url),
     );
   }
 

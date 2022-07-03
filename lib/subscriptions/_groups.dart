@@ -71,7 +71,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
   Widget build(BuildContext context) {
     return Consumer<GroupModel>(builder: (context, model, child) {
       return GridView.builder(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 140,
           childAspectRatio: 200 / 125
         ),
@@ -128,7 +128,7 @@ class SubscriptionGroupEditDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SubscriptionGroupEditDialogState createState() => _SubscriptionGroupEditDialogState();
+  State<SubscriptionGroupEditDialog> createState() => _SubscriptionGroupEditDialogState();
 }
 
 class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialog> {
@@ -228,17 +228,17 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
           child: Text(L10n.of(context).cancel),
         ),
         Builder(builder: (context) {
-          var onPressed = () async {
+          onPressed() async {
             if (_formKey.currentState!.validate()) {
               await context.read<GroupModel>().saveGroup(id, name!, icon, color, members);
 
               Navigator.pop(context);
             }
-          };
+          }
 
           return TextButton(
-            child: Text(L10n.of(context).ok),
             onPressed: onPressed,
+            child: Text(L10n.of(context).ok),
           );
         }),
       ],

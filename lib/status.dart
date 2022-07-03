@@ -110,8 +110,8 @@ class _StatusScreenState extends State<_StatusScreen> {
               key: ValueKey(chain.id),
               controller: _scrollController,
               index: index,
-              child: TweetConversation(id: chain.id, tweets: chain.tweets, username: null, isPinned: chain.isPinned),
               highlightColor: Colors.white.withOpacity(1),
+              child: TweetConversation(id: chain.id, tweets: chain.tweets, username: null, isPinned: chain.isPinned),
             );
           },
           firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(

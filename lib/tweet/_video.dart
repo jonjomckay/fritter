@@ -99,6 +99,7 @@ class _TweetVideoState extends State<TweetVideo> {
 
   @override
   void dispose() {
+    // TODO: These now seem to get called when the video player goes fullscreen. They shouldn't though
     _videoController.dispose();
     _chewieController.dispose();
     super.dispose();

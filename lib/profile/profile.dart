@@ -14,8 +14,8 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -310,7 +310,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                             return InkWell(
                                                               child: Text(url.displayUrl!,
                                                                   style: const TextStyle(color: Colors.blue)),
-                                                              onTap: () => launch(url.expandedUrl!),
+                                                              onTap: () => launchUrlString(url.expandedUrl!),
                                                             );
                                                           }),
                                                         ],

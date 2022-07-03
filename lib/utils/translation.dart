@@ -22,11 +22,11 @@ class TranslationAPIResult {
   TranslationAPIResult({required this.success, required this.body, this.errorMessage});
 }
 
+// TODO
 class TranslationAPI {
   static final log = Logger('TranslationAPI');
 
   static final Dio _dio = Dio(BaseOptions(
-    // TODO
     baseUrl: 'https://libretranslate.de',
   ));
 

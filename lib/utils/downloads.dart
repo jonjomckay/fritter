@@ -16,7 +16,7 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
     required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
-  var downloadFile = () async {
+  downloadFile() async {
     var response = await http.get(Uri.parse(uri));
     if (response.statusCode == 200) {
       return response.bodyBytes;
@@ -24,7 +24,7 @@ Future downloadUriToPickedFile(BuildContext context, String uri, String fileName
 
     onError(response);
     return null;
-  };
+  }
 
   var isLegacy = await isLegacyAndroid();
   if (isLegacy) {

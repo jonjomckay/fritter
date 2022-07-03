@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_screen.dart';
-import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/trends/_list.dart';
 import 'package:fritter/trends/_settings.dart';
 import 'package:fritter/trends/trends_model.dart';

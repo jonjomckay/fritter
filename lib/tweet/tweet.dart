@@ -24,7 +24,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
@@ -113,7 +113,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
               return;
             }
 
-            await launch(uri);
+            await launchUrlString(uri);
           });
         });
 
@@ -465,7 +465,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(minHeight: 32),
                                 onPressed: () async {
-                                  var createSheetButton = (title, icon, onTap) => ListTile(
+                                  createSheetButton(title, icon, onTap) => ListTile(
                                         onTap: onTap,
                                         leading: Icon(icon),
                                         title: Text(title),
@@ -512,7 +512,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                             }),
                                             createSheetButton(L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
                                               Share.share(
-                                                  '${tweetText}\n\nhttps://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                                  '$tweetText\n\nhttps://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
                                               Navigator.pop(context);
                                             }),
                                             const Padding(

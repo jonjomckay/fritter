@@ -3,7 +3,6 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/_settings.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
-import 'package:fritter/subscriptions/subscriptions.dart';
 
 class FeedScreen extends StatelessWidget with AppBarMixin {
   final ScrollController scrollController;

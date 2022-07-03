@@ -14,7 +14,7 @@ class ProfileFollows extends StatefulWidget {
   const ProfileFollows({Key? key, required this.user, required this.type}) : super(key: key);
 
   @override
-  _ProfileFollowsState createState() => _ProfileFollowsState();
+  State<ProfileFollows> createState() => _ProfileFollowsState();
 }
 
 class _ProfileFollowsState extends State<ProfileFollows> {

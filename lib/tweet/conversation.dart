@@ -14,7 +14,7 @@ class TweetConversation extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TweetConversationState createState() => _TweetConversationState();
+  State<TweetConversation> createState() => _TweetConversationState();
 }
 
 class _TweetConversationState extends State<TweetConversation> {

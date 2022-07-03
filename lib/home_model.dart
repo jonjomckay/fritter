@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:logging/logging.dart';
-import 'package:pref/pref.dart';
 import 'package:sqflite/sqflite.dart';
 
 
