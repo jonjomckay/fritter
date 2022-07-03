@@ -9,25 +9,21 @@ import 'package:fritter/trends/trends.dart';
 import 'package:pref/pref.dart';
 import 'package:fritter/generated/l10n.dart';
 
-class _Tab {
+class Page {
   final String id;
   final String title;
   final IconData icon;
 
-  _Tab(this.id, this.title, this.icon);
+  Page(this.id, this.title, this.icon);
 }
 
-final List<_Tab> homeTabs = [
-  _Tab('feed', L10n.current.feed, Icons.rss_feed),
-  _Tab('subscriptions', L10n.current.subscriptions, Icons.subscriptions),
-  _Tab('groups', L10n.current.groups, Icons.group),
-  _Tab('trending', L10n.current.trending, Icons.trending_up),
-  _Tab('saved', L10n.current.saved, Icons.bookmark),
+final List<Page> pages = [
+  Page('feed', L10n.current.feed, Icons.rss_feed),
+  Page('subscriptions', L10n.current.subscriptions, Icons.subscriptions),
+  Page('groups', L10n.current.groups, Icons.group),
+  Page('trending', L10n.current.trending, Icons.trending_up),
+  Page('saved', L10n.current.saved, Icons.bookmark),
 ];
-
-final int feedTabIndex = homeTabs.indexWhere((element) => element.id == 'feed');
-final int groupsTabIndex = homeTabs.indexWhere((element) => element.id == 'groups');
-final int subscriptionsTabIndex = homeTabs.indexWhere((element) => element.id == 'subscriptions');
 
 List<Widget> createCommonAppBarActions(BuildContext context) {
   return [
@@ -44,6 +40,10 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
       },
     )
   ];
+}
+
+abstract class AppBarMixin {
+  AppBar getAppBar(BuildContext context);
 }
 
 class HomeScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMi
     // If we have an initial tab set, use it as the initial index
     var prefs = PrefService.of(context, listen: false);
     if (prefs.getKeys().contains(optionHomeInitialTab)) {
-      _selectedPage = homeTabs.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
+      _selectedPage = pages.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
     }
 
     _children = [
@@ -81,7 +81,7 @@ class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMi
     _pageController = PageController(initialPage: _selectedPage);
     _pageController.addListener(() {
       var page = _pageController.page;
-      if (page == null) {
+      if (page == null || page.round() == _selectedPage) {
         return;
       }
 
@@ -99,7 +99,11 @@ class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Figure out how to do this properly, with the type system
+    var appBarMixin = (_children[_selectedPage] as AppBarMixin);
+
     return Scaffold(
+      appBar: appBarMixin.getAppBar(context),
       body: PageView(
         controller: _pageController,
         children: _children,
@@ -108,11 +112,12 @@ class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMi
         animation: _pageController,
         builder: (context, child) => BottomNavigationBar(
           currentIndex: _selectedPage,
+          showUnselectedLabels: true,
           onTap: (index) {
             _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
           },
           items: [
-            ...homeTabs.map((e) => BottomNavigationBarItem(
+            ...pages.map((e) => BottomNavigationBarItem(
                 icon: Icon(e.icon),
                 label: e.title
             ))

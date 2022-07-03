@@ -273,7 +273,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   L10n.of(context).which_tab_is_shown_when_the_app_opens,
                 ),
                 pref: optionHomeInitialTab,
-                items: homeTabs.map((e) => DropdownMenuItem(child: Text(e.title), value: e.id)).toList()),
+                items: pages.map((e) => DropdownMenuItem(child: Text(e.title), value: e.id)).toList()),
             PrefDropdown(
                 fullWidth: false,
                 title: Text(L10n.of(context).media_size),
