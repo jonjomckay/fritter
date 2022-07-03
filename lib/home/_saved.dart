@@ -10,8 +10,20 @@ import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
 
-class SavedScreen extends StatelessWidget {
+class SavedScreen extends StatefulWidget {
   const SavedScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SavedScreen> createState() => _SavedScreenState();
+}
+
+class _SavedScreenState extends State<SavedScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<SavedTweetModel>().listSavedTweets();
+  }
 
   @override
   Widget build(BuildContext context) {
