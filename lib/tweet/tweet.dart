@@ -7,13 +7,13 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/tweet/tweet_exceptions.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:fritter/utils/misc.dart';
@@ -492,31 +492,25 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                             child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            FutureBuilderWrapper<bool>(
-                                              future: model.isTweetSaved(tweet.idStr!),
-                                              onError: (error, stackTrace) =>
-                                                  _createFooterIconButton(Icons.error, Colors.red, () async {
-                                                Catcher.reportCheckedError(error, stackTrace);
-                                              }),
-                                              onReady: (saved) {
-                                                if (saved) {
-                                                  return createSheetButton(
-                                                    L10n.of(context).unsave,
-                                                    Icons.bookmark,
-                                                    () async {
-                                                      await model.deleteSavedTweet(tweet.idStr!);
-                                                      Navigator.pop(context);
-                                                    },
-                                                  );
-                                                } else {
-                                                  return createSheetButton(
-                                                      L10n.of(context).save, Icons.bookmark_outline, () async {
-                                                    await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                            Consumer<SavedTweetModel>(builder: (context, model, child) {
+                                              var isSaved = model.isSaved(tweet.idStr!);
+                                              if (isSaved) {
+                                                return createSheetButton(
+                                                  L10n.of(context).unsave,
+                                                  Icons.bookmark,
+                                                      () async {
+                                                    await model.deleteSavedTweet(tweet.idStr!);
                                                     Navigator.pop(context);
-                                                  });
-                                                }
-                                              },
-                                            ),
+                                                  },
+                                                );
+                                              } else {
+                                                return createSheetButton(
+                                                    L10n.of(context).save, Icons.bookmark_outline, () async {
+                                                  await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            }),
                                             createSheetButton(
                                               L10n.of(context).share_tweet_content,
                                               Icons.share,

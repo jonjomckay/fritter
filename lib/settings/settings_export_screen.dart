@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
@@ -91,9 +91,15 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           : FloatingActionButton(
               child: const Icon(Icons.save),
               onPressed: () async {
-                var homeModel = context.read<HomeModel>();
                 var groupModel = context.read<GroupModel>();
+                await groupModel.reloadGroups();
+
                 var usersModel = context.read<UsersModel>();
+                await usersModel.reloadSubscriptions();
+
+                var savedTweetModel = context.read<SavedTweetModel>();
+                await savedTweetModel.listSavedTweets();
+
                 var prefs = PrefService.of(context);
 
                 var settings = _exportSettings ? prefs.toMap() : null;
@@ -105,7 +111,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                 var subscriptionGroupMembers =
                     _exportSubscriptionGroupMembers ? await groupModel.listGroupMembers() : null;
 
-                var tweets = _exportTweets ? await homeModel.listSavedTweets() : null;
+                var tweets = _exportTweets ? savedTweetModel.state : null;
 
                 var data = SettingsData(
                     settings: settings,

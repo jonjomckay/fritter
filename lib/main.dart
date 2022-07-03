@@ -19,12 +19,14 @@ import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
+import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
@@ -207,7 +209,7 @@ Future<void> main() async {
         // Run the migrations early, so models work. We also do this later on so we can display errors to the user
         await Repository().migrate();
 
-        var homeModel = HomeModel(prefService);
+        var homeModel = HomeModel();
 
         var groupModel = GroupModel(prefService);
         await groupModel.reloadGroups();
@@ -215,12 +217,18 @@ Future<void> main() async {
         var usersModel = UsersModel(prefService, groupModel);
         await usersModel.reloadSubscriptions();
 
+        var trendLocationModel = TrendLocationModel(prefService);
+
         runApp(PrefService(
             child: MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (context) => groupModel),
                 ChangeNotifierProvider(create: (context) => homeModel),
                 ChangeNotifierProvider(create: (context) => usersModel),
+                Provider(create: (context) => SavedTweetModel()),
+                Provider(create: (context) => trendLocationModel),
+                Provider(create: (context) => TrendLocationsModel()),
+                Provider(create: (context) => TrendsModel(trendLocationModel)),
               ],
               child: DevicePreview(
                 enabled: !kReleaseMode,

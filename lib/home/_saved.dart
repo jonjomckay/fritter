@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
 class SavedScreen extends StatelessWidget {
@@ -15,16 +15,18 @@ class SavedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<HomeModel>();
+    var model = context.read<SavedTweetModel>();
 
-    return FutureBuilderWrapper<List<SavedTweet>>(
-      future: model.listSavedTweets(),
-      onError: (error, stackTrace) => FullPageErrorWidget(
-        error: error,
-        stackTrace: stackTrace,
-        prefix: L10n.of(context).unable_to_find_your_saved_tweets,
+    return ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(
+      store: model,
+      onError: (_, e) => FullPageErrorWidget(
+        error: e,
+        stackTrace: null,
+        prefix: L10n.current.unable_to_load_the_tweets,
+        onRetry: () => model.listSavedTweets(),
       ),
-      onReady: (data) {
+      onLoading: (_) => const Center(child: CircularProgressIndicator()),
+      onState: (_, data) {
         if (data.isEmpty) {
           return Center(child: Text(L10n.of(context).you_have_not_saved_any_tweets_yet));
         }

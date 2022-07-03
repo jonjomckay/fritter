@@ -380,6 +380,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_triple:
+    dependency: "direct main"
+    description:
+      name: flutter_triple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.7+2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -742,6 +749,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  rx_notifier:
+    dependency: transitive
+    description:
+      name: rx_notifier
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   scroll_to_index:
     dependency: "direct main"
     description:
@@ -929,6 +943,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
+  triple:
+    dependency: transitive
+    description:
+      name: triple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0+1"
   typed_data:
     dependency: transitive
     description:
