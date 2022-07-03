@@ -249,7 +249,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
 
           return media;
         },
-        controller: PageController(
+        controller: ExtendedPageController(
           initialPage: widget.initialIndex,
         ),
         onPageChanged: (index) => setState(() {

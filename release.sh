@@ -30,7 +30,7 @@ generate_version_number() {
 generate_version_number 0
 
 VERSION_NAME=$1
-VERSION_FLUTTER="2.8.1"
+VERSION_FLUTTER="3.0.4"
 
 FULL_VERSION="$VERSION_NAME"+"$VERSION_NUMBER"
 

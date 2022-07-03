@@ -2,7 +2,6 @@ import 'package:catcher/catcher.dart';
 import 'package:chewie/chewie.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
@@ -37,7 +36,6 @@ class _TweetVideoState extends State<TweetVideo> {
       aspectRatio: aspectRatio,
       autoInitialize: true,
       allowMuting: true,
-      customControls: const MaterialDesktopControls(),
       allowedScreenSleep: false,
       additionalOptions: (context) => [
         OptionItem(

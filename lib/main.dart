@@ -60,7 +60,7 @@ Future checkForUpdates() async {
 
       if (int.parse(package.buildNumber) < latest) {
         var details = const NotificationDetails(
-            android: AndroidNotificationDetails('updates', 'Updates', 'When a new app update is available',
+            android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
                 importance: Importance.max,
                 largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
                 priority: Priority.high,

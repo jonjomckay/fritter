@@ -23,49 +23,52 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^5.0.0
+  provider: ^6.0.3
 
-  auto_direction: ^0.0.5
+  auto_direction: ^0.0.6
   catcher: ^0.6.9
-  chewie: ^1.2.2
-  dart_twitter_api: ^0.5.5+1
-  device_info: ^2.0.0
-  device_preview: ^0.7.4
-  dio: ^4.0.0
-  dotted_border: ^2.0.0-nullsafety.0
-  extended_image: ^4.0.1
-  faker: ^2.0.0-rc.2
-  ffcache: ^1.0.0
-  flex_color_scheme: ^2.1.1
+  chewie: ^1.3.4
+  dart_twitter_api: ^0.5.6+1
+  device_info: ^2.0.3
+  device_preview: ^1.1.0
+  dio: ^4.0.6
+  dotted_border: ^2.0.0+2
+  extended_image: ^6.2.1
+  faker: ^2.0.0
+  ffcache: ^1.1.0
+  flex_color_scheme: ^5.0.1
   flutter_cache: ^0.1.0
-  file_picker: ^4.1.6
-  flutter_colorpicker: ^0.6.0
+  file_picker: ^4.6.1
+  flutter_colorpicker: ^1.0.3
   flutter_file_dialog: ^2.3.0
-  flutter_iconpicker: ^3.1.2
-  flutter_local_notifications: ^5.0.0+4
+  flutter_iconpicker:
+    git:
+      ref: bae6bb92d815efac1a1fded14b0d6573bdcdcaa1
+      url: https://github.com/Ahmadre/FlutterIconPicker.git
+  flutter_local_notifications: ^9.6.1
   flutter_triple: ^1.2.7+2
   html_unescape: ^2.0.0
-  http: ^0.13.1
-  infinite_scroll_pagination: ^3.0.1
+  http: ^0.13.4
+  infinite_scroll_pagination: ^3.2.0
   intl: ^0.17.0
-  logging: ^1.0.1
+  logging: ^1.0.2
   measured_size: ^1.0.0
-  multi_select_flutter: ^4.0.0
-  package_info: ^2.0.0
+  multi_select_flutter: ^4.1.2
+  package_info: ^2.0.2
   permission_handler: ^8.2.5
-  pref: ^2.0.2
-  quiver: ^3.0.1
-  scroll_to_index: ^2.1.0
-  sentry_flutter: ^6.2.2
-  share: ^2.0.1
-  simple_icons: ^4.22.0
-  sqflite: ^2.0.0+3
-  sqflite_common: 2.1.0
-  sqflite_migration_plan: ^0.1.0
-  timeago: ^3.0.2
+  pref: ^2.6.0
+  quiver: ^3.1.0
+  scroll_to_index: ^3.0.1
+  sentry_flutter: ^6.6.1
+  share: ^2.0.4
+  simple_icons: ^7.1.0
+  sqflite: ^2.0.2+1
+  sqflite_common: ^2.2.1+1
+  sqflite_migration_plan: ^1.0.0
+  timeago: ^3.2.2
   uni_links2: ^0.6.0+2
-  url_launcher: ^6.0.3
-  uuid: ^3.0.4
+  url_launcher: ^6.1.4
+  uuid: ^3.0.6
 
   flutter_localizations:
     sdk: flutter
@@ -74,11 +77,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.9.3
   flutter_lints:
-  flutter_oss_licenses: ^1.0.1
+  flutter_oss_licenses: ^2.0.1
   intl_utils: ^2.6.1
-  sqflite_common_ffi: ^2.0.0+3
+  sqflite_common_ffi: ^2.1.1+1
 
 flutter_icons:
   android: "launcher_icon"
