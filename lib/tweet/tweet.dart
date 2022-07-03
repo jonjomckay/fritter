@@ -342,34 +342,20 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     }
 
     var quotedTweet = Container();
-    if (tweet.isQuoteStatus ?? false) {
-      Widget quotedTweetTile;
 
+    if (tweet.isQuoteStatus ?? false) {
       if (tweet.quotedStatusWithCard != null) {
-        quotedTweetTile = TweetTile(
-          clickable: true,
-          tweet: tweet.quotedStatusWithCard!,
-          currentUsername: currentUsername,
-        );
-      } else {
-        quotedTweetTile = Container(
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Text(
-            L10n.of(context).this_tweet_is_unavailable,
-            style: TextStyle(color: Theme.of(context).hintColor),
+        quotedTweet = Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.circular(8)),
+          margin: const EdgeInsets.all(8),
+          child: TweetTile(
+            clickable: true,
+            tweet: tweet.quotedStatusWithCard!,
+            currentUsername: currentUsername,
           ),
         );
       }
-
-      quotedTweet = Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.circular(8)),
-        margin: const EdgeInsets.all(8),
-        child: Container(
-          child: quotedTweetTile,
-        ),
-      );
     }
 
     // Only create the tweet content if the tweet contains text
