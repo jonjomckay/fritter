@@ -62,17 +62,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "${widgetPlaceName} için trendler yüklenemiyor";
 
-  static String m17(e) => "Abonelikler yenilenemiyor. Hata şu: ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Medya kaydedilemiyor. Twitter ${responseStatusCode} durumuyla döndü";
 
-  static String m19(e) => "Ping gönderilemiyor. ${e}";
+  static String m18(e) => "Ping gönderilemiyor. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "Ping gönderilemedi. Durum kodu ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "F-Droid istemciniz aracılığıyla ${releaseVersion} sürümüne güncelleyin";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -405,21 +403,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Akış için tweetler yüklenemedi"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Veritabanı geçişleri çalıştırılamıyor"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Trend konumu tercihi aktarılamıyor"),
         "unknown": MessageLookupByLibrary.simpleMessage("Bilinmeyen"),
         "unsave": MessageLookupByLibrary.simpleMessage("Kaydetmeyi iptal et"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abonelikten çık"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Güncellemeler"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

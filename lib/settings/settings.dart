@@ -56,7 +56,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var content = jsonDecode(file.readAsStringSync());
 
     var homeModel = context.read<HomeModel>();
-    var usersModel = context.read<UsersModel>();
     var groupModel = context.read<GroupModel>();
     var prefs = PrefService.of(context);
 
@@ -91,8 +90,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     await homeModel.importData(dataToImport);
     await groupModel.reloadGroups();
-    await usersModel.reloadSubscriptions();
-    await usersModel.refreshSubscriptionData();
+    await context.read<SubscriptionsModel>().reloadSubscriptions();
+    await context.read<SubscriptionsModel>().refreshSubscriptionData();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(L10n.of(context).data_imported_successfully),

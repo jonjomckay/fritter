@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/group/_settings.dart';
 import 'package:fritter/home/_feed.dart';
+import 'package:fritter/home/_groups.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
@@ -19,102 +19,105 @@ class _Tab {
 
 final List<_Tab> homeTabs = [
   _Tab('feed', L10n.current.feed, Icons.rss_feed),
-  _Tab('subscriptions', L10n.current.subscriptions, Icons.people),
+  _Tab('subscriptions', L10n.current.subscriptions, Icons.subscriptions),
+  _Tab('groups', L10n.current.groups, Icons.group),
   _Tab('trending', L10n.current.trending, Icons.trending_up),
   _Tab('saved', L10n.current.saved, Icons.bookmark),
 ];
 
 final int feedTabIndex = homeTabs.indexWhere((element) => element.id == 'feed');
+final int groupsTabIndex = homeTabs.indexWhere((element) => element.id == 'groups');
+final int subscriptionsTabIndex = homeTabs.indexWhere((element) => element.id == 'subscriptions');
+
+List<Widget> createCommonAppBarActions(BuildContext context) {
+  return [
+    IconButton(
+      icon: const Icon(Icons.search),
+      onPressed: () {
+        showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 0));
+      },
+    ),
+    IconButton(
+      icon: const Icon(Icons.settings),
+      onPressed: () {
+        Navigator.pushNamed(context, routeSettings);
+      },
+    )
+  ];
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
 
+  late PageController _pageController;
+  late int _selectedPage = 0;
   late List<Widget> _children;
-  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
 
-    int initialIndex = 0;
-
     // If we have an initial tab set, use it as the initial index
     var prefs = PrefService.of(context, listen: false);
     if (prefs.getKeys().contains(optionHomeInitialTab)) {
-      initialIndex = homeTabs.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
+      _selectedPage = homeTabs.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
     }
 
     _children = [
       FeedScreen(scrollController: _scrollController),
       const SubscriptionsScreen(),
+      const GroupsScreen(),
       const TrendsScreen(),
       const SavedScreen(),
     ];
 
-    _tabController = TabController(vsync: this, initialIndex: initialIndex, length: homeTabs.length);
-    _tabController.addListener(() {
-      setState(() {});
+    _pageController = PageController(initialPage: _selectedPage);
+    _pageController.addListener(() {
+      var page = _pageController.page;
+      if (page == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedPage = page.round();
+      });
     });
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    _pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(homeTabs[_tabController.index].title),
-        actions: [
-          if (_tabController.index == feedTabIndex)
-            IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () => showFeedSettings(context, "-1")),
-          if (_tabController.index == feedTabIndex)
-            IconButton(
-                icon: const Icon(Icons.arrow_upward),
-                onPressed: () async {
-                  await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
-                }),
-          if (_tabController.index == feedTabIndex)
-            IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: () async {
-                  // This is a dirty hack, and probably won't work if the child widgets ever become stateful
-                  setState(() {});
-                }),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 0));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(context, routeSettings);
-            },
-          )
-        ],
-        bottom: TabBar(controller: _tabController, tabs: [
-          ...homeTabs.map((e) => Tab(
-                icon: Icon(e.icon),
-              ))
-        ]),
-      ),
-      body: TabBarView(
-        controller: _tabController,
+      body: PageView(
+        controller: _pageController,
         children: _children,
+      ),
+      bottomNavigationBar: AnimatedBuilder(
+        animation: _pageController,
+        builder: (context, child) => BottomNavigationBar(
+          currentIndex: _selectedPage,
+          onTap: (index) {
+            _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
+          },
+          items: [
+            ...homeTabs.map((e) => BottomNavigationBarItem(
+                icon: Icon(e.icon),
+                label: e.title
+            ))
+          ],
+        ),
       ),
     );
   }

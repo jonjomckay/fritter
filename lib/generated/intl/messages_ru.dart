@@ -63,17 +63,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "Невозможно загрузить актуальное для ${widgetPlaceName}";
 
-  static String m17(e) => "Невозможно обновить подписки. Ошибка была ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Невозможно сохранить медиафайл. Twitter вернул статус ${responseStatusCode}";
 
-  static String m19(e) => "Не удалось отправить ping. ${e}";
+  static String m18(e) => "Не удалось отправить ping. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "Не удалось отправить ping. Код состояния был ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Обновить до ${releaseVersion} через клиент F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -383,21 +381,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Не удаётся загрузить твиты для ленты"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Не удалось произвести перемещение базы данных"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно выполнить передачу местных предпочтений"),
         "unknown": MessageLookupByLibrary.simpleMessage("Неизвестный"),
         "unsave": MessageLookupByLibrary.simpleMessage("Отменить сохранение"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Перестать читать"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Обновления"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

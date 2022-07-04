@@ -94,8 +94,8 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                 var groupModel = context.read<GroupModel>();
                 await groupModel.reloadGroups();
 
-                var usersModel = context.read<UsersModel>();
-                await usersModel.reloadSubscriptions();
+                var subscriptionsModel = context.read<SubscriptionsModel>();
+                await subscriptionsModel.reloadSubscriptions();
 
                 var savedTweetModel = context.read<SavedTweetModel>();
                 await savedTweetModel.listSavedTweets();
@@ -104,7 +104,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
 
                 var settings = _exportSettings ? prefs.toMap() : null;
 
-                var subscriptions = _exportSubscriptions ? usersModel.subscriptions : null;
+                var subscriptions = _exportSubscriptions ? subscriptionsModel.state : null;
 
                 var subscriptionGroups = _exportSubscriptionGroups ? groupModel.groups : null;
 

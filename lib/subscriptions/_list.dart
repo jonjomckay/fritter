@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:fritter/subscriptions/users_model.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -9,16 +12,21 @@ class SubscriptionUsers extends StatefulWidget {
   const SubscriptionUsers({Key? key}) : super(key: key);
 
   @override
-  _SubscriptionUsersState createState() => _SubscriptionUsersState();
+  State<SubscriptionUsers> createState() => _SubscriptionUsersState();
 }
 
 class _SubscriptionUsersState extends State<SubscriptionUsers> {
   @override
   Widget build(BuildContext context) {
-    var model = context.read<UsersModel>();
-    if (model.subscriptions.isEmpty) {
-      return SliverToBoxAdapter(
-          child: Container(
+    var model = context.read<SubscriptionsModel>();
+
+    return ScopedBuilder<SubscriptionsModel, Object, List<Subscription>>.transition(
+      store: model,
+      onLoading: (_) => const Center(child: CircularProgressIndicator()),
+      onError: (_, e) => FullPageErrorWidget(error: e, stackTrace: null, prefix: L10n.of(context).unable_to_refresh_the_subscriptions),
+      onState: (_, state) {
+        if (state.isEmpty) {
+          return Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,21 +51,24 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
                         onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
                       ),
                     )
-                  ])));
-    }
+                  ]));
+        }
 
-    return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        var user = model.subscriptions[index];
+        return ListView.builder(
+          itemCount: state.length,
+          itemBuilder: (context, i) {
+            var user = state[i];
 
-        return UserTile(
-          id: user.id.toString(),
-          name: user.name,
-          screenName: user.screenName,
-          imageUri: user.profileImageUrlHttps,
-          verified: user.verified,
+            return UserTile(
+              id: user.id.toString(),
+              name: user.name,
+              screenName: user.screenName,
+              imageUri: user.profileImageUrlHttps,
+              verified: user.verified,
+            );
+          },
         );
-      }, childCount: model.subscriptions.length),
+      },
     );
   }
 }

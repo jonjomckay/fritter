@@ -61,18 +61,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "Impossibile caricare le tendenze per ${widgetPlaceName}";
 
-  static String m17(e) =>
-      "Impossibile aggiornare le iscrizioni. L\'errore è stato ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Impossibile salvare il contenuto. Twitter ha restituito uno stato di ${responseStatusCode}";
 
-  static String m19(e) => "Impossibile inviare il ping. ${e}";
+  static String m18(e) => "Impossibile inviare il ping. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "Impossibile inviare il ping. Il codice di stato era ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Aggiorna a ${releaseVersion} tramite il tuo client F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -412,21 +409,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile caricare i tweet per il feed"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile eseguire le migrazioni del database"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile trasmettere la preferenza della posizione della tendenza"),
         "unknown": MessageLookupByLibrary.simpleMessage("Sconosciuto"),
         "unsave": MessageLookupByLibrary.simpleMessage("Annulla salvataggio"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Disiscriviti"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Aggiornamenti"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

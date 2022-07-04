@@ -44,7 +44,6 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       // TODO: Test this still works
       var homeModel = context.read<HomeModel>();
       var groupModel = context.read<GroupModel>();
-      var usersModel = context.read<UsersModel>();
 
       while (true) {
         var response = await Twitter.getProfileFollows(
@@ -75,8 +74,8 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       }
 
       await groupModel.reloadGroups();
-      await usersModel.reloadSubscriptions();
-      await usersModel.refreshSubscriptionData();
+      await context.read<SubscriptionsModel>().reloadSubscriptions();
+      await context.read<SubscriptionsModel>().refreshSubscriptionData();
       _streamController?.close();
     } catch (e, stackTrace) {
       Catcher.reportCheckedError(e, stackTrace);

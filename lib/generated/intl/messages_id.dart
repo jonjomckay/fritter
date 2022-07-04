@@ -59,18 +59,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "Tidak bisa memuat tren untuk ${widgetPlaceName}";
 
-  static String m17(e) =>
-      "Tidak bisa menyegarkan langganan. Galatnya adalah ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Tidak dapat menyimpan media. Twitter mengembalikan status ${responseStatusCode}";
 
-  static String m19(e) => "Tidak bisa mengirim ping. ${e}";
+  static String m18(e) => "Tidak bisa mengirim ping. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "Tidak bisa mengirim ping. Kode statusnya adalah ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Perbarui ke ${releaseVersion} lewat klien F-Droid Anda";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -400,21 +397,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memuat cuitan untuk umpan"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa menjalankan migrasi basis data"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa mengalirkan preferensi lokasi tren"),
         "unknown": MessageLookupByLibrary.simpleMessage("Tidak diketahui"),
         "unsave": MessageLookupByLibrary.simpleMessage("Batal simpan"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Batal langganan"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Pembaruan"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

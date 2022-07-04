@@ -1514,13 +1514,13 @@ class L10n {
     );
   }
 
-  /// `Unable to refresh the subscriptions. The error was {e}`
-  String unable_to_refresh_the_subscriptions_the_error_was_e(Object e) {
+  /// `Unable to refresh the subscriptions`
+  String get unable_to_refresh_the_subscriptions {
     return Intl.message(
-      'Unable to refresh the subscriptions. The error was $e',
-      name: 'unable_to_refresh_the_subscriptions_the_error_was_e',
+      'Unable to refresh the subscriptions',
+      name: 'unable_to_refresh_the_subscriptions',
       desc: '',
-      args: [e],
+      args: [],
     );
   }
 

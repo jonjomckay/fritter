@@ -61,18 +61,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "No s\'han pogut carregar les tendències per ${widgetPlaceName}";
 
-  static String m17(e) =>
-      "No es poden actualitzar les subscripcions. L\'error ha estat ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "No s\'ha pogut desar el suport. Twitter ha retornat un estat de ${responseStatusCode}";
 
-  static String m19(e) => "No s\'ha pogut enviar el ping. ${e}";
+  static String m18(e) => "No s\'ha pogut enviar el ping. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "No es pot enviar el ping. El codi d\'estatus és ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Actualitza-ho a ${releaseVersion} a través del client de F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -378,14 +375,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "No es poden carregar els tuits del canal de Continguts"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "No s\'han pogut executar les migracions de la base de dades"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "No s\'ha pogut transmetre la preferència d\'ubicació de la tendència"),
@@ -393,7 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave": MessageLookupByLibrary.simpleMessage("Desfés"),
         "unsubscribe":
             MessageLookupByLibrary.simpleMessage("Anul·lar subscripció"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Actualitzacions"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

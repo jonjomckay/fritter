@@ -7,20 +7,18 @@ import 'package:flutter_iconpicker/IconPicker/Packs/Material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
-import 'package:fritter/generated/l10n.dart';
 
 class SubscriptionGroups extends StatefulWidget {
-  final ScrollController controller;
-
-  const SubscriptionGroups({Key? key, required this.controller}) : super(key: key);
+  const SubscriptionGroups({Key? key}) : super(key: key);
 
   @override
-  _SubscriptionGroupsState createState() => _SubscriptionGroupsState();
+  State<SubscriptionGroups> createState() => _SubscriptionGroupsState();
 }
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
@@ -71,41 +69,53 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<GroupModel>();
+    return Consumer<GroupModel>(builder: (context, model, child) {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 140,
+          childAspectRatio: 200 / 125
+        ),
+        itemCount: model.groups.length + 2,
+        itemBuilder: (context, index) {
+          var actualIndex = index - 1;
+          if (actualIndex == -1) {
+            return _createGroupCard('-1', L10n.of(context).all, defaultGroupIcon, null, null, null);
+          }
 
-    return SliverGrid.extent(
-      maxCrossAxisExtent: 140,
-      childAspectRatio: 200 / 125,
-      children: [
-        _createGroupCard('-1', L10n.of(context).all, defaultGroupIcon, null, null, null),
-        ...model.groups.map((e) => _createGroupCard(
-            e.id, e.name, e.icon, e.color, e.numberOfMembers, () => openSubscriptionGroupDialog(e.id, e.name, e.icon))),
-        Card(
-          child: InkWell(
-            onTap: () {
-              openSubscriptionGroupDialog(null, '', defaultGroupIcon);
-            },
-            child: DottedBorder(
-              color: Theme.of(context).textTheme.caption!.color!,
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.add, size: 16),
-                    const SizedBox(height: 4),
-                    Text(
-                      L10n.of(context).newTrans,
-                      style: const TextStyle(fontSize: 11),
-                    )
-                  ],
+          if (actualIndex < model.groups.length) {
+            var e = model.groups[actualIndex];
+
+            return _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers,
+                () => openSubscriptionGroupDialog(e.id, e.name, e.icon));
+          }
+
+          return Card(
+            child: InkWell(
+              onTap: () {
+                openSubscriptionGroupDialog(null, '', defaultGroupIcon);
+              },
+              child: DottedBorder(
+                color: Theme.of(context).textTheme.caption!.color!,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.add, size: 16),
+                      const SizedBox(height: 4),
+                      Text(
+                        L10n.of(context).newTrans,
+                        style: const TextStyle(fontSize: 11),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        )
-      ],
-    );
+          );
+        },
+      );
+    });
   }
 }
 
@@ -152,8 +162,6 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
   }
 
   void openDeleteSubscriptionGroupDialog(String id, String name) {
-    var model = context.read<GroupModel>();
-
     showDialog(
         context: context,
         builder: (context) {
@@ -165,7 +173,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
               ),
               TextButton(
                 onPressed: () async {
-                  await model.deleteGroup(id);
+                  await context.read<GroupModel>().deleteGroup(id);
 
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -183,8 +191,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
 
   @override
   Widget build(BuildContext context) {
-    var groupModel = context.read<GroupModel>();
-    var usersModel = context.read<UsersModel>();
+    var subscriptionsModel = context.read<SubscriptionsModel>();
 
     var group = _group;
     if (group == null) {
@@ -204,7 +211,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
           onPressed: () {
             setState(() {
               if (members.isEmpty) {
-                members = usersModel.subscriptions.map((e) => e.id).toSet();
+                members = subscriptionsModel.state.map((e) => e.id).toSet();
               } else {
                 members.clear();
               }
@@ -223,7 +230,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
         Builder(builder: (context) {
           var onPressed = () async {
             if (_formKey.currentState!.validate()) {
-              await groupModel.saveGroup(id, name!, icon, color, members);
+              await context.read<GroupModel>().saveGroup(id, name!, icon, color, members);
 
               Navigator.pop(context);
             }
@@ -323,9 +330,9 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: usersModel.subscriptions.length,
+                  itemCount: subscriptionsModel.state.length,
                   itemBuilder: (context, index) {
-                    var subscription = usersModel.subscriptions[index];
+                    var subscription = subscriptionsModel.state[index];
 
                     return CheckboxListTile(
                       dense: true,

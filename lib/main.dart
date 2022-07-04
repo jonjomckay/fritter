@@ -10,25 +10,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/catcher/nice_console_handler.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/settings/settings.dart';
-import 'package:fritter/profile/profile.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
@@ -37,10 +38,9 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:uni_links2/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fritter/generated/l10n.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 Future checkForUpdates() async {
   Logger.root.info('Checking for updates');
@@ -182,6 +182,12 @@ Future<void> main() async {
       releaseConfig: catcherOptions,
       enableLogger: false,
       runAppFunction: () async {
+        TripleObserver.addListener((triple) {
+          if (triple.error != null) {
+            Catcher.reportCheckedError(triple.error, null);
+          }
+        });
+
         Logger.root.onRecord.listen((event) async {
           log(event.message, error: event.error, stackTrace: event.stackTrace);
         });
@@ -207,15 +213,19 @@ Future<void> main() async {
         }
 
         // Run the migrations early, so models work. We also do this later on so we can display errors to the user
-        await Repository().migrate();
+        try {
+          await Repository().migrate();
+        } catch (_) {
+          // Ignore, as we'll catch it later instead
+        }
 
         var homeModel = HomeModel();
 
         var groupModel = GroupModel(prefService);
         await groupModel.reloadGroups();
 
-        var usersModel = UsersModel(prefService, groupModel);
-        await usersModel.reloadSubscriptions();
+        var subscriptionsModel = SubscriptionsModel(prefService, groupModel);
+        await subscriptionsModel.reloadSubscriptions();
 
         var trendLocationModel = TrendLocationModel(prefService);
 
@@ -224,7 +234,7 @@ Future<void> main() async {
               providers: [
                 ChangeNotifierProvider(create: (context) => groupModel),
                 ChangeNotifierProvider(create: (context) => homeModel),
-                ChangeNotifierProvider(create: (context) => usersModel),
+                Provider(create: (context) => subscriptionsModel),
                 Provider(create: (context) => SavedTweetModel()),
                 Provider(create: (context) => trendLocationModel),
                 Provider(create: (context) => TrendLocationsModel()),
@@ -419,6 +429,9 @@ class DefaultPage extends StatefulWidget {
 class _DefaultPageState extends State<DefaultPage> {
   late StreamSubscription _sub;
 
+  Object? _migrationError;
+  StackTrace? _migrationStackTrace;
+
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
@@ -446,6 +459,14 @@ class _DefaultPageState extends State<DefaultPage> {
   void initState() {
     super.initState();
 
+    // Run the database migrations
+    Repository().migrate().catchError((e, s) {
+      setState(() {
+        _migrationError = e;
+        _migrationStackTrace = s;
+      });
+    });
+
     getInitialUri().then((link) {
       if (link != null) {
         handleInitialLink(link);
@@ -460,16 +481,15 @@ class _DefaultPageState extends State<DefaultPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Run the database migrations
-    return FutureBuilderWrapper<void>(
-      future: Repository().migrate(),
-      onError: (error, stackTrace) => ScaffoldErrorWidget(
-        error: error,
-        stackTrace: stackTrace,
-        prefix: L10n.of(context).unable_to_run_the_database_migrations,
-      ),
-      onReady: (data) => const HomeScreen(),
-    );
+    if (_migrationError != null || _migrationStackTrace != null) {
+      return ScaffoldErrorWidget(
+          error: _migrationError,
+          stackTrace: _migrationStackTrace,
+          prefix: L10n.of(context).unable_to_run_the_database_migrations
+      );
+    }
+
+    return const HomeScreen();
   }
 
   @override

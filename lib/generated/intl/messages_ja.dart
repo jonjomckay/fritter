@@ -56,16 +56,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m16(widgetPlaceName) => "${widgetPlaceName}のトレンドを読み込めませんでした";
 
-  static String m17(e) => "登録アカウントを更新できませんでした。エラー：${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "メディアを保存できませんでした。Twitterから返されたステータス：${responseStatusCode}";
 
-  static String m19(e) => "Pingの送信に失敗しました。${e}";
+  static String m18(e) => "Pingの送信に失敗しました。${e}";
 
-  static String m20(statusCode) => "Pingを送信できませんでした。ステータスコード：${statusCode}";
+  static String m19(statusCode) => "Pingを送信できませんでした。ステータスコード：${statusCode}";
 
-  static String m21(releaseVersion) => "F-Droidクライアントから${releaseVersion}に更新";
+  static String m20(releaseVersion) => "F-Droidクライアントから${releaseVersion}に更新";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -352,19 +350,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ツイートを読み込めませんでした"),
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage("フィードにツイートを読み込めませんでした"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage("データベース移行ができませんでした"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage("トレンドの地域設定をストリームできませんでした"),
         "unknown": MessageLookupByLibrary.simpleMessage("不明"),
         "unsave": MessageLookupByLibrary.simpleMessage("保存取り消し"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("登録解除する"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage("ダークテーマで完全な黒を使用する"),

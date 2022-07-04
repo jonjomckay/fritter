@@ -64,18 +64,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m16(widgetPlaceName) =>
       "Trends für ${widgetPlaceName} konnten nicht geladen werden";
 
-  static String m17(e) =>
-      "Die Abonnementansicht konnte nicht aktualisiert werden. Der Fehler: ${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Medien konnten nicht gespeichert werden. Twitter gab folgenden Statuscode zurück: ${responseStatusCode}";
 
-  static String m19(e) => "Der Ping konnte nicht gesendet werden. ${e}";
+  static String m18(e) => "Der Ping konnte nicht gesendet werden. ${e}";
 
-  static String m20(statusCode) =>
+  static String m19(statusCode) =>
       "Der Ping konnte nicht gesendet werden. Der Status-Code lautet ${statusCode}";
 
-  static String m21(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Update auf Version ${releaseVersion} über Ihren F-Droid-Client";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -415,14 +412,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Die Tweets für den Feed können nicht geladen werden"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Die Datenbankmigrationen konnten nicht durchgeführt werden"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Die Trendortpräferenz kann nicht gestreamt werden"),
@@ -430,7 +426,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave":
             MessageLookupByLibrary.simpleMessage("Speichern rückgängig machen"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abo abbestellen"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Updates"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

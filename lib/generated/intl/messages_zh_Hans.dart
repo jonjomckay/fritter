@@ -56,16 +56,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m16(widgetPlaceName) => "无法加载${widgetPlaceName}的热门";
 
-  static String m17(e) => "无法刷新订阅信息。错误是${e}";
-
-  static String m18(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "无法保存媒体。Twitter返回的状态是${responseStatusCode}";
 
-  static String m19(e) => "无法发送ping。${e}";
+  static String m18(e) => "无法发送ping。${e}";
 
-  static String m20(statusCode) => "无法发送ping。状态代码为：${statusCode}";
+  static String m19(statusCode) => "无法发送ping。状态代码为：${statusCode}";
 
-  static String m21(releaseVersion) => "从 F-Droid 客户端更新 ${releaseVersion}";
+  static String m20(releaseVersion) => "从 F-Droid 客户端更新 ${releaseVersion}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -338,19 +336,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("无法载入推文"),
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage("无法载入最新推文"),
-        "unable_to_refresh_the_subscriptions_the_error_was_e": m17,
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage("无法进行数据迁移"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m18,
-        "unable_to_send_the_ping_e_to_string": m19,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m20,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage("无法传输热门位置偏好"),
         "unknown": MessageLookupByLibrary.simpleMessage("未知"),
         "unsave": MessageLookupByLibrary.simpleMessage("取消保存"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("取消订阅"),
-        "update_to_release_version_through_your_fdroid_client": m21,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage("在黑暗主题中使用真正的黑色"),
