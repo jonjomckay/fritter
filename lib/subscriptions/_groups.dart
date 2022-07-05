@@ -46,20 +46,20 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
             Container(
               color: color != null ? color.withOpacity(0.9) : Theme.of(context).highlightColor,
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Icon(deserializeIconData(icon), size: 16),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Icon(deserializeIconData(icon), size: 24),
             ),
             Expanded(
                 child: Container(
               alignment: Alignment.center,
               color: color != null ? color.withOpacity(0.4) : Colors.white10,
               width: double.infinity,
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(8),
               child: Text(title,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
             ))
           ],
         ),
@@ -72,8 +72,8 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
     return Consumer<GroupModel>(builder: (context, model, child) {
       return GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 140,
-          childAspectRatio: 200 / 125
+          maxCrossAxisExtent: 180,
+          childAspectRatio: 200 / 150
         ),
         itemCount: model.groups.length + 2,
         itemBuilder: (context, index) {
@@ -105,7 +105,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
                       const SizedBox(height: 4),
                       Text(
                         L10n.of(context).newTrans,
-                        style: const TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: 13),
                       )
                     ],
                   ),
