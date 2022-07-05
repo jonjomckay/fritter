@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
+import 'package:fritter/ui/physics.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
@@ -142,6 +143,7 @@ class _TweetMediaState extends State<TweetMedia> {
         aspectRatio: largestAspectRatio,
         child: PageView.builder(
           controller: _controller,
+          physics: const LessSensitiveScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemCount: widget.media.length,
           itemBuilder: (context, index) {
@@ -232,6 +234,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
       ),
       body: ExtendedImageGesturePageView.builder(
         scrollDirection: Axis.horizontal,
+        physics: const LessSensitiveScrollPhysics(),
         itemCount: widget.media.length,
         itemBuilder: (BuildContext context, int index) {
           var item = widget.media[index];

@@ -6,6 +6,7 @@ import 'package:fritter/home/_saved.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/trends/trends.dart';
+import 'package:fritter/ui/physics.dart';
 import 'package:pref/pref.dart';
 import 'package:fritter/generated/l10n.dart';
 
@@ -106,6 +107,7 @@ class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMi
       appBar: appBarMixin.getAppBar(context),
       body: PageView(
         controller: _pageController,
+        physics: const LessSensitiveScrollPhysics(),
         children: _children,
       ),
       bottomNavigationBar: AnimatedBuilder(
