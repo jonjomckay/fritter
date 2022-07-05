@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/catcher/exceptions.dart';
@@ -90,7 +91,15 @@ class EmojiErrorWidget extends FritterErrorWidget {
           if (onRetry != null)
             Container(
               margin: const EdgeInsets.only(top: 12),
-              child: ElevatedButton(
+              child: AsyncButtonBuilder(
+                showError: false,
+                showSuccess: false,
+                builder: (context, child, callback, buttonState) {
+                  return ElevatedButton(
+                    onPressed: callback,
+                    child: child,
+                  );
+                },
                 child: Text(L10n.of(context).retry),
                 onPressed: () => onRetry(),
               ),
