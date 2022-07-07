@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
@@ -14,7 +15,6 @@ import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
-import 'package:fritter/generated/l10n.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -87,11 +87,20 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   double descriptionHeight = defaultHeight;
   double metadataHeight = defaultHeight;
 
+  bool descriptionResized = false;
+  bool metadataResized = false;
+
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 5, vsync: this);
+
+    var description = widget.user.description;
+    if (description == null || description.isEmpty) {
+      descriptionHeight = 0;
+      descriptionResized = true;
+    }
   }
 
   List<InlineSpan> _addLinksToText(BuildContext context, String content) {
@@ -153,7 +162,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         : ExtendedImage.network(banner, fit: BoxFit.fitWidth, height: bannerHeight);
 
     // The height of the app bar should be all the inner components, plus any margins
-    var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 48 + descriptionHeight;
+    var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 8 + descriptionHeight;
 
     return Scaffold(
       body: Stack(children: [
@@ -213,6 +222,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                       background: SafeArea(
+                        top: false,
                         child: DefaultTextStyle.merge(
                           style: const TextStyle(color: Colors.white),
                           child: Stack(fit: StackFit.expand, children: <Widget>[
@@ -237,32 +247,30 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(bottom: 4),
-                                            child: Row(
-                                              children: [
-                                                Text(profile.name!,
-                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                                                if (profile.verified ?? false) const SizedBox(width: 6),
-                                                if (profile.verified ?? false)
-                                                  const Icon(Icons.verified, size: 24, color: Colors.blue)
-                                              ],
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text(profile.name!,
+                                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                              if (profile.verified ?? false) const SizedBox(width: 6),
+                                              if (profile.verified ?? false)
+                                                const Icon(Icons.verified, size: 24, color: Colors.blue)
+                                            ],
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(bottom: 8),
                                             child: Text('@${(profile.screenName!)}',
-                                                style: TextStyle(color: theme.primaryTextTheme.caption!.color)),
+                                                style: TextStyle(fontSize: 14, color: Colors.white70)),
                                           ),
                                           if (profile.description != null && profile.description!.isNotEmpty)
                                             MeasuredSize(
                                               onChange: (size) {
                                                 setState(() {
                                                   descriptionHeight = size.height;
+                                                  descriptionResized = true;
                                                 });
                                               },
                                               child: Container(
-                                                  margin: const EdgeInsets.only(bottom: 4),
+                                                  margin: const EdgeInsets.only(bottom: 8),
                                                   child: RichText(
                                                       maxLines: 3,
                                                       text: TextSpan(
@@ -273,6 +281,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                             onChange: (size) {
                                               setState(() {
                                                 metadataHeight = size.height;
+                                                metadataResized = true;
                                               });
                                             },
                                             child: Column(
@@ -281,19 +290,19 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 children: [
                                                   if (profile.location != null && profile.location!.isNotEmpty)
                                                     Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           const Icon(Icons.place, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
-                                                          Text(profile.location!),
+                                                          Text(profile.location!, style: TextStyle(fontSize: 13)),
                                                         ],
                                                       ),
                                                     ),
                                                   if (profile.url != null && profile.url!.isNotEmpty)
                                                     Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
@@ -303,29 +312,30 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                             var url = profile.entities?.url?.urls
                                                                 ?.firstWhere((element) => element.url == profile.url);
 
-                                                            if (url == null) {
-                                                              return Container();
-                                                            }
+                                                          if (url == null) {
+                                                            return Container();
+                                                          }
 
-                                                            return InkWell(
-                                                              child: Text(url.displayUrl!,
-                                                                  style: const TextStyle(color: Colors.blue)),
-                                                              onTap: () => launchUrlString(url.expandedUrl!),
-                                                            );
-                                                          }),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                          return InkWell(
+                                                            child: Text(url.displayUrl!,
+                                                                style: const TextStyle(color: Colors.blue, fontSize: 13)),
+                                                            onTap: () => launchUrlString(url.expandedUrl!),
+                                                          );
+                                                        }),
+                                                      ],
+                                                    )),
                                                   if (profile.createdAt != null)
                                                     Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           const Icon(Icons.calendar_today, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
                                                           Text(L10n.of(context)
-                                                              .joined(DateFormat('MMMM yyyy').format(profile.createdAt!))),
+                                                              .joined(DateFormat('MMMM yyyy').format(profile.createdAt!)),
+                                                              style: TextStyle(fontSize: 13)
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -368,11 +378,17 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         ),
 
         // If we haven't resized the description widget yet, display an overlay container so we don't see the resize
-        if (descriptionHeight == defaultHeight && metadataHeight == defaultHeight)
-          Container(
-            height: double.infinity,
-            color: Theme.of(context).backgroundColor,
-          ),
+        // TODO: This flickers
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 150),
+          child: descriptionResized == true && metadataResized == true
+              ? Container(key: const Key('loaded'))
+              : Container(
+                  key: const Key('waiting'),
+                  height: double.infinity,
+                  color: theme.backgroundColor,
+                ),
+        )
       ]),
     );
   }
