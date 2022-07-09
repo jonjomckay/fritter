@@ -69,7 +69,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GroupModel>(builder: (context, model, child) {
+    return Consumer<GroupsModel>(builder: (context, model, child) {
       return GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 180,
@@ -150,7 +150,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
       icon = widget.icon;
     });
 
-    context.read<GroupModel>().loadGroupEdit(widget.id).then((group) => setState(() {
+    context.read<GroupsModel>().loadGroupEdit(widget.id).then((group) => setState(() {
           _group = group;
 
           id = group.id;
@@ -173,7 +173,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
               ),
               TextButton(
                 onPressed: () async {
-                  await context.read<GroupModel>().deleteGroup(id);
+                  await context.read<GroupsModel>().deleteGroup(id);
 
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -230,7 +230,7 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
         Builder(builder: (context) {
           onPressed() async {
             if (_formKey.currentState!.validate()) {
-              await context.read<GroupModel>().saveGroup(id, name!, icon, color, members);
+              await context.read<GroupsModel>().saveGroup(id, name!, icon, color, members);
 
               Navigator.pop(context);
             }

@@ -108,8 +108,15 @@ class SubscriptionGroupGet {
   final String id;
   final String name;
   final List<Subscription> subscriptions;
+  bool includeReplies;
+  bool includeRetweets;
 
-  SubscriptionGroupGet({required this.id, required this.name, required this.subscriptions});
+  SubscriptionGroupGet(
+      {required this.id,
+      required this.name,
+      required this.subscriptions,
+      required this.includeReplies,
+      required this.includeRetweets});
 }
 
 class SubscriptionGroupEdit {
@@ -137,11 +144,4 @@ class SubscriptionGroupMember with ToMappable {
   Map<String, dynamic> toMap() {
     return {'group_id': group, 'profile_id': profile};
   }
-}
-
-class SubscriptionGroupSettings {
-  final bool includeReplies;
-  final bool includeRetweets;
-
-  SubscriptionGroupSettings({required this.includeReplies, required this.includeRetweets});
 }

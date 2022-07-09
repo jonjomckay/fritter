@@ -11,7 +11,7 @@ class SubscriptionsModel extends StreamStore<Object, List<Subscription>> {
   static final log = Logger('SubscriptionsModel');
 
   final BasePrefService prefs;
-  final GroupModel groupModel;
+  final GroupsModel groupModel;
 
   SubscriptionsModel(this.prefs, this.groupModel) : super([]);
 
@@ -28,7 +28,7 @@ class SubscriptionsModel extends StreamStore<Object, List<Subscription>> {
 
       return (await database.query(tableSubscription, orderBy: '$orderSubscriptions $orderByDirection'))
           .map((e) => Subscription.fromMap(e))
-          .toList(growable: false);
+          .toList();
     });
   }
 
@@ -83,8 +83,10 @@ class SubscriptionsModel extends StreamStore<Object, List<Subscription>> {
         });
 
         database.insert(tableSubscription, subscription.toMap());
-        state.add(subscription);
       }
+
+      // TODO: This is hardcore, but we need to resort the list and this is the easiest way
+      await reloadSubscriptions();
 
       return state;
     });

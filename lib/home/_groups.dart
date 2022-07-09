@@ -25,11 +25,11 @@ class GroupsScreen extends StatelessWidget with AppBarMixin {
               child: Text(L10n.of(context).date_created),
             ),
           ],
-          onSelected: (value) => context.read<GroupModel>().changeOrderSubscriptionGroupsBy(value),
+          onSelected: (value) => context.read<GroupsModel>().changeOrderSubscriptionGroupsBy(value),
         ),
         IconButton(
           icon: const Icon(Icons.sort_by_alpha),
-          onPressed: () => context.read<GroupModel>().toggleOrderSubscriptionGroupsAscending(),
+          onPressed: () => context.read<GroupsModel>().toggleOrderSubscriptionGroupsAscending(),
         ),
         ...createCommonAppBarActions(context),
       ],

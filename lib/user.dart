@@ -122,7 +122,7 @@ class FollowButton extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      var groupModel = context.read<GroupModel>();
+                      var groupModel = context.read<GroupsModel>();
 
                       return FutureBuilderWrapper<List<String>>(
                         future: groupModel.listGroupsForUser(id),

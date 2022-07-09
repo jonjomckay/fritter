@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
@@ -6,7 +7,7 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
 import 'package:provider/provider.dart';
 
-void showFeedSettings(BuildContext context, String group) {
+void showFeedSettings(BuildContext context, GroupModel model) {
   showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -41,32 +42,31 @@ void showFeedSettings(BuildContext context, String group) {
                         color: Theme.of(context).disabledColor,
                       ),
                     )),
-                Consumer<GroupModel>(builder: (context, model, child) {
-                  return FutureBuilderWrapper<SubscriptionGroupSettings>(
-                    future: model.loadSubscriptionGroupSettings(group),
-                    onError: (error, stackTrace) => InlineErrorWidget(error: error),
-                    onReady: (settings) => Column(
+                ScopedBuilder<GroupModel, Object, SubscriptionGroupGet>(
+                  store: model,
+                  onState: (_, state) {
+                    return Column(
                       children: [
                         CheckboxListTile(
                             title: Text(
                               L10n.of(context).include_replies,
                             ),
-                            value: settings.includeReplies,
+                            value: model.state.includeReplies,
                             onChanged: (value) async {
-                              await model.toggleSubscriptionGroupIncludeReplies(group, value ?? false);
+                              await model.toggleSubscriptionGroupIncludeReplies(value ?? false);
                             }),
                         CheckboxListTile(
                             title: Text(
                               L10n.of(context).include_retweets,
                             ),
-                            value: settings.includeRetweets,
+                            value: model.state.includeRetweets,
                             onChanged: (value) async {
-                              await model.toggleSubscriptionGroupIncludeRetweets(group, value ?? false);
+                              await model.toggleSubscriptionGroupIncludeRetweets(value ?? false);
                             }),
                       ],
-                    ),
-                  );
-                })
+                    );
+                  },
+                ),
               ],
             ),
           ),

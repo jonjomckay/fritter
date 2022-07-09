@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/_settings.dart';
+import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class FeedScreen extends StatelessWidget with AppBarMixin {
+  final GroupModel model = GroupModel('-1');
   final ScrollController scrollController;
 
-  const FeedScreen({Key? key, required this.scrollController}) : super(key: key);
+  FeedScreen({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   AppBar getAppBar(BuildContext context) {
+    // TODO: I think this is the same as in group_screen?
     return AppBar(
       title: Text(L10n.current.feed),
       actions: [
         IconButton(
             icon: const Icon(Icons.more_vert),
-            onPressed: () => showFeedSettings(context, "-1")),
+            onPressed: () => showFeedSettings(context, model)),
         IconButton(
             icon: const Icon(Icons.arrow_upward),
             onPressed: () async {
@@ -25,8 +29,7 @@ class FeedScreen extends StatelessWidget with AppBarMixin {
         IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () async {
-              // This is a dirty hack, and probably won't work if the child widgets ever become stateful
-              // setState(() {});
+              await model.loadGroup('-1');
             }),
         ...createCommonAppBarActions(context)
       ],
@@ -35,6 +38,9 @@ class FeedScreen extends StatelessWidget with AppBarMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SubscriptionGroupScreenContent(id: '-1', scrollController: scrollController);
+    return Provider<GroupModel>(
+      create: (_) => model,
+      child: SubscriptionGroupScreenContent(id: '-1', scrollController: scrollController),
+    );
   }
 }

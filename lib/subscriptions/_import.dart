@@ -43,7 +43,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
 
       // TODO: Test this still works
       var homeModel = context.read<HomeModel>();
-      var groupModel = context.read<GroupModel>();
+      var groupModel = context.read<GroupsModel>();
 
       while (true) {
         var response = await Twitter.getProfileFollows(

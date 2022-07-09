@@ -56,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var content = jsonDecode(file.readAsStringSync());
 
     var homeModel = context.read<HomeModel>();
-    var groupModel = context.read<GroupModel>();
+    var groupModel = context.read<GroupsModel>();
     var prefs = PrefService.of(context);
 
     var data = SettingsData.fromJson(content);

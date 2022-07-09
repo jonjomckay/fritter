@@ -131,7 +131,6 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
   Widget build(BuildContext context) {
     if (widget.users.isEmpty) {
       return Scaffold(
-        appBar: AppBar(),
         body: Center(
           child: Text(L10n.of(context).this_group_contains_no_subscriptions),
         ),

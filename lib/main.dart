@@ -221,7 +221,7 @@ Future<void> main() async {
 
         var homeModel = HomeModel();
 
-        var groupModel = GroupModel(prefService);
+        var groupModel = GroupsModel(prefService);
         await groupModel.reloadGroups();
 
         var subscriptionsModel = SubscriptionsModel(prefService, groupModel);

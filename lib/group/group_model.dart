@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
@@ -28,14 +29,66 @@ IconData? deserializeIconData(String iconData) {
   return Icons.rss_feed;
 }
 
-class GroupModel extends ChangeNotifier {
+class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
+  final String id;
+
+  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: [], includeRetweets: false, includeReplies: false));
+
+  Future<void> loadGroup(String id) async {
+    await execute(() async {
+      var database = await Repository.readOnly();
+
+      var group = (await database.query(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id])).first;
+
+      if (id == '-1') {
+        var subscriptions = (await database.query(tableSubscription))
+            .map((e) => Subscription.fromMap(e))
+            .toList(growable: false);
+
+        return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
+      }
+
+
+      var subscriptions = (await database.rawQuery(
+          'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
+          [id]))
+          .map((e) => Subscription.fromMap(e))
+          .toList(growable: false);
+
+      // TODO: Factory
+      return SubscriptionGroupGet(id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
+    });
+  }
+
+  Future<void> toggleSubscriptionGroupIncludeReplies(bool value) async {
+    await execute(() async {
+      (await Repository.writable())
+          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_replies = ? WHERE id = ?', [value, state.id]);
+
+      state.includeReplies = value;
+      return state;
+    });
+  }
+
+  Future<void> toggleSubscriptionGroupIncludeRetweets(bool value) async {
+    await execute(() async {
+      (await Repository.writable())
+          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_retweets = ? WHERE id = ?', [value, state.id]);
+
+      state.includeRetweets = value;
+      return state;
+    });
+  }
+}
+
+class GroupsModel extends ChangeNotifier {
   static final log = Logger('GroupModel');
 
   List<SubscriptionGroup> _groups = [];
 
   final BasePrefService _prefs;
 
-  GroupModel(this._prefs);
+  GroupsModel(this._prefs);
 
   bool get orderGroupsAscending => _prefs.get(optionSubscriptionGroupsOrderByAscending);
   String get orderGroupsBy => _prefs.get(optionSubscriptionGroupsOrderByField);
@@ -170,32 +223,6 @@ class GroupModel extends ChangeNotifier {
     await reloadGroups();
 
     notifyListeners();
-  }
-
-  Future toggleSubscriptionGroupIncludeReplies(String id, bool value) async {
-    var database = await Repository.writable();
-
-    await database.rawUpdate('UPDATE $tableSubscriptionGroup SET include_replies = ? WHERE id = ?', [value, id]);
-
-    notifyListeners();
-  }
-
-  Future toggleSubscriptionGroupIncludeRetweets(String id, bool value) async {
-    var database = await Repository.writable();
-
-    await database.rawUpdate('UPDATE $tableSubscriptionGroup SET include_retweets = ? WHERE id = ?', [value, id]);
-
-    notifyListeners();
-  }
-
-  Future<SubscriptionGroupSettings> loadSubscriptionGroupSettings(String id) async {
-    var database = await Repository.readOnly();
-
-    return (await database
-            .rawQuery('SELECT include_replies, include_retweets FROM $tableSubscriptionGroup WHERE id = ?', [id]))
-        .map((e) => SubscriptionGroupSettings(
-            includeReplies: e['include_replies'] == 1, includeRetweets: e['include_retweets'] == 1))
-        .first;
   }
 
   void changeOrderSubscriptionGroupsBy(String? value) async {

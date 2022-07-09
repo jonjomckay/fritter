@@ -91,7 +91,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
           : FloatingActionButton(
               child: const Icon(Icons.save),
               onPressed: () async {
-                var groupModel = context.read<GroupModel>();
+                var groupModel = context.read<GroupsModel>();
                 await groupModel.reloadGroups();
 
                 var subscriptionsModel = context.read<SubscriptionsModel>();
