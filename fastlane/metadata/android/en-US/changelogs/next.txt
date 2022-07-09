@@ -2,3 +2,4 @@
 * Fixed some replies not being filtered out in groups (#344)
 * Added support for downloading to a directory (#269 - thanks to @ManeraKai!)
 * Fixed "tweet unavailable" message being displayed erroneously (#397)
+* Fixed "RT @" being displayed before all retweets (#345)

@@ -62,7 +62,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   List<TweetTextPart> _displayParts = [];
   List<TweetTextPart> _translatedParts = [];
 
-  String? _convertRunesToText(Iterable<int> runes, int start, [int? end]) {
+  static String? _convertRunesToText(Iterable<int> runes, int start, [int? end]) {
     var string = runes.getRange(start, end).map((e) => String.fromCharCode(e)).join('');
     if (string.isEmpty) {
       return null;
@@ -71,7 +71,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     return HtmlUnescape().convert(string);
   }
 
-  List<TweetEntity> _populateEntities(
+  static List<TweetEntity> _populateEntities(
       {required List<TweetEntity> entities, List<dynamic>? source, required Function getNewEntity}) {
     source = source ?? [];
 
@@ -82,7 +82,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     return entities;
   }
 
-  List<TweetEntity> _getEntities() {
+  static List<TweetEntity> _getEntities(BuildContext context, TweetWithCard tweet) {
     List<TweetEntity> entities = [];
 
     entities = _populateEntities(
@@ -207,15 +207,18 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     isPinned = widget.isPinned;
     isThread = widget.isThread;
 
+    // Get the text to display from the actual tweet, i.e. the retweet if there is one, otherwise we end up with "RT @" crap in our text
+    var actualTweet = tweet.retweetedStatusWithCard ?? tweet;
+
     // Generate all the tweet entities (mentions, hashtags, etc.) from the tweet text
-    Runes tweetText = Runes(tweet.fullText ?? tweet.text!);
+    Runes tweetText = Runes(actualTweet.fullText ?? actualTweet.text!);
 
     // If we're not given a text display range, we just display the entire text
-    List<int> displayTextRange = tweet.displayTextRange ?? [0, tweetText.length];
+    List<int> displayTextRange = actualTweet.displayTextRange ?? [0, tweetText.length];
 
     Iterable<int> runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
 
-    List<TweetEntity> entities = _getEntities();
+    List<TweetEntity> entities = _getEntities(context, actualTweet);
     List<TweetTextPart> things = [];
 
     int index = 0;
@@ -238,7 +241,6 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
       // Then add the actual entity
       things.add(TweetTextPart(part.getContent(), null));
-      // parts.add(part.getContent());
 
       // Then set our index in the tweet text as the end of our entity
       index = end;
