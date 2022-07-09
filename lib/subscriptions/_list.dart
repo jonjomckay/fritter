@@ -55,6 +55,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
         }
 
         return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           itemCount: state.length,
           itemBuilder: (context, i) {
             var user = state[i];
