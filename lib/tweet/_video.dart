@@ -1,6 +1,8 @@
 import 'package:catcher/catcher.dart';
 import 'package:chewie/chewie.dart';
+import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
@@ -18,23 +20,28 @@ class TweetVideo extends StatefulWidget {
 }
 
 class _TweetVideoState extends State<TweetVideo> {
-  late VideoPlayerController _videoController;
-  late ChewieController _chewieController;
+  bool _showVideo = false;
+
+  VideoPlayerController? _videoController;
+  ChewieController? _chewieController;
 
   @override
   void initState() {
     super.initState();
+  }
 
+  void _loadVideo() {
     var url = widget.media.videoInfo!.variants![0].url!;
+    _videoController = VideoPlayerController.network(url);
 
     double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-        ? _videoController.value.aspectRatio
+        ? _videoController!.value.aspectRatio
         : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
 
-    _videoController = VideoPlayerController.network(url);
     _chewieController = ChewieController(
       aspectRatio: aspectRatio,
       autoInitialize: true,
+      autoPlay: true,
       allowMuting: true,
       allowedScreenSleep: false,
       additionalOptions: (context) => [
@@ -73,7 +80,7 @@ class _TweetVideoState extends State<TweetVideo> {
         )
       ],
       looping: widget.loop,
-      videoPlayerController: _videoController,
+      videoPlayerController: _videoController!,
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Column(
@@ -92,16 +99,45 @@ class _TweetVideoState extends State<TweetVideo> {
     );
   }
 
+  void onTapPlay() {
+    _loadVideo();
+
+    setState(() {
+      _showVideo = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Chewie(controller: _chewieController);
+    // TODO: This is a bit flickery, but will do for now
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 150),
+      child: _showVideo
+        ? Chewie(controller: _chewieController!)
+        : GestureDetector(
+            onTap: onTapPlay,
+            child: Stack(children: [
+              ExtendedImage.network(widget.media.mediaUrlHttps!),
+              Center(
+                child: CenterPlayButton(
+                  backgroundColor: Colors.black54,
+                  iconColor: Colors.white,
+                  isFinished: false,
+                  isPlaying: false,
+                  show: true,
+                  onPressed: onTapPlay,
+                ),
+              )
+            ]),
+          )
+        );
   }
 
   @override
   void dispose() {
     // TODO: These now seem to get called when the video player goes fullscreen. They shouldn't though
-    _videoController.dispose();
-    _chewieController.dispose();
+    _videoController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 }
