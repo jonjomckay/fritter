@@ -1,20 +1,19 @@
-import 'dart:async';
-
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fritter/client.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
+import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -24,47 +23,31 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;
 
-    return _ProfileScreen(username: username);
+    return Provider(
+      create: (context) => ProfileModel()..loadProfile(username),
+      child: _ProfileScreen(username: username)
+    );
   }
 }
 
-class _ProfileScreen extends StatefulWidget {
+class _ProfileScreen extends StatelessWidget {
   final String username;
 
   const _ProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<_ProfileScreen> {
-  late Future<User> _future;
-
-  @override
-  void initState() {
-    super.initState();
-
-    fetchProfile();
-  }
-
-  void fetchProfile() {
-    setState(() {
-      _future = Twitter.getProfile(widget.username);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilderWrapper<User>(
-        future: _future,
-        onReady: (user) => ProfileScreenBody(user: user),
-        onError: (error, stackTrace) => FullPageErrorWidget(
+      body: ScopedBuilder<ProfileModel, Object, User>.transition(
+        store: context.read<ProfileModel>(),
+        onError: (_, error) => FullPageErrorWidget(
           error: error,
-          stackTrace: stackTrace,
+          stackTrace: null,
           prefix: L10n.of(context).unable_to_load_the_profile,
-          onRetry: () => fetchProfile(),
+          onRetry: () => context.read<ProfileModel>().loadProfile(username),
         ),
+        onLoading: (_) => const Center(child: CircularProgressIndicator()),
+        onState: (_, state) => ProfileScreenBody(user: state),
       ),
     );
   }
@@ -144,6 +127,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
+    // TODO: This shouldn't happen before the profile is loaded
+    if (widget.user.idStr == null) {
+      return Container();
+    }
+
     // Make the app bar height the correct aspect ratio based on the header image size (1500x500)
     var mediaQuery = MediaQuery.of(context);
     var deviceSize = mediaQuery.size;
@@ -259,7 +247,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                           Container(
                                             margin: const EdgeInsets.only(bottom: 8),
                                             child: Text('@${(profile.screenName!)}',
-                                                style: TextStyle(fontSize: 14, color: Colors.white70)),
+                                                style: const TextStyle(fontSize: 14, color: Colors.white70)),
                                           ),
                                           if (profile.description != null && profile.description!.isNotEmpty)
                                             MeasuredSize(
@@ -296,7 +284,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         children: [
                                                           const Icon(Icons.place, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
-                                                          Text(profile.location!, style: TextStyle(fontSize: 13)),
+                                                          Text(profile.location!, style: const TextStyle(fontSize: 13)),
                                                         ],
                                                       ),
                                                     ),
@@ -334,7 +322,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text(L10n.of(context)
                                                               .joined(DateFormat('MMMM yyyy').format(profile.createdAt!)),
-                                                              style: TextStyle(fontSize: 13)
+                                                              style: const TextStyle(fontSize: 13)
                                                           ),
                                                         ],
                                                       ),
