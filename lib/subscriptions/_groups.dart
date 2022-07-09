@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -69,53 +70,57 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GroupsModel>(builder: (context, model, child) {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 180,
-          childAspectRatio: 200 / 150
-        ),
-        itemCount: model.groups.length + 2,
-        itemBuilder: (context, index) {
-          var actualIndex = index - 1;
-          if (actualIndex == -1) {
-            return _createGroupCard('-1', L10n.of(context).all, defaultGroupIcon, null, null, null);
-          }
+    return ScopedBuilder<GroupsModel, Object, List<SubscriptionGroup>>.transition(
+      store: context.read<GroupsModel>(),
+      // TODO: Error
+      onState: (_, state) {
+        return GridView.builder(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 180,
+              childAspectRatio: 200 / 150
+          ),
+          itemCount: state.length + 2,
+          itemBuilder: (context, index) {
+            var actualIndex = index - 1;
+            if (actualIndex == -1) {
+              return _createGroupCard('-1', L10n.of(context).all, defaultGroupIcon, null, null, null);
+            }
 
-          if (actualIndex < model.groups.length) {
-            var e = model.groups[actualIndex];
+            if (actualIndex < state.length) {
+              var e = state[actualIndex];
 
-            return _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers,
-                () => openSubscriptionGroupDialog(e.id, e.name, e.icon));
-          }
+              return _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers,
+                      () => openSubscriptionGroupDialog(e.id, e.name, e.icon));
+            }
 
-          return Card(
-            child: InkWell(
-              onTap: () {
-                openSubscriptionGroupDialog(null, '', defaultGroupIcon);
-              },
-              child: DottedBorder(
-                color: Theme.of(context).textTheme.caption!.color!,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.add, size: 16),
-                      const SizedBox(height: 4),
-                      Text(
-                        L10n.of(context).newTrans,
-                        style: const TextStyle(fontSize: 13),
-                      )
-                    ],
+            return Card(
+              child: InkWell(
+                onTap: () {
+                  openSubscriptionGroupDialog(null, '', defaultGroupIcon);
+                },
+                child: DottedBorder(
+                  color: Theme.of(context).textTheme.caption!.color!,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.add, size: 16),
+                        const SizedBox(height: 4),
+                        Text(
+                          L10n.of(context).newTrans,
+                          style: const TextStyle(fontSize: 13),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
-      );
-    });
+            );
+          },
+        );
+      },
+    );
   }
 }
 

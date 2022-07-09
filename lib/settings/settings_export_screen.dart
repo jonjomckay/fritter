@@ -106,7 +106,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
 
                 var subscriptions = _exportSubscriptions ? subscriptionsModel.state : null;
 
-                var subscriptionGroups = _exportSubscriptionGroups ? groupModel.groups : null;
+                var subscriptionGroups = _exportSubscriptionGroups ? groupModel.state : null;
 
                 var subscriptionGroupMembers =
                     _exportSubscriptionGroupMembers ? await groupModel.listGroupMembers() : null;

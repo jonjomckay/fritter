@@ -221,10 +221,10 @@ Future<void> main() async {
 
         var homeModel = HomeModel();
 
-        var groupModel = GroupsModel(prefService);
-        await groupModel.reloadGroups();
+        var groupsModel = GroupsModel(prefService);
+        await groupsModel.reloadGroups();
 
-        var subscriptionsModel = SubscriptionsModel(prefService, groupModel);
+        var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
         await subscriptionsModel.reloadSubscriptions();
 
         var trendLocationModel = TrendLocationModel(prefService);
@@ -233,7 +233,7 @@ Future<void> main() async {
             service: prefService,
             child: MultiProvider(
               providers: [
-                ChangeNotifierProvider(create: (context) => groupModel),
+                Provider(create: (context) => groupsModel),
                 ChangeNotifierProvider(create: (context) => homeModel),
                 Provider(create: (context) => subscriptionsModel),
                 Provider(create: (context) => SavedTweetModel()),

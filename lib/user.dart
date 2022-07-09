@@ -145,7 +145,7 @@ class FollowButton extends StatelessWidget {
                             selectedColor: Theme.of(context).colorScheme.secondary,
                             unselectedColor: color,
                             selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                            items: groupModel.groups.map((e) => MultiSelectItem(e.id, e.name)).toList(),
+                            items: groupModel.state.map((e) => MultiSelectItem(e.id, e.name)).toList(),
                             initialValue: existing,
                             onConfirm: (List<String> memberships) async {
                               // If we're not currently following the user, follow them first

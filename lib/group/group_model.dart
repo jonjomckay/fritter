@@ -81,43 +81,46 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
   }
 }
 
-class GroupsModel extends ChangeNotifier {
+class GroupsModel extends StreamStore<Object, List<SubscriptionGroup>> {
   static final log = Logger('GroupModel');
+  
+  final BasePrefService prefs;
 
-  List<SubscriptionGroup> _groups = [];
+  GroupsModel(this.prefs) : super([]);
 
-  final BasePrefService _prefs;
+  bool get orderGroupsAscending => prefs.get(optionSubscriptionGroupsOrderByAscending);
+  String get orderGroupsBy => prefs.get(optionSubscriptionGroupsOrderByField);
 
-  GroupsModel(this._prefs);
+  Future<void> deleteGroup(String id) async {
+    log.info('Deleting the group $id');
 
-  bool get orderGroupsAscending => _prefs.get(optionSubscriptionGroupsOrderByAscending);
-  String get orderGroupsBy => _prefs.get(optionSubscriptionGroupsOrderByField);
-  List<SubscriptionGroup> get groups => List.unmodifiable(_groups);
+    await execute(() async {
+      var database = await Repository.writable();
 
-  Future deleteGroup(String id) async {
-    var database = await Repository.writable();
+      await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
+      await database.delete(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]);
+      
+      state.removeWhere((e) => e.id == id);
 
-    await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
-    await database.delete(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]);
-
-    await reloadGroups();
-
-    notifyListeners();
+      return state;
+    });
   }
 
   Future reloadGroups() async {
     log.info('Listing subscriptions groups');
 
-    var database = await Repository.readOnly();
+    await execute(() async {
+      var database = await Repository.readOnly();
 
-    var orderByDirection = orderGroupsAscending ? 'COLLATE NOCASE ASC' : 'COLLATE NOCASE DESC';
+      var orderByDirection = orderGroupsAscending ? 'COLLATE NOCASE ASC' : 'COLLATE NOCASE DESC';
 
-    var query =
-        "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $tableSubscriptionGroup g LEFT JOIN $tableSubscriptionGroupMember gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
+      var query =
+          "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $tableSubscriptionGroup g LEFT JOIN $tableSubscriptionGroupMember gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
 
-    _groups = (await database.rawQuery(query)).map((e) => SubscriptionGroup.fromMap(e)).toList(growable: false);
-
-    notifyListeners();
+      return (await database.rawQuery(query))
+          .map((e) => SubscriptionGroup.fromMap(e))
+          .toList(growable: false);
+    });
   }
 
   Future<List<SubscriptionGroupMember>> listGroupMembers() async {
@@ -192,46 +195,49 @@ class GroupsModel extends ChangeNotifier {
   }
 
   Future saveGroup(String? id, String name, String icon, Color? color, Set<String> subscriptions) async {
-    var database = await Repository.writable();
+    await execute(() async {
+      var database = await Repository.writable();
 
-    // First insert or update the subscription group details
-    if (id == null) {
-      id = const Uuid().v4();
+      // First insert or update the subscription group details
+      if (id == null) {
+        id = const Uuid().v4();
 
-      await database.insert(tableSubscriptionGroup, {'id': id, 'name': name, 'color': color?.value, 'icon': icon});
-    } else {
-      await database.update(
-          tableSubscriptionGroup,
-          {
-            'name': name,
-            'color': color?.value,
-            'icon': icon,
-          },
-          where: 'id = ?',
-          whereArgs: [id]);
-    }
+        await database.insert(tableSubscriptionGroup, {'id': id, 'name': name, 'color': color?.value, 'icon': icon});
+      } else {
+        await database.update(
+            tableSubscriptionGroup,
+            {
+              'name': name,
+              'color': color?.value,
+              'icon': icon,
+            },
+            where: 'id = ?',
+            whereArgs: [id]);
+      }
 
-    // Then clear out any existing subscriptions for the group and add our new set
-    await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
+      // Then clear out any existing subscriptions for the group and add our new set
+      await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
 
-    var batch = database.batch();
-    for (var subscription in subscriptions) {
-      batch.insert(tableSubscriptionGroupMember, {'group_id': id, 'profile_id': subscription});
-    }
+      var batch = database.batch();
+      for (var subscription in subscriptions) {
+        batch.insert(tableSubscriptionGroupMember, {'group_id': id, 'profile_id': subscription});
+      }
 
-    await batch.commit(noResult: true);
-    await reloadGroups();
+      await batch.commit(noResult: true);
+      await reloadGroups();
 
-    notifyListeners();
+      // TODO: Replace the group in the state instead
+      return state;
+    });
   }
 
   void changeOrderSubscriptionGroupsBy(String? value) async {
-    await _prefs.set(optionSubscriptionGroupsOrderByField, value ?? 'name');
+    await prefs.set(optionSubscriptionGroupsOrderByField, value ?? 'name');
     await reloadGroups();
   }
 
   void toggleOrderSubscriptionGroupsAscending() async {
-    await _prefs.set(optionSubscriptionGroupsOrderByAscending, !orderGroupsAscending);
+    await prefs.set(optionSubscriptionGroupsOrderByAscending, !orderGroupsAscending);
     await reloadGroups();
   }
 }
