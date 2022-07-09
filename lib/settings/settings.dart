@@ -246,7 +246,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onReady: (packageInfo) {
           var version = _createVersionString(packageInfo);
 
-          return PrefPage(children: [
+          return ListView(padding: const EdgeInsets.symmetric(vertical: 8.0), children: [
+            SettingsTitle(title: L10n.current.general),
             PrefButton(
               title: Text(L10n.of(context).say_hello),
               subtitle: Text(
@@ -260,12 +261,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               PrefSwitch(
                 title: Text(L10n.of(context).should_check_for_updates_label),
                 pref: optionShouldCheckForUpdates,
-                subtitle:
-                    Text(L10n.of(context).should_check_for_updates_description),
+                subtitle: Text(L10n.of(context).should_check_for_updates_description),
               ),
-            PrefTitle(
-              title: Text(L10n.of(context).general),
-            ),
             PrefDropdown(
                 fullWidth: false,
                 title: Text(L10n.of(context).default_tab),
@@ -304,7 +301,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ]),
             const DownloadTypeSetting(),
-            PrefTitle(title: Text(L10n.of(context).theme)),
+            SettingsTitle(title: L10n.current.theme),
             PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
               DropdownMenuItem(
                 value: 'system',
@@ -326,9 +323,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 L10n.of(context).use_true_black_for_the_dark_mode_theme,
               ),
             ),
-            PrefTitle(
-              title: Text(L10n.of(context).data),
-            ),
+            SettingsTitle(title: L10n.current.data),
             PrefLabel(
               leading: const Icon(Icons.import_export),
               title: Text(L10n.of(context).import),
@@ -416,7 +411,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Text(L10n.of(context).export_your_data),
               onTap: () => Navigator.pushNamed(context, routeSettingsExport),
             ),
-            PrefTitle(title: Text(L10n.of(context).logging)),
+            SettingsTitle(title: L10n.current.logging),
             PrefCheckbox(
               title: Text(L10n.of(context).enable_sentry),
               subtitle: Text(
@@ -424,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               pref: optionErrorsSentryEnabled,
             ),
-            PrefTitle(title: Text(L10n.of(context).about)),
+            SettingsTitle(title: L10n.current.about),
             PrefLabel(
               leading: const Icon(Icons.info),
               title: Text(L10n.of(context).version),
@@ -525,12 +520,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         width: 48.0,
                       ),
                     ),
-                  )
-              ),
+                  )),
             ),
           ]);
         },
       ),
+    );
+  }
+}
+
+class SettingsTitle extends StatelessWidget {
+  final String title;
+
+  const SettingsTitle({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PrefTitle(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      title: Text(title),
     );
   }
 }
@@ -543,7 +551,6 @@ class DownloadTypeSetting extends StatefulWidget {
 }
 
 class DownloadTypeSettingState extends State<DownloadTypeSetting> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -558,7 +565,8 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
           pref: optionDownloadType,
           items: [
             DropdownMenuItem(value: optionDownloadTypeAsk, child: Text(L10n.current.download_handling_type_ask)),
-            DropdownMenuItem(value: optionDownloadTypeDirectory, child: Text(L10n.current.download_handling_type_directory)),
+            DropdownMenuItem(
+                value: optionDownloadTypeDirectory, child: Text(L10n.current.download_handling_type_directory)),
           ],
         ),
         if (PrefService.of(context).get(optionDownloadType) == optionDownloadTypeDirectory)
