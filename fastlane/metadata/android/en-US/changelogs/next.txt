@@ -6,3 +6,4 @@
 * Fixed "RT @" being displayed before all retweets (#345)
 * Now displaying loading on retry buttons
 * Added an adaptive icon, finally! (#377)
+* Now displaying a scrollbar for tweet footers on small devices (#318)

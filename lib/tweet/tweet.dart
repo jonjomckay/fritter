@@ -49,7 +49,6 @@ class TweetTile extends StatefulWidget {
 class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixin {
   static final log = Logger('TweetTile');
 
-  final ScrollController scrollController = ScrollController();
   late final bool clickable;
   late final String? currentUsername;
   late final TweetWithCard tweet;
@@ -560,24 +559,27 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         TweetCard(tweet: tweet, card: tweet.card),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 8),
-                          child: ButtonBar(
-                            buttonTextTheme: ButtonTextTheme.accent,
-                            buttonPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            children: [
-                              if (tweet.replyCount != null)
-                                _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
-                                  Navigator.pushNamed(context, routeStatus,
-                                      arguments:
-                                          StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
-                                }),
-                              if (tweet.retweetCount != null)
-                                _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
-                              if (tweet.quoteCount != null)
-                                _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
-                              if (tweet.favoriteCount != null)
-                                _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
-                              translateButton,
-                            ],
+                          child: Scrollbar(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  if (tweet.replyCount != null)
+                                    _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                                      Navigator.pushNamed(context, routeStatus,
+                                          arguments:
+                                              StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
+                                    }),
+                                  if (tweet.retweetCount != null)
+                                    _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
+                                  if (tweet.quoteCount != null)
+                                    _createFooterTextButton(Icons.message, numberFormat.format(tweet.quoteCount)),
+                                  if (tweet.favoriteCount != null)
+                                    _createFooterTextButton(Icons.favorite, numberFormat.format(tweet.favoriteCount)),
+                                  translateButton,
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
