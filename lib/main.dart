@@ -62,7 +62,7 @@ Future checkForUpdates() async {
         var details = const NotificationDetails(
             android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
                 importance: Importance.max,
-                largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+                largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
                 priority: Priority.high,
                 showWhen: false));
 
@@ -196,7 +196,7 @@ Future<void> main() async {
           FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
           const InitializationSettings settings =
-              InitializationSettings(android: AndroidInitializationSettings('@mipmap/launcher_icon'));
+              InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
           await notifications.initialize(settings, onSelectNotification: (payload) async {
             if (payload != null && payload.startsWith('https://')) {

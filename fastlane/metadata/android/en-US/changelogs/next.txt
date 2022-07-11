@@ -5,3 +5,4 @@
 * Fixed "tweet unavailable" message being displayed erroneously (#397)
 * Fixed "RT @" being displayed before all retweets (#345)
 * Now displaying loading on retry buttons
+* Added an adaptive icon, finally! (#377)
