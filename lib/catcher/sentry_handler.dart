@@ -7,9 +7,9 @@ import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:pref/pref.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 /// This is a slight modification of the SentryHandler built into Catcher, but
 /// with support for sending stack traces, and opt-in reporting.
@@ -66,7 +66,7 @@ class FritterSentryHandler extends ReportHandler {
                   const SizedBox(height: 16),
                   InkWell(
                     child: const Text('https://fritter.cc/privacy', style: TextStyle(color: Colors.blue)),
-                    onTap: () async => await launchUrlString('https://fritter.cc/privacy'),
+                    onTap: () async => await openUri('https://fritter.cc/privacy'),
                   )
                 ],
               ),

@@ -18,13 +18,13 @@ import 'package:fritter/user.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:fritter/utils/misc.dart';
 import 'package:fritter/utils/translation.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher_string.dart';
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
@@ -113,7 +113,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
               return;
             }
 
-            await launchUrlString(uri);
+            await openUri(uri);
           });
         });
 

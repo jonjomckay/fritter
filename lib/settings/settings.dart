@@ -19,6 +19,7 @@ import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/futures.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
@@ -26,7 +27,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_icons/simple_icons.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -436,7 +436,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               leading: const Icon(Icons.favorite),
               title: Text(L10n.of(context).contribute),
               subtitle: Text(L10n.of(context).help_make_fritter_even_better),
-              onTap: () => launchUrlString('https://github.com/jonjomckay/fritter'),
+              onTap: () => openUri('https://github.com/jonjomckay/fritter'),
             ),
             PrefLabel(
               leading: const Icon(Icons.bug_report),
@@ -444,7 +444,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               subtitle: Text(
                 L10n.of(context).let_the_developers_know_if_something_is_broken,
               ),
-              onTap: () => launchUrlString('https://github.com/jonjomckay/fritter/issues'),
+              onTap: () => openUri('https://github.com/jonjomckay/fritter/issues'),
             ),
             if (getFlavor() != 'play')
               PrefLabel(
@@ -481,21 +481,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               leading: Icon(SimpleIcons.github),
                               title: Text('GitHub'),
                             ),
-                            onPressed: () => launchUrlString('https://github.com/sponsors/jonjomckay'),
+                            onPressed: () => openUri('https://github.com/sponsors/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.liberapay),
                               title: Text('Liberapay'),
                             ),
-                            onPressed: () => launchUrlString('https://liberapay.com/jonjomckay'),
+                            onPressed: () => openUri('https://liberapay.com/jonjomckay'),
                           ),
                           SimpleDialogOption(
                             child: const ListTile(
                               leading: Icon(SimpleIcons.paypal),
                               title: Text('PayPal'),
                             ),
-                            onPressed: () => launchUrlString('https://paypal.me/jonjomckay'),
+                            onPressed: () => openUri('https://paypal.me/jonjomckay'),
                           )
                         ],
                       );

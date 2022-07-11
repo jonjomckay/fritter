@@ -10,9 +10,9 @@ import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class SubscriptionImportScreen extends StatefulWidget {
   const SubscriptionImportScreen({Key? key}) : super(key: key);
@@ -113,7 +113,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                 TextSpan(text: '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
                 WidgetSpan(
                     child: InkWell(
-                  onTap: () async => launchUrlString('https://github.com/jonjomckay/fritter/issues/143'),
+                  onTap: () => openUri('https://github.com/jonjomckay/fritter/issues/143'),
                   child: Text(L10n.of(context).the_github_issue,
                       style: const TextStyle(
                         color: Colors.blue,

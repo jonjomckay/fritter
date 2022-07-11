@@ -30,6 +30,7 @@ import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
@@ -40,7 +41,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uni_links2/uni_links.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 Future checkForUpdates() async {
   Logger.root.info('Checking for updates');
@@ -200,7 +200,7 @@ Future<void> main() async {
 
           await notifications.initialize(settings, onSelectNotification: (payload) async {
             if (payload != null && payload.startsWith('https://')) {
-              await launchUrlString(payload);
+              await openUri(payload);
             }
           });
 

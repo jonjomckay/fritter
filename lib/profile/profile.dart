@@ -11,10 +11,10 @@ import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
+import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
 import 'package:measured_size/measured_size.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -307,7 +307,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           return InkWell(
                                                             child: Text(url.displayUrl!,
                                                                 style: const TextStyle(color: Colors.blue, fontSize: 13)),
-                                                            onTap: () => launchUrlString(url.expandedUrl!),
+                                                            onTap: () => openUri(url.expandedUrl!),
                                                           );
                                                         }),
                                                       ],
