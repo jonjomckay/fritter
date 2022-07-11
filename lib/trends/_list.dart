@@ -4,6 +4,7 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/home/_search.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/physics.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -60,7 +61,7 @@ class _TrendsListState extends State<TrendsList> {
 
         return ListView.builder(
           shrinkWrap: true,
-          physics: const ScrollPhysics(),
+          physics: const LessSensitiveScrollPhysics(),
           itemCount: trends.length,
           itemBuilder: (context, index) {
             var trend = trends[index];
