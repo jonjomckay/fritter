@@ -337,10 +337,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                  backgroundImage: createUserAvatar(profile.profileImageUrlHttps, 72).image,
-                                  radius: 48,
-                                ),
+                                child: UserAvatar(uri: profile.profileImageUrlHttps, size: 96),
                               ),
                             )
                           ]),

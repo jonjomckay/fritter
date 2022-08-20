@@ -12,9 +12,9 @@ import 'package:fritter/subscriptions/users_model.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 
-ExtendedImage createUserAvatar(String? uri, double size) {
+Widget _createUserAvatar(String? uri, double size) {
   if (uri == null) {
-    return ExtendedImage.memory(Uint8List.fromList([]));
+    return SizedBox(width: size, height: size);
   } else {
     return ExtendedImage.network(
       // TODO: This can error if the profile image has changed... use SWR-like
@@ -41,7 +41,10 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return createUserAvatar(uri, size);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(size),
+      child: _createUserAvatar(uri, size),
+    );
   }
 }
 
@@ -54,10 +57,7 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(64),
-        child: UserAvatar(uri: user.profileImageUrlHttps),
-      ),
+      leading: UserAvatar(uri: user.profileImageUrlHttps),
       title: Row(
         children: [
           Text(user.name!),
