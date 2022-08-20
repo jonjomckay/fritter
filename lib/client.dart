@@ -377,7 +377,7 @@ class Twitter {
   static TweetStatus createUnconversationedChains(
       dynamic result, String tweetIndicator, bool showPinned, bool mapToThreads, bool includeReplies) {
     var instructions = List.from(result['timeline']['instructions']);
-    if (instructions.isEmpty) {
+    if (instructions.isEmpty || !instructions.any((e) => e.containsKey('addEntries'))) {
       return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
     }
 
