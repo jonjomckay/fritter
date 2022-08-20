@@ -309,7 +309,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Thanks for reporting. We\'ll try and fix it in no time!"),
-        "the_connection_state_state_is_not_supported": m12,
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("the GitHub issue (#143)"),
@@ -360,9 +359,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Unable to find your saved tweets."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Unable to import"),
-        "unable_to_load_subscription_groups":
-            MessageLookupByLibrary.simpleMessage(
-                "Unable to load subscription groups"),
         "unable_to_load_the_group":
             MessageLookupByLibrary.simpleMessage("Unable to load the group"),
         "unable_to_load_the_group_settings":

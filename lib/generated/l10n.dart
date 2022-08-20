@@ -90,16 +90,6 @@ class L10n {
     );
   }
 
-  /// `Unable to load subscription groups`
-  String get unable_to_load_subscription_groups {
-    return Intl.message(
-      'Unable to load subscription groups',
-      name: 'unable_to_load_subscription_groups',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Add to group`
   String get add_to_group {
     return Intl.message(
@@ -1980,28 +1970,6 @@ class L10n {
       name: 'report',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `No data was returned, which should never happen. Please report a bug, if possible!`
-  String
-      get no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible {
-    return Intl.message(
-      'No data was returned, which should never happen. Please report a bug, if possible!',
-      name:
-          'no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The {state} connection state is not supported`
-  String the_connection_state_state_is_not_supported(Object state) {
-    return Intl.message(
-      'The $state connection state is not supported',
-      name: 'the_connection_state_state_is_not_supported',
-      desc: '',
-      args: [state],
     );
   }
 

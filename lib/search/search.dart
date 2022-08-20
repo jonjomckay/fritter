@@ -56,15 +56,7 @@ class TweetSearchDelegate extends SearchDelegate {
                       query: query,
                       store: context.read<SearchUsersModel>(),
                       searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
-                      itemBuilder: (context, item) {
-                        return UserTile(
-                          id: item.idStr!,
-                          name: item.name!,
-                          imageUri: item.profileImageUrlHttps!,
-                          screenName: item.screenName!,
-                          verified: item.verified!,
-                        );
-                      }),
+                      itemBuilder: (context, item) => UserTile(user: item)),
                   TweetSearchResultList<SearchTweetsModel, TweetWithCard>(
                       query: query,
                       store: context.read<SearchTweetsModel>(),

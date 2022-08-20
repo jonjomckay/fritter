@@ -3,9 +3,6 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
-import 'package:provider/provider.dart';
 
 void showFeedSettings(BuildContext context, GroupModel model) {
   showModalBottomSheet(

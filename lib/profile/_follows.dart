@@ -69,15 +69,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
       pagingController: _pagingController,
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, user, index) {
-          return UserTile(
-            id: user.idStr!,
-            name: user.name!,
-            screenName: user.screenName!,
-            imageUri: user.profileImageUrlHttps,
-            verified: user.verified!,
-          );
-        },
+        itemBuilder: (context, user, index) => UserTile(user: user),
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],

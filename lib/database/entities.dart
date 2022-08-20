@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:fritter/group/group_model.dart';
 
 mixin ToMappable {
@@ -64,6 +65,16 @@ class Subscription with ToMappable {
 
   @override
   int get hashCode => id.hashCode;
+
+  User toUser() {
+    return User.fromJson({
+      'id_str': id,
+      'screen_name': screenName,
+      'name': name,
+      'profile_image_url_https': profileImageUrlHttps,
+      'verified': verified
+    });
+  }
 }
 
 class SubscriptionGroup with ToMappable {

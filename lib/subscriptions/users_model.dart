@@ -1,3 +1,4 @@
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
@@ -63,23 +64,22 @@ class SubscriptionsModel extends StreamStore<Object, List<Subscription>> {
     });
   }
 
-  Future<void> toggleSubscribe(
-      String id, String screenName, String name, String? imageUri, bool verified, bool currentlyFollowed) async {
+  Future<void> toggleSubscribe(User user, bool currentlyFollowed) async {
     var database = await Repository.writable();
 
     await execute(() async {
       if (currentlyFollowed) {
-        await database.delete(tableSubscription, where: 'id = ?', whereArgs: [id]);
-        await database.delete(tableSubscriptionGroupMember, where: 'profile_id = ?', whereArgs: [id]);
+        await database.delete(tableSubscription, where: 'id = ?', whereArgs: [user.idStr]);
+        await database.delete(tableSubscriptionGroupMember, where: 'profile_id = ?', whereArgs: [user.idStr]);
 
-        state.removeWhere((e) => e.id == id);
+        state.removeWhere((e) => e.id == user.idStr);
       } else {
         var subscription = Subscription.fromMap({
-          'id': id,
-          'screen_name': screenName,
-          'name': name,
-          'profile_image_url_https': imageUri,
-          'verified': verified
+          'id': user.idStr,
+          'screen_name': user.screenName,
+          'name': user.name,
+          'profile_image_url_https': user.profileImageUrlHttps,
+          'verified': user.verified
         });
 
         database.insert(tableSubscription, subscription.toMap());

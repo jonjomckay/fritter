@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
@@ -8,8 +9,6 @@ import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
-import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -47,15 +46,9 @@ class UserAvatar extends StatelessWidget {
 }
 
 class UserTile extends StatelessWidget {
-  final String id;
-  final String name;
-  final String screenName;
-  final String? imageUri;
-  final bool verified;
+  final User user;
 
-  const UserTile(
-      {Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified})
-      : super(key: key);
+  const UserTile({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,37 +56,89 @@ class UserTile extends StatelessWidget {
       dense: true,
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(64),
-        child: UserAvatar(uri: imageUri),
+        child: UserAvatar(uri: user.profileImageUrlHttps),
       ),
       title: Row(
         children: [
-          Text(name),
-          if (verified) const SizedBox(width: 6),
-          if (verified) const Icon(Icons.verified, size: 14, color: Colors.blue)
+          Text(user.name!),
+          if (user.verified!) const SizedBox(width: 6),
+          if (user.verified!) const Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
-      subtitle: Text('@$screenName'),
+      subtitle: Text('@${user.screenName}'),
       trailing: SizedBox(
         width: 36,
-        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, verified: verified),
+        child: FollowButton(user: user),
       ),
       onTap: () {
-        Navigator.pushNamed(context, routeProfile, arguments: screenName);
+        Navigator.pushNamed(context, routeProfile, arguments: user.screenName);
       },
     );
   }
 }
 
-class FollowButton extends StatelessWidget {
-  final String id;
-  final String name;
-  final String screenName;
-  final String? imageUri;
-  final bool verified;
+class FollowButtonSelectGroupDialog extends StatefulWidget {
+  final User user;
+  final bool followed;
 
-  const FollowButton(
-      {Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified})
-      : super(key: key);
+  const FollowButtonSelectGroupDialog({Key? key, required this.user, required this.followed}) : super(key: key);
+
+  @override
+  State<FollowButtonSelectGroupDialog> createState() => _FollowButtonSelectGroupDialogState();
+}
+
+class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupDialog> {
+  List<String> _groupsForUser = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<GroupsModel>().listGroupsForUser(widget.user.idStr!).then((groups) {
+      setState(() {
+        _groupsForUser = groups;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var groupModel = context.read<GroupsModel>();
+    var subscriptionsModel = context.read<SubscriptionsModel>();
+
+    var color = Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black54;
+
+    return MultiSelectDialog(
+      title: Text(L10n.of(context).select),
+      searchHint: L10n.of(context).search,
+      confirmText: Text(L10n.of(context).ok),
+      cancelText: Text(L10n.of(context).cancel),
+      searchIcon: Icon(Icons.search, color: color),
+      closeSearchIcon: Icon(Icons.close, color: color),
+      itemsTextStyle: Theme.of(context).textTheme.bodyText1,
+      selectedColor: Theme.of(context).colorScheme.secondary,
+      unselectedColor: color,
+      selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
+      items: groupModel.state.map((e) => MultiSelectItem(e.id, e.name)).toList(),
+      initialValue: _groupsForUser,
+      onConfirm: (List<String> memberships) async {
+        // If we're not currently following the user, follow them first
+        if (widget.followed == false) {
+          await subscriptionsModel.toggleSubscribe(widget.user, widget.followed);
+        }
+
+        // Then add them to all the selected groups
+        await groupModel.saveUserGroupMembership(widget.user.idStr!, memberships);
+      },
+    );
+  }
+}
+
+
+class FollowButton extends StatelessWidget {
+  final User user;
+
+  const FollowButton({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +147,7 @@ class FollowButton extends StatelessWidget {
     return ScopedBuilder<SubscriptionsModel, Object, List<Subscription>>(
       store: model,
       onState: (_, state) {
-        var followed = state.any((element) => element.id == id);
+        var followed = state.any((element) => element.id == user.idStr);
 
         var icon = followed ? const Icon(Icons.person_remove) : const Icon(Icons.person_add);
         var text = followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
@@ -119,50 +164,10 @@ class FollowButton extends StatelessWidget {
           onSelected: (value) async {
             switch (value) {
               case 'add_to_group':
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      var groupModel = context.read<GroupsModel>();
-
-                      return FutureBuilderWrapper<List<String>>(
-                        future: groupModel.listGroupsForUser(id),
-                        onError: (error, stackTrace) => FullPageErrorWidget(
-                          error: error,
-                          stackTrace: stackTrace,
-                          prefix: L10n.of(context).unable_to_load_subscription_groups,
-                        ),
-                        onReady: (existing) {
-                          var color = Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black54;
-
-                          return MultiSelectDialog(
-                            title: Text(L10n.of(context).select),
-                            searchHint: L10n.of(context).search,
-                            confirmText: Text(L10n.of(context).ok),
-                            cancelText: Text(L10n.of(context).cancel),
-                            searchIcon: Icon(Icons.search, color: color),
-                            closeSearchIcon: Icon(Icons.close, color: color),
-                            itemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                            selectedColor: Theme.of(context).colorScheme.secondary,
-                            unselectedColor: color,
-                            selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
-                            items: groupModel.state.map((e) => MultiSelectItem(e.id, e.name)).toList(),
-                            initialValue: existing,
-                            onConfirm: (List<String> memberships) async {
-                              // If we're not currently following the user, follow them first
-                              if (followed == false) {
-                                await model.toggleSubscribe(id, screenName, name, imageUri, verified, followed);
-                              }
-
-                              // Then add them to all the selected groups
-                              await groupModel.saveUserGroupMembership(id, memberships);
-                            },
-                          );
-                        },
-                      );
-                    });
+                showDialog(context: context, builder: (_) => FollowButtonSelectGroupDialog(user: user, followed: followed));
                 break;
               case 'toggle_subscribe':
-                await model.toggleSubscribe(id, screenName, name, imageUri, verified, followed);
+                await model.toggleSubscribe(user, followed);
                 break;
             }
           },

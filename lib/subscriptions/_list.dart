@@ -60,13 +60,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
           itemBuilder: (context, i) {
             var user = state[i];
 
-            return UserTile(
-              id: user.id.toString(),
-              name: user.name,
-              screenName: user.screenName,
-              imageUri: user.profileImageUrlHttps,
-              verified: user.verified,
-            );
+            return UserTile(user: user.toUser());
           },
         );
       },
