@@ -1,0 +1,13 @@
+Note: This is a beta release. Any feedback is welcomed, and should be reported on the project's
+GitHub repository!
+
+* Updated theme to use Material 3
+* Now displaying "All" group options on the Feed screen (#274)
+* Fixed some replies not being filtered out in groups (#344)
+* Added support for downloading to a directory (#269 - thanks to @ManeraKai!)
+* Fixed "tweet unavailable" message being displayed erroneously (#397)
+* Fixed "RT @" being displayed before all retweets (#345)
+* Now displaying loading on retry buttons
+* Added an adaptive icon, finally! (#377)
+* Now displaying a scrollbar for tweet footers on small devices (#318)
+* Increased timeout to 30 seconds, for slow networks
