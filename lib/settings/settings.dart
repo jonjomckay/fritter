@@ -171,7 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Text(L10n.of(context).cancel)),
                 TextButton(
                     onPressed: () async {
-                      var pingUri = 'https://fritter.jonjomckay.com/ping';
+                      var pingUri = 'https://fritter.cc/ping';
 
                       try {
                         var response = await http
