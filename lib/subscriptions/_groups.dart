@@ -100,6 +100,8 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
                 },
                 child: DottedBorder(
                   color: Theme.of(context).textTheme.caption!.color!,
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(12),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
