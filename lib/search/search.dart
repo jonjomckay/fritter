@@ -140,7 +140,6 @@ class _TweetSearchResultListState<S extends Store<Object, List<T>>, T> extends S
         }
 
         return ListView.builder(
-          shrinkWrap: true,
           itemCount: items.length,
           itemBuilder: (context, index) {
             return widget.itemBuilder(context, items[index]);
