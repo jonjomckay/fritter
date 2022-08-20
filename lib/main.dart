@@ -357,12 +357,6 @@ class _MyAppState extends State<MyApp> {
           localesLanguageCode.add(item.languageCode);
         }
 
-        // print('Supported Locales CountryCode: $supportedLocalesCountryCode');
-        // print('Supported Locales LanguageCode: $supportedLocalesLanguageCode');
-
-        // print('Locales CountryCode: $localesCountryCode');
-        // print('Locales LanguageCode: $localesLanguageCode');
-
         for (var i = 0; i < locales.length; i++) {
           if (supportedLocalesCountryCode.contains(localesCountryCode[i]) &&
               supportedLocalesLanguageCode.contains(localesLanguageCode[i])) {
