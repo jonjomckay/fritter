@@ -352,12 +352,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Replies"),
         "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage(
-                "Unable to check if this is a legacy Android device."),
-        "unable_to_find_the_app_package_info":
-            MessageLookupByLibrary.simpleMessage(
-                "Unable to find the app\'s package info"),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to find the available trend locations."),

@@ -17,8 +17,6 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
-import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -47,6 +45,24 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   static final log = Logger('_OptionsScreenState');
+
+  PackageInfo _packageInfo = PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
+  String _legacyExportPath = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() async {
+      var packageInfo = await PackageInfo.fromPlatform();
+      var legacyExportPath = await getLegacyPath(legacyExportFileName);
+
+      setState(() {
+        _packageInfo = packageInfo;
+        _legacyExportPath = legacyExportPath;
+      });
+    });
+  }
 
   String _createVersionString(PackageInfo packageInfo) {
     return 'v${packageInfo.version}+${packageInfo.buildNumber}';
@@ -234,297 +250,282 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var version = _createVersionString(_packageInfo);
+
     return Scaffold(
       appBar: AppBar(),
-      body: FutureBuilderWrapper<PackageInfo>(
-        future: PackageInfo.fromPlatform(),
-        onError: (error, stackTrace) => FullPageErrorWidget(
-          error: error,
-          stackTrace: stackTrace,
-          prefix: L10n.of(context).unable_to_find_the_app_package_info,
+      body: ListView(padding: const EdgeInsets.symmetric(vertical: 8.0), children: [
+        SettingsTitle(title: L10n.current.general),
+        PrefButton(
+          title: Text(L10n.of(context).say_hello),
+          subtitle: Text(
+            L10n.of(context)
+                .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
+          ),
+          onTap: _sendPing,
+          child: Text(L10n.of(context).say_hello_emoji),
         ),
-        onReady: (packageInfo) {
-          var version = _createVersionString(packageInfo);
-
-          return ListView(padding: const EdgeInsets.symmetric(vertical: 8.0), children: [
-            SettingsTitle(title: L10n.current.general),
-            PrefButton(
-              title: Text(L10n.of(context).say_hello),
-              subtitle: Text(
-                L10n.of(context)
-                    .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
-              ),
-              onTap: _sendPing,
-              child: Text(L10n.of(context).say_hello_emoji),
+        if (getFlavor() != 'play')
+          PrefSwitch(
+            title: Text(L10n.of(context).should_check_for_updates_label),
+            pref: optionShouldCheckForUpdates,
+            subtitle: Text(L10n.of(context).should_check_for_updates_description),
+          ),
+        PrefDropdown(
+            fullWidth: false,
+            title: Text(L10n.of(context).default_tab),
+            subtitle: Text(
+              L10n.of(context).which_tab_is_shown_when_the_app_opens,
             ),
-            if (getFlavor() != 'play')
-              PrefSwitch(
-                title: Text(L10n.of(context).should_check_for_updates_label),
-                pref: optionShouldCheckForUpdates,
-                subtitle: Text(L10n.of(context).should_check_for_updates_description),
-              ),
-            PrefDropdown(
-                fullWidth: false,
-                title: Text(L10n.of(context).default_tab),
-                subtitle: Text(
-                  L10n.of(context).which_tab_is_shown_when_the_app_opens,
-                ),
-                pref: optionHomeInitialTab,
-                items: pages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
-            PrefDropdown(
-                fullWidth: false,
-                title: Text(L10n.of(context).media_size),
-                subtitle: Text(
-                  L10n.of(context).save_bandwidth_using_smaller_images,
-                ),
-                pref: optionMediaSize,
-                items: [
-                  DropdownMenuItem(
-                    value: 'disabled',
-                    child: Text(L10n.of(context).disabled),
-                  ),
-                  DropdownMenuItem(
-                    value: 'thumb',
-                    child: Text(L10n.of(context).thumbnail),
-                  ),
-                  DropdownMenuItem(
-                    value: 'small',
-                    child: Text(L10n.of(context).small),
-                  ),
-                  DropdownMenuItem(
-                    value: 'medium',
-                    child: Text(L10n.of(context).medium),
-                  ),
-                  DropdownMenuItem(
-                    value: 'large',
-                    child: Text(L10n.of(context).large),
-                  ),
-                ]),
-            const DownloadTypeSetting(),
-            SettingsTitle(title: L10n.current.theme),
-            PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
+            pref: optionHomeInitialTab,
+            items: pages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
+        PrefDropdown(
+            fullWidth: false,
+            title: Text(L10n.of(context).media_size),
+            subtitle: Text(
+              L10n.of(context).save_bandwidth_using_smaller_images,
+            ),
+            pref: optionMediaSize,
+            items: [
               DropdownMenuItem(
-                value: 'system',
-                child: Text(L10n.of(context).system),
+                value: 'disabled',
+                child: Text(L10n.of(context).disabled),
               ),
               DropdownMenuItem(
-                value: 'light',
-                child: Text(L10n.of(context).light),
+                value: 'thumb',
+                child: Text(L10n.of(context).thumbnail),
               ),
               DropdownMenuItem(
-                value: 'dark',
-                child: Text(L10n.of(context).dark),
+                value: 'small',
+                child: Text(L10n.of(context).small),
+              ),
+              DropdownMenuItem(
+                value: 'medium',
+                child: Text(L10n.of(context).medium),
+              ),
+              DropdownMenuItem(
+                value: 'large',
+                child: Text(L10n.of(context).large),
               ),
             ]),
-            PrefSwitch(
-              title: Text(L10n.of(context).true_black),
-              pref: optionThemeTrueBlack,
-              subtitle: Text(
-                L10n.of(context).use_true_black_for_the_dark_mode_theme,
-              ),
-            ),
-            SettingsTitle(title: L10n.current.data),
-            PrefLabel(
-              leading: const Icon(Icons.import_export),
-              title: Text(L10n.of(context).import),
-              subtitle: Text(L10n.of(context).import_data_from_another_device),
-              onTap: () async {
-                var isLegacy = await isLegacyAndroid();
-                if (isLegacy) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(L10n.of(context).legacy_android_import),
-                          actions: [
-                            TextButton(
-                              child: Text(L10n.of(context).cancel),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            TextButton(
-                              child: Text(L10n.of(context).import),
-                              onPressed: () async {
-                                var file = File(await getLegacyPath(legacyExportFileName));
-                                if (await file.exists()) {
-                                  try {
-                                    await _importFromFile(file);
-                                  } catch (e, stackTrace) {
-                                    log.severe('Unable to import the file on a legacy Android device');
-                                    Catcher.reportCheckedError(e, stackTrace);
+        const DownloadTypeSetting(),
+        SettingsTitle(title: L10n.current.theme),
+        PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
+          DropdownMenuItem(
+            value: 'system',
+            child: Text(L10n.of(context).system),
+          ),
+          DropdownMenuItem(
+            value: 'light',
+            child: Text(L10n.of(context).light),
+          ),
+          DropdownMenuItem(
+            value: 'dark',
+            child: Text(L10n.of(context).dark),
+          ),
+        ]),
+        PrefSwitch(
+          title: Text(L10n.of(context).true_black),
+          pref: optionThemeTrueBlack,
+          subtitle: Text(
+            L10n.of(context).use_true_black_for_the_dark_mode_theme,
+          ),
+        ),
+        SettingsTitle(title: L10n.current.data),
+        PrefLabel(
+          leading: const Icon(Icons.import_export),
+          title: Text(L10n.of(context).import),
+          subtitle: Text(L10n.of(context).import_data_from_another_device),
+          onTap: () async {
+            var isLegacy = await isLegacyAndroid();
+            if (isLegacy) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(L10n.of(context).legacy_android_import),
+                      actions: [
+                        TextButton(
+                          child: Text(L10n.of(context).cancel),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text(L10n.of(context).import),
+                          onPressed: () async {
+                            var file = File(await getLegacyPath(legacyExportFileName));
+                            if (await file.exists()) {
+                              try {
+                                await _importFromFile(file);
+                              } catch (e, stackTrace) {
+                                log.severe('Unable to import the file on a legacy Android device');
+                                Catcher.reportCheckedError(e, stackTrace);
 
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text('$e'),
-                                    ));
-                                  }
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        L10n.of(context)
-                                            .the_file_does_not_exist_please_ensure_it_is_located_at_file_path(
-                                                file.path),
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                          content: FutureBuilderWrapper<String>(
-                            future: getLegacyPath(legacyExportFileName),
-                            onError: (error, stackTrace) => FullPageErrorWidget(
-                                error: error, stackTrace: stackTrace, prefix: L10n.of(context).prefix),
-                            onReady: (legacyExportPath) => Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  L10n.of(context)
-                                      .your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from,
-                                  textAlign: TextAlign.left,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(legacyExportPath, textAlign: TextAlign.left),
-                                const SizedBox(height: 16),
-                                Text(
-                                  L10n.of(context)
-                                      .please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below,
-                                  textAlign: TextAlign.left,
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                } else {
-                  var path = await FlutterFileDialog.pickFile(params: const OpenFileDialogParams());
-                  if (path != null) {
-                    await _importFromFile(File(path));
-                  }
-                }
-              },
-            ),
-            PrefLabel(
-              leading: const Icon(Icons.save),
-              title: Text(L10n.of(context).export),
-              subtitle: Text(L10n.of(context).export_your_data),
-              onTap: () => Navigator.pushNamed(context, routeSettingsExport),
-            ),
-            SettingsTitle(title: L10n.current.logging),
-            PrefCheckbox(
-              title: Text(L10n.of(context).enable_sentry),
-              subtitle: Text(
-                L10n.of(context).whether_errors_should_be_reported_to_sentry,
-              ),
-              pref: optionErrorsSentryEnabled,
-            ),
-            SettingsTitle(title: L10n.current.about),
-            PrefLabel(
-              leading: const Icon(Icons.info),
-              title: Text(L10n.of(context).version),
-              subtitle: Text(version),
-              onTap: () async {
-                await Clipboard.setData(ClipboardData(text: version));
-
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(L10n.of(context).copied_version_to_clipboard),
-                ));
-              },
-            ),
-            PrefLabel(
-              leading: const Icon(Icons.favorite),
-              title: Text(L10n.of(context).contribute),
-              subtitle: Text(L10n.of(context).help_make_fritter_even_better),
-              onTap: () => openUri('https://github.com/jonjomckay/fritter'),
-            ),
-            PrefLabel(
-              leading: const Icon(Icons.bug_report),
-              title: Text(L10n.of(context).report_a_bug),
-              subtitle: Text(
-                L10n.of(context).let_the_developers_know_if_something_is_broken,
-              ),
-              onTap: () => openUri('https://github.com/jonjomckay/fritter/issues'),
-            ),
-            if (getFlavor() != 'play')
-              PrefLabel(
-                leading: const Icon(Icons.attach_money),
-                title: Text(L10n.of(context).donate),
-                subtitle: Text(L10n.of(context).help_support_fritters_future),
-                onTap: () => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        title: Text(L10n.of(context).donate),
-                        children: [
-                          SimpleDialogOption(
-                            child: const ListTile(
-                              leading: Icon(SimpleIcons.bitcoin),
-                              title: Text('Bitcoin'),
-                            ),
-                            onPressed: () async {
-                              await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
-
-                              Navigator.pop(context);
-
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('$e'),
+                                ));
+                              }
+                            } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    L10n.of(context).copied_address_to_clipboard,
+                                    L10n.of(context)
+                                        .the_file_does_not_exist_please_ensure_it_is_located_at_file_path(
+                                        file.path),
                                   ),
                                 ),
                               );
-                            },
+                            }
+
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            L10n.of(context)
+                                .your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from,
+                            textAlign: TextAlign.left,
                           ),
-                          SimpleDialogOption(
-                            child: const ListTile(
-                              leading: Icon(SimpleIcons.github),
-                              title: Text('GitHub'),
-                            ),
-                            onPressed: () => openUri('https://github.com/sponsors/jonjomckay'),
-                          ),
-                          SimpleDialogOption(
-                            child: const ListTile(
-                              leading: Icon(SimpleIcons.liberapay),
-                              title: Text('Liberapay'),
-                            ),
-                            onPressed: () => openUri('https://liberapay.com/jonjomckay'),
-                          ),
-                          SimpleDialogOption(
-                            child: const ListTile(
-                              leading: Icon(SimpleIcons.paypal),
-                              title: Text('PayPal'),
-                            ),
-                            onPressed: () => openUri('https://paypal.me/jonjomckay'),
+                          const SizedBox(height: 16),
+                          Text(_legacyExportPath, textAlign: TextAlign.left),
+                          const SizedBox(height: 16),
+                          Text(
+                            L10n.of(context)
+                                .please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below,
+                            textAlign: TextAlign.left,
                           )
                         ],
-                      );
-                    }),
-              ),
-            PrefLabel(
-              leading: const Icon(Icons.copyright),
-              title: Text(L10n.of(context).licenses),
-              subtitle: Text(L10n.of(context).all_the_great_software_used_by_fritter),
-              onTap: () => showLicensePage(
-                  context: context,
-                  applicationName: L10n.of(context).fritter,
-                  applicationVersion: version,
-                  applicationLegalese: L10n.of(context).released_under_the_mit_license,
-                  applicationIcon: Container(
-                    margin: const EdgeInsets.all(12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(48.0),
-                      child: Image.asset(
-                        'assets/icon.png',
-                        height: 48.0,
-                        width: 48.0,
                       ),
-                    ),
-                  )),
-            ),
-          ]);
-        },
-      ),
+                    );
+                  });
+            } else {
+              var path = await FlutterFileDialog.pickFile(params: const OpenFileDialogParams());
+              if (path != null) {
+                await _importFromFile(File(path));
+              }
+            }
+          },
+        ),
+        PrefLabel(
+          leading: const Icon(Icons.save),
+          title: Text(L10n.of(context).export),
+          subtitle: Text(L10n.of(context).export_your_data),
+          onTap: () => Navigator.pushNamed(context, routeSettingsExport),
+        ),
+        SettingsTitle(title: L10n.current.logging),
+        PrefCheckbox(
+          title: Text(L10n.of(context).enable_sentry),
+          subtitle: Text(
+            L10n.of(context).whether_errors_should_be_reported_to_sentry,
+          ),
+          pref: optionErrorsSentryEnabled,
+        ),
+        SettingsTitle(title: L10n.current.about),
+        PrefLabel(
+          leading: const Icon(Icons.info),
+          title: Text(L10n.of(context).version),
+          subtitle: Text(version),
+          onTap: () async {
+            await Clipboard.setData(ClipboardData(text: version));
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(L10n.of(context).copied_version_to_clipboard),
+            ));
+          },
+        ),
+        PrefLabel(
+          leading: const Icon(Icons.favorite),
+          title: Text(L10n.of(context).contribute),
+          subtitle: Text(L10n.of(context).help_make_fritter_even_better),
+          onTap: () => openUri('https://github.com/jonjomckay/fritter'),
+        ),
+        PrefLabel(
+          leading: const Icon(Icons.bug_report),
+          title: Text(L10n.of(context).report_a_bug),
+          subtitle: Text(
+            L10n.of(context).let_the_developers_know_if_something_is_broken,
+          ),
+          onTap: () => openUri('https://github.com/jonjomckay/fritter/issues'),
+        ),
+        if (getFlavor() != 'play')
+          PrefLabel(
+            leading: const Icon(Icons.attach_money),
+            title: Text(L10n.of(context).donate),
+            subtitle: Text(L10n.of(context).help_support_fritters_future),
+            onTap: () => showDialog(
+                context: context,
+                builder: (context) {
+                  return SimpleDialog(
+                    title: Text(L10n.of(context).donate),
+                    children: [
+                      SimpleDialogOption(
+                        child: const ListTile(
+                          leading: Icon(SimpleIcons.bitcoin),
+                          title: Text('Bitcoin'),
+                        ),
+                        onPressed: () async {
+                          await Clipboard.setData(const ClipboardData(text: '1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg'));
+
+                          Navigator.pop(context);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                L10n.of(context).copied_address_to_clipboard,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      SimpleDialogOption(
+                        child: const ListTile(
+                          leading: Icon(SimpleIcons.github),
+                          title: Text('GitHub'),
+                        ),
+                        onPressed: () => openUri('https://github.com/sponsors/jonjomckay'),
+                      ),
+                      SimpleDialogOption(
+                        child: const ListTile(
+                          leading: Icon(SimpleIcons.liberapay),
+                          title: Text('Liberapay'),
+                        ),
+                        onPressed: () => openUri('https://liberapay.com/jonjomckay'),
+                      ),
+                      SimpleDialogOption(
+                        child: const ListTile(
+                          leading: Icon(SimpleIcons.paypal),
+                          title: Text('PayPal'),
+                        ),
+                        onPressed: () => openUri('https://paypal.me/jonjomckay'),
+                      )
+                    ],
+                  );
+                }),
+          ),
+        PrefLabel(
+          leading: const Icon(Icons.copyright),
+          title: Text(L10n.of(context).licenses),
+          subtitle: Text(L10n.of(context).all_the_great_software_used_by_fritter),
+          onTap: () => showLicensePage(
+              context: context,
+              applicationName: L10n.of(context).fritter,
+              applicationVersion: version,
+              applicationLegalese: L10n.of(context).released_under_the_mit_license,
+              applicationIcon: Container(
+                margin: const EdgeInsets.all(12),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(48.0),
+                  child: Image.asset(
+                    'assets/icon.png',
+                    height: 48.0,
+                    width: 48.0,
+                  ),
+                ),
+              )),
+        ),
+      ]),
     );
   }
 }

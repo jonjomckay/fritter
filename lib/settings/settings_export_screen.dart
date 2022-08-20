@@ -8,8 +8,6 @@ import 'package:fritter/group/group_model.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
-import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
@@ -29,6 +27,26 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
   bool _exportSubscriptionGroups = false;
   bool _exportSubscriptionGroupMembers = false;
   bool _exportTweets = false;
+  bool _isLegacyAndroid = false;
+  String _legacyExportPath = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Check if the platform is too old to support a directory picker or not
+    Future.microtask(() async {
+      var isLegacy = await isLegacyAndroid();
+      if (isLegacy) {
+        var legacyExportPath = await getLegacyPath(legacyExportFileName);
+
+        setState(() {
+          _isLegacyAndroid = isLegacy;
+          _legacyExportPath = legacyExportPath;
+        });
+      }
+    });
+  }
 
   void toggleExportSubscriptionGroupMembersIfRequired() {
     if (_exportSubscriptionGroupMembers && (!_exportSubscriptions || !_exportSubscriptionGroups)) {
@@ -156,74 +174,52 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
                 }
               },
             ),
-      body: FutureBuilderWrapper<bool>(
-        future: isLegacyAndroid(),
-        onError: (error, stackTrace) => FullPageErrorWidget(
-          error: error,
-          stackTrace: stackTrace,
-          prefix: L10n.of(context).unable_to_check_if_this_is_a_legacy_Android_device,
-        ),
-        onReady: (isLegacy) {
-          Widget legacyAndroidMessage = Container();
-
-          // Check if the platform is too old to support a directory picker or not
-          if (isLegacy) {
-            legacyAndroidMessage = FutureBuilderWrapper<String>(
-              future: getLegacyPath(legacyExportFileName),
-              onError: (error, stackTrace) => InlineErrorWidget(error: error),
-              onReady: (legacyExportPath) {
-                return Container(
-                  margin: const EdgeInsets.all(8),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Text(
-                          L10n.of(context)
-                              .your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to,
-                          textAlign: TextAlign.center),
-                      const SizedBox(height: 8),
-                      Text(legacyExportPath, textAlign: TextAlign.center),
+                      CheckboxListTile(
+                          value: _exportSettings,
+                          title: Text(L10n.of(context).export_settings),
+                          onChanged: (v) => toggleExportSettings()),
+                      CheckboxListTile(
+                          value: _exportSubscriptions,
+                          title: Text(L10n.of(context).export_subscriptions),
+                          onChanged: (v) => toggleExportSubscriptions()),
+                      CheckboxListTile(
+                          value: _exportSubscriptionGroups,
+                          title: Text(L10n.of(context).export_subscription_groups),
+                          onChanged: (v) => toggleExportSubscriptionGroups()),
+                      CheckboxListTile(
+                          value: _exportSubscriptionGroupMembers,
+                          title: Text(L10n.of(context).export_subscription_group_members),
+                          onChanged: _exportSubscriptions && _exportSubscriptionGroups
+                              ? (v) => toggleExportSubscriptionGroupMembers()
+                              : null),
+                      CheckboxListTile(
+                          value: _exportTweets,
+                          title: Text(L10n.of(context).export_tweets),
+                          onChanged: (v) => toggleExportTweets()),
                     ],
-                  ),
-                );
-              },
-            );
-          }
-
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
+                  ))),
+          if (_isLegacyAndroid)
+            Container(
+              margin: const EdgeInsets.all(8),
+              child: Column(
                 children: [
-                  CheckboxListTile(
-                      value: _exportSettings,
-                      title: Text(L10n.of(context).export_settings),
-                      onChanged: (v) => toggleExportSettings()),
-                  CheckboxListTile(
-                      value: _exportSubscriptions,
-                      title: Text(L10n.of(context).export_subscriptions),
-                      onChanged: (v) => toggleExportSubscriptions()),
-                  CheckboxListTile(
-                      value: _exportSubscriptionGroups,
-                      title: Text(L10n.of(context).export_subscription_groups),
-                      onChanged: (v) => toggleExportSubscriptionGroups()),
-                  CheckboxListTile(
-                      value: _exportSubscriptionGroupMembers,
-                      title: Text(L10n.of(context).export_subscription_group_members),
-                      onChanged: _exportSubscriptions && _exportSubscriptionGroups
-                          ? (v) => toggleExportSubscriptionGroupMembers()
-                          : null),
-                  CheckboxListTile(
-                      value: _exportTweets,
-                      title: Text(L10n.of(context).export_tweets),
-                      onChanged: (v) => toggleExportTweets()),
+                  Text(
+                      L10n.of(context)
+                          .your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to,
+                      textAlign: TextAlign.center),
+                  const SizedBox(height: 8),
+                  Text(_legacyExportPath, textAlign: TextAlign.center),
                 ],
-              ))),
-              legacyAndroidMessage,
-            ],
-          );
-        },
+              ),
+            )
+        ],
       ),
     );
   }

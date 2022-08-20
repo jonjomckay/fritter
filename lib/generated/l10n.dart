@@ -562,16 +562,6 @@ class L10n {
     );
   }
 
-  /// `Unable to check if this is a legacy Android device.`
-  String get unable_to_check_if_this_is_a_legacy_Android_device {
-    return Intl.message(
-      'Unable to check if this is a legacy Android device.',
-      name: 'unable_to_check_if_this_is_a_legacy_Android_device',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Your device is running a version of Android older than KitKat (4.4), so the export can only be saved to:`
   String
       get your_device_is_running_a_version_of_android_older_than_kitKat_so_the_export_can_only_be_saved_to {
@@ -754,16 +744,6 @@ class L10n {
       'Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future.',
       name:
           'here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unable to find the app's package info`
-  String get unable_to_find_the_app_package_info {
-    return Intl.message(
-      'Unable to find the app\'s package info',
-      name: 'unable_to_find_the_app_package_info',
       desc: '',
       args: [],
     );
