@@ -1802,10 +1802,10 @@ class L10n {
     );
   }
 
-  /// `This tweet is unavailable`
+  /// `This tweet is unavailable. It was probably deleted.`
   String get this_tweet_is_unavailable {
     return Intl.message(
-      'This tweet is unavailable',
+      'This tweet is unavailable. It was probably deleted.',
       name: 'this_tweet_is_unavailable',
       desc: '',
       args: [],

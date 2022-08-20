@@ -335,7 +335,7 @@
   "@replying_to": {},
   "the_tweet_did_not_contain_any_text_this_is_unexpected": "The tweet did not contain any text. This is unexpected",
   "@the_tweet_did_not_contain_any_text_this_is_unexpected": {},
-  "this_tweet_is_unavailable": "This tweet is unavailable",
+  "this_tweet_is_unavailable": "This tweet is unavailable. It was probably deleted.",
   "@this_tweet_is_unavailable": {},
   "pinned_tweet": "Pinned tweet",
   "@pinned_tweet": {},

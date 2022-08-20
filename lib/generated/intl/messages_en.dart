@@ -326,8 +326,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage(
                 "This took too long to load. Please check your network connection!"),
-        "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("This tweet is unavailable"),
+        "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
+            "This tweet is unavailable. It was probably deleted."),
         "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
