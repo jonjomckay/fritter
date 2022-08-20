@@ -10,6 +10,7 @@ import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
@@ -355,6 +356,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
           },
           body: TabBarView(
             controller: _tabController,
+            physics: const LessSensitiveScrollPhysics(),
             children: [
               ProfileTweets(user: profile, type: 'profile', includeReplies: false),
               ProfileTweets(user: profile, type: 'profile', includeReplies: true),
