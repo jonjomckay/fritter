@@ -1,7 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:fritter/home/_search.dart';
+import 'package:fritter/search/search.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';

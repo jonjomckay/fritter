@@ -23,6 +23,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
+import 'package:fritter/search/search_model.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';
@@ -237,6 +238,8 @@ Future<void> main() async {
                 ChangeNotifierProvider(create: (context) => homeModel),
                 Provider(create: (context) => subscriptionsModel),
                 Provider(create: (context) => SavedTweetModel()),
+                Provider(create: (context) => SearchTweetsModel()),
+                Provider(create: (context) => SearchUsersModel()),
                 Provider(create: (context) => trendLocationModel),
                 Provider(create: (context) => TrendLocationsModel()),
                 Provider(create: (context) => TrendsModel(trendLocationModel)),

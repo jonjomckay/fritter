@@ -2,34 +2,19 @@ import 'dart:async';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/search/search_model.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
-import 'package:fritter/ui/futures.dart';
 import 'package:fritter/user.dart';
-import 'package:fritter/generated/l10n.dart';
+import 'package:provider/provider.dart';
 
 class TweetSearchDelegate extends SearchDelegate {
   final int initialTab;
 
   TweetSearchDelegate({required this.initialTab});
-
-  Future<List<TweetWithCard>> searchTweets(BuildContext context, String query) async {
-    if (query.isEmpty) {
-      return [];
-    } else {
-      // TODO: Is this right?
-      return (await Twitter.searchTweets(query, true)).chains.map((e) => e.tweets).expand((element) => element).toList();
-    }
-  }
-
-  Future<List<User>> searchUsers(BuildContext context, String query) async {
-    if (query.isEmpty) {
-      return [];
-    } else {
-      return await Twitter.searchUsers(query);
-    }
-  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -67,25 +52,27 @@ class TweetSearchDelegate extends SearchDelegate {
             ),
             Expanded(
                 child: TabBarView(children: [
-              TweetSearchResultList<User>(
-                  query: query,
-                  future: (q) => searchUsers(context, q),
-                  itemBuilder: (context, item) {
-                    return UserTile(
-                      id: item.idStr!,
-                      name: item.name!,
-                      imageUri: item.profileImageUrlHttps!,
-                      screenName: item.screenName!,
-                      verified: item.verified!,
-                    );
-                  }),
-              TweetSearchResultList<TweetWithCard>(
-                  query: query,
-                  future: (q) => searchTweets(context, q),
-                  itemBuilder: (context, item) {
-                    return TweetTile(tweet: item, clickable: true);
-                  }),
-            ]))
+                  TweetSearchResultList<SearchUsersModel, User>(
+                      query: query,
+                      store: context.read<SearchUsersModel>(),
+                      searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
+                      itemBuilder: (context, item) {
+                        return UserTile(
+                          id: item.idStr!,
+                          name: item.name!,
+                          imageUri: item.profileImageUrlHttps!,
+                          screenName: item.screenName!,
+                          verified: item.verified!,
+                        );
+                      }),
+                  TweetSearchResultList<SearchTweetsModel, TweetWithCard>(
+                      query: query,
+                      store: context.read<SearchTweetsModel>(),
+                      searchFunction: (q) => context.read<SearchTweetsModel>().searchTweets(q),
+                      itemBuilder: (context, item) {
+                        return TweetTile(tweet: item, clickable: true);
+                      }),
+                ]))
           ],
         ));
   }
@@ -98,21 +85,21 @@ class TweetSearchDelegate extends SearchDelegate {
 
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
-class TweetSearchResultList<T> extends StatefulWidget {
+class TweetSearchResultList<S extends Store<Object, List<T>>, T> extends StatefulWidget {
   final String query;
-  final Future<List<T>> Function(String query) future;
+  final S store;
+  final Future<void> Function(String query) searchFunction;
   final ItemWidgetBuilder<T> itemBuilder;
 
-  const TweetSearchResultList({Key? key, required this.query, required this.future, required this.itemBuilder})
+  const TweetSearchResultList({Key? key, required this.query, required this.store, required this.searchFunction, required this.itemBuilder})
       : super(key: key);
 
   @override
-  State<TweetSearchResultList<T>> createState() => _TweetSearchResultListState<T>();
+  State<TweetSearchResultList<S, T>> createState() => _TweetSearchResultListState<S, T>();
 }
 
-class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
+class _TweetSearchResultListState<S extends Store<Object, List<T>>, T> extends State<TweetSearchResultList<S, T>> {
   Timer? _debounce;
-  late Future<List<T>> _future;
 
   @override
   void initState() {
@@ -123,14 +110,12 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
 
   void fetchResults() {
     if (mounted) {
-      setState(() {
-        _future = widget.future(widget.query);
-      });
+      widget.searchFunction(widget.query);
     }
   }
 
   @override
-  void didUpdateWidget(TweetSearchResultList<T> oldWidget) {
+  void didUpdateWidget(TweetSearchResultList<S, T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // If the current query is different from the last render's query, search
@@ -148,15 +133,16 @@ class _TweetSearchResultListState<T> extends State<TweetSearchResultList<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilderWrapper<List<T>>(
-      future: _future,
-      onError: (error, stackTrace) => FullPageErrorWidget(
+    return ScopedBuilder<S, Object, List<T>>.transition(
+      store: widget.store,
+      onLoading: (_) => const Center(child: CircularProgressIndicator()),
+      onError: (_, error) => FullPageErrorWidget(
         error: error,
-        stackTrace: stackTrace,
+        stackTrace: null,
         prefix: L10n.of(context).unable_to_load_the_search_results,
         onRetry: () => fetchResults(),
       ),
-      onReady: (items) {
+      onState: (_, items) {
         if (items.isEmpty) {
           return Center(child: Text(L10n.of(context).no_results));
         }
