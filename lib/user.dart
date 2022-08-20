@@ -60,12 +60,12 @@ class UserTile extends StatelessWidget {
       leading: UserAvatar(uri: user.profileImageUrlHttps),
       title: Row(
         children: [
-          Text(user.name!),
+          Expanded(child: Text(user.name!, maxLines: 1, overflow: TextOverflow.ellipsis)),
           if (user.verified!) const SizedBox(width: 6),
           if (user.verified!) const Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
-      subtitle: Text('@${user.screenName}'),
+      subtitle: Text('@${user.screenName}', maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: SizedBox(
         width: 36,
         child: FollowButton(user: user),
