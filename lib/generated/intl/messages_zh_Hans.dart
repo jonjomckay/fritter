@@ -45,25 +45,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "点击 ${getMediaType}显示";
 
-  static String m12(state) => "不支持 ${state} 连接状态";
+  static String m12(filePath) => "该文件不存在。请确保它位于${filePath}的位置";
 
-  static String m13(filePath) => "该文件不存在。请确保它位于${filePath}的位置";
+  static String m13(thisTweetUserName) => "${thisTweetUserName} 转发了推文";
 
-  static String m14(thisTweetUserName) => "${thisTweetUserName} 转发了推文";
-
-  static String m15(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 推文', one: '1 推文', two: '2 推文', few: '${numFormatted} 推文', many: '${numFormatted} 推文', other: '${numFormatted}推文')}";
 
-  static String m16(widgetPlaceName) => "无法加载${widgetPlaceName}的热门";
+  static String m15(widgetPlaceName) => "无法加载${widgetPlaceName}的热门";
 
-  static String m17(responseStatusCode) =>
+  static String m16(responseStatusCode) =>
       "无法保存媒体。Twitter返回的状态是${responseStatusCode}";
 
-  static String m18(e) => "无法发送ping。${e}";
+  static String m17(e) => "无法发送ping。${e}";
 
-  static String m19(statusCode) => "无法发送ping。状态代码为：${statusCode}";
+  static String m18(statusCode) => "无法发送ping。状态代码为：${statusCode}";
 
-  static String m20(releaseVersion) => "从 F-Droid 客户端更新 ${releaseVersion}";
+  static String m19(releaseVersion) => "从 F-Droid 客户端更新 ${releaseVersion}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -266,8 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("谢谢你帮助Fritter! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage("谢谢你的报告。我们会试着在短时间内修复它!"),
-        "the_connection_state_state_is_not_supported": m12,
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("GitHub 问题 (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -282,7 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("加载时间太长了。 检查您的网络连接！"),
         "this_tweet_is_unavailable":
             MessageLookupByLibrary.simpleMessage("此推文不可用"),
-        "this_tweet_user_name_retweeted": m14,
+        "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage("这个人谁都没关注😅！"),
         "this_user_does_not_have_anyone_following_them":
@@ -301,11 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "true_black": MessageLookupByLibrary.simpleMessage("真正的黑色?"),
         "tweets": MessageLookupByLibrary.simpleMessage("推文"),
         "tweets_and_replies": MessageLookupByLibrary.simpleMessage("推文和回复"),
-        "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage("无法确定它是否是旧版的安卓设备。"),
-        "unable_to_find_the_app_package_info":
-            MessageLookupByLibrary.simpleMessage("无法找到应用包信息"),
+        "tweets_number": m14,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage("无法找到可用的热门位置。"),
         "unable_to_find_your_saved_tweets":
@@ -329,7 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("无法载入配置文件"),
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage("无法载入搜索结果。"),
-        "unable_to_load_the_trends_for_widget_place_name": m16,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("无法载入这条推文"),
         "unable_to_load_the_tweets":
@@ -339,15 +332,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage("无法进行数据迁移"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m17,
-        "unable_to_send_the_ping_e_to_string": m18,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
+            m16,
+        "unable_to_send_the_ping_e_to_string": m17,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage("无法传输热门位置偏好"),
         "unknown": MessageLookupByLibrary.simpleMessage("未知"),
         "unsave": MessageLookupByLibrary.simpleMessage("取消保存"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("取消订阅"),
-        "update_to_release_version_through_your_fdroid_client": m20,
+        "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage("在黑暗主题中使用真正的黑色"),

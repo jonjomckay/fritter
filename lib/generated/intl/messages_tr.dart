@@ -49,28 +49,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "${getMediaType} göstermek için dokunun";
 
-  static String m12(state) => "${state} bağlantı durumu desteklenmiyor";
-
-  static String m13(filePath) =>
+  static String m12(filePath) =>
       "Dosya yok. Lütfen ${filePath} konumunda olduğundan emin olun";
 
-  static String m14(thisTweetUserName) => "${thisTweetUserName} retweet\'ledi";
+  static String m13(thisTweetUserName) => "${thisTweetUserName} retweet\'ledi";
 
-  static String m15(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'tweet yok', one: 'bir tweet', two: 'iki tweet', few: '${numFormatted} tweet', many: '${numFormatted} tweet', other: '${numFormatted} tweet')}";
 
-  static String m16(widgetPlaceName) =>
+  static String m15(widgetPlaceName) =>
       "${widgetPlaceName} için trendler yüklenemiyor";
 
-  static String m17(responseStatusCode) =>
+  static String m16(responseStatusCode) =>
       "Medya kaydedilemiyor. Twitter ${responseStatusCode} durumuyla döndü";
 
-  static String m18(e) => "Ping gönderilemiyor. ${e}";
+  static String m17(e) => "Ping gönderilemiyor. ${e}";
 
-  static String m19(statusCode) =>
+  static String m18(statusCode) =>
       "Ping gönderilemedi. Durum kodu ${statusCode}";
 
-  static String m20(releaseVersion) =>
+  static String m19(releaseVersion) =>
       "F-Droid istemciniz aracılığıyla ${releaseVersion} sürümüne güncelleyin";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -314,8 +312,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Raporladığınz için teşekkürler. En kısa sürede düzeltmeye çalışacağız!"),
-        "the_connection_state_state_is_not_supported": m12,
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("GitHub sorunu (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -332,7 +329,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Bunun yüklenmesi çok uzun sürdü. Lütfen internet bağlantınızı kontrol edin!"),
         "this_tweet_is_unavailable":
             MessageLookupByLibrary.simpleMessage("Bu tweet kullanılamıyor"),
-        "this_tweet_user_name_retweeted": m14,
+        "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Bu kullanıcı kimseyi takip etmiyor!"),
@@ -356,13 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweet\'ler"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweet\'ler & Yanıtlar"),
-        "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage(
-                "Bunun eski bir Android cihazı olup olmadığı kontrol edilemiyor."),
-        "unable_to_find_the_app_package_info":
-            MessageLookupByLibrary.simpleMessage(
-                "Uygulamanın paket bilgisi bulunamadı"),
+        "tweets_number": m14,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Mevcut trend konumları bulunamadı."),
@@ -395,7 +386,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Arama sonuçları yüklenemiyor."),
-        "unable_to_load_the_trends_for_widget_place_name": m16,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Tweet yüklenemedi"),
         "unable_to_load_the_tweets":
@@ -407,16 +398,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Veritabanı geçişleri çalıştırılamıyor"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m17,
-        "unable_to_send_the_ping_e_to_string": m18,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
+            m16,
+        "unable_to_send_the_ping_e_to_string": m17,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Trend konumu tercihi aktarılamıyor"),
         "unknown": MessageLookupByLibrary.simpleMessage("Bilinmeyen"),
         "unsave": MessageLookupByLibrary.simpleMessage("Kaydetmeyi iptal et"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abonelikten çık"),
-        "update_to_release_version_through_your_fdroid_client": m20,
+        "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("Güncellemeler"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

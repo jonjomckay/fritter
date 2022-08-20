@@ -50,28 +50,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "Нажмите, чтобы показать ${getMediaType}";
 
-  static String m12(state) => "Состояние соединения ${state} не поддерживается";
-
-  static String m13(filePath) =>
+  static String m12(filePath) =>
       "Файл не существует. Пожалуйста, убедитесь, что он находится по адресу ${filePath}";
 
-  static String m14(thisTweetUserName) => "${thisTweetUserName} ретвитнул(а)";
+  static String m13(thisTweetUserName) => "${thisTweetUserName} ретвитнул(а)";
 
-  static String m15(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'нет твитов', one: 'твит', two: 'твита', few: '${numFormatted} твитов', many: '${numFormatted} твитов', other: '${numFormatted} твит')}";
 
-  static String m16(widgetPlaceName) =>
+  static String m15(widgetPlaceName) =>
       "Невозможно загрузить актуальное для ${widgetPlaceName}";
 
-  static String m17(responseStatusCode) =>
+  static String m16(responseStatusCode) =>
       "Невозможно сохранить медиафайл. Twitter вернул статус ${responseStatusCode}";
 
-  static String m18(e) => "Не удалось отправить ping. ${e}";
+  static String m17(e) => "Не удалось отправить ping. ${e}";
 
-  static String m19(statusCode) =>
+  static String m18(statusCode) =>
       "Не удалось отправить ping. Код состояния был ${statusCode}";
 
-  static String m20(releaseVersion) =>
+  static String m19(releaseVersion) =>
       "Обновить до ${releaseVersion} через клиент F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -292,8 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Спасибо за сообщение. Мы постараемся исправить это в ближайшее время!"),
-        "the_connection_state_state_is_not_supported": m12,
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Твит не содержал никакого текста. Это неожиданно"),
@@ -309,7 +306,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Загрузка заняла слишком много времени. Пожалуйста, проверьте ваше сетевое подключение!"),
         "this_tweet_is_unavailable":
             MessageLookupByLibrary.simpleMessage("Этот твит недоступен"),
-        "this_tweet_user_name_retweeted": m14,
+        "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Этот пользователь никого не читает!"),
@@ -333,13 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Твиты"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Твиты и Ответы"),
-        "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage(
-                "Не удалось проверить, является ли это устройство Android устаревшим."),
-        "unable_to_find_the_app_package_info":
-            MessageLookupByLibrary.simpleMessage(
-                "Не удалось найти информацию о пакете приложения"),
+        "tweets_number": m14,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Не удается найти доступные страны для актуального."),
@@ -373,7 +364,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Не удаётся загрузить результаты поиска."),
-        "unable_to_load_the_trends_for_widget_place_name": m16,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Не удаётся загрузить твит"),
         "unable_to_load_the_tweets":
@@ -385,16 +376,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Не удалось произвести перемещение базы данных"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m17,
-        "unable_to_send_the_ping_e_to_string": m18,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
+            m16,
+        "unable_to_send_the_ping_e_to_string": m17,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно выполнить передачу местных предпочтений"),
         "unknown": MessageLookupByLibrary.simpleMessage("Неизвестный"),
         "unsave": MessageLookupByLibrary.simpleMessage("Отменить сохранение"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Перестать читать"),
-        "update_to_release_version_through_your_fdroid_client": m20,
+        "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("Обновления"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

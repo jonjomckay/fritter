@@ -48,28 +48,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "Toque para mostrar ${getMediaType}";
 
-  static String m12(state) => "O estado de conexão ${state} não é suportado";
-
-  static String m13(filePath) =>
+  static String m12(filePath) =>
       "O arquivo não existe. Certifique-se de que está localizado em ${filePath}";
 
-  static String m14(thisTweetUserName) => "${thisTweetUserName} retweetado";
+  static String m13(thisTweetUserName) => "${thisTweetUserName} retweetado";
 
-  static String m15(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'nenhum tweet', one: 'um tweet', two: 'dois tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
 
-  static String m16(widgetPlaceName) =>
+  static String m15(widgetPlaceName) =>
       "Não foi possível carregar as tendências para ${widgetPlaceName}";
 
-  static String m17(responseStatusCode) =>
+  static String m16(responseStatusCode) =>
       "Não foi possível salvar a mídia. O Twitter retornou um status de ${responseStatusCode}";
 
-  static String m18(e) => "Não foi possível enviar o ping. ${e}";
+  static String m17(e) => "Não foi possível enviar o ping. ${e}";
 
-  static String m19(statusCode) =>
+  static String m18(statusCode) =>
       "Não foi possível enviar o ping. O código de estado era ${statusCode}";
 
-  static String m20(releaseVersion) =>
+  static String m19(releaseVersion) =>
       "Atualizar para ${releaseVersion} através do seu cliente F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -316,8 +314,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Obrigado por relatar. Vamos tentar corrigi-lo o mais rápido possível!"),
-        "the_connection_state_state_is_not_supported": m12,
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("o problema do GitHub (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -335,7 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Isso demorou muito para carregar. Verifique sua conexão de rede!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Este tweet está indisponível"),
-        "this_tweet_user_name_retweeted": m14,
+        "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Este usuário não segue ninguém!"),
@@ -358,12 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets e Respostas"),
-        "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage(
-                "Não foi possível verificar se este é um dispositivo Android antigo."),
-        "unable_to_find_the_app_package_info": MessageLookupByLibrary.simpleMessage(
-            "Não foi possível encontrar as informações do pacote do aplicativo"),
+        "tweets_number": m14,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Não foi possível encontrar os locais de tendências disponíveis."),
@@ -397,7 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Não foi possível carregar os resultados da pesquisa."),
-        "unable_to_load_the_trends_for_widget_place_name": m16,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "Não foi possível carregar o tweet"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -409,9 +401,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Não é possível executar as migrações de banco de dados"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m17,
-        "unable_to_send_the_ping_e_to_string": m18,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
+            m16,
+        "unable_to_send_the_ping_e_to_string": m17,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Não é possível transmitir a preferência de localização da tendência"),
@@ -419,7 +411,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave": MessageLookupByLibrary.simpleMessage("Remover dos salvos"),
         "unsubscribe":
             MessageLookupByLibrary.simpleMessage("Cancelar inscrição"),
-        "update_to_release_version_through_your_fdroid_client": m20,
+        "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("Atualizações"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

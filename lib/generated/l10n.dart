@@ -90,6 +90,16 @@ class L10n {
     );
   }
 
+  /// `Unable to load subscription groups`
+  String get unable_to_load_subscription_groups {
+    return Intl.message(
+      'Unable to load subscription groups',
+      name: 'unable_to_load_subscription_groups',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add to group`
   String get add_to_group {
     return Intl.message(
@@ -1862,6 +1872,36 @@ class L10n {
     );
   }
 
+  /// `Twitter says the page does not exist, but that may not be true`
+  String get page_not_found {
+    return Intl.message(
+      'Twitter says the page does not exist, but that may not be true',
+      name: 'page_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Twitter says access to this is forbidden`
+  String get forbidden {
+    return Intl.message(
+      'Twitter says access to this is forbidden',
+      name: 'forbidden',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Twitter has invalidated our access token. Please try re-opening Fritter!`
+  String get bad_guest_token {
+    return Intl.message(
+      'Twitter has invalidated our access token. Please try re-opening Fritter!',
+      name: 'bad_guest_token',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `User not found`
   String get user_not_found {
     return Intl.message(
@@ -1968,6 +2008,18 @@ class L10n {
     return Intl.message(
       'Report',
       name: 'report',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No data was returned, which should never happen. Please report a bug, if possible!`
+  String
+      get no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible {
+    return Intl.message(
+      'No data was returned, which should never happen. Please report a bug, if possible!',
+      name:
+          'no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible',
       desc: '',
       args: [],
     );

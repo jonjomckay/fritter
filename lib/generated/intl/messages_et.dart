@@ -50,29 +50,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(getMediaType) => "${getMediaType} kuvamiseks klõpsi";
 
-  static String m12(state) => "${state} - ühenduse olek ei ole toetatud";
-
-  static String m13(filePath) =>
+  static String m12(filePath) =>
       "Faili ei leidu. Palun kontrolli, et ta asuks siin ${filePath}";
 
-  static String m14(thisTweetUserName) =>
+  static String m13(thisTweetUserName) =>
       "Kordussäuts kasutajalt ${thisTweetUserName}";
 
-  static String m15(num, numFormatted) =>
+  static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'säutse pole', one: 'üks säuts', two: 'kaks säutsu', few: '${numFormatted} säutsu', many: '${numFormatted} säutsu', other: '${numFormatted} säutsu')}";
 
-  static String m16(widgetPlaceName) =>
+  static String m15(widgetPlaceName) =>
       "Ei õnnestu laadida hetkel populaarsemaid viiteid ja otsinguid riigile või piirkonnale: ${widgetPlaceName}";
 
-  static String m17(responseStatusCode) =>
+  static String m16(responseStatusCode) =>
       "Meedia salvestamine ei õnnestu. Twitter\'i vastus päringule: ${responseStatusCode}";
 
-  static String m18(e) => "Olekuteate saatmine ei õnnestu. ${e}";
+  static String m17(e) => "Olekuteate saatmine ei õnnestu. ${e}";
 
-  static String m19(statusCode) =>
+  static String m18(statusCode) =>
       "Olekuteate saatmine ei õnnestu. Päringu staatus: ${statusCode}";
 
-  static String m20(releaseVersion) =>
+  static String m19(releaseVersion) =>
       "Uuenduseks versioonini ${releaseVersion} kasuta oma F-Droidi klienti";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -324,8 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Tänud teatamast. Õige pea proovime põhjuse tuvastada ning vea parandada!"),
-        "the_connection_state_state_is_not_supported": m12,
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
         "the_github_issue": MessageLookupByLibrary.simpleMessage(
             "veakirjeldus GitHub\'is (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -343,7 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Andmete laadimine kestab liiga kaua. Palun vaata, kas sinu internetiühendus toimib!"),
         "this_tweet_is_unavailable":
             MessageLookupByLibrary.simpleMessage("See säuts pole leitav"),
-        "this_tweet_user_name_retweeted": m14,
+        "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "See kasutaja ei jälgi mitte kedagi!"),
@@ -368,13 +365,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Säutsud"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Säutsud ja vastused"),
-        "tweets_number": m15,
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage(
-                "Ei õnnestu kontrollida, kas see on liiga vana Androidi seade."),
-        "unable_to_find_the_app_package_info":
-            MessageLookupByLibrary.simpleMessage(
-                "Rakenduse paki teavet ei leidu"),
+        "tweets_number": m14,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Ei õnnestu laadida riike ja piirkondi, mille kohta kuvada hetkel populaarsemaid viiteid ja otsinguid."),
@@ -408,7 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Otsingutulemuste laadimine ei õnnestu."),
-        "unable_to_load_the_trends_for_widget_place_name": m16,
+        "unable_to_load_the_trends_for_widget_place_name": m15,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Säutsu laadimine ei õnnestu"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -420,9 +411,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Fritteri andmebaaside versiooniuuendus ei õnnestu"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m17,
-        "unable_to_send_the_ping_e_to_string": m18,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
+            m16,
+        "unable_to_send_the_ping_e_to_string": m17,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Ei õnnestu edastada hetkel populaarsemaid viidete ja otsingute piirkondade eelistusi"),
@@ -430,7 +421,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave": MessageLookupByLibrary.simpleMessage("Eemalda salvestus"),
         "unsubscribe":
             MessageLookupByLibrary.simpleMessage("Loobu tellimusest"),
-        "update_to_release_version_through_your_fdroid_client": m20,
+        "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("Uuendused"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

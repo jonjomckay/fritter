@@ -75,8 +75,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "trending": MessageLookupByLibrary.simpleMessage("트랜드"),
         "tweets": MessageLookupByLibrary.simpleMessage("트윗"),
         "tweets_and_replies": MessageLookupByLibrary.simpleMessage("트윗 & 답장"),
-        "unable_to_check_if_this_is_a_legacy_Android_device":
-            MessageLookupByLibrary.simpleMessage("레거시 안드로이드 기기인지 확인이 불가합니다."),
         "unable_to_find_your_saved_tweets":
             MessageLookupByLibrary.simpleMessage("저장된 트윗을 찾을 수 없습니다."),
         "unable_to_load_the_group":
