@@ -176,7 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       try {
                         var response = await http
                             .post(Uri.parse(pingUri), headers: {'Content-Type': 'application/json'}, body: content)
-                            .timeout(const Duration(seconds: 10));
+                            .timeout(const Duration(seconds: 30));
 
                         SnackBar snackBar;
 

@@ -7,3 +7,4 @@
 * Now displaying loading on retry buttons
 * Added an adaptive icon, finally! (#377)
 * Now displaying a scrollbar for tweet footers on small devices (#318)
+* Increased timeout to 30 seconds, for slow networks

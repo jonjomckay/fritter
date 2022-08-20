@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:quiver/iterables.dart';
 
-const Duration _defaultTimeout = Duration(seconds: 10);
+const Duration _defaultTimeout = Duration(seconds: 30);
 const String _bearerToken =
     'Bearer AAAAAAAAAAAAAAAAAAAAAPYXBAAAAAAACLXUNDekMxqa8h%2F40K4moUkGsoc%3DTYfbDKbT3jJPCEVnMYqilB28NHfOPqkca3qaAxGfsyKCs0wRbw';
 
