@@ -25,6 +25,19 @@ abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
+class UnknownTwitterErrorCode implements Exception {
+  final int code;
+  final String message;
+  final String uri;
+
+  UnknownTwitterErrorCode(this.code, this.message, this.uri);
+
+  @override
+  String toString() {
+    return 'Unknown Twitter error code: {code: $code, message: $message, uri: $uri}';
+  }
+}
+
 EmojiErrorWidget createEmojiError(TwitterError error) {
   String emoji;
   String message;
@@ -34,6 +47,10 @@ EmojiErrorWidget createEmojiError(TwitterError error) {
       emoji = '🔒';
       message = L10n.current.private_profile;
       break;
+    case 34:
+      emoji = '🤔';
+      message = L10n.current.page_not_found;
+      break;
     case 50:
       emoji = '🕵️';
       message = L10n.current.user_not_found;
@@ -42,8 +59,16 @@ EmojiErrorWidget createEmojiError(TwitterError error) {
       emoji = '👮';
       message = L10n.current.account_suspended;
       break;
+    case 200:
+      emoji = '⛔';
+      message = L10n.current.forbidden;
+      break;
+    case 239:
+      emoji = '💩';
+      message = L10n.current.bad_guest_token;
+      break;
     default:
-      Catcher.reportCheckedError('Unsupported Twitter error code: ${error.code}. ${error.message}', null);
+      Catcher.reportCheckedError(UnknownTwitterErrorCode(error.code, error.message, error.uri), null);
       emoji = '💥';
       message = L10n.current.catastrophic_failure;
       break;
@@ -202,7 +227,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
       if (hasErrors && content['errors'] != null) {
         var errors = List.from(content['errors']);
         if (errors.isNotEmpty) {
-          return createEmojiError(TwitterError(code: errors.first['code'], message: errors.first['message']));
+          return createEmojiError(TwitterError(code: errors.first['code'], message: errors.first['message'], uri: message.uri));
         }
       }
 

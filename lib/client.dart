@@ -152,9 +152,9 @@ class Twitter {
     if (hasErrors && content['errors'] != null) {
       var errors = List.from(content['errors']);
       if (errors.isEmpty) {
-        throw TwitterError(code: 0, message: 'Unknown error');
+        throw TwitterError(code: 0, message: 'Unknown error', uri: uri.toString());
       } else {
-        throw TwitterError(code: errors.first['code'], message: errors.first['message']);
+        throw TwitterError(code: errors.first['code'], message: errors.first['message'], uri: uri.toString());
       }
     }
 
@@ -644,13 +644,14 @@ class TweetStatus {
 }
 
 class TwitterError {
+  final String uri;
   final int code;
   final String message;
 
-  TwitterError({required this.code, required this.message});
+  TwitterError({required this.uri, required this.code, required this.message});
 
   @override
   String toString() {
-    return 'TwitterError{code: $code, message: $message}';
+    return 'TwitterError{code: $code, message: $message, url: $uri}';
   }
 }

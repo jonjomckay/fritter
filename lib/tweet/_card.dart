@@ -327,8 +327,15 @@ class TweetCard extends StatelessWidget {
           return Container();
         }
       default:
-        Catcher.reportCheckedError('Unknown card type ${card['name']} was encountered', null);
+        Catcher.reportCheckedError(UnknownCardType(tweet.idStr, card['name']), null);
         return Container();
     }
   }
+}
+
+class UnknownCardType implements Exception {
+  final String? tweet;
+  final String type;
+
+  UnknownCardType(this.tweet, this.type);
 }
