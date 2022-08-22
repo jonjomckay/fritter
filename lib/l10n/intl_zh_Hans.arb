@@ -299,7 +299,7 @@
   "@this_tweet_user_name_retweeted": {},
   "replying_to": "回复",
   "@replying_to": {},
-  "this_tweet_is_unavailable": "此推文不可用",
+  "this_tweet_is_unavailable": "此推文不可用。它可能被删掉了。",
   "@this_tweet_is_unavailable": {},
   "pinned_tweet": "固定推文",
   "@pinned_tweet": {},
@@ -416,5 +416,13 @@
   "should_check_for_updates_description": "Fritter 启动时检查更新",
   "@should_check_for_updates_description": {},
   "download_handling": "下载处理",
-  "@download_handling": {}
+  "@download_handling": {},
+  "unable_to_refresh_the_subscriptions": "无法刷新订阅",
+  "@unable_to_refresh_the_subscriptions": {},
+  "page_not_found": "Twitter 说该页面不存在，但这可能不是真的",
+  "@page_not_found": {},
+  "forbidden": "Twitter 表示禁止访问此内容",
+  "@forbidden": {},
+  "bad_guest_token": "Twitter 使我们的访问令牌无效。 请尝试重新打开 Fritter！",
+  "@bad_guest_token": {}
 }
