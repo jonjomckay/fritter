@@ -229,7 +229,7 @@
   "@replying_to": {},
   "the_tweet_did_not_contain_any_text_this_is_unexpected": "Tweety neobsahoval žádný text. Toto je neočekávané",
   "@the_tweet_did_not_contain_any_text_this_is_unexpected": {},
-  "this_tweet_is_unavailable": "Tento tweet je nedostupný",
+  "this_tweet_is_unavailable": "Tento tweet je nedostupný. Nejspíš byl odstraněn.",
   "@this_tweet_is_unavailable": {},
   "pinned_tweet": "Připnutý tweet",
   "@pinned_tweet": {},
@@ -416,5 +416,13 @@
   "permission_not_granted": "Oprávnění nebylo uděleno. Zkuste to prosím znovu po jeho udělení!",
   "@permission_not_granted": {},
   "download_handling_description": "Způsob, jakým by mělo fungovat stahování",
-  "@download_handling_description": {}
+  "@download_handling_description": {},
+  "bad_guest_token": "Twitter zneplatnil náš přístupový token. Zkuste prosím znovu otevřít Fritter!",
+  "@bad_guest_token": {},
+  "unable_to_refresh_the_subscriptions": "Nepodařilo se znovu načíst odběry",
+  "@unable_to_refresh_the_subscriptions": {},
+  "page_not_found": "Twitter říká, že stránka neexistuje, nemusí to ale být pravda",
+  "@page_not_found": {},
+  "forbidden": "Twitter říká, že přístup k tomuto je zamítnut",
+  "@forbidden": {}
 }
