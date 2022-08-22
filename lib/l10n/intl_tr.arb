@@ -311,7 +311,7 @@
   "@this_tweet_user_name_retweeted": {},
   "the_tweet_did_not_contain_any_text_this_is_unexpected": "Tweet'te herhangi bir metin yoktu. Bu beklenmedik bir şey",
   "@the_tweet_did_not_contain_any_text_this_is_unexpected": {},
-  "this_tweet_is_unavailable": "Bu tweet kullanılamıyor",
+  "this_tweet_is_unavailable": "Bu tweete ulaşılamıyor. Muhtemelen silindi.",
   "@this_tweet_is_unavailable": {},
   "pinned_tweet": "Sabitlenmiş tweet",
   "@pinned_tweet": {},
@@ -416,5 +416,13 @@
   "download_handling_type_ask": "Her zaman sor",
   "@download_handling_type_ask": {},
   "permission_not_granted": "İzin verilmedi. Lütfen verdikten sonra tekrar deneyin!",
-  "@permission_not_granted": {}
+  "@permission_not_granted": {},
+  "bad_guest_token": "Twitter erişim belirtecimizi geçersiz kıldı. Lütfen Fritter'ı yeniden açmayı deneyin!",
+  "@bad_guest_token": {},
+  "forbidden": "Twitter buna erişimin yasak olduğunu söylüyor",
+  "@forbidden": {},
+  "unable_to_refresh_the_subscriptions": "Abonelikler yenilenemiyor",
+  "@unable_to_refresh_the_subscriptions": {},
+  "page_not_found": "Twitter sayfanın mevcut olmadığını söylüyor, ancak bu doğru olmayabilir",
+  "@page_not_found": {}
 }
