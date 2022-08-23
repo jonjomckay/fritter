@@ -2225,6 +2225,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Language`
+  String get language {
+    return Intl.message(
+      'Language',
+      name: 'language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose the language used for the UI. Requires a restart.`
+  String get language_subtitle {
+    return Intl.message(
+      'Choose the language used for the UI. Requires a restart.',
+      name: 'language_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

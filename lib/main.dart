@@ -142,6 +142,7 @@ Future<void> main() async {
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     optionDownloadPath: '',
     optionDownloadType: optionDownloadTypeAsk,
+    optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
@@ -266,6 +267,7 @@ class _MyAppState extends State<MyApp> {
 
   String _themeMode = 'system';
   bool _trueBlack = false;
+  Locale? _locale;
 
   @override
   void didChangeDependencies() {
@@ -273,14 +275,34 @@ class _MyAppState extends State<MyApp> {
 
     var prefService = PrefService.of(context);
 
+    void setLocale(String? locale) {
+      if (locale == null || locale == optionLocaleDefault) {
+        _locale = null;
+      } else {
+        var splitLocale = locale.split('-');
+        if (splitLocale.length == 1) {
+          _locale = Locale(splitLocale[0]);
+        } else {
+          _locale = Locale(splitLocale[0], splitLocale[1]);
+        }
+      }
+    }
+
     // Set any already-enabled preferences
     setState(() {
-      _themeMode = prefService.get(optionThemeMode) ?? 'system';
-      _trueBlack = prefService.get(optionThemeTrueBlack) ?? false;
+      setLocale(prefService.get<String>(optionLocale));
+      _themeMode = prefService.get(optionThemeMode);
+      _trueBlack = prefService.get(optionThemeTrueBlack);
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
       setState(() {
+      });
+    });
+
+    prefService.addKeyListener(optionLocale, () {
+      setState(() {
+        setLocale(prefService.get<String>(optionLocale));
       });
     });
 
@@ -300,23 +322,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    FlexSchemeData fritterColorScheme = FlexSchemeData(
-      name: L10n.current.fritter_blue,
-      description: L10n.current.blue_theme_based_on_the_twitter_color_scheme,
-      light: FlexSchemeColor(
-        primary: Colors.blue,
-        primaryContainer: const Color(0xFF320019),
-        secondary: Colors.blue[500]!,
-        secondaryContainer: const Color(0xFF002411),
-      ),
-      dark: FlexSchemeColor(
-        primary: Colors.blue,
-        primaryContainer: const Color(0xFF775C69),
-        secondary: Colors.blue[500]!,
-        secondaryContainer: const Color(0xFF5C7267),
-      ),
-    );
-
     ThemeMode themeMode;
     switch (_themeMode) {
       case 'dark':
@@ -378,7 +383,7 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: L10n.delegate.supportedLocales,
-      locale: DevicePreview.locale(context),
+      locale: _locale ?? DevicePreview.locale(context),
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',

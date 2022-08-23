@@ -8,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
@@ -17,6 +18,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/settings/settings_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -309,6 +311,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ]),
         const DownloadTypeSetting(),
+        PrefDropdown(
+            fullWidth: false,
+            title: Text(L10n.current.language),
+            subtitle: Text(L10n.current.language_subtitle),
+            pref: optionLocale,
+            items: [
+              DropdownMenuItem(value: optionLocaleDefault, child: Text(L10n.current.system)),
+              ...L10n.delegate.supportedLocales
+                  .map((e) => SettingLocale.fromLocale(e))
+                  .sorted((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()))
+                  .map((e) => DropdownMenuItem(value: e.code, child: Text(e.name)))
+            ]),
         SettingsTitle(title: L10n.current.theme),
         PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
           DropdownMenuItem(
@@ -527,6 +541,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ]),
     );
+  }
+}
+
+class SettingLocale {
+  final String code;
+  final String name;
+
+  SettingLocale(this.code, this.name);
+
+  factory SettingLocale.fromLocale(Locale locale) {
+    var code = locale.toLanguageTag().replaceAll('-', '_');
+    var name = LocaleNamesLocalizationsDelegate.nativeLocaleNames[code] ?? code;
+
+    return SettingLocale(code, name);
   }
 }
 

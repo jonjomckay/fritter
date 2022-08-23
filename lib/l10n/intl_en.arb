@@ -406,5 +406,7 @@
   "permission_not_granted": "Permission not granted. Please try again after granting!",
   "open_app_settings": "Open app settings",
   "choose": "Choose",
-  "not_set": "Not set"
+  "not_set": "Not set",
+  "language": "Language",
+  "language_subtitle": "Choose the language used for the UI. Requires a restart."
 }

@@ -197,6 +197,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "It looks like you\'ve already sent a ping recently 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "language_subtitle": MessageLookupByLibrary.simpleMessage(
+            "Choose the language used for the UI. Requires a restart."),
         "large": MessageLookupByLibrary.simpleMessage("Large"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Legacy Android Import"),
