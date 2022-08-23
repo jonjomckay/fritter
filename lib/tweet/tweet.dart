@@ -88,9 +88,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         entities: entities,
         source: tweet.entities?.hashtags,
         getNewEntity: (Hashtag hashtag) {
-          return TweetHashtag(hashtag, () async {
-            await showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 1), query: '#${hashtag.text}');
-          });
+          return TweetHashtag(
+              hashtag,
+              () => Navigator.pushNamed(context, routeSearch,
+                  arguments: SearchArguments(1, focusInputOnOpen: false, query: '#${hashtag.text}')));
         });
 
     entities = _populateEntities(

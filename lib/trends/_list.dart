@@ -1,13 +1,14 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:fritter/generated/l10n.dart';
 
 class TrendsList extends StatefulWidget {
   const TrendsList({Key? key}) : super(key: key);
@@ -78,13 +79,9 @@ class _TrendsListState extends State<TrendsList> {
                   numberFormat.format(trend.tweetVolume),
                 ),
               ),
-              onTap: () async {
-                await showSearch(
-                    context: context,
-                    delegate: TweetSearchDelegate(initialTab: 1),
-                    query: Uri.decodeQueryComponent(trend.query!));
-              },
-            );
+                onTap: () => Navigator.pushNamed(context, routeSearch,
+                    arguments:
+                        SearchArguments(1, focusInputOnOpen: false, query: Uri.decodeQueryComponent(trend.query!))));
           },
         );
       },

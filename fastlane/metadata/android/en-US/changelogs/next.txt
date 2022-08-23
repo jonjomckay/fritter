@@ -9,3 +9,4 @@
 * Now displaying a scrollbar for tweet footers on small devices (#318)
 * Increased timeout to 30 seconds, for slow networks
 * Added support for manually selecting a UI language (#363)
+* Fixed keyboard opening when tapping a hashtag (#399)

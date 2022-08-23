@@ -30,9 +30,7 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
   return [
     IconButton(
       icon: const Icon(Icons.search),
-      onPressed: () {
-        showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 0));
-      },
+      onPressed: () => Navigator.pushNamed(context, routeSearch, arguments: SearchArguments(0, focusInputOnOpen: true)),
     ),
     IconButton(
       icon: const Icon(Icons.settings),

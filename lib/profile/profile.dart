@@ -101,7 +101,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       var onTap = () async {};
       if (type == '#') {
         onTap = () async {
-          await showSearch(context: context, delegate: TweetSearchDelegate(initialTab: 1), query: full);
+          Navigator.pushNamed(context, routeSearch,
+            arguments: SearchArguments(1, focusInputOnOpen: false, query: full));
         };
       }
 

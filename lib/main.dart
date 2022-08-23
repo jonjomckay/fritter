@@ -23,6 +23,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/home_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
+import 'package:fritter/search/search.dart';
 import 'package:fritter/search/search_model.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
@@ -419,6 +420,7 @@ class _MyAppState extends State<MyApp> {
         '/': (context) => const DefaultPage(),
         routeGroup: (context) => const GroupScreen(),
         routeProfile: (context) => const ProfileScreen(),
+        routeSearch: (context) => const SearchScreen(),
         routeSettings: (context) => const SettingsScreen(),
         routeSettingsExport: (context) => const SettingsExportScreen(),
         routeStatus: (context) => const StatusScreen(),

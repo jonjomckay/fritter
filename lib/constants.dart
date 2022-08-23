@@ -29,6 +29,7 @@ const optionTrendsLocation = 'trends.location';
 
 const routeGroup = '/group';
 const routeProfile = '/profile';
+const routeSearch = '/search';
 const routeSettings = '/settings';
 const routeSettingsExport = '/settings/export';
 const routeStatus = '/status';
