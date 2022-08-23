@@ -11,7 +11,7 @@ void showFeedSettings(BuildContext context, GroupModel model) {
         var theme = Theme.of(context);
 
         return SizedBox(
-          height: 220,
+          height: 250,
           child: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
