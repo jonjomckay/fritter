@@ -11,3 +11,4 @@
 * Added support for manually selecting a UI language (#363)
 * Fixed keyboard opening when tapping a hashtag (#399)
 * Fixed images being cut off in the full-screen viewer (#390)
+* Fixed not being able to double-tap images to zoom (#430)
