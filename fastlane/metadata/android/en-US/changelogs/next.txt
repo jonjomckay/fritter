@@ -10,3 +10,4 @@
 * Increased timeout to 30 seconds, for slow networks
 * Added support for manually selecting a UI language (#363)
 * Fixed keyboard opening when tapping a hashtag (#399)
+* Fixed images being cut off in the full-screen viewer (#390)

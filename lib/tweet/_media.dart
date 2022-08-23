@@ -245,7 +245,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
           } else if (item.type == 'video') {
             media = TweetVideo(media: item, loop: false);
           } else if (item.type == 'photo') {
-            media = TweetPhoto(inPageView: true, size: size, uri: item.mediaUrlHttps!);
+            media = TweetPhoto(inPageView: true, size: size, uri: item.mediaUrlHttps!, fit: BoxFit.scaleDown);
           } else {
             media = Text(L10n.of(context).unknown);
           }
