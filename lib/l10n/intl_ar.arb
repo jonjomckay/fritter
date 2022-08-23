@@ -317,7 +317,7 @@
   "@replying_to": {},
   "the_tweet_did_not_contain_any_text_this_is_unexpected": "التغريدة لا تحتوي على أي نص. هذا غير متوقع",
   "@the_tweet_did_not_contain_any_text_this_is_unexpected": {},
-  "this_tweet_is_unavailable": "هذه التغريدة غير متاحة",
+  "this_tweet_is_unavailable": "هذه التغريدة غير متوفرة. ربما تم حذفها.",
   "@this_tweet_is_unavailable": {},
   "pinned_tweet": "التغريدة المثبتة",
   "@pinned_tweet": {},
@@ -416,5 +416,13 @@
   "choose": "أختر",
   "@choose": {},
   "not_set": "لم يتم تعيينه",
-  "@not_set": {}
+  "@not_set": {},
+  "page_not_found": "تويتر يقول إن الصفحة غير موجودة، ولكن هذا قد لا يكون صحيحا",
+  "@page_not_found": {},
+  "unable_to_refresh_the_subscriptions": "غير قادر على تحديث الاشتراكات",
+  "@unable_to_refresh_the_subscriptions": {},
+  "forbidden": "تويتر يقول إن الوصول إلى هذا ممنوع",
+  "@forbidden": {},
+  "bad_guest_token": "لقد ألغى Twitter رمز الوصول الخاص بنا. من فضلك حاول إعادة فتح Fritter!",
+  "@bad_guest_token": {}
 }
