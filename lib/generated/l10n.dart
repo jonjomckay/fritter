@@ -801,10 +801,10 @@ class L10n {
     );
   }
 
-  /// `Save bandwidth using smaller images`
+  /// `Save bandwidth with smaller images`
   String get save_bandwidth_using_smaller_images {
     return Intl.message(
-      'Save bandwidth using smaller images',
+      'Save bandwidth with smaller images',
       name: 'save_bandwidth_using_smaller_images',
       desc: '',
       args: [],
@@ -2236,10 +2236,10 @@ class L10n {
     );
   }
 
-  /// `Choose the language used for the UI. Requires a restart.`
+  /// `Requires a restart`
   String get language_subtitle {
     return Intl.message(
-      'Choose the language used for the UI. Requires a restart.',
+      'Requires a restart',
       name: 'language_subtitle',
       desc: '',
       args: [],

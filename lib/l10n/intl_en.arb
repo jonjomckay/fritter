@@ -146,7 +146,7 @@
   "@which_tab_is_shown_when_the_app_opens": {},
   "media_size": "Media size",
   "@media_size": {},
-  "save_bandwidth_using_smaller_images": "Save bandwidth using smaller images",
+  "save_bandwidth_using_smaller_images": "Save bandwidth with smaller images",
   "@save_bandwidth_using_smaller_images": {},
   "disabled": "Disabled",
   "@disabled": {},
@@ -408,5 +408,5 @@
   "choose": "Choose",
   "not_set": "Not set",
   "language": "Language",
-  "language_subtitle": "Choose the language used for the UI. Requires a restart."
+  "language_subtitle": "Requires a restart"
 }

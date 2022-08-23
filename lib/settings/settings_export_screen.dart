@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
-import 'package:fritter/settings/settings_data.dart';
+import 'package:fritter/settings/_data.dart';
 import 'package:fritter/subscriptions/users_model.dart';
+import 'package:fritter/utils/legacy.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
@@ -120,6 +121,7 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
 
                 var prefs = PrefService.of(context);
 
+                // TODO: Check exporting
                 var settings = _exportSettings ? prefs.toMap() : null;
 
                 var subscriptions = _exportSubscriptions ? subscriptionsModel.state : null;

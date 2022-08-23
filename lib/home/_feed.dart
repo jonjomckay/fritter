@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 
 class FeedScreen extends StatelessWidget with AppBarMixin {
   final GroupModel model = GroupModel('-1');
-  final ScrollController scrollController;
+  final ScrollController scrollController = ScrollController();
 
-  FeedScreen({Key? key, required this.scrollController}) : super(key: key);
+  FeedScreen({Key? key}) : super(key: key);
 
   @override
   AppBar getAppBar(BuildContext context) {

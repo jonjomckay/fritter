@@ -25,6 +25,7 @@ import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/search/search_model.dart';
+import 'package:fritter/settings/_general.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
 import 'package:fritter/status.dart';

@@ -198,8 +198,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "It looks like you\'ve already sent a ping recently 🤔"),
         "joined": m7,
         "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "language_subtitle": MessageLookupByLibrary.simpleMessage(
-            "Choose the language used for the UI. Requires a restart."),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Requires a restart"),
         "large": MessageLookupByLibrary.simpleMessage("Large"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Legacy Android Import"),
@@ -268,7 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage(
-                "Save bandwidth using smaller images"),
+                "Save bandwidth with smaller images"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Say Hello"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Say Hello 👋"),
