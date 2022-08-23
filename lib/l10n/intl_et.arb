@@ -87,7 +87,7 @@
   "@no_subscriptions_try_searching_or_importing_some": {},
   "date_subscribed": "Tellimuse lisamise aeg",
   "@date_subscribed": {},
-  "this_tweet_is_unavailable": "See säuts pole leitav",
+  "this_tweet_is_unavailable": "See säuts pole leitav. Ilmselt on ta juba kustutatud.",
   "@this_tweet_is_unavailable": {},
   "thread": "Jutulõng",
   "@thread": {},
@@ -416,5 +416,13 @@
   "share_tweet_content_and_link": "Jaga säutsu sisu ja linki",
   "@share_tweet_content_and_link": {},
   "should_check_for_updates_description": "Fritter'i käivitumisel kontrolli uuenduste olemasolu",
-  "@should_check_for_updates_description": {}
+  "@should_check_for_updates_description": {},
+  "unable_to_refresh_the_subscriptions": "Tellimuste sisu ei saa hetkel laadida",
+  "@unable_to_refresh_the_subscriptions": {},
+  "page_not_found": "Twitter ütleb, et lehte pole olemas, kuid see ei pruugi tõsi olla",
+  "@page_not_found": {},
+  "forbidden": "Twitter ütleb, et juurdepääs sellele sisule on keelatud",
+  "@forbidden": {},
+  "bad_guest_token": "Twitter on meie juurdepääsutunnuse kehtetuks tunnistanud. Palun proovi uuesti avada Fritter!",
+  "@bad_guest_token": {}
 }
