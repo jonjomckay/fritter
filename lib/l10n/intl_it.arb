@@ -309,7 +309,7 @@
   "@share_tweet_content": {},
   "could_not_contact_twitter": "Impossibile contattare Twitter",
   "@could_not_contact_twitter": {},
-  "this_tweet_is_unavailable": "Questo tweet non è disponibile",
+  "this_tweet_is_unavailable": "Questo tweet non è disponibile. Probabilmente è stato cancellato.",
   "@this_tweet_is_unavailable": {},
   "catastrophic_failure": "Fallimento catastrofico",
   "@catastrophic_failure": {},
@@ -416,5 +416,13 @@
   "choose": "Scegli",
   "@choose": {},
   "not_set": "Non impostato",
-  "@not_set": {}
+  "@not_set": {},
+  "forbidden": "Twitter dice che l'accesso a questo è vietato",
+  "@forbidden": {},
+  "unable_to_refresh_the_subscriptions": "Impossibile aggiornare le iscrizioni",
+  "@unable_to_refresh_the_subscriptions": {},
+  "page_not_found": "Twitter dice che la pagina non esiste, ma potrebbe non essere vero",
+  "@page_not_found": {},
+  "bad_guest_token": "Twitter ha invalidato il nostro token di accesso. Prova a riaprire Fritter!",
+  "@bad_guest_token": {}
 }
