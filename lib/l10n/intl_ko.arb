@@ -97,8 +97,6 @@
   "@tweets_and_replies": {},
   "following": "팔로잉",
   "@following": {},
-  "unable_to_check_if_this_is_a_legacy_Android_device": "레거시 안드로이드 기기인지 확인이 불가합니다.",
-  "@unable_to_check_if_this_is_a_legacy_Android_device": {},
   "export_subscription_group_members": "구독 그룹 맴버를 내보내겠습니까?",
   "@export_subscription_group_members": {}
 }

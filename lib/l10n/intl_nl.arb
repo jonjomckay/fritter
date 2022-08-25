@@ -1,1 +1,10 @@
-{}
+{
+  "this_group_contains_no_subscriptions": "Deze groep bevat geen abonnementen!",
+  "@this_group_contains_no_subscriptions": {},
+  "send_once": "Eén keer verzenden",
+  "@send_once": {},
+  "don_not_send": "Niet verzenden",
+  "@don_not_send": {},
+  "send_always": "Altijd verzenden",
+  "@send_always": {}
+}
