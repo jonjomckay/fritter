@@ -64,6 +64,7 @@ class _TweetVideoState extends State<TweetVideo> {
                 ));
               },
               onStart: () {
+                Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(L10n.of(context).downloading_media),
                 ));
