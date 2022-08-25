@@ -145,7 +145,7 @@
   "@send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development": {},
   "default_tab": "默认页面",
   "@default_tab": {},
-  "save_bandwidth_using_smaller_images": "您可以降低图像分辨率来降低流量使用（土豪和wifi请忽略）",
+  "save_bandwidth_using_smaller_images": "使用较小的图像节省带宽",
   "@save_bandwidth_using_smaller_images": {},
   "which_tab_is_shown_when_the_app_opens": "打开应用时显示哪个页面",
   "@which_tab_is_shown_when_the_app_opens": {},
@@ -424,5 +424,9 @@
   "forbidden": "Twitter 表示禁止访问此内容",
   "@forbidden": {},
   "bad_guest_token": "Twitter 使我们的访问令牌无效。 请尝试重新打开 Fritter！",
-  "@bad_guest_token": {}
+  "@bad_guest_token": {},
+  "language": "语言",
+  "@language": {},
+  "language_subtitle": "需要重启应用",
+  "@language_subtitle": {}
 }
