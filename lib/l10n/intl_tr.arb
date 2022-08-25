@@ -195,7 +195,7 @@
   "@here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future": {},
   "which_tab_is_shown_when_the_app_opens": "Uygulama açıldığında hangi sekmenin gösterileceğini belirler",
   "@which_tab_is_shown_when_the_app_opens": {},
-  "save_bandwidth_using_smaller_images": "Daha küçük görüntüler kullanarak bant genişliğinden tasarruf edin",
+  "save_bandwidth_using_smaller_images": "Daha küçük görüntülerle bant genişliğinden tasarruf edin",
   "@save_bandwidth_using_smaller_images": {},
   "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": "Not: Twitter sınırlaması nedeniyle, tüm tweet'ler dahil edilmeyebilir",
   "@note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": {},
@@ -424,5 +424,9 @@
   "unable_to_refresh_the_subscriptions": "Abonelikler yenilenemiyor",
   "@unable_to_refresh_the_subscriptions": {},
   "page_not_found": "Twitter sayfanın mevcut olmadığını söylüyor, ancak bu doğru olmayabilir",
-  "@page_not_found": {}
+  "@page_not_found": {},
+  "language_subtitle": "Yeniden başlatma gerektirir",
+  "@language_subtitle": {},
+  "language": "Dil",
+  "@language": {}
 }
