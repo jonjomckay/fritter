@@ -10,14 +10,14 @@ import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(BuildContext context, String uri, String fileName,
+Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
     {required Function(http.Response response) onError,
     required Function() onStart,
     required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   downloadFile() async {
-    var response = await http.get(Uri.parse(uri));
+    var response = await http.get(uri);
     if (response.statusCode == 200) {
       return response.bodyBytes;
     }

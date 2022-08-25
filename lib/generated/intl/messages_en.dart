@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Always ask"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Save to directory"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Unable to download. This media may only be available as a stream, which Fritter cannot yet download."),
         "download_path": MessageLookupByLibrary.simpleMessage("Download path"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Downloading media..."),

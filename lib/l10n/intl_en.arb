@@ -311,6 +311,7 @@
   "@unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": {},
   "downloading_media": "Downloading media...",
   "@downloading_media": {},
+  "download_media_no_url": "Unable to download. This media may only be available as a stream, which Fritter cannot yet download.",
   "successfully_saved_the_media": "Media saved.",
   "@successfully_saved_the_media": {},
   "unknown": "Unknown",

@@ -204,7 +204,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
             onPressed: () async {
               var url = path.basename(_media.mediaUrlHttps!);
               var fileName = '$_username-$url';
-              var uri = '${_media.mediaUrlHttps}:orig';
+              var uri = Uri.parse('${_media.mediaUrlHttps}:orig');
 
               await downloadUriToPickedFile(context, uri, fileName,
                 onError: (response) {

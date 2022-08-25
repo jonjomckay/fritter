@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/utils/downloads.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -31,7 +32,8 @@ class _TweetVideoState extends State<TweetVideo> {
   }
 
   void _loadVideo() {
-    var url = widget.media.videoInfo!.variants![0].url!;
+    var variants = widget.media.videoInfo?.variants ?? [];
+    var url = variants[0].url!;
     _videoController = VideoPlayerController.network(url);
 
     double aspectRatio = widget.media.videoInfo?.aspectRatio == null
@@ -47,11 +49,27 @@ class _TweetVideoState extends State<TweetVideo> {
       additionalOptions: (context) => [
         OptionItem(
           onTap: () async {
-            var fileName = path.basename(url);
+            // Find the MP4 video with the highest bitrate
+            var video = variants
+                .where((e) => e.bitrate != null)
+                .where((e) => e.url != null)
+                .where((e) => e.contentType == 'video/mp4')
+                .sorted((a, b) => a.bitrate!.compareTo(b.bitrate!))
+                .firstWhereOrNull((element) => element.url != null);
+
+            if (video == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(L10n.current.download_media_no_url),
+              ));
+              return;
+            }
+
+            var videoUri = Uri.parse(video.url!);
+            var fileName = path.basename(videoUri.path);
 
             await downloadUriToPickedFile(
               context,
-              url,
+              videoUri,
               fileName,
               onError: (response) {
                 Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);

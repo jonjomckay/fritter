@@ -1682,6 +1682,16 @@ class L10n {
     );
   }
 
+  /// `Unable to download. This media may only be available as a stream, which Fritter cannot yet download.`
+  String get download_media_no_url {
+    return Intl.message(
+      'Unable to download. This media may only be available as a stream, which Fritter cannot yet download.',
+      name: 'download_media_no_url',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Media saved.`
   String get successfully_saved_the_media {
     return Intl.message(
