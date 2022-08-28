@@ -201,7 +201,7 @@
   "@which_tab_is_shown_when_the_app_opens": {},
   "media_size": "Multimeedia suurus",
   "@media_size": {},
-  "save_bandwidth_using_smaller_images": "Kasutades väiksemaid pildifaile võid säästa ribalaiust",
+  "save_bandwidth_using_smaller_images": "Kasutades väiksemaid pildifaile säästad ribalaiust",
   "@save_bandwidth_using_smaller_images": {},
   "disabled": "Pole kasutusel",
   "@disabled": {},
@@ -424,5 +424,9 @@
   "forbidden": "Twitter ütleb, et juurdepääs sellele sisule on keelatud",
   "@forbidden": {},
   "bad_guest_token": "Twitter on meie juurdepääsutunnuse kehtetuks tunnistanud. Palun proovi uuesti avada Fritter!",
-  "@bad_guest_token": {}
+  "@bad_guest_token": {},
+  "language": "Keel",
+  "@language": {},
+  "language_subtitle": "Eeldab rakenduse uuesti käivitamist",
+  "@language_subtitle": {}
 }

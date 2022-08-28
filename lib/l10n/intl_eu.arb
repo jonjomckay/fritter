@@ -1,1 +1,26 @@
-{}
+{
+  "this_group_contains_no_subscriptions": "Talde honek ez du harpidetzarik!",
+  "@this_group_contains_no_subscriptions": {},
+  "could_not_find_any_tweets_by_this_user": "Ezin izan da erabiltzaile honen txiorik aurkitu!",
+  "@could_not_find_any_tweets_by_this_user": {},
+  "unable_to_load_the_next_page_of_replies": "Ezin da hurrengo erantzunen orria kargatu",
+  "@unable_to_load_the_next_page_of_replies": {},
+  "unable_to_load_the_tweet": "Ezin da txioa kargatu",
+  "@unable_to_load_the_tweet": {},
+  "add_to_group": "Gehitu taldera",
+  "@add_to_group": {},
+  "select": "Hautatu",
+  "@select": {},
+  "unsubscribe": "Kendu harpidetza",
+  "@unsubscribe": {},
+  "subscribe": "Harpidetu",
+  "@subscribe": {},
+  "reporting_an_error": "Akats baten berri eman",
+  "@reporting_an_error": {},
+  "would_you_like_to_enable_automatic_error_reporting": "Akats txostenen berri emate automatikoa gaitu nahi duzu?",
+  "@would_you_like_to_enable_automatic_error_reporting": {},
+  "unable_to_load_subscription_groups": "Ezin dira harpidetza taldeak kargatu",
+  "@unable_to_load_subscription_groups": {},
+  "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "Zerbait gaizki atera da Fritter-en, eta akatsen txostena sortu da. Txostena Fritterren garatzaileei bidali ahal zaie arazoa konpontzen laguntzeko.",
+  "@something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": {}
+}

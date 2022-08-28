@@ -141,7 +141,7 @@
   "@which_tab_is_shown_when_the_app_opens": {},
   "media_size": "Rozmiar multimediów",
   "@media_size": {},
-  "save_bandwidth_using_smaller_images": "Oszczędzaj transfer, używając mniejszych obrazów",
+  "save_bandwidth_using_smaller_images": "Oszczędzaj transfer dzięki mniejszym obrazom",
   "@save_bandwidth_using_smaller_images": {},
   "disabled": "Wyłączone",
   "@disabled": {},
@@ -424,5 +424,9 @@
   "page_not_found": "Twitter twierdzi, że strona nie istnieje, ale to może nie być prawda",
   "@page_not_found": {},
   "bad_guest_token": "Twitter unieważnił nasz token dostępu. Spróbuj ponownie otworzyć Frittera!",
-  "@bad_guest_token": {}
+  "@bad_guest_token": {},
+  "language": "Język",
+  "@language": {},
+  "language_subtitle": "Wymaga ponownego uruchomienia",
+  "@language_subtitle": {}
 }

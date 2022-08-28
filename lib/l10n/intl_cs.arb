@@ -113,7 +113,7 @@
   "@default_tab": {},
   "media_size": "Velikost médií",
   "@media_size": {},
-  "save_bandwidth_using_smaller_images": "Ušetřete data použitím menších obrázků",
+  "save_bandwidth_using_smaller_images": "Ušetřete data s menšími obrázky",
   "@save_bandwidth_using_smaller_images": {},
   "small": "Malý",
   "@small": {},
@@ -424,5 +424,9 @@
   "page_not_found": "Twitter říká, že stránka neexistuje, nemusí to ale být pravda",
   "@page_not_found": {},
   "forbidden": "Twitter říká, že přístup k tomuto je zamítnut",
-  "@forbidden": {}
+  "@forbidden": {},
+  "language": "Jazyk",
+  "@language": {},
+  "language_subtitle": "Vyžaduje restart",
+  "@language_subtitle": {}
 }
