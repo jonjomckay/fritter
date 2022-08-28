@@ -61,7 +61,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   flutter_file_dialog: ^2.3.0
   flutter_iconpicker: ^3.1.4+1
-  flutter_local_notifications: ^9.6.1
+  flutter_local_notifications: ^10.0.0-dev.20
   flutter_localized_locales: ^2.0.3
   flutter_triple: ^1.2.7+2
   html_unescape: ^2.0.0

@@ -40,6 +40,7 @@ import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -53,21 +54,36 @@ Future checkForUpdates() async {
     if (response.statusCode == 200) {
       var package = await PackageInfo.fromPlatform();
       var result = jsonDecode(response.body);
+      var prefs = await SharedPreferences.getInstance();
 
       var flavor = getFlavor();
 
       var release = result['versions'][flavor]['stable'];
-      var latest = release['versionCode'];
+      var latest = release['versionCode'] as int;
 
       Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
-      if (int.parse(package.buildNumber) < latest) {
-        var details = const NotificationDetails(
+      if (int.parse(package.buildNumber) > latest) {
+        var ignoredKey = 'updates.ignore.$latest';
+
+        // If the user wants to ignore this version, do so
+        var ignored = prefs.getBool(ignoredKey) ?? false;
+        if (ignored) {
+          log('Ignoring update to $latest');
+          return;
+        }
+
+        var details = NotificationDetails(
             android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
-                importance: Importance.max,
-                largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-                priority: Priority.high,
-                showWhen: false));
+              importance: Importance.max,
+              largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+              priority: Priority.high,
+              showWhen: false,
+              actions: [
+                AndroidNotificationAction(ignoredKey, 'Ignore this version')
+              ]
+            )
+        );
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
@@ -127,6 +143,15 @@ setTimeagoLocales() {
   timeago.setLocaleMessages('vi', timeago.ViMessages());
   timeago.setLocaleMessages('zh_CN', timeago.ZhCnMessages());
   timeago.setLocaleMessages('zh', timeago.ZhMessages());
+}
+
+Future<void> handleNotificationCallback(NotificationResponse response) async {
+  var actionId = response.actionId;
+  if (actionId != null && actionId.startsWith('updates.ignore.')) {
+    log('Setting $actionId');
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(actionId, true);
+  }
 }
 
 Future<void> main() async {
@@ -202,7 +227,8 @@ Future<void> main() async {
           const InitializationSettings settings =
               InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
-          await notifications.initialize(settings, onSelectNotification: (payload) async {
+          await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback, onDidReceiveNotificationResponse: (response) async {
+            var payload = response.payload;
             if (payload != null && payload.startsWith('https://')) {
               await openUri(payload);
             }
