@@ -233,8 +233,10 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                         children: [
                                           Row(
                                             children: [
-                                              Expanded(
+                                              Flexible(
                                                 child: Text(profile.name!,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                                               ),
                                               if (profile.verified ?? false) const SizedBox(width: 6),
