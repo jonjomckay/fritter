@@ -141,7 +141,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var avatarHeight = 80;
 
     var profileImageTop = bannerHeight + 16 - 36 - mediaQuery.padding.top;
-    var profileStuffTop = bannerHeight;
+    var profileStuffTop = bannerHeight + 36;
 
     var theme = Theme.of(context);
 
@@ -165,9 +165,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   pinned: true,
                   snap: false,
                   forceElevated: innerBoxIsScrolled,
-                  actions: [
-                    FollowButton(user: profile)
-                  ],
                   bottom: TabBar(
                     controller: _tabController,
                     isScrollable: true,
@@ -338,6 +335,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             ),
                             Container(
                               alignment: Alignment.topRight,
+                              child: FollowButton(user: profile),
+                              margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
+                            ),
+                            Container(
+                              alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
                               child: CircleAvatar(
                                 radius: 50,
