@@ -90,12 +90,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Enrere"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "El Twitter ha invalidat el testimoni d\'accés. Si us plau, proveu de tornar a obrir Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Tema blau basat en l\'esquema de colors de Twitter"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Error catastròfic"),
+        "choose": MessageLookupByLibrary.simpleMessage("Tria"),
+        "close": MessageLookupByLibrary.simpleMessage("Tanca"),
         "contribute": MessageLookupByLibrary.simpleMessage("Col·laborar"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "S\'ha copiat l\'adreça al porta-retalls"),
@@ -126,6 +130,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "don_not_send": MessageLookupByLibrary.simpleMessage("No enviar"),
         "donate": MessageLookupByLibrary.simpleMessage("Donar"),
         "download": MessageLookupByLibrary.simpleMessage("Descarregar"),
+        "download_handling":
+            MessageLookupByLibrary.simpleMessage("Gestió de baixades"),
+        "download_handling_description": MessageLookupByLibrary.simpleMessage(
+            "Com ha de funcionar la baixada"),
+        "download_handling_type_ask":
+            MessageLookupByLibrary.simpleMessage("Pregunta sempre"),
+        "download_handling_type_directory":
+            MessageLookupByLibrary.simpleMessage("Desa al directori"),
+        "download_path":
+            MessageLookupByLibrary.simpleMessage("Ruta de descàrrega"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Descarregant suports..."),
         "enable_sentry":
@@ -153,6 +167,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Seguidors"),
         "following": MessageLookupByLibrary.simpleMessage("Seguint"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "El Twitter diu que l\'accés a això està prohibit"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blau"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
@@ -186,6 +202,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Sembla que ja has enviat un ping recentment 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Idioma"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Requereix reiniciar"),
         "large": MessageLookupByLibrary.simpleMessage("Gran"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Importa de Legacy Android"),
@@ -207,9 +226,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "No s\'han retornat dades, cosa que no hauria de passar mai. Si us plau, informa de l\'error, si és possible!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Sense resultats"),
+        "no_results_for":
+            MessageLookupByLibrary.simpleMessage("Cap resultat per:"),
         "no_subscriptions_try_searching_or_importing_some":
             MessageLookupByLibrary.simpleMessage(
                 "No hi ha subscripcions. Prova de cercar-ne o importar-ne alguna!"),
+        "not_set": MessageLookupByLibrary.simpleMessage("No establert"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Nota: A causa d\'una limitació de Twitter, no es poden incloure tots els tuits"),
@@ -217,7 +239,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("D\'acord"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Ui! Alguna cosa ha anat malament 🥲"),
+        "open_app_settings": MessageLookupByLibrary.simpleMessage(
+            "Obre la configuració de l\'aplicació"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter diu que la pàgina no existeix, però pot ser que no sigui veritat"),
+        "permission_not_granted": MessageLookupByLibrary.simpleMessage(
+            "No s\'ha concedit el permís. Torneu-ho a provar després de concedir-lo!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("Tria un color!"),
+        "pick_an_icon":
+            MessageLookupByLibrary.simpleMessage("Escull una icona!"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Tuit ancorat"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Velocitat de reproducció"),
@@ -245,10 +275,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Desa"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage(
-                "Estalviar amplada de banda utilitzant imatges més petites"),
+                "Estalviar amplada de banda amb imatges més petites"),
         "saved": MessageLookupByLibrary.simpleMessage("Desat"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Saluda"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Saluda 👋"),
+        "search": MessageLookupByLibrary.simpleMessage("Cerca"),
+        "select": MessageLookupByLibrary.simpleMessage("Selecciona"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
                 "La selecció de comptes individuals per importar i l\'assignació de grups ja estan planificats per al futur!"),
@@ -260,8 +292,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_once": MessageLookupByLibrary.simpleMessage("Enviar una vegada"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage(
             "Compartir el contingut del tuit"),
+        "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
+            "Comparteix contingut i enllaç del tuit"),
         "share_tweet_link": MessageLookupByLibrary.simpleMessage(
             "Compartir l\'enllaç del tuit"),
+        "should_check_for_updates_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Comprova si hi ha actualitzacions a l\'iniciar Fritter"),
+        "should_check_for_updates_label": MessageLookupByLibrary.simpleMessage(
+            "Comprova si hi ha actualitzacions"),
         "small": MessageLookupByLibrary.simpleMessage("Petit"),
         "something_broke_in_fritter": MessageLookupByLibrary.simpleMessage(
             "S\'ha trencat alguna cosa a Fritter."),
@@ -285,6 +324,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Gràcies per informar. Intentarem solucionar-ho de seguida!"),
         "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_github_issue": MessageLookupByLibrary.simpleMessage(
+            "el problema de GitHub (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "El tuit no contenia text. Això és inesperat"),
@@ -299,7 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Ha trigat massa a carregar-se. Comprova la connexió de xarxa!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
-            "Aquest tuit no està disponible"),
+            "Aquest tuit no està disponible. Provablement s\'ha eliminat."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -366,6 +407,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "No es poden carregar els tuits del canal de Continguts"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "No s\'han pogut actualitzar les subscripcions"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "No s\'han pogut executar les migracions de la base de dades"),

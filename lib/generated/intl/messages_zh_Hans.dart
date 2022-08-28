@@ -79,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("返回"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter 使我们的访问令牌无效。 请尝试重新打开 Fritter！"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage("基于Twitter配色方案的蓝色主题"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
@@ -139,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("粉丝"),
         "following": MessageLookupByLibrary.simpleMessage("关注"),
+        "forbidden": MessageLookupByLibrary.simpleMessage("Twitter 表示禁止访问此内容"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter 蓝"),
         "general": MessageLookupByLibrary.simpleMessage("一般"),
@@ -166,6 +169,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage("您最近似乎已经ping过一次了 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("语言"),
+        "language_subtitle": MessageLookupByLibrary.simpleMessage("需要重启应用"),
         "large": MessageLookupByLibrary.simpleMessage("高"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("从旧的Android设备导入"),
@@ -197,6 +202,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("哎呀! 出了点差错😥"),
         "open_app_settings": MessageLookupByLibrary.simpleMessage("打开应用设置"),
+        "page_not_found":
+            MessageLookupByLibrary.simpleMessage("Twitter 说该页面不存在，但这可能不是真的"),
         "permission_not_granted":
             MessageLookupByLibrary.simpleMessage("未授予权限。 请在授权后重试！"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("挑一种颜色吧！"),
@@ -221,8 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "retry": MessageLookupByLibrary.simpleMessage("重试"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "save_bandwidth_using_smaller_images":
-            MessageLookupByLibrary.simpleMessage(
-                "您可以降低图像分辨率来降低流量使用（土豪和wifi请忽略）"),
+            MessageLookupByLibrary.simpleMessage("使用较小的图像节省带宽"),
         "saved": MessageLookupByLibrary.simpleMessage("保存"),
         "say_hello": MessageLookupByLibrary.simpleMessage("问候"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("你好👋"),
@@ -278,7 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage("加载时间太长了。 检查您的网络连接！"),
         "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("此推文不可用"),
+            MessageLookupByLibrary.simpleMessage("此推文不可用。它可能被删掉了。"),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage("这个人谁都没关注😅！"),
@@ -329,6 +335,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("无法载入推文"),
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage("无法载入最新推文"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage("无法刷新订阅"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage("无法进行数据迁移"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":

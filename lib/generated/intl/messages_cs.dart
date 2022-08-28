@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Zpět"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter zneplatnil náš přístupový token. Zkuste prosím znovu otevřít Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Modré téma založené na barevném schématu Twitteru"),
@@ -163,6 +165,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Sledující"),
         "following": MessageLookupByLibrary.simpleMessage("Sledování"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "Twitter říká, že přístup k tomuto je zamítnut"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue":
             MessageLookupByLibrary.simpleMessage("Fritterová modrá"),
@@ -197,6 +201,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Vypadá to, že jste již nedávno poslali ping 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Jazyk"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Vyžaduje restart"),
         "large": MessageLookupByLibrary.simpleMessage("Velký"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Import ze starších Androidů"),
@@ -233,6 +240,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Jejda! Něco se pokazilo 🥲"),
         "open_app_settings":
             MessageLookupByLibrary.simpleMessage("Otevřít nastavení aplikace"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter říká, že stránka neexistuje, nemusí to ale být pravda"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "Oprávnění nebylo uděleno. Zkuste to prosím znovu po jeho udělení!"),
         "pick_a_color":
@@ -266,7 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Uložit"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage(
-                "Ušetřete data použitím menších obrázků"),
+                "Ušetřete data s menšími obrázky"),
         "saved": MessageLookupByLibrary.simpleMessage("Uloženo"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Řekněte ahoj"),
         "say_hello_emoji":
@@ -331,8 +340,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage(
                 "Tento obsah se načítal příliš dlouho. Zkontrolujte prosím vaše připojení k internetu!"),
-        "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("Tento tweet je nedostupný"),
+        "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
+            "Tento tweet je nedostupný. Nejspíš byl odstraněn."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -398,6 +407,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se načíst tweety pro váš zdroj"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Nepodařilo se znovu načíst odběry"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se spustit migrace databáze"),

@@ -88,6 +88,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("رجوع"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "لقد ألغى Twitter رمز الوصول الخاص بنا. من فضلك حاول إعادة فتح Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "السمة الزرقاء بنائاً على سمة تويتر"),
@@ -161,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("المتابِعون"),
         "following": MessageLookupByLibrary.simpleMessage("المتابَعون"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "تويتر يقول إن الوصول إلى هذا ممنوع"),
         "fritter": MessageLookupByLibrary.simpleMessage("فريتر"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("فريتر أزرق"),
         "general": MessageLookupByLibrary.simpleMessage("العامة"),
@@ -193,6 +197,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "يبدوا أنك بالفعل قد أرسلت بينج حديثاً 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("اللغات"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("يتطلب إعادة تشغيل"),
         "large": MessageLookupByLibrary.simpleMessage("كبير"),
         "legacy_android_import": MessageLookupByLibrary.simpleMessage(
             "استيردات البيانات للأندرويد القديم"),
@@ -229,6 +236,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("أوبسي! حدث خطأ ما 🥲"),
         "open_app_settings":
             MessageLookupByLibrary.simpleMessage("افتح إعدادات التطبيق"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "تويتر يقول إن الصفحة غير موجودة، ولكن هذا قد لا يكون صحيحا"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "الإذن غير ممنوح. يرجى المحاولة مرة أخرى بعد منحه!"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("اختر لون!"),
@@ -258,7 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage(
-                "الحفاظ على عرض النطاق (البيانات) باستخدام صور أصغر"),
+                "حفظ النطاق الترددي مع صور أصغر"),
         "saved": MessageLookupByLibrary.simpleMessage("المحفوظ"),
         "say_hello": MessageLookupByLibrary.simpleMessage("سَلّم"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("سَلّم 👋"),
@@ -322,8 +331,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage(
                 "استغرق هذا وقتا طويلا للتحميل. رجائاً تأكد من اتصال الشبكة لديك!"),
-        "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("هذه التغريدة غير متاحة"),
+        "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
+            "هذه التغريدة غير متوفرة. ربما تم حذفها."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -389,6 +398,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تحميل التغريدات للمُلقّم"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "غير قادر على تحديث الاشتراكات"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تشغيل تحديث قاعدة البيانات"),
