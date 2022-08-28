@@ -20,6 +20,24 @@ version: 3.0.0-beta1+20220820
 environment:
   sdk: ">=2.17.0 <3.0.0"
 
+dependency_overrides:
+  auto_direction:
+    git:
+      url: https://github.com/AhmedAlYousif/auto_direction.git
+      ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
+  catcher:
+    git:
+      url: https://github.com/ThexXTURBOXx/catcher.git
+      ref: 5c1df82b56339fe534058594f8f72c327c9cab85
+  flutter_iconpicker:
+    git:
+      url: https://github.com/Ahmadre/FlutterIconPicker.git
+      ref: bae6bb92d815efac1a1fded14b0d6573bdcdcaa1
+  multi_select_flutter:
+    git:
+      url: https://github.com/kabagouda/multi_select_flutter.git
+      ref: abda500eae263fcd6b26d09f3c68d5fb9591df85
+
 dependencies:
   flutter:
     sdk: flutter
@@ -30,7 +48,7 @@ dependencies:
   catcher: ^0.6.9
   chewie: ^1.3.4
   dart_twitter_api: ^0.5.6+1
-  device_info: ^2.0.3
+  device_info_plus: ^4.1.2
   device_preview: ^1.1.0
   dio: ^4.0.6
   dotted_border: ^2.0.0+2
@@ -39,13 +57,10 @@ dependencies:
   ffcache: ^1.1.0
   flex_color_scheme: ^5.0.1
   flutter_cache: ^0.1.0
-  file_picker: ^4.6.1
+  file_picker: ^5.0.1
   flutter_colorpicker: ^1.0.3
   flutter_file_dialog: ^2.3.0
-  flutter_iconpicker:
-    git:
-      ref: bae6bb92d815efac1a1fded14b0d6573bdcdcaa1
-      url: https://github.com/Ahmadre/FlutterIconPicker.git
+  flutter_iconpicker: ^3.1.4+1
   flutter_local_notifications: ^9.6.1
   flutter_localized_locales: ^2.0.3
   flutter_triple: ^1.2.7+2
@@ -54,7 +69,7 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   intl: ^0.17.0
   logging: ^1.0.2
-  measured_size: ^1.0.0
+  measure_size: ^3.0.1
   multi_select_flutter: ^4.1.2
   package_info: ^2.0.2
   path: ^1.8.1

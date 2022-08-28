@@ -46,9 +46,11 @@ packages:
   auto_direction:
     dependency: "direct main"
     description:
-      name: auto_direction
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "41e091d1bcef2f710e10ca88e72d05ea182135d7"
+      resolved-ref: "41e091d1bcef2f710e10ca88e72d05ea182135d7"
+      url: "https://github.com/AhmedAlYousif/auto_direction.git"
+    source: git
     version: "0.0.6"
   boolean_selector:
     dependency: transitive
@@ -60,10 +62,12 @@ packages:
   catcher:
     dependency: "direct main"
     description:
-      name: catcher
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.9"
+      path: "."
+      ref: "5c1df82b56339fe534058594f8f72c327c9cab85"
+      resolved-ref: "5c1df82b56339fe534058594f8f72c327c9cab85"
+      url: "https://github.com/ThexXTURBOXx/catcher.git"
+    source: git
+    version: "0.7.0"
   characters:
     dependency: transitive
     description:
@@ -154,7 +158,7 @@ packages:
       name: dbus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.3"
+    version: "0.7.8"
   device_frame:
     dependency: transitive
     description:
@@ -162,62 +166,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  device_info:
-    dependency: "direct main"
-    description:
-      name: device_info
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
-  device_info_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   device_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: device_info_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.4"
+    version: "4.1.2"
   device_info_plus_linux:
     dependency: transitive
     description:
       name: device_info_plus_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "3.0.0"
   device_info_plus_macos:
     dependency: transitive
     description:
       name: device_info_plus_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.3"
+    version: "3.0.0"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
       name: device_info_plus_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0+1"
+    version: "3.0.0"
   device_info_plus_web:
     dependency: transitive
     description:
       name: device_info_plus_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0"
   device_info_plus_windows:
     dependency: transitive
     description:
       name: device_info_plus_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "4.0.0"
   device_preview:
     dependency: "direct main"
     description:
@@ -280,7 +270,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "2.0.1"
   file:
     dependency: transitive
     description:
@@ -294,7 +284,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.6.1"
+    version: "5.0.1"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -498,7 +488,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.3"
+    version: "3.2.0"
   infinite_scroll_pagination:
     dependency: "direct main"
     description:
@@ -519,7 +509,7 @@ packages:
       name: intl_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.7.0"
   js:
     dependency: transitive
     description:
@@ -569,13 +559,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
-  measured_size:
+  measure_size:
     dependency: "direct main"
     description:
-      name: measured_size
+      name: measure_size
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "3.0.1"
   meta:
     dependency: transitive
     description:
@@ -593,9 +583,11 @@ packages:
   multi_select_flutter:
     dependency: "direct main"
     description:
-      name: multi_select_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: abda500eae263fcd6b26d09f3c68d5fb9591df85
+      resolved-ref: abda500eae263fcd6b26d09f3c68d5fb9591df85
+      url: "https://github.com/kabagouda/multi_select_flutter.git"
+    source: git
     version: "4.1.2"
   nested:
     dependency: transitive
@@ -631,7 +623,7 @@ packages:
       name: package_info_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.3+1"
   package_info_plus_linux:
     dependency: transitive
     description:
@@ -666,7 +658,7 @@ packages:
       name: package_info_plus_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "2.0.0"
   path:
     dependency: "direct main"
     description:
@@ -736,7 +728,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.1.2"
   pedantic:
     dependency: transitive
     description:
@@ -764,7 +756,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.4.0"
+    version: "5.0.0"
   platform:
     dependency: transitive
     description:
@@ -1224,7 +1216,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.7.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -1238,7 +1230,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.3.1"
+    version: "6.1.0"
   yaml:
     dependency: transitive
     description:

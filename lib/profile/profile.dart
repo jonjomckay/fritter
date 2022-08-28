@@ -14,7 +14,7 @@ import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
-import 'package:measured_size/measured_size.dart';
+import 'package:measure_size/measure_size.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -248,7 +248,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 style: const TextStyle(fontSize: 14, color: Colors.white70)),
                                           ),
                                           if (profile.description != null && profile.description!.isNotEmpty)
-                                            MeasuredSize(
+                                            MeasureSize(
                                               onChange: (size) {
                                                 setState(() {
                                                   descriptionHeight = size.height;
@@ -263,7 +263,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           style: const TextStyle(height: 1.4),
                                                           children: _addLinksToText(context, profile.description!)))),
                                             ),
-                                          MeasuredSize(
+                                          MeasureSize(
                                             onChange: (size) {
                                               setState(() {
                                                 metadataHeight = size.height;

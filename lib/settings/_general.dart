@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -68,7 +68,7 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': info.supportedAbis,
-        'device': info.device,
+        'device': info.device ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'android',
@@ -80,11 +80,11 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': [],
-        'device': info.utsname.machine,
+        'device': info.utsname.machine ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'ios',
-        'system': info.systemVersion,
+        'system': info.systemVersion ?? 'unknown',
         'version': packageInfo.buildNumber,
       };
     }
