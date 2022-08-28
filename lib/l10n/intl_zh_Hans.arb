@@ -428,5 +428,7 @@
   "language": "语言",
   "@language": {},
   "language_subtitle": "需要重启应用",
-  "@language_subtitle": {}
+  "@language_subtitle": {},
+  "download_media_no_url": "无法下载。 此媒体可能仅作为在线流提供，Fritter 尚无法下载。",
+  "@download_media_no_url": {}
 }
