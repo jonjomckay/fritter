@@ -428,5 +428,7 @@
   "language": "اللغات",
   "@language": {},
   "language_subtitle": "يتطلب إعادة تشغيل",
-  "@language_subtitle": {}
+  "@language_subtitle": {},
+  "download_media_no_url": "غير قادر على تحميل . هذا المحتوى قد يكون متاحا فقط على شكل بث ، فريتر لا يمكنه تحميله .",
+  "@download_media_no_url": {}
 }
