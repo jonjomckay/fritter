@@ -428,5 +428,7 @@
   "language": "Język",
   "@language": {},
   "language_subtitle": "Wymaga ponownego uruchomienia",
-  "@language_subtitle": {}
+  "@language_subtitle": {},
+  "download_media_no_url": "Nie można pobrać. Te multimedia mogą być dostępne tylko jako strumień, którego Fritter jeszcze nie obsługuje.",
+  "@download_media_no_url": {}
 }
