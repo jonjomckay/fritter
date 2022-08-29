@@ -24,6 +24,7 @@ const optionSubscriptionOrderByField = 'subscription.order_by.field';
 
 const optionThemeMode = 'theme.mode';
 const optionThemeTrueBlack = 'theme.true_black';
+const optionThemeColorScheme = 'theme.color_scheme';
 
 const optionTrendsLocation = 'trends.location';
 
