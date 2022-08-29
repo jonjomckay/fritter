@@ -428,5 +428,7 @@
   "language_subtitle": "Yeniden başlatma gerektirir",
   "@language_subtitle": {},
   "language": "Dil",
-  "@language": {}
+  "@language": {},
+  "download_media_no_url": "İndirilemiyor. Bu medya yalnızca Fritter'ın henüz indiremediği bir akış olarak var olabilir.",
+  "@download_media_no_url": {}
 }
