@@ -254,6 +254,14 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
                 child: Text(L10n.of(context).large),
               ),
             ]),
+        PrefSwitch(
+          title: Text(L10n.of(context).should_autoplay_video),
+          pref: optionMediaVideoAutoplay,
+        ),
+        PrefSwitch(
+          title: Text(L10n.of(context).should_autoplay_gif),
+          pref: optionMediaGifAutoplay,
+        ),
         const DownloadTypeSetting(),
         PrefCheckbox(
           title: Text(L10n.of(context).enable_sentry),

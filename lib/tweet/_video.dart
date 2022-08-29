@@ -12,9 +12,10 @@ import 'package:fritter/generated/l10n.dart';
 
 class TweetVideo extends StatefulWidget {
   final bool loop;
+  final bool autoplay;
   final Media media;
 
-  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
+  const TweetVideo({Key? key, required this.loop, required this.autoplay, required this.media}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -29,6 +30,9 @@ class _TweetVideoState extends State<TweetVideo> {
   @override
   void initState() {
     super.initState();
+    if (widget.autoplay) {
+      onTapPlay();
+    }
   }
 
   void _loadVideo() {
@@ -44,6 +48,7 @@ class _TweetVideoState extends State<TweetVideo> {
       aspectRatio: aspectRatio,
       autoInitialize: true,
       autoPlay: true,
+      showControls: widget.media.type != 'animated_gif',
       allowMuting: true,
       allowedScreenSleep: false,
       additionalOptions: (context) => [
