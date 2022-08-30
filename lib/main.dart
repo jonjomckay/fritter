@@ -178,6 +178,7 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
+    optionThemeColorScheme: 'aquaBlue',
     optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
   });
 
@@ -295,6 +296,7 @@ class _MyAppState extends State<MyApp> {
 
   String _themeMode = 'system';
   bool _trueBlack = false;
+  FlexScheme _colorScheme = FlexScheme.aquaBlue;
   Locale? _locale;
 
   @override
@@ -316,11 +318,16 @@ class _MyAppState extends State<MyApp> {
       }
     }
 
+    void setColorScheme(String colorSchemeName) {
+      _colorScheme = FlexScheme.values.byName(colorSchemeName);
+    }
+
     // Set any already-enabled preferences
     setState(() {
       setLocale(prefService.get<String>(optionLocale));
       _themeMode = prefService.get(optionThemeMode);
       _trueBlack = prefService.get(optionThemeTrueBlack);
+      setColorScheme(prefService.get(optionThemeColorScheme));
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
@@ -344,6 +351,12 @@ class _MyAppState extends State<MyApp> {
     prefService.addKeyListener(optionThemeMode, () {
       setState(() {
         _themeMode = prefService.get(optionThemeMode);
+      });
+    });
+
+    prefService.addKeyListener(optionThemeColorScheme, () {
+      setState(() {
+        setColorScheme(prefService.get(optionThemeColorScheme));
       });
     });
   }
@@ -415,7 +428,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
-      theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue,
+      theme: FlexThemeData.light(scheme: _colorScheme,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -428,7 +441,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         appBarStyle: FlexAppBarStyle.primary,
       ),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue, darkIsTrueBlack: _trueBlack,
+      darkTheme: FlexThemeData.dark(scheme: _colorScheme, darkIsTrueBlack: _trueBlack,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,

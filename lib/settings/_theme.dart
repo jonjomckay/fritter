@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -31,6 +32,14 @@ class SettingsThemeFragment extends StatelessWidget with AppBarMixin {
             child: Text(L10n.of(context).dark),
           ),
         ]),
+        PrefDropdown(
+            fullWidth: false,
+            pref: optionThemeColorScheme,
+            items: FlexScheme.values
+                .getRange(0, FlexScheme.values.length - 1)
+                .map((scheme) => DropdownMenuItem(
+                    value: scheme.name, child: Text(scheme.name.capitalize)))
+                .toList()),
         PrefSwitch(
           title: Text(L10n.of(context).true_black),
           pref: optionThemeTrueBlack,
