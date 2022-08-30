@@ -137,7 +137,7 @@ class _TweetVideoState extends State<TweetVideo> {
         : GestureDetector(
             onTap: onTapPlay,
             child: Stack(children: [
-              ExtendedImage.network(widget.media.mediaUrlHttps!),
+              ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
               Center(
                 child: CenterPlayButton(
                   backgroundColor: Colors.black54,
