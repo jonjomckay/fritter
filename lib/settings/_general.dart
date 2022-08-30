@@ -277,6 +277,8 @@ class DownloadTypeSetting extends StatefulWidget {
 class DownloadTypeSettingState extends State<DownloadTypeSetting> {
   @override
   Widget build(BuildContext context) {
+    var downloadPath = PrefService.of(context).get<String>(optionDownloadPath) ?? '';
+
     return Column(
       children: [
         PrefDropdown(
@@ -299,7 +301,11 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
               var storagePermission = await Permission.storage.request();
               if (storagePermission.isGranted) {
                 String? directoryPath = await FilePicker.platform.getDirectoryPath();
+                if (directoryPath == null) {
+                  return;
+                }
 
+                // TODO: Gross. Figure out how to re-render automatically when the preference changes
                 setState(() {
                   PrefService.of(context).set(optionDownloadPath, directoryPath);
                 });
@@ -316,9 +322,9 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
             },
             title: Text(L10n.current.download_path),
             subtitle: Text(
-              PrefService.of(context).get(optionDownloadPath) == ''
+              downloadPath.isEmpty
                   ? L10n.current.not_set
-                  : PrefService.of(context).get(optionDownloadPath),
+                  : downloadPath,
             ),
             child: Text(L10n.current.choose),
           )
