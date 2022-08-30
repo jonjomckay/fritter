@@ -1146,10 +1146,10 @@ class L10n {
     );
   }
 
-  /// `Address copied to clipboard`
+  /// `Copied address to clipboard`
   String get copied_address_to_clipboard {
     return Intl.message(
-      'Address copied to clipboard',
+      'Copied address to clipboard',
       name: 'copied_address_to_clipboard',
       desc: '',
       args: [],
@@ -1702,10 +1702,10 @@ class L10n {
     );
   }
 
-  /// `Media saved.`
+  /// `Saved the media!`
   String get successfully_saved_the_media {
     return Intl.message(
-      'Media saved.',
+      'Saved the media!',
       name: 'successfully_saved_the_media',
       desc: '',
       args: [],

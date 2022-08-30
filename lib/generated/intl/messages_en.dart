@@ -101,7 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribute"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("Address copied to clipboard"),
+            MessageLookupByLibrary.simpleMessage("Copied address to clipboard"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Copied version to clipboard"),
         "could_not_contact_twitter":
@@ -309,7 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Subscriptions"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Subtitles"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Media saved."),
+            MessageLookupByLibrary.simpleMessage("Saved the media!"),
         "system": MessageLookupByLibrary.simpleMessage("System"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
