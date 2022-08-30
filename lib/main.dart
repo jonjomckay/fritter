@@ -452,7 +452,7 @@ class _MyAppState extends State<MyApp> {
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        appBarStyle: FlexAppBarStyle.primary,
+        appBarStyle: _trueBlack ? FlexAppBarStyle.surface : FlexAppBarStyle.primary,
       ),
       themeMode: themeMode,
       initialRoute: '/',
