@@ -428,5 +428,7 @@
   "language": "Jazyk",
   "@language": {},
   "language_subtitle": "Vyžaduje restart",
-  "@language_subtitle": {}
+  "@language_subtitle": {},
+  "download_media_no_url": "Nepodařilo se stáhnout média. Možná jsou dostupná jen jako stream, který Fritter zatím nedokáže stáhnout.",
+  "@download_media_no_url": {}
 }

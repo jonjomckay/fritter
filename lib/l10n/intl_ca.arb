@@ -428,5 +428,7 @@
   "language": "Idioma",
   "@language": {},
   "language_subtitle": "Requereix reiniciar",
-  "@language_subtitle": {}
+  "@language_subtitle": {},
+  "download_media_no_url": "No s'ha pogut descarregar. Aquest mitjà només pot estar disponible com a flux, cosa que Fritter encara no pot descarregar.",
+  "@download_media_no_url": {}
 }
