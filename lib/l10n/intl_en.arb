@@ -305,7 +305,7 @@
   "@ended_timeago_format_endsAt_allowFromNow_true": {},
   "ends_timeago_format_endsAt_allowFromNow_true": "Ends {timeagoFormat}",
   "@ends_timeago_format_endsAt_allowFromNow_true": {},
-  "numberFormat_format_total_votes": "{num, plural, zero{no votes} one{one vote} two{two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}",
+  "numberFormat_format_total_votes": "{num, plural, zero{No votes} one{One vote} two{Two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}",
   "@numberFormat_format_total_votes": {},
   "tap_to_show_getMediaType_item_type": "Tap to show {getMediaType}",
   "@tap_to_show_getMediaType_item_type": {},

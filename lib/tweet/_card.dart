@@ -112,7 +112,7 @@ class TweetCard extends StatelessWidget {
 
   _createVoteBar(BuildContext context, Map<String, dynamic> card, double total, int choiceIndex) {
     var choiceCount = double.parse(card['binding_values']['choice${choiceIndex}_count']['string_value']);
-    var choicePercent = (100 / total) * choiceCount;
+    var choicePercent = total == 0 ? 0 : (100 / total) * choiceCount;
 
     var theme = Theme.of(context);
     var textColor = theme.brightness == Brightness.light ? Colors.black : Colors.white;

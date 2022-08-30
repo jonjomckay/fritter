@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "Joined ${date}";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'no votes', one: 'one vote', two: 'two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
+      "${Intl.plural(num, zero: 'No votes', one: 'One vote', two: 'Two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
   static String m9(errorMessage) =>
       "Please check your Internet connection.\n\n${errorMessage}";

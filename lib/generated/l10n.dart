@@ -1643,13 +1643,13 @@ class L10n {
     );
   }
 
-  /// `{num, plural, zero{no votes} one{one vote} two{two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}`
+  /// `{num, plural, zero{No votes} one{One vote} two{Two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}`
   String numberFormat_format_total_votes(num num, Object numFormatted) {
     return Intl.plural(
       num,
-      zero: 'no votes',
-      one: 'one vote',
-      two: 'two votes',
+      zero: 'No votes',
+      one: 'One vote',
+      two: 'Two votes',
       few: '$numFormatted votes',
       many: '$numFormatted vote',
       other: '$numFormatted votes',
