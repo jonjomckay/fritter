@@ -11,10 +11,11 @@ import 'package:video_player/video_player.dart';
 import 'package:fritter/generated/l10n.dart';
 
 class TweetVideo extends StatefulWidget {
+  final String username;
   final bool loop;
   final Media media;
 
-  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
+  const TweetVideo({Key? key, required this.username, required this.loop, required this.media}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -65,7 +66,7 @@ class _TweetVideoState extends State<TweetVideo> {
             }
 
             var videoUri = Uri.parse(video.url!);
-            var fileName = path.basename(videoUri.path);
+            var fileName = '${widget.username}-${path.basename(videoUri.path)}';
 
             await downloadUriToPickedFile(
               context,
