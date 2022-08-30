@@ -139,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Her zaman sor"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Dizine kaydet"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "İndirilemiyor. Bu medya yalnızca Fritter\'ın henüz indiremediği bir akış olarak mevcut olabilir."),
         "download_path": MessageLookupByLibrary.simpleMessage("İndirme yolu"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Medya indiriliyor..."),
@@ -174,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "general": MessageLookupByLibrary.simpleMessage("Genel"),
         "groups": MessageLookupByLibrary.simpleMessage("Gruplar"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
-            "Fritter\'ı daha da iyi hale getirmeye yardımcı olun"),
+            "Fritter\'ın daha da iyi olmasına yardımcı olun"),
         "help_support_fritters_future": MessageLookupByLibrary.simpleMessage(
             "Fritter\'ın geleceğini desteklemeye yardımcı olun"),
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
@@ -259,7 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Lütfen içe aktarmak istediğiniz verilerin orada olduğundan emin olun, ardından aşağıdaki içe aktar düğmesine basın."),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
-                "Lütfen Fritter\'ın abonelikleri içe aktarmak için kullandığı yöntemin Twitter tarafından büyük ölçüde sınırlı olduğunu unutmayın, bu nedenle çok sayıda takip ettiğiniz hesap varsa bu başarısız olabilir."),
+                "Fritter\'ın abonelikleri içe aktarmak için kullandığı yöntemin Twitter tarafından yüksek oranda sınırlandırıldığını, bu nedenle çok sayıda takip ettiğiniz hesap varsa bunun başarısız olabileceğini lütfen unutmayın."),
         "prefix": MessageLookupByLibrary.simpleMessage("ön ek"),
         "private_profile": MessageLookupByLibrary.simpleMessage("Gizli profil"),
         "released_under_the_mit_license": MessageLookupByLibrary.simpleMessage(
@@ -305,7 +307,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Fritter\'da bir şey bozuldu."),
         "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated":
             MessageLookupByLibrary.simpleMessage(
-                "Fritter\'da bir şeyler ters gitti ve bir hata raporu oluşturuldu. Bu rapor sorunu çözmeye yardımcı olması için Fritter geliştiricilerine gönderilebilir."),
+                "Fritter\'da bir şeyler ters gitti ve bir hata raporu oluşturuldu. Rapor, sorunun çözülmesine yardımcı olmaları için Fritter geliştiricilerine gönderilebilir."),
         "sorry_the_replied_tweet_could_not_be_found":
             MessageLookupByLibrary.simpleMessage(
                 "Üzgünüz, yanıtlanan tweet bulunamadı!"),

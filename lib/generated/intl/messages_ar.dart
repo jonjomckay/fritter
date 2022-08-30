@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اسأل دائما"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("حفظ في المسار"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "غير قادر على تحميل . هذا المحتوى قد يكون متاحا فقط على شكل بث ، فريتر لا يمكنه تحميله ."),
         "download_path": MessageLookupByLibrary.simpleMessage("مسار التنزيل"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("تحميل الوسائط..."),

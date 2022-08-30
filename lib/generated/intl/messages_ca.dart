@@ -138,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pregunta sempre"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Desa al directori"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "No s\'ha pogut descarregar. Aquest mitjà només pot estar disponible com a flux, cosa que Fritter encara no pot descarregar."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Ruta de descàrrega"),
         "downloading_media":

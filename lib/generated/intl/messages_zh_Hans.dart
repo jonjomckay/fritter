@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("始终询问"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("保存到目录"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "无法下载。 此媒体可能仅作为在线流提供，Fritter 尚无法下载。"),
         "download_path": MessageLookupByLibrary.simpleMessage("下载路径"),
         "downloading_media": MessageLookupByLibrary.simpleMessage("正在下载媒体..."),
         "enable_sentry": MessageLookupByLibrary.simpleMessage("启用 Sentry？"),

@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vždy se zeptat"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Uložit do adresáře"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Nepodařilo se stáhnout média. Možná jsou dostupná jen jako stream, který Fritter zatím nedokáže stáhnout."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Cesta pro stažené"),
         "downloading_media":

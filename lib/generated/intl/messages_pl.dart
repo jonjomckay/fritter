@@ -138,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zawsze pytaj"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Zapisuj w katalogu"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Nie można pobrać. Te multimedia mogą być dostępne tylko jako strumień, którego Fritter jeszcze nie obsługuje."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Ścieżka pobierania"),
         "downloading_media":
