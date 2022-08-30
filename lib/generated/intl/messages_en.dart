@@ -325,6 +325,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "The tweet did not contain any text. This is unexpected"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Theme Mode"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "There were no trends returned. This is unexpected! Please report as a bug, if possible."),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_screen.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:pref/pref.dart';
 
 class SettingsThemeFragment extends StatelessWidget with AppBarMixin {
@@ -18,7 +19,7 @@ class SettingsThemeFragment extends StatelessWidget with AppBarMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: ListView(children: [
-        PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme), pref: optionThemeMode, items: [
+        PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme_mode), pref: optionThemeMode, items: [
           DropdownMenuItem(
             value: 'system',
             child: Text(L10n.of(context).system),
@@ -33,12 +34,13 @@ class SettingsThemeFragment extends StatelessWidget with AppBarMixin {
           ),
         ]),
         PrefDropdown(
+            title: Text(L10n.of(context).theme),
             fullWidth: false,
             pref: optionThemeColorScheme,
             items: FlexScheme.values
                 .getRange(0, FlexScheme.values.length - 1)
-                .map((scheme) => DropdownMenuItem(
-                    value: scheme.name, child: Text(scheme.name.capitalize)))
+                .sorted((a, b) => a.name.compareTo(b.name))
+                .map((scheme) => DropdownMenuItem(value: scheme.name, child: Text(scheme.name.capitalize)))
                 .toList()),
         PrefSwitch(
           title: Text(L10n.of(context).true_black),

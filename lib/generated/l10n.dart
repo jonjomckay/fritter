@@ -871,6 +871,16 @@ class L10n {
     );
   }
 
+  /// `Theme Mode`
+  String get theme_mode {
+    return Intl.message(
+      'Theme Mode',
+      name: 'theme_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `System`
   String get system {
     return Intl.message(

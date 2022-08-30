@@ -160,6 +160,8 @@
   "@large": {},
   "theme": "Theme",
   "@theme": {},
+  "theme_mode": "Theme Mode",
+  "@theme_mode": {},
   "system": "System",
   "@system": {},
   "light": "Light",
