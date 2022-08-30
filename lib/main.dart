@@ -171,6 +171,8 @@ Future<void> main() async {
     optionDownloadType: optionDownloadTypeAsk,
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
+    optionMediaVideoAutoplay: false,
+    optionMediaGifAutoplay: false,
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
     optionSubscriptionGroupsOrderByField: 'name',

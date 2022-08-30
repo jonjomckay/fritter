@@ -7,6 +7,8 @@ const optionShouldCheckForUpdates = 'should_check_for_updates';
 const optionHomeInitialTab = 'home.initial_tab';
 
 const optionMediaSize = 'media.size';
+const optionMediaVideoAutoplay = 'media.video_autoplay';
+const optionMediaGifAutoplay = 'media.gif_autoplay';
 
 const optionDownloadType = 'download.type';
 const optionDownloadPath = 'download.path';

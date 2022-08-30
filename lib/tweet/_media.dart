@@ -62,6 +62,8 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
     var size = prefs.get(optionMediaSize);
+    var videoAutoplay = prefs.get(optionMediaVideoAutoplay);
+    var gifAutoplay = prefs.get(optionMediaGifAutoplay);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -72,9 +74,9 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
 
     if (_showMedia) {
       if (item.type == 'animated_gif') {
-        media = TweetVideo(media: item, loop: true);
+        media = TweetVideo(media: item, loop: true, autoplay: gifAutoplay);
       } else if (item.type == 'video') {
-        media = TweetVideo(media: item, loop: false);
+        media = TweetVideo(media: item, loop: false, autoplay: videoAutoplay);
       } else if (item.type == 'photo') {
         media = TweetPhoto(size: size, uri: item.mediaUrlHttps!);
       } else {
@@ -192,6 +194,8 @@ class _TweetMediaViewState extends State<TweetMediaView> {
   Widget build(BuildContext context) {
     var prefs = PrefService.of(context, listen: false);
     var size = prefs.get(optionMediaSize);
+    var videoAutoplay = prefs.get(optionMediaVideoAutoplay);
+    var gifAutoplay = prefs.get(optionMediaGifAutoplay);
     if (size == 'disabled') {
       size = 'medium';
     }
@@ -241,9 +245,9 @@ class _TweetMediaViewState extends State<TweetMediaView> {
 
           Widget media;
           if (item.type == 'animated_gif') {
-            media = TweetVideo(media: item, loop: true);
+            media = TweetVideo(media: item, loop: true, autoplay: gifAutoplay);
           } else if (item.type == 'video') {
-            media = TweetVideo(media: item, loop: false);
+            media = TweetVideo(media: item, loop: false, autoplay: videoAutoplay);
           } else if (item.type == 'photo') {
             media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.scaleDown);
           } else {

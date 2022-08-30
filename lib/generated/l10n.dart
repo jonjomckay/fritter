@@ -861,6 +861,26 @@ class L10n {
     );
   }
 
+  /// `Gif autoplay`
+  String get should_autoplay_gif {
+    return Intl.message(
+      'Gif autoplay',
+      name: 'should_autoplay_gif',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video autoplay`
+  String get should_autoplay_video {
+    return Intl.message(
+      'Video autoplay',
+      name: 'should_autoplay_video',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message(
