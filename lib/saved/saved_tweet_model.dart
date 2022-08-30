@@ -31,7 +31,7 @@ class SavedTweetModel extends StreamStore<Object, List<SavedTweet>> {
 
       return (await database.query(tableSavedTweet, orderBy: 'saved_at DESC'))
           .map((e) => SavedTweet(id: e['id'] as String, content: e['content'] as String))
-          .toList(growable: false);
+          .toList();
     });
   }
 
