@@ -64,23 +64,23 @@ class _TrendsSettingsState extends State<TrendsSettings> {
           }
 
           return SizedBox(
-              width: double.maxFinite,
-              child: ListView.builder(
-                itemCount: countries.length,
-                itemBuilder: (context, index) {
-                  var name = names[index]!;
-                  if (name == '') {
-                    // If there's no country name, assume it's "Worldwide"
-                    return createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
-                  }
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: countries.length,
+              itemBuilder: (context, index) {
+                var name = names[index]!;
+                if (name == '') {
+                  // If there's no country name, assume it's "Worldwide"
+                  return createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
+                }
 
-                  return ExpansionTile(
-                    title: Text(name),
-                    children: [...countries[name]!.map((item) => createLocationTile(item))],
-                  );
-                },
-              ));
-
+                return ExpansionTile(
+                  title: Text(name),
+                  children: [...countries[name]!.map((item) => createLocationTile(item))],
+                );
+              },
+            ),
+          );
         },
       ),
     );

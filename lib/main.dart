@@ -63,7 +63,8 @@ Future checkForUpdates() async {
 
       if (int.parse(package.buildNumber) < latest) {
         var details = const NotificationDetails(
-            android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
+            android: AndroidNotificationDetails('updates', 'Updates',
+                channelDescription: 'When a new app update is available',
                 importance: Importance.max,
                 largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
                 priority: Priority.high,
@@ -154,6 +155,9 @@ Future<void> main() async {
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
     optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
+    optionActiveTrendsLocations: jsonEncode([
+      {'name': 'Worldwide', 'woeid': 1}
+    ]),
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -298,8 +302,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
-      setState(() {
-      });
+      setState(() {});
     });
 
     prefService.addKeyListener(optionLocale, () {
@@ -389,7 +392,8 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
-      theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue,
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.aquaBlue,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -402,7 +406,9 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         appBarStyle: FlexAppBarStyle.primary,
       ),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue, darkIsTrueBlack: _trueBlack,
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.aquaBlue,
+        darkIsTrueBlack: _trueBlack,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -511,8 +517,7 @@ class _DefaultPageState extends State<DefaultPage> {
       return ScaffoldErrorWidget(
           error: _migrationError,
           stackTrace: _migrationStackTrace,
-          prefix: L10n.of(context).unable_to_run_the_database_migrations
-      );
+          prefix: L10n.of(context).unable_to_run_the_database_migrations);
     }
 
     return const HomeScreen();

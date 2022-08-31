@@ -19,9 +19,46 @@ class TrendLocationModel extends StreamStore<Object, TrendLocation> {
 
   Future<void> setTrendLocation(TrendLocation item) async {
     await execute(() async {
-      prefs.set(optionTrendsLocation, jsonEncode(item.toJson()));
+      await _addToLocationsList(item);
+      await prefs.set(optionTrendsLocation, jsonEncode(item.toJson()));
       return item;
     });
+  }
+
+  List<TrendLocation> get locations => _locationsList();
+
+  int get locationIndex {
+    int index = locations.indexOf(state);
+    return index >= 0 ? index : 0;
+  }
+
+  List<TrendLocation> _locationsList() {
+    var locations = jsonDecode(prefs.get(optionActiveTrendsLocations));
+    return [...locations.map((e) => TrendLocation.fromJson(e))];
+  }
+
+  Future<void> _addToLocationsList(TrendLocation item) async {
+    print('addlocation');
+    print(!locations.any((e) => e.woeid == item.woeid));
+    if (!locations.any((e) => e.woeid == item.woeid)) {
+      locations.add(item);
+      await _storeActiveTrendLocations(locations);
+    }
+  }
+
+  Future<void> removeFromLocationsList(TrendLocation item) async {
+    //make sure, worldwide trend won't be removed
+    if (item.woeid != 1) {
+      int index = locations.indexWhere((element) => element.woeid == item.woeid);
+      setTrendLocation(locations[index - 1]);
+      locations.removeWhere((element) => element.woeid == item.woeid);
+      await _storeActiveTrendLocations(locations);
+    }
+  }
+
+  Future<void> _storeActiveTrendLocations(List<TrendLocation> locations) async {
+    var json = [...locations.map((e) => e.toJson())];
+    await prefs.set(optionActiveTrendsLocations, jsonEncode(json));
   }
 }
 
@@ -30,8 +67,7 @@ class TrendLocationsModel extends StreamStore<Object, List<TrendLocation>> {
 
   Future<void> loadLocations() async {
     await execute(() async {
-      return (await Twitter.getTrendLocations())
-          ..sort((a, b) => a.name!.compareTo(b.name!));
+      return (await Twitter.getTrendLocations())..sort((a, b) => a.name!.compareTo(b.name!));
     });
   }
 }
