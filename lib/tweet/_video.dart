@@ -4,6 +4,7 @@ import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
@@ -49,6 +50,7 @@ class _TweetVideoState extends State<TweetVideo> {
       autoPlay: true,
       allowMuting: true,
       allowedScreenSleep: false,
+      customControls: const FritterMaterialControls(),
       additionalOptions: (context) => [
         OptionItem(
           onTap: () async {
