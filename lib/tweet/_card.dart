@@ -6,6 +6,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -145,40 +146,53 @@ class TweetCard extends StatelessWidget {
       ]),
     );
   }
+  
+  _createWebsiteCard(BuildContext context, Map<String, dynamic> unifiedCard, String uri, String imageSize, Widget media) {
+    return _createCard(
+        uri,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (imageSize != 'disabled')
+              media,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              child: _createListTile(
+                  context,
+                  unifiedCard['component_objects']['details_1']['data']['title']['content'],
+                  unifiedCard['component_objects']['details_1']['data']['subtitle']['content'],
+                  null),
+            ),
+          ],
+        ));
+  }
 
   _createUnifiedCard(BuildContext context, Map<String, dynamic> card, String imageKey, String imageSize) {
     var unifiedCard = jsonDecode(card['binding_values']['unified_card']['string_value']) as Map<String, dynamic>;
 
     switch (unifiedCard['type']) {
       case 'image_website':
-        var image = unifiedCard['media_entities'][unifiedCard['component_objects']['media_1']['data']['id']];
+        var media = unifiedCard['media_entities'][unifiedCard['component_objects']['media_1']['data']['id']];
         var uri = unifiedCard['destination_objects']['browser_1']['data']['url_data']['url'];
 
-        return _createCard(
-            uri,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (imageSize != 'disabled')
-                  _createImage(
-                      imageSize,
-                      {
-                        'url': image['media_url_https'],
-                        'width': image['original_info']['width'],
-                        'height': image['original_info']['height'],
-                      },
-                      BoxFit.contain),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                  child: _createListTile(
-                      context,
-                      unifiedCard['component_objects']['details_1']['data']['title']['content'],
-                      unifiedCard['component_objects']['details_1']['data']['subtitle']['content'],
-                      null),
-                ),
-              ],
-            ));
+        var child = _createImage(
+            imageSize,
+            {
+              'url': media['media_url_https'],
+              'width': media['original_info']['width'],
+              'height': media['original_info']['height'],
+            },
+            BoxFit.contain
+        );
+        return _createWebsiteCard(context, unifiedCard, uri, imageSize, child);
+      case 'video_website':
+        // https://twitter.com/yenisafak/status/1560244349451096064
+        var media = unifiedCard['media_entities'][unifiedCard['component_objects']['media_1']['data']['id']];
+        var uri = unifiedCard['destination_objects']['browser_with_docked_media_1']['data']['url_data']['url'];
+
+        var child = TweetVideo(username: tweet.user!.screenName!, loop: false, media: Media.fromJson(media));
+        return _createWebsiteCard(context, unifiedCard, uri, imageSize, child);
       default:
         Catcher.reportCheckedError('Unsupported unified card type ${unifiedCard['type']} encountered', null);
         return Container();

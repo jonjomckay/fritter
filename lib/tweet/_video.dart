@@ -32,17 +32,19 @@ class _TweetVideoState extends State<TweetVideo> {
     super.initState();
   }
 
+  double getAspectRatio() {
+    return widget.media.videoInfo?.aspectRatio == null
+        ? _videoController!.value.aspectRatio
+        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
+  }
+
   void _loadVideo() {
     var variants = widget.media.videoInfo?.variants ?? [];
     var url = variants[0].url!;
     _videoController = VideoPlayerController.network(url);
 
-    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
-        ? _videoController!.value.aspectRatio
-        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
-
     _chewieController = ChewieController(
-      aspectRatio: aspectRatio,
+      aspectRatio: getAspectRatio(),
       autoInitialize: true,
       autoPlay: true,
       allowMuting: true,
@@ -130,27 +132,30 @@ class _TweetVideoState extends State<TweetVideo> {
   @override
   Widget build(BuildContext context) {
     // TODO: This is a bit flickery, but will do for now
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 150),
-      child: _showVideo
-        ? Chewie(controller: _chewieController!)
-        : GestureDetector(
-            onTap: onTapPlay,
-            child: Stack(children: [
-              ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
-              Center(
-                child: CenterPlayButton(
-                  backgroundColor: Colors.black54,
-                  iconColor: Colors.white,
-                  isFinished: false,
-                  isPlaying: false,
-                  show: true,
-                  onPressed: onTapPlay,
-                ),
-              )
-            ]),
-          )
-        );
+    return AspectRatio(
+      aspectRatio: getAspectRatio(),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 150),
+        child: _showVideo
+          ? Chewie(controller: _chewieController!)
+          : GestureDetector(
+              onTap: onTapPlay,
+              child: Stack(alignment: Alignment.center, children: [
+                ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
+                Center(
+                  child: CenterPlayButton(
+                    backgroundColor: Colors.black54,
+                    iconColor: Colors.white,
+                    isFinished: false,
+                    isPlaying: false,
+                    show: true,
+                    onPressed: onTapPlay,
+                  ),
+                )
+              ]),
+            )
+          ),
+    );
   }
 
   @override

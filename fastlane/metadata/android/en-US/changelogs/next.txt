@@ -15,3 +15,4 @@
 * Fixed M3U8 playlists being downloaded instead of MP4s (#395)
 * Added support for ignoring individual updates (#446)
 * Fixed an error message popping up when regularly viewing the feed
+* Added support for video cards (#432)
