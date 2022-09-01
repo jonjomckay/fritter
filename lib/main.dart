@@ -154,10 +154,13 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
-    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
-    optionActiveTrendsLocations: jsonEncode([
-      {'name': 'Worldwide', 'woeid': 1}
-    ]),
+    optionActiveTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
+    optionUserTrendsLocations: jsonEncode({
+      'active': {'name': 'Worldwide', 'woeid': 1},
+      'locations': [
+        {'name': 'Worldwide', 'woeid': 1}
+      ]
+    })
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -235,7 +238,7 @@ Future<void> main() async {
         var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
         await subscriptionsModel.reloadSubscriptions();
 
-        var trendLocationModel = TrendLocationModel(prefService);
+        var trendLocationModel = UserTrendLocationModel(prefService);
 
         runApp(PrefService(
             service: prefService,

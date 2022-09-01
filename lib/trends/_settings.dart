@@ -42,7 +42,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) {
-          var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionTrendsLocation)));
+          var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionActiveTrendsLocation)));
 
           var countries = state.sorted((a, b) => a.name!.compareTo(b.name!)).groupBy((e) => e.country);
 
@@ -58,7 +58,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                 selected: place.woeid == item.woeid,
                 groupValue: place.woeid,
                 onChanged: (value) async {
-                  await context.read<TrendLocationModel>().setTrendLocation(item);
+                  await context.read<UserTrendLocationModel>().set(item);
                   Navigator.pop(context);
                 });
           }

@@ -22,7 +22,7 @@ class _TrendsListState extends State<TrendsList> {
   void initState() {
     super.initState();
 
-    context.read<TrendsModel>().loadTrends();
+    //context.read<TrendsModel>().loadTrends();
   }
 
   @override
@@ -31,8 +31,8 @@ class _TrendsListState extends State<TrendsList> {
 
     return ScopedBuilder<TrendsModel, Object, List<Trends>>.transition(
       store: model,
-      onError: (context, e) => TripleBuilder<TrendLocationModel, Object, TrendLocation>(
-        store: context.read<TrendLocationModel>(),
+      onError: (context, e) => TripleBuilder<UserTrendLocationModel, Object, UserTrendLocations>(
+        store: context.read<UserTrendLocationModel>(),
         builder: (context, triple) {
           return FullPageErrorWidget(
             error: e,
