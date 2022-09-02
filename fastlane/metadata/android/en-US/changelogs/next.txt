@@ -16,3 +16,4 @@
 * Added support for ignoring individual updates (#446)
 * Fixed an error message popping up when regularly viewing the feed
 * Added support for video cards (#432)
+* Fixed pinned tweets not appearing on profiles (#410)
