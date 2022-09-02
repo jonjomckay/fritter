@@ -17,3 +17,4 @@
 * Fixed an error message popping up when regularly viewing the feed
 * Added support for video cards (#432)
 * Fixed pinned tweets not appearing on profiles (#410)
+* Added support for some Discord embed addresses (fx/vxtwitter.com) (#436)
