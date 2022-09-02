@@ -352,4 +352,9 @@ class UnknownCardType implements Exception {
   final String type;
 
   UnknownCardType(this.tweet, this.type);
+
+  @override
+  String toString() {
+    return 'UnknownCardType{tweet: $tweet, type: $type}';
+  }
 }
