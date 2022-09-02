@@ -146,16 +146,15 @@ class _MaterialControlsState extends State<FritterMaterialControls>
     return Positioned(
       top: 0,
       right: 0,
-      child: SafeArea(
-        child: AnimatedOpacity(
-          opacity: notifier.hideStuff ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 250),
-          child: Row(
-            children: [
-              _buildSubtitleToggle(),
-              if (chewieController.showOptions) _buildOptionsButton(),
-            ],
-          ),
+      // NOTE: Removed SafeArea so the options button appears correctly at the top right
+      child: AnimatedOpacity(
+        opacity: notifier.hideStuff ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 250),
+        child: Row(
+          children: [
+            _buildSubtitleToggle(),
+            if (chewieController.showOptions) _buildOptionsButton(),
+          ],
         ),
       ),
     );
@@ -262,43 +261,41 @@ class _MaterialControlsState extends State<FritterMaterialControls>
           left: 20,
           bottom: !chewieController.isFullScreen ? 10.0 : 0,
         ),
-        child: SafeArea(
-          bottom: chewieController.isFullScreen,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    if (chewieController.isLive)
-                      const Expanded(child: Text('LIVE'))
-                    else
-                      _buildPosition(iconColor),
-                    if (chewieController.allowMuting)
-                      _buildMuteButton(controller),
-                    const Spacer(),
-                    if (chewieController.allowFullScreen) _buildExpandButton(),
-                  ],
-                ),
+        // NOTE: Removed SafeArea so that controls don't disappear on smaller videos
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  if (chewieController.isLive)
+                    const Expanded(child: Text('LIVE'))
+                  else
+                    _buildPosition(iconColor),
+                  if (chewieController.allowMuting)
+                    _buildMuteButton(controller),
+                  const Spacer(),
+                  if (chewieController.allowFullScreen) _buildExpandButton(),
+                ],
               ),
-              SizedBox(
-                height: chewieController.isFullScreen ? 15.0 : 0,
-              ),
-              if (!chewieController.isLive)
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Row(
-                      children: [
-                        _buildProgressBar(),
-                      ],
-                    ),
+            ),
+            SizedBox(
+              height: chewieController.isFullScreen ? 15.0 : 0,
+            ),
+            if (!chewieController.isLive)
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Row(
+                    children: [
+                      _buildProgressBar(),
+                    ],
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
