@@ -47,7 +47,6 @@ class UserTrendLocationModel extends StreamStore<Object, UserTrendLocations> {
 
   Future<void> save(UserTrendLocations item) async {
     await execute(() async {
-      print(item.locations.length);
       await _prefs.set(optionUserTrendsLocations, item.toJson());
       return item;
     });
