@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -80,27 +78,17 @@ class UserTile extends StatelessWidget {
 class FollowButtonSelectGroupDialog extends StatefulWidget {
   final User user;
   final bool followed;
+  final List<String> groupsForUser;
 
-  const FollowButtonSelectGroupDialog({Key? key, required this.user, required this.followed}) : super(key: key);
+  const FollowButtonSelectGroupDialog(
+      {Key? key, required this.user, required this.followed, required this.groupsForUser})
+      : super(key: key);
 
   @override
   State<FollowButtonSelectGroupDialog> createState() => _FollowButtonSelectGroupDialogState();
 }
 
 class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupDialog> {
-  List<String> _groupsForUser = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    context.read<GroupsModel>().listGroupsForUser(widget.user.idStr!).then((groups) {
-      setState(() {
-        _groupsForUser = groups;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var groupModel = context.read<GroupsModel>();
@@ -120,7 +108,7 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
       unselectedColor: color,
       selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
       items: groupModel.state.map((e) => MultiSelectItem(e.id, e.name)).toList(),
-      initialValue: _groupsForUser,
+      initialValue: widget.groupsForUser,
       onConfirm: (List<String> memberships) async {
         // If we're not currently following the user, follow them first
         if (widget.followed == false) {
@@ -133,7 +121,6 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
     );
   }
 }
-
 
 class FollowButton extends StatelessWidget {
   final User user;
@@ -164,7 +151,14 @@ class FollowButton extends StatelessWidget {
           onSelected: (value) async {
             switch (value) {
               case 'add_to_group':
-                showDialog(context: context, builder: (_) => FollowButtonSelectGroupDialog(user: user, followed: followed));
+                var groups = await context.read<GroupsModel>().listGroupsForUser(user.idStr!);
+                showDialog(
+                    context: context,
+                    builder: (_) => FollowButtonSelectGroupDialog(
+                          user: user,
+                          followed: followed,
+                          groupsForUser: groups,
+                        ));
                 break;
               case 'toggle_subscribe':
                 await model.toggleSubscribe(user, followed);
