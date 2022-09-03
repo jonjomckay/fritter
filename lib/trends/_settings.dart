@@ -42,7 +42,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) {
-          var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionActiveTrendsLocation)));
+          var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionUserTrendsLocations)['active']));
 
           var countries = state.sorted((a, b) => a.name!.compareTo(b.name!)).groupBy((e) => e.country);
 

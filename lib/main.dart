@@ -154,7 +154,6 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
-    optionActiveTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
     optionUserTrendsLocations: jsonEncode({
       'active': {'name': 'Worldwide', 'woeid': 1},
       'locations': [
