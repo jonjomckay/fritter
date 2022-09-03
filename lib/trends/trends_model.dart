@@ -61,6 +61,7 @@ class UserTrendLocationModel extends StreamStore<Object, UserTrendLocations> {
   Future<void> remove(TrendLocation location) async {
     await execute(() async {
       state.removeLocation(location);
+      await save(state);
       return state;
     });
   }
