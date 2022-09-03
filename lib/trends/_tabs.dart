@@ -44,27 +44,13 @@ class _TrendsTabBarState extends State<TrendsTabBar> with TickerProviderStateMix
     });
   }
 
-  List<Widget> getTabs(List<TrendLocation> locations, {Function(TrendLocation)? onDelete}) {
+  List<Widget> getTabs(List<TrendLocation> locations, {required Function(TrendLocation) onDelete}) {
     _tabs.clear();
     return [
       ...locations.map((location) {
-        return GestureDetector(
-          onLongPress: () async {
-            //the dialog won't pop up on worldwide trend
-            if (location.woeid != 1) {
-              bool? delete = await showDialog<bool>(
-                  context: context,
-                  builder: (context) {
-                    return _Delete(location);
-                  });
-              if (delete ?? false) {
-                onDelete!(location);
-              }
-            }
-          },
-          child: Tab(
-            text: location.name,
-          ),
+        return _LocationTab(
+          location,
+          onDelete: (location) => onDelete(location),
         );
       }),
     ];
@@ -99,25 +85,52 @@ class _TrendsTabBarState extends State<TrendsTabBar> with TickerProviderStateMix
   }
 }
 
-class _Delete extends StatelessWidget {
+class _LocationTab extends StatelessWidget {
   final TrendLocation location;
+  final Function(TrendLocation) onDelete;
 
-  const _Delete(this.location, {Key? key}) : super(key: key);
+  const _LocationTab(this.location, {Key? key, required this.onDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      // TODO: add proper "remove Trend" dialag
-      title: Text(L10n().delete),
-      content: Text("${location.name}"),
-      actions: [
-        TextButton(
-          onPressed: () async {
-            Navigator.pop(context, true);
-          },
-          child: Text(L10n.of(context).yes),
-        ),
-      ],
+    return GestureDetector(
+      onLongPress: () async {
+        if (await removeTab(context, location)) {
+          onDelete(location);
+        }
+      },
+      child: Tab(
+        text: location.name,
+      ),
+    );
+  }
+
+  Future<bool> removeTab(BuildContext context, TrendLocation location) async {
+    bool delete = false;
+
+    if (location.woeid != 1) {
+      delete = await showMenu<bool>(
+            context: context,
+            position: _calcPosition(context),
+            items: [
+              PopupMenuItem(value: true, child: Text(L10n.of(context).delete)),
+            ],
+          ) ??
+          false;
+    }
+    return delete;
+  }
+
+  RelativeRect _calcPosition(BuildContext context) {
+    final RenderBox tab = context.findRenderObject()! as RenderBox;
+    final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
+
+    return RelativeRect.fromRect(
+      Rect.fromPoints(
+        tab.localToGlobal(Offset.zero, ancestor: overlay),
+        tab.localToGlobal(tab.size.bottomRight(Offset.zero) + Offset.zero, ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
     );
   }
 }
