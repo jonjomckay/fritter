@@ -15,8 +15,14 @@ import 'package:logging/logging.dart';
 import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 30);
-const String _bearerToken =
-    'Bearer AAAAAAAAAAAAAAAAAAAAAPYXBAAAAAAACLXUNDekMxqa8h%2F40K4moUkGsoc%3DTYfbDKbT3jJPCEVnMYqilB28NHfOPqkca3qaAxGfsyKCs0wRbw';
+final String _bearerToken = String.fromCharCodes(
+  base64Decode(
+    'QmVhcmVyIEFBQUFBQUFBQUFB' +
+        'QUFBQUFBQUFBQVBZWEJBQUFBQUFBQ0xYVU5EZWtNeHFhOGglMkY0MEs0bW9Va0dz' +
+        'b2MlM0RUWWZiREtiVDNqSlBDRVZuTVlxaWx' +
+        'CMjhOSGZPUHFrY2EzcWFBeEdmc3lLQ3Mwd1Jidw==',
+  ),
+);
 
 class _FritterTwitterClient extends TwitterClient {
   static final log = Logger('_FritterTwitterClient');
@@ -393,7 +399,6 @@ class Twitter {
 
     var tweets = _createTweets(tweetIndicator, result, includeReplies);
 
-
     // First, get all the IDs of the tweets we need to display
     var tweetEntries = addEntries
         .where((e) => e['entryId'].contains(tweetIndicator))
@@ -457,10 +462,11 @@ class Twitter {
     return List.from(result).map((e) => User.fromJson(e)).toList(growable: false);
   }
 
-  static Map<String, TweetWithCard> _createTweets(String entryPrefix, Map<String, dynamic> result, bool includeReplies) {
+  static Map<String, TweetWithCard> _createTweets(
+      String entryPrefix, Map<String, dynamic> result, bool includeReplies) {
     var globalTweets = result['globalObjects']['tweets'] as Map<String, dynamic>;
     var globalUsers = result['globalObjects']['users'];
-    
+
     bool includeTweet(dynamic t) {
       if (includeReplies) {
         return true;
@@ -471,7 +477,8 @@ class Twitter {
 
     var tweets = globalTweets.values
         .where(includeTweet)
-        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e)).toList();
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
+        .toList();
 
     return {for (var e in tweets) e.idStr!: e};
   }
@@ -504,7 +511,8 @@ class TweetWithCard extends Tweet {
     var tweetWithCard = TweetWithCard();
     tweetWithCard.idStr = '';
     tweetWithCard.isTombstone = true;
-    tweetWithCard.text = ((e['richText']?['text'] ?? e['text'] ?? L10n.current.this_tweet_is_unavailable) as String).replaceFirst(' Learn more', '');
+    tweetWithCard.text = ((e['richText']?['text'] ?? e['text'] ?? L10n.current.this_tweet_is_unavailable) as String)
+        .replaceFirst(' Learn more', '');
 
     return tweetWithCard;
   }
