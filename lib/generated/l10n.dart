@@ -1236,6 +1236,16 @@ class L10n {
     );
   }
 
+  /// `Yes, please`
+  String get yes_please {
+    return Intl.message(
+      'Yes, please',
+      name: 'yes_please',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure?`
   String get are_you_sure {
     return Intl.message(
@@ -2261,6 +2271,36 @@ class L10n {
     return Intl.message(
       'Requires a restart',
       name: 'language_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Potentially sensitive`
+  String get possibly_sensitive {
+    return Intl.message(
+      'Potentially sensitive',
+      name: 'possibly_sensitive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This tweet contains potentially sensitive content. Would you like to view it?`
+  String get possibly_sensitive_tweet {
+    return Intl.message(
+      'This tweet contains potentially sensitive content. Would you like to view it?',
+      name: 'possibly_sensitive_tweet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This profile may include potentially sensitive images, language, or other content. Do you still want to view it?`
+  String get possibly_sensitive_profile {
+    return Intl.message(
+      'This profile may include potentially sensitive images, language, or other content. Do you still want to view it?',
+      name: 'possibly_sensitive_profile',
       desc: '',
       args: [],
     );

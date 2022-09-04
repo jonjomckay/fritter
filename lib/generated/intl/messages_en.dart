@@ -256,6 +256,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Please note that the method Fritter uses to import subscriptions is heavily rate-limited by Twitter, so this may fail if you have a lot of followed accounts."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potentially sensitive"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "This tweet contains potentially sensitive content. Would you like to view it?"),
         "prefix": MessageLookupByLibrary.simpleMessage("prefix"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Private profile"),
@@ -440,6 +446,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Would you like to enable automatic error reporting?"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Yes, please"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "You haven\'t saved any tweets yet!"),

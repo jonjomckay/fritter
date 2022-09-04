@@ -6,12 +6,15 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/_photo.dart';
 import 'package:fritter/tweet/_video.dart';
+import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
+import 'package:provider/provider.dart';
 
 class TweetMediaItem extends StatefulWidget {
   final int index;
@@ -114,10 +117,11 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
 }
 
 class TweetMedia extends StatefulWidget {
+  final bool? sensitive;
   final List<Media> media;
   final String username;
 
-  const TweetMedia({Key? key, required this.media, required this.username}) : super(key: key);
+  const TweetMedia({Key? key, required this.sensitive, required this.media, required this.username}) : super(key: key);
 
   @override
   State<TweetMedia> createState() => _TweetMediaState();
@@ -131,31 +135,47 @@ class _TweetMediaState extends State<TweetMedia> {
     var largestAspectRatio =
         widget.media.map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1)).reduce(math.max);
 
-    return Container(
-      margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
-      child: AspectRatio(
-        aspectRatio: largestAspectRatio,
-        child: PageView.builder(
-          controller: _controller,
-          physics: const LessSensitiveScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.media.length,
-          itemBuilder: (context, index) {
-            var item = widget.media[index];
+    return Consumer<ProfileState>(builder: (context, model, child) {
+      if (model.hideSensitive && (widget.sensitive ?? false)) {
+        return Card(
+          child: Center(
+              child: EmojiErrorWidget(
+                emoji: '🍆🙈🍆',
+                message: L10n.current.possibly_sensitive,
+                errorMessage: L10n.current.possibly_sensitive_tweet,
+                retryText: L10n.current.yes_please,
+                onRetry: () async => model.setHideSensitive(false),
+              )
+          ),
+        );
+      }
 
-            return GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
-              child:
-                  TweetMediaItem(media: item, index: index + 1, total: widget.media.length, username: widget.username),
-            );
-          },
+      return Container(
+        margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
+        child: AspectRatio(
+          aspectRatio: largestAspectRatio,
+          child: PageView.builder(
+            controller: _controller,
+            physics: const LessSensitiveScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: widget.media.length,
+            itemBuilder: (context, index) {
+              var item = widget.media[index];
+
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
+                child:
+                TweetMediaItem(media: item, index: index + 1, total: widget.media.length, username: widget.username),
+              );
+            },
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

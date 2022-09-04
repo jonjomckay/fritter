@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
 import 'package:measure_size/measure_size.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -352,16 +352,19 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                       )))
             ];
           },
-          body: TabBarView(
-            controller: _tabController,
-            physics: const LessSensitiveScrollPhysics(),
-            children: [
-              ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
-              ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
-              ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
-              ProfileFollows(user: user, type: 'following'),
-              ProfileFollows(user: user, type: 'followers'),
-            ],
+          body: ChangeNotifierProvider(
+            create: (context) => ProfileState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+            child: TabBarView(
+              controller: _tabController,
+              physics: const LessSensitiveScrollPhysics(),
+              children: [
+                ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
+                ProfileFollows(user: user, type: 'following'),
+                ProfileFollows(user: user, type: 'followers'),
+              ],
+            ),
           ),
         ),
 
@@ -379,5 +382,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         )
       ]),
     );
+  }
+}
+
+class ProfileState extends ChangeNotifier {
+  bool hideSensitive;
+
+  ProfileState(this.hideSensitive);
+
+  void setHideSensitive(bool value) {
+    hideSensitive = value;
+    notifyListeners();
   }
 }

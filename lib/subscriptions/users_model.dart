@@ -5,6 +5,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/group_model.dart';
+import 'package:fritter/user.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 
@@ -64,7 +65,7 @@ class SubscriptionsModel extends StreamStore<Object, List<Subscription>> {
     });
   }
 
-  Future<void> toggleSubscribe(User user, bool currentlyFollowed) async {
+  Future<void> toggleSubscribe(UserWithExtra user, bool currentlyFollowed) async {
     var database = await Repository.writable();
 
     await execute(() async {

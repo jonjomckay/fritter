@@ -14,6 +14,8 @@ const optionDownloadPath = 'download.path';
 const optionDownloadTypeDirectory = 'directory';
 const optionDownloadTypeAsk = 'ask';
 
+const optionTweetsHideSensitive = 'tweets.hide_sensitive';
+
 const optionLocale = 'locale';
 const optionLocaleDefault = 'system';
 

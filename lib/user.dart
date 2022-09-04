@@ -1,3 +1,4 @@
+import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class UserAvatar extends StatelessWidget {
 }
 
 class UserTile extends StatelessWidget {
-  final User user;
+  final UserWithExtra user;
 
   const UserTile({Key? key, required this.user}) : super(key: key);
 
@@ -76,7 +77,7 @@ class UserTile extends StatelessWidget {
 }
 
 class FollowButtonSelectGroupDialog extends StatefulWidget {
-  final User user;
+  final UserWithExtra user;
   final bool followed;
   final List<String> groupsForUser;
 
@@ -123,7 +124,7 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
 }
 
 class FollowButton extends StatelessWidget {
-  final User user;
+  final UserWithExtra user;
 
   const FollowButton({Key? key, required this.user}) : super(key: key);
 
@@ -168,5 +169,59 @@ class FollowButton extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class UserWithExtra extends User {
+  Map<String, dynamic>? card;
+  bool? possiblySensitive;
+
+  UserWithExtra();
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['potentiallySensitive'] = possiblySensitive;
+
+    return json;
+  }
+
+  factory UserWithExtra.fromJson(Map<String, dynamic> json) {
+    var userWithExtra = UserWithExtra()
+      ..idStr = json['id_str'] as String?
+      ..name = json['name'] as String?
+      ..screenName = json['screen_name'] as String?
+      ..location = json['location'] as String?
+      ..derived = json['derived'] == null
+          ? null
+          : Derived.fromJson(json['derived'] as Map<String, dynamic>)
+      ..url = json['url'] as String?
+      ..entities = json['entities'] == null
+          ? null
+          : UserEntities.fromJson(json['entities'] as Map<String, dynamic>)
+      ..description = json['description'] as String?
+      ..protected = json['protected'] as bool?
+      ..verified = json['verified'] as bool?
+      ..status = json['status'] == null
+          ? null
+          : Tweet.fromJson(json['status'] as Map<String, dynamic>)
+      ..followersCount = json['followers_count'] as int?
+      ..friendsCount = json['friends_count'] as int?
+      ..listedCount = json['listed_count'] as int?
+      ..favoritesCount = json['favorites_count'] as int?
+      ..statusesCount = json['statuses_count'] as int?
+      ..createdAt = convertTwitterDateTime(json['created_at'] as String?)
+      ..profileBannerUrl = json['profile_banner_url'] as String?
+      ..profileImageUrlHttps = json['profile_image_url_https'] as String?
+      ..defaultProfile = json['default_profile'] as bool?
+      ..defaultProfileImage = json['default_profile_image'] as bool?
+      ..withheldInCountries = (json['withheld_in_countries'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList()
+      ..withheldScope = json['withheld_scope'] as String?;
+
+    userWithExtra.possiblySensitive = json['possibly_sensitive'] as bool?;
+
+    return userWithExtra;
   }
 }

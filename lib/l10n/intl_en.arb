@@ -232,6 +232,7 @@
   "@no": {},
   "yes": "Yes",
   "@yes": {},
+  "yes_please": "Yes, please",
   "are_you_sure": "Are you sure?",
   "@are_you_sure": {},
   "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group": "Are you sure you want to delete the subscription group {name}?",
@@ -411,5 +412,8 @@
   "choose": "Choose",
   "not_set": "Not set",
   "language": "Language",
-  "language_subtitle": "Requires a restart"
+  "language_subtitle": "Requires a restart",
+  "possibly_sensitive": "Potentially sensitive",
+  "possibly_sensitive_tweet": "This tweet contains potentially sensitive content. Would you like to view it?",
+  "possibly_sensitive_profile": "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?"
 }

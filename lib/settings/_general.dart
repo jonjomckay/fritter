@@ -257,6 +257,11 @@ class SettingsGeneralFragment extends StatelessWidget {
                   child: Text(L10n.of(context).large),
                 ),
               ]),
+          const PrefCheckbox(
+            title: Text('Hide sensitive tweets'),
+            subtitle: Text('Whether to hide tweets marked as sensitive'),
+            pref: optionTweetsHideSensitive,
+          ),
           const DownloadTypeSetting(),
           PrefCheckbox(
             title: Text(L10n.of(context).enable_sentry),
