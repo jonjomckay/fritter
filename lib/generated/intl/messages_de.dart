@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nutzerkonto gesperrt"),
         "activate_non_confirmation_bias_mode_description":
             MessageLookupByLibrary.simpleMessage(
-                "Wenn aktiv, werden die Autoren eines Tweets nicht angezeigt. Vermeide Bestätigungsfehler aufgrund von Autoritätsargumenten."),
+                "Autor eines Tweets verstecken. Vermeide Bestätigungsfehler durch Autoritätsargumente."),
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Anti-Bestätigungsfehler-Modus aktivieren"),
