@@ -91,6 +91,7 @@ dependencies:
   url_launcher: ^6.1.4
   uuid: ^3.0.6
   video_player: ^2.4.5
+  visibility_detector: ^0.3.3
 
   flutter_localizations:
     sdk: flutter

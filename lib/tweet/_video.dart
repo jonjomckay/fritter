@@ -4,12 +4,14 @@ import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TweetVideo extends StatefulWidget {
   final String username;
@@ -139,7 +141,7 @@ class _TweetVideoState extends State<TweetVideo> {
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
         child: _showVideo
-          ? Chewie(controller: _chewieController!)
+          ? _Video(controller: _chewieController!)
           : GestureDetector(
               onTap: onTapPlay,
               child: Stack(alignment: Alignment.center, children: [
@@ -166,5 +168,28 @@ class _TweetVideoState extends State<TweetVideo> {
     _videoController?.dispose();
     _chewieController?.dispose();
     super.dispose();
+  }
+}
+
+class _Video extends StatelessWidget {
+  final ChewieController controller;
+
+  const _Video({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (info) {
+        if (controller.hasListeners) {
+          if (info.visibleFraction == 0 && !controller.isFullScreen) {
+            controller.pause();
+          }
+        }
+      },
+      child: Chewie(
+        controller: controller,
+      ),
+    );
   }
 }
