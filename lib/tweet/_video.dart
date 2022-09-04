@@ -4,10 +4,12 @@ import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TweetVideo extends StatefulWidget {
   final bool loop;
@@ -107,30 +109,43 @@ class _TweetVideoState extends State<TweetVideo> {
     });
   }
 
+  Widget video() {
+    return VisibilityDetector(
+      onVisibilityChanged: (visbilityInfo) {
+        if (visbilityInfo.visibleFraction == 0 && !_chewieController!.isFullScreen) {
+          _chewieController!.pause();
+        }
+      },
+      key: UniqueKey(),
+      child: Chewie(
+        controller: _chewieController!,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: This is a bit flickery, but will do for now
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 150),
-      child: _showVideo
-        ? Chewie(controller: _chewieController!)
-        : GestureDetector(
-            onTap: onTapPlay,
-            child: Stack(children: [
-              ExtendedImage.network(widget.media.mediaUrlHttps!),
-              Center(
-                child: CenterPlayButton(
-                  backgroundColor: Colors.black54,
-                  iconColor: Colors.white,
-                  isFinished: false,
-                  isPlaying: false,
-                  show: true,
-                  onPressed: onTapPlay,
-                ),
-              )
-            ]),
-          )
-        );
+        duration: const Duration(milliseconds: 150),
+        child: _showVideo
+            ? _Video(controller: _chewieController!)
+            : GestureDetector(
+                onTap: onTapPlay,
+                child: Stack(children: [
+                  ExtendedImage.network(widget.media.mediaUrlHttps!),
+                  Center(
+                    child: CenterPlayButton(
+                      backgroundColor: Colors.black54,
+                      iconColor: Colors.white,
+                      isFinished: false,
+                      isPlaying: false,
+                      show: true,
+                      onPressed: onTapPlay,
+                    ),
+                  )
+                ]),
+              ));
   }
 
   @override
@@ -139,5 +154,28 @@ class _TweetVideoState extends State<TweetVideo> {
     _videoController?.dispose();
     _chewieController?.dispose();
     super.dispose();
+  }
+}
+
+class _Video extends StatelessWidget {
+  final ChewieController controller;
+
+  const _Video({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (info) {
+        if (controller.hasListeners) {
+          if (info.visibleFraction == 0 && !controller.isFullScreen) {
+            controller.pause();
+          }
+        }
+      },
+      child: Chewie(
+        controller: controller,
+      ),
+    );
   }
 }
