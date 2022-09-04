@@ -77,6 +77,8 @@ dependencies:
   permission_handler: ^8.2.5
   pref: ^2.6.0
   quiver: ^3.1.0
+  scroll_app_bar: ^2.0.0
+  scroll_bottom_navigation_bar: ^4.0.0
   scroll_to_index: ^3.0.1
   sentry_flutter: ^6.6.1
   share: ^2.0.4
