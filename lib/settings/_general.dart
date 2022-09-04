@@ -255,6 +255,11 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
               ),
             ]),
         const DownloadTypeSetting(),
+        PrefSwitch(
+          title: Text(L10n.of(context).activate_non_confirmation_bias_mode_label),
+          pref: optionImproveNonConfirmationBias,
+          subtitle: Text(L10n.of(context).activate_non_confirmation_bias_mode_description),
+        ),
         PrefCheckbox(
           title: Text(L10n.of(context).enable_sentry),
           subtitle: Text(
@@ -322,9 +327,7 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
             },
             title: Text(L10n.current.download_path),
             subtitle: Text(
-              downloadPath.isEmpty
-                  ? L10n.current.not_set
-                  : downloadPath,
+              downloadPath.isEmpty ? L10n.current.not_set : downloadPath,
             ),
             child: Text(L10n.current.choose),
           )

@@ -77,6 +77,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("Über"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Nutzerkonto gesperrt"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Wenn aktiv, werden die Autoren eines Tweets nicht angezeigt. Vermeide Bestätigungsfehler aufgrund von Autoritätsargumenten."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Anti-Bestätigungsfehler-Modus aktivieren"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Zur Gruppe hinzufügen"),
         "all": MessageLookupByLibrary.simpleMessage("Alles"),

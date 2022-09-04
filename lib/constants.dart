@@ -28,6 +28,8 @@ const optionThemeColorScheme = 'theme.color_scheme';
 
 const optionTrendsLocation = 'trends.location';
 
+const optionImproveNonConfirmationBias = 'other.improve_non_confirmation_bias';
+
 const routeGroup = '/group';
 const routeProfile = '/profile';
 const routeSearch = '/search';

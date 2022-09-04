@@ -6,13 +6,13 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:fritter/generated/l10n.dart';
 
 class TweetCard extends StatelessWidget {
   static final log = Logger('TweetCard');
@@ -146,23 +146,20 @@ class TweetCard extends StatelessWidget {
       ]),
     );
   }
-  
-  _createWebsiteCard(BuildContext context, Map<String, dynamic> unifiedCard, String uri, String imageSize, Widget media) {
+
+  _createWebsiteCard(
+      BuildContext context, Map<String, dynamic> unifiedCard, String uri, String imageSize, Widget media) {
     return _createCard(
         uri,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (imageSize != 'disabled')
-              media,
+            if (imageSize != 'disabled') media,
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              child: _createListTile(
-                  context,
-                  unifiedCard['component_objects']['details_1']['data']['title']['content'],
-                  unifiedCard['component_objects']['details_1']['data']['subtitle']['content'],
-                  null),
+              child: _createListTile(context, unifiedCard['component_objects']['details_1']['data']['title']['content'],
+                  unifiedCard['component_objects']['details_1']['data']['subtitle']['content'], null),
             ),
           ],
         ));
@@ -183,8 +180,7 @@ class TweetCard extends StatelessWidget {
               'width': media['original_info']['width'],
               'height': media['original_info']['height'],
             },
-            BoxFit.contain
-        );
+            BoxFit.contain);
         return _createWebsiteCard(context, unifiedCard, uri, imageSize, child);
       case 'video_website':
         // https://twitter.com/yenisafak/status/1560244349451096064
