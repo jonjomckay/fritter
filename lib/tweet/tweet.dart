@@ -13,6 +13,7 @@ import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/tweet/tweet_exceptions.dart';
+import 'package:fritter/ui/dates.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/iterables.dart';
@@ -24,7 +25,6 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
@@ -276,6 +276,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     var numberFormat = NumberFormat.compact();
+    var theme = Theme.of(context);
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
 
@@ -545,8 +546,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                               )),
                               const SizedBox(width: 4),
                               if (createdAt != null)
-                                Text(timeago.format(createdAt, locale: Intl.shortLocale(Intl.getCurrentLocale())),
-                                    style: Theme.of(context).textTheme.caption)
+                                DefaultTextStyle(style: theme.textTheme.caption!, child: Timestamp(timestamp: createdAt))
                             ],
                           ),
                           leading: ClipRRect(
