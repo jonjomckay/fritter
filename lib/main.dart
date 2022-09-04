@@ -177,7 +177,7 @@ Future<void> main() async {
     optionThemeTrueBlack: false,
     optionThemeColorScheme: 'aquaBlue',
     optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
-    optionImproveNonConfirmationBias: false,
+    optionNonConfirmationBiasMode: false,
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');

@@ -277,7 +277,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     final prefs = PrefService.of(context, listen: false);
-    final hideAuthorInformation = prefs.get(optionImproveNonConfirmationBias);
+    final hideAuthorInformation = prefs.get(optionNonConfirmationBiasMode);
     var numberFormat = NumberFormat.compact();
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;

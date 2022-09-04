@@ -1046,20 +1046,20 @@ class L10n {
     );
   }
 
-  /// `Activate non-confirmation-bias-mode`
+  /// `Activate non-confirmation bias mode`
   String get activate_non_confirmation_bias_mode_label {
     return Intl.message(
-      'Activate non-confirmation-bias-mode',
+      'Activate non-confirmation bias mode',
       name: 'activate_non_confirmation_bias_mode_label',
       desc: '',
       args: [],
     );
   }
 
-  /// `Don't show the author of the tweet on a post. Avoid confirmation bias based on authoritative arguments.`
+  /// `Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.`
   String get activate_non_confirmation_bias_mode_description {
     return Intl.message(
-      'Don\'t show the author of the tweet on a post. Avoid confirmation bias based on authoritative arguments.',
+      'Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.',
       name: 'activate_non_confirmation_bias_mode_description',
       desc: '',
       args: [],
