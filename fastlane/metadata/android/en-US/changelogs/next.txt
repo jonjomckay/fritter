@@ -12,3 +12,9 @@
 * Fixed keyboard opening when tapping a hashtag (#399)
 * Fixed images being cut off in the full-screen viewer (#390)
 * Fixed not being able to double-tap images to zoom (#430)
+* Fixed M3U8 playlists being downloaded instead of MP4s (#395)
+* Added support for ignoring individual updates (#446)
+* Fixed an error message popping up when regularly viewing the feed
+* Added support for video cards (#432)
+* Fixed pinned tweets not appearing on profiles (#410)
+* Added support for some Discord embed addresses (fx/vxtwitter.com) (#436)

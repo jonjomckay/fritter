@@ -14,7 +14,7 @@ import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
-import 'package:measured_size/measured_size.dart';
+import 'package:measure_size/measure_size.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -39,7 +39,7 @@ class _ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ScopedBuilder<ProfileModel, Object, User>.transition(
+      body: ScopedBuilder<ProfileModel, Object, Profile>.transition(
         store: context.read<ProfileModel>(),
         onError: (_, error) => FullPageErrorWidget(
           error: error,
@@ -48,16 +48,16 @@ class _ProfileScreen extends StatelessWidget {
           onRetry: () => context.read<ProfileModel>().loadProfile(username),
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
-        onState: (_, state) => ProfileScreenBody(user: state),
+        onState: (_, state) => ProfileScreenBody(profile: state),
       ),
     );
   }
 }
 
 class ProfileScreenBody extends StatefulWidget {
-  final User user;
+  final Profile profile;
 
-  const ProfileScreenBody({Key? key, required this.user}) : super(key: key);
+  const ProfileScreenBody({Key? key, required this.profile}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProfileScreenBodyState();
@@ -80,7 +80,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
     _tabController = TabController(length: 5, vsync: this);
 
-    var description = widget.user.description;
+    var description = widget.profile.user.description;
     if (description == null || description.isEmpty) {
       descriptionHeight = 0;
       descriptionResized = true;
@@ -130,7 +130,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   @override
   Widget build(BuildContext context) {
     // TODO: This shouldn't happen before the profile is loaded
-    if (widget.user.idStr == null) {
+    var user = widget.profile.user;
+    if (user.idStr == null) {
       return Container();
     }
 
@@ -141,12 +142,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var avatarHeight = 80;
 
     var profileImageTop = bannerHeight + 16 - 36 - mediaQuery.padding.top;
-    var profileStuffTop = bannerHeight;
+    var profileStuffTop = bannerHeight + 36;
 
     var theme = Theme.of(context);
 
-    var profile = widget.user;
-    var banner = profile.profileBannerUrl;
+    var banner = user.profileBannerUrl;
     var bannerImage = banner == null
         ? Container(height: bannerHeight, color: Colors.white)
         : ExtendedImage.network(banner, fit: BoxFit.fitWidth, height: bannerHeight);
@@ -165,9 +165,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   pinned: true,
                   snap: false,
                   forceElevated: innerBoxIsScrolled,
-                  actions: [
-                    FollowButton(user: profile)
-                  ],
                   bottom: TabBar(
                     controller: _tabController,
                     isScrollable: true,
@@ -233,22 +230,24 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                         children: [
                                           Row(
                                             children: [
-                                              Expanded(
-                                                child: Text(profile.name!,
+                                              Flexible(
+                                                child: Text(user.name!,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                                               ),
-                                              if (profile.verified ?? false) const SizedBox(width: 6),
-                                              if (profile.verified ?? false)
+                                              if (user.verified ?? false) const SizedBox(width: 6),
+                                              if (user.verified ?? false)
                                                 const Icon(Icons.verified, size: 24, color: Colors.blue)
                                             ],
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(bottom: 8),
-                                            child: Text('@${(profile.screenName!)}',
+                                            child: Text('@${(user.screenName!)}',
                                                 style: const TextStyle(fontSize: 14, color: Colors.white70)),
                                           ),
-                                          if (profile.description != null && profile.description!.isNotEmpty)
-                                            MeasuredSize(
+                                          if (user.description != null && user.description!.isNotEmpty)
+                                            MeasureSize(
                                               onChange: (size) {
                                                 setState(() {
                                                   descriptionHeight = size.height;
@@ -261,9 +260,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                       maxLines: 3,
                                                       text: TextSpan(
                                                           style: const TextStyle(height: 1.4),
-                                                          children: _addLinksToText(context, profile.description!)))),
+                                                          children: _addLinksToText(context, user.description!)))),
                                             ),
-                                          MeasuredSize(
+                                          MeasureSize(
                                             onChange: (size) {
                                               setState(() {
                                                 metadataHeight = size.height;
@@ -274,7 +273,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
-                                                  if (profile.location != null && profile.location!.isNotEmpty)
+                                                  if (user.location != null && user.location!.isNotEmpty)
                                                     Padding(
                                                       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
@@ -282,11 +281,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         children: [
                                                           const Icon(Icons.place, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
-                                                          Text(profile.location!, style: const TextStyle(fontSize: 13)),
+                                                          Text(user.location!, style: const TextStyle(fontSize: 13)),
                                                         ],
                                                       ),
                                                     ),
-                                                  if (profile.url != null && profile.url!.isNotEmpty)
+                                                  if (user.url != null && user.url!.isNotEmpty)
                                                     Padding(
                                                       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
@@ -295,8 +294,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const Icon(Icons.link, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
                                                           Builder(builder: (context) {
-                                                            var url = profile.entities?.url?.urls
-                                                                ?.firstWhere((element) => element.url == profile.url);
+                                                            var url = user.entities?.url?.urls
+                                                                ?.firstWhere((element) => element.url == user.url);
 
                                                           if (url == null) {
                                                             return Container();
@@ -310,7 +309,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         }),
                                                       ],
                                                     )),
-                                                  if (profile.createdAt != null)
+                                                  if (user.createdAt != null)
                                                     Padding(
                                                       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
                                                       child: Row(
@@ -319,7 +318,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const Icon(Icons.calendar_today, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
                                                           Text(L10n.of(context)
-                                                              .joined(DateFormat('MMMM yyyy').format(profile.createdAt!)),
+                                                              .joined(DateFormat('MMMM yyyy').format(user.createdAt!)),
                                                               style: const TextStyle(fontSize: 13)
                                                           ),
                                                         ],
@@ -336,11 +335,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             ),
                             Container(
                               alignment: Alignment.topRight,
+                              child: FollowButton(user: user),
+                              margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
+                            ),
+                            Container(
+                              alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Colors.white,
-                                child: UserAvatar(uri: profile.profileImageUrlHttps, size: 96),
+                                child: UserAvatar(uri: user.profileImageUrlHttps, size: 96),
                               ),
                             )
                           ]),
@@ -352,11 +356,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
             controller: _tabController,
             physics: const LessSensitiveScrollPhysics(),
             children: [
-              ProfileTweets(user: profile, type: 'profile', includeReplies: false),
-              ProfileTweets(user: profile, type: 'profile', includeReplies: true),
-              ProfileTweets(user: profile, type: 'media', includeReplies: false),
-              ProfileFollows(user: profile, type: 'following'),
-              ProfileFollows(user: profile, type: 'followers'),
+              ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
+              ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
+              ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
+              ProfileFollows(user: user, type: 'following'),
+              ProfileFollows(user: user, type: 'followers'),
             ],
           ),
         ),

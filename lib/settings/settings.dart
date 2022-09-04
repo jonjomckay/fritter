@@ -43,11 +43,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ScaffoldWithBottomNavigation(
       selectedPage: 0,
       pages: [
-        NavigationPage('general', L10n.current.general, Icons.settings, const SettingsGeneralFragment()),
-        NavigationPage('theme', L10n.current.theme, Icons.format_paint, const SettingsThemeFragment()),
-        NavigationPage('data', L10n.current.data, Icons.storage, SettingsDataFragment(legacyExportPath: _legacyExportPath)),
-        NavigationPage('about', L10n.current.about, Icons.help, SettingsAboutFragment(appVersion: appVersion)),
-      ]
+        NavigationPage('general', L10n.current.general, Icons.settings),
+        NavigationPage('theme', L10n.current.theme, Icons.format_paint),
+        NavigationPage('data', L10n.current.data, Icons.storage),
+        NavigationPage('about', L10n.current.about, Icons.help),
+      ],
+      builder: (scrollController) {
+        return [
+          SettingsGeneralFragment(scrollController: scrollController),
+          SettingsThemeFragment(scrollController: scrollController),
+          SettingsDataFragment(scrollController: scrollController, legacyExportPath: _legacyExportPath),
+          SettingsAboutFragment(scrollController: scrollController, appVersion: appVersion)
+        ];
+      },
     );
   }
 }

@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:fritter/generated/l10n.dart';
 
 class SubscriptionUsers extends StatefulWidget {
-  const SubscriptionUsers({Key? key}) : super(key: key);
+  final ScrollController scrollController;
+
+  const SubscriptionUsers({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   State<SubscriptionUsers> createState() => _SubscriptionUsersState();
@@ -55,6 +57,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
         }
 
         return ListView.builder(
+          controller: widget.scrollController,
           padding: const EdgeInsets.symmetric(vertical: 8),
           itemCount: state.length,
           itemBuilder: (context, i) {
