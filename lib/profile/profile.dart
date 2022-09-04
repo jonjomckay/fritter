@@ -387,7 +387,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
             ];
           },
           body: ChangeNotifierProvider(
-            create: (context) => ProfileState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+            create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
             child: TabBarView(
               controller: _tabController,
               physics: const LessSensitiveScrollPhysics(),
@@ -419,10 +419,10 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   }
 }
 
-class ProfileState extends ChangeNotifier {
+class TweetContextState extends ChangeNotifier {
   bool hideSensitive;
 
-  ProfileState(this.hideSensitive);
+  TweetContextState(this.hideSensitive);
 
   void setHideSensitive(bool value) {
     hideSensitive = value;

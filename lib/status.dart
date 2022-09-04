@@ -1,10 +1,14 @@
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pref/pref.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class StatusScreenArguments {
@@ -98,41 +102,44 @@ class _StatusScreenState extends State<_StatusScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: PagedListView<String?, TweetChain>(
-        padding: EdgeInsets.zero,
-        pagingController: _pagingController,
-        scrollController: _scrollController,
-        addAutomaticKeepAlives: false,
-        shrinkWrap: true,
-        builderDelegate: PagedChildBuilderDelegate(
-          itemBuilder: (context, chain, index) {
-            return AutoScrollTag(
-              key: ValueKey(chain.id),
-              controller: _scrollController,
-              index: index,
-              highlightColor: Colors.white.withOpacity(1),
-              child: TweetConversation(id: chain.id, tweets: chain.tweets, username: null, isPinned: chain.isPinned),
-            );
-          },
-          firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-            error: _pagingController.error[0],
-            stackTrace: _pagingController.error[1],
-            prefix: L10n.of(context).unable_to_load_the_tweet,
-            onRetry: () => _loadTweet(_pagingController.firstPageKey),
+      body: ChangeNotifierProvider(
+        create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+        child: PagedListView<String?, TweetChain>(
+          padding: EdgeInsets.zero,
+          pagingController: _pagingController,
+          scrollController: _scrollController,
+          addAutomaticKeepAlives: false,
+          shrinkWrap: true,
+          builderDelegate: PagedChildBuilderDelegate(
+            itemBuilder: (context, chain, index) {
+              return AutoScrollTag(
+                key: ValueKey(chain.id),
+                controller: _scrollController,
+                index: index,
+                highlightColor: Colors.white.withOpacity(1),
+                child: TweetConversation(id: chain.id, tweets: chain.tweets, username: null, isPinned: chain.isPinned),
+              );
+            },
+            firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+              error: _pagingController.error[0],
+              stackTrace: _pagingController.error[1],
+              prefix: L10n.of(context).unable_to_load_the_tweet,
+              onRetry: () => _loadTweet(_pagingController.firstPageKey),
+            ),
+            newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+              error: _pagingController.error[0],
+              stackTrace: _pagingController.error[1],
+              prefix: L10n.of(context).unable_to_load_the_next_page_of_replies,
+              onRetry: () => _loadTweet(_pagingController.nextPageKey),
+            ),
+            noItemsFoundIndicatorBuilder: (context) {
+              return Center(
+                child: Text(
+                  L10n.of(context).could_not_find_any_tweets_by_this_user,
+                ),
+              );
+            },
           ),
-          newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-            error: _pagingController.error[0],
-            stackTrace: _pagingController.error[1],
-            prefix: L10n.of(context).unable_to_load_the_next_page_of_replies,
-            onRetry: () => _loadTweet(_pagingController.nextPageKey),
-          ),
-          noItemsFoundIndicatorBuilder: (context) {
-            return Center(
-              child: Text(
-                L10n.of(context).could_not_find_any_tweets_by_this_user,
-              ),
-            );
-          },
         ),
       ),
     );

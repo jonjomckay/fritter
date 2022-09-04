@@ -135,7 +135,7 @@ class _TweetMediaState extends State<TweetMedia> {
     var largestAspectRatio =
         widget.media.map((e) => ((e.sizes!.large!.w) ?? 1) / ((e.sizes!.large!.h) ?? 1)).reduce(math.max);
 
-    return Consumer<ProfileState>(builder: (context, model, child) {
+    return Consumer<TweetContextState>(builder: (context, model, child) {
       if (model.hideSensitive && (widget.sensitive ?? false)) {
         return Card(
           child: Center(

@@ -67,7 +67,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProfileState>(builder: (context, model, child) {
+    return Consumer<TweetContextState>(builder: (context, model, child) {
       if (model.hideSensitive && (widget.user.possiblySensitive ?? false)) {
         return EmojiErrorWidget(
           emoji: '🍆🙈🍆',
