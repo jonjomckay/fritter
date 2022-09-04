@@ -109,20 +109,6 @@ class _TweetVideoState extends State<TweetVideo> {
     });
   }
 
-  Widget video() {
-    return VisibilityDetector(
-      onVisibilityChanged: (visbilityInfo) {
-        if (visbilityInfo.visibleFraction == 0 && !_chewieController!.isFullScreen) {
-          _chewieController!.pause();
-        }
-      },
-      key: UniqueKey(),
-      child: Chewie(
-        controller: _chewieController!,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: This is a bit flickery, but will do for now
