@@ -40,6 +40,7 @@ import 'package:package_info/package_info.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -53,22 +54,36 @@ Future checkForUpdates() async {
     if (response.statusCode == 200) {
       var package = await PackageInfo.fromPlatform();
       var result = jsonDecode(response.body);
+      var prefs = await SharedPreferences.getInstance();
 
       var flavor = getFlavor();
 
       var release = result['versions'][flavor]['stable'];
-      var latest = release['versionCode'];
+      var latest = release['versionCode'] as int;
 
       Logger.root.info('The latest version is $latest, and we are on ${package.buildNumber}');
 
-      if (int.parse(package.buildNumber) < latest) {
-        var details = const NotificationDetails(
-            android: AndroidNotificationDetails('updates', 'Updates',
-                channelDescription: 'When a new app update is available',
-                importance: Importance.max,
-                largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-                priority: Priority.high,
-                showWhen: false));
+      if (int.parse(package.buildNumber) > latest) {
+        var ignoredKey = 'updates.ignore.$latest';
+
+        // If the user wants to ignore this version, do so
+        var ignored = prefs.getBool(ignoredKey) ?? false;
+        if (ignored) {
+          log('Ignoring update to $latest');
+          return;
+        }
+
+        var details = NotificationDetails(
+            android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
+              importance: Importance.max,
+              largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+              priority: Priority.high,
+              showWhen: false,
+              actions: [
+                AndroidNotificationAction(ignoredKey, 'Ignore this version')
+              ]
+            )
+        );
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
@@ -130,6 +145,15 @@ setTimeagoLocales() {
   timeago.setLocaleMessages('zh', timeago.ZhMessages());
 }
 
+Future<void> handleNotificationCallback(NotificationResponse response) async {
+  var actionId = response.actionId;
+  if (actionId != null && actionId.startsWith('updates.ignore.')) {
+    log('Setting $actionId');
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(actionId, true);
+  }
+}
+
 Future<void> main() async {
   if (Platform.isLinux) {
     sqfliteFfiInit();
@@ -154,6 +178,7 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
+    optionThemeColorScheme: 'aquaBlue',
     optionUserTrendsLocations: jsonEncode({
       'active': {'name': 'Worldwide', 'woeid': 1},
       'locations': [
@@ -208,7 +233,8 @@ Future<void> main() async {
           const InitializationSettings settings =
               InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
-          await notifications.initialize(settings, onSelectNotification: (payload) async {
+          await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback, onDidReceiveNotificationResponse: (response) async {
+            var payload = response.payload;
             if (payload != null && payload.startsWith('https://')) {
               await openUri(payload);
             }
@@ -275,6 +301,7 @@ class _MyAppState extends State<MyApp> {
 
   String _themeMode = 'system';
   bool _trueBlack = false;
+  FlexScheme _colorScheme = FlexScheme.aquaBlue;
   Locale? _locale;
 
   @override
@@ -296,11 +323,16 @@ class _MyAppState extends State<MyApp> {
       }
     }
 
+    void setColorScheme(String colorSchemeName) {
+      _colorScheme = FlexScheme.values.byName(colorSchemeName);
+    }
+
     // Set any already-enabled preferences
     setState(() {
       setLocale(prefService.get<String>(optionLocale));
       _themeMode = prefService.get(optionThemeMode);
       _trueBlack = prefService.get(optionThemeTrueBlack);
+      setColorScheme(prefService.get(optionThemeColorScheme));
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
@@ -323,6 +355,12 @@ class _MyAppState extends State<MyApp> {
     prefService.addKeyListener(optionThemeMode, () {
       setState(() {
         _themeMode = prefService.get(optionThemeMode);
+      });
+    });
+
+    prefService.addKeyListener(optionThemeColorScheme, () {
+      setState(() {
+        setColorScheme(prefService.get(optionThemeColorScheme));
       });
     });
   }
@@ -394,8 +432,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
-      theme: FlexThemeData.light(
-        scheme: FlexScheme.aquaBlue,
+      theme: FlexThemeData.light(scheme: _colorScheme,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -408,9 +445,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         appBarStyle: FlexAppBarStyle.primary,
       ),
-      darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.aquaBlue,
-        darkIsTrueBlack: _trueBlack,
+      darkTheme: FlexThemeData.dark(scheme: _colorScheme, darkIsTrueBlack: _trueBlack,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -421,7 +456,7 @@ class _MyAppState extends State<MyApp> {
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        appBarStyle: FlexAppBarStyle.primary,
+        appBarStyle: _trueBlack ? FlexAppBarStyle.surface : FlexAppBarStyle.primary,
       ),
       themeMode: themeMode,
       initialRoute: '/',

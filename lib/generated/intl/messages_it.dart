@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Indietro"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter ha invalidato il nostro token di accesso. Prova a riaprire Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Tema blu basato sui colori di Twitter"),
@@ -166,6 +168,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Seguaci"),
         "following": MessageLookupByLibrary.simpleMessage("Seguiti"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "Twitter dice che l\'accesso a questo è vietato"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter Blu"),
         "general": MessageLookupByLibrary.simpleMessage("Generale"),
@@ -236,6 +240,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ops! Qualcosa è andato storto 🥲"),
         "open_app_settings":
             MessageLookupByLibrary.simpleMessage("Apri le impostazioni app"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter dice che la pagina non esiste, ma potrebbe non essere vero"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "Permesso non concesso. Si prega di riprovare dopo la concessione!"),
         "pick_a_color":
@@ -333,7 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Ci ha messo troppo tempo per caricare. Si prega di controllare la connessione di rete!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
-            "Questo tweet non è disponibile"),
+            "Questo tweet non è disponibile. Probabilmente è stato cancellato."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -399,6 +405,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile caricare i tweet per il feed"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Impossibile aggiornare le iscrizioni"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile eseguire le migrazioni del database"),

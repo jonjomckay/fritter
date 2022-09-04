@@ -4,16 +4,21 @@ import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TweetVideo extends StatefulWidget {
+  final String username;
   final bool loop;
   final Media media;
 
-  const TweetVideo({Key? key, required this.loop, required this.media}) : super(key: key);
+  const TweetVideo({Key? key, required this.username, required this.loop, required this.media}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -30,28 +35,48 @@ class _TweetVideoState extends State<TweetVideo> {
     super.initState();
   }
 
-  void _loadVideo() {
-    var url = widget.media.videoInfo!.variants![0].url!;
-    _videoController = VideoPlayerController.network(url);
-
-    double aspectRatio = widget.media.videoInfo?.aspectRatio == null
+  double getAspectRatio() {
+    return widget.media.videoInfo?.aspectRatio == null
         ? _videoController!.value.aspectRatio
         : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
+  }
+
+  void _loadVideo() {
+    var variants = widget.media.videoInfo?.variants ?? [];
+    var url = variants[0].url!;
+    _videoController = VideoPlayerController.network(url);
 
     _chewieController = ChewieController(
-      aspectRatio: aspectRatio,
+      aspectRatio: getAspectRatio(),
       autoInitialize: true,
       autoPlay: true,
       allowMuting: true,
       allowedScreenSleep: false,
+      customControls: const FritterMaterialControls(),
       additionalOptions: (context) => [
         OptionItem(
           onTap: () async {
-            var fileName = path.basename(url);
+            // Find the MP4 video with the highest bitrate
+            var video = variants
+                .where((e) => e.bitrate != null)
+                .where((e) => e.url != null)
+                .where((e) => e.contentType == 'video/mp4')
+                .sorted((a, b) => a.bitrate!.compareTo(b.bitrate!))
+                .firstWhereOrNull((element) => element.url != null);
+
+            if (video == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(L10n.current.download_media_no_url),
+              ));
+              return;
+            }
+
+            var videoUri = Uri.parse(video.url!);
+            var fileName = '${widget.username}-${path.basename(videoUri.path)}';
 
             await downloadUriToPickedFile(
               context,
-              url,
+              videoUri,
               fileName,
               onError: (response) {
                 Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
@@ -64,6 +89,7 @@ class _TweetVideoState extends State<TweetVideo> {
                 ));
               },
               onStart: () {
+                Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(L10n.of(context).downloading_media),
                 ));
@@ -110,27 +136,30 @@ class _TweetVideoState extends State<TweetVideo> {
   @override
   Widget build(BuildContext context) {
     // TODO: This is a bit flickery, but will do for now
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 150),
-      child: _showVideo
-        ? Chewie(controller: _chewieController!)
-        : GestureDetector(
-            onTap: onTapPlay,
-            child: Stack(children: [
-              ExtendedImage.network(widget.media.mediaUrlHttps!),
-              Center(
-                child: CenterPlayButton(
-                  backgroundColor: Colors.black54,
-                  iconColor: Colors.white,
-                  isFinished: false,
-                  isPlaying: false,
-                  show: true,
-                  onPressed: onTapPlay,
-                ),
-              )
-            ]),
-          )
-        );
+    return AspectRatio(
+      aspectRatio: getAspectRatio(),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 150),
+        child: _showVideo
+          ? _Video(controller: _chewieController!)
+          : GestureDetector(
+              onTap: onTapPlay,
+              child: Stack(alignment: Alignment.center, children: [
+                ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
+                Center(
+                  child: CenterPlayButton(
+                    backgroundColor: Colors.black54,
+                    iconColor: Colors.white,
+                    isFinished: false,
+                    isPlaying: false,
+                    show: true,
+                    onPressed: onTapPlay,
+                  ),
+                )
+              ]),
+            )
+          ),
+    );
   }
 
   @override
@@ -139,5 +168,28 @@ class _TweetVideoState extends State<TweetVideo> {
     _videoController?.dispose();
     _chewieController?.dispose();
     super.dispose();
+  }
+}
+
+class _Video extends StatelessWidget {
+  final ChewieController controller;
+
+  const _Video({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (info) {
+        if (controller.hasListeners) {
+          if (info.visibleFraction == 0 && !controller.isFullScreen) {
+            controller.pause();
+          }
+        }
+      },
+      child: Chewie(
+        controller: controller,
+      ),
+    );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as p;
 
@@ -13,7 +13,8 @@ Future<String> getLegacyPath(String filename) async {
 
 Future<bool> isLegacyAndroid() async {
   var deviceInfo = await DeviceInfoPlugin().androidInfo;
-  if (deviceInfo.version.sdkInt < 19) {
+  var sdkVersion = deviceInfo.version.sdkInt;
+  if (sdkVersion != null && sdkVersion < 19) {
     return true;
   }
 

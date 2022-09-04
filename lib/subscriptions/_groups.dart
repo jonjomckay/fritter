@@ -16,7 +16,9 @@ import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionGroups extends StatefulWidget {
-  const SubscriptionGroups({Key? key}) : super(key: key);
+  final ScrollController scrollController;
+
+  const SubscriptionGroups({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   State<SubscriptionGroups> createState() => _SubscriptionGroupsState();
@@ -75,6 +77,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
       // TODO: Error
       onState: (_, state) {
         return GridView.builder(
+          controller: widget.scrollController,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 180,
               childAspectRatio: 200 / 150

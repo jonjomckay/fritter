@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_groups.dart';
 import 'package:fritter/home/_saved.dart';
@@ -8,15 +9,14 @@ import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/trends/trends.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:pref/pref.dart';
-import 'package:fritter/generated/l10n.dart';
+import 'package:scroll_bottom_navigation_bar/scroll_bottom_navigation_bar.dart';
 
 class NavigationPage {
   final String id;
   final String title;
   final IconData icon;
-  final Widget child;
 
-  NavigationPage(this.id, this.title, this.icon, this.child);
+  NavigationPage(this.id, this.title, this.icon);
 }
 
 List<Widget> createCommonAppBarActions(BuildContext context) {
@@ -34,16 +34,12 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
   ];
 }
 
-abstract class AppBarMixin {
-  AppBar getAppBar(BuildContext context);
-}
-
 final List<NavigationPage> homePages = [
-  NavigationPage('feed', L10n.current.feed, Icons.rss_feed, FeedScreen()),
-  NavigationPage('subscriptions', L10n.current.subscriptions, Icons.subscriptions, const SubscriptionsScreen()),
-  NavigationPage('groups', L10n.current.groups, Icons.group, const GroupsScreen()),
-  NavigationPage('trending', L10n.current.trending, Icons.trending_up, const TrendsScreen()),
-  NavigationPage('saved', L10n.current.saved, Icons.bookmark, const SavedScreen()),
+  NavigationPage('feed', L10n.current.feed, Icons.rss_feed),
+  NavigationPage('subscriptions', L10n.current.subscriptions, Icons.subscriptions),
+  NavigationPage('groups', L10n.current.groups, Icons.group),
+  NavigationPage('trending', L10n.current.trending, Icons.trending_up),
+  NavigationPage('saved', L10n.current.saved, Icons.bookmark),
 ];
 
 class HomeScreen extends StatelessWidget {
@@ -59,23 +55,47 @@ class HomeScreen extends StatelessWidget {
       selectedPage = homePages.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
     }
 
-    return ScaffoldWithBottomNavigation(pages: homePages, selectedPage: selectedPage);
+    return ScaffoldWithBottomNavigation(pages: homePages, selectedPage: selectedPage, builder: (scrollController) {
+      return [
+        ...homePages.map((e) {
+          switch (e.id) {
+            case 'feed':
+              return FeedScreen(scrollController: scrollController);
+            case 'subscriptions':
+              return SubscriptionsScreen(scrollController: scrollController);
+            case 'groups':
+              return GroupsScreen(scrollController: scrollController);
+            case 'trending':
+              return TrendsScreen(scrollController: scrollController);
+            case 'saved':
+              return SavedScreen(scrollController: scrollController);
+            default:
+            // TODO
+              return Container();
+          }
+        })
+      ];
+    });
   }
 }
 
 class ScaffoldWithBottomNavigation extends StatefulWidget {
   final List<NavigationPage> pages;
   final int selectedPage;
+  final List<Widget> Function(ScrollController scrollController) builder;
 
-  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.selectedPage}) : super(key: key);
+  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.selectedPage, required this.builder}) : super(key: key);
 
   @override
   State<ScaffoldWithBottomNavigation> createState() => _ScaffoldWithBottomNavigationState();
 }
 
 class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigation> {
+  final ScrollController scrollController = ScrollController();
+
   late PageController _pageController;
-  late int _selectedPage = 0;
+  late List<Widget> _children;
+  late int _selectedPage;
 
   @override
   void initState() {
@@ -83,17 +103,15 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
 
     _selectedPage = widget.selectedPage;
 
-    _pageController = PageController(initialPage: widget.selectedPage);
-    _pageController.addListener(() {
-      var page = _pageController.page;
-      if (page == null || page.round() == _selectedPage) {
-        return;
-      }
+    _pageController = PageController(initialPage: _selectedPage);
 
-      setState(() {
-        _selectedPage = page.round();
-      });
+    scrollController.bottomNavigationBar.setTab(_selectedPage);
+    scrollController.bottomNavigationBar.tabListener((index) {
+      _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
+      _selectedPage = index;
     });
+
+    _children = widget.builder(scrollController);
   }
 
   @override
@@ -104,31 +122,22 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Figure out how to do this properly, with the type system
-    var appBarMixin = (widget.pages[_selectedPage].child as AppBarMixin);
-
     return Scaffold(
-      appBar: appBarMixin.getAppBar(context),
       body: PageView(
         controller: _pageController,
         physics: const LessSensitiveScrollPhysics(),
-        children: widget.pages.map((e) => e.child).toList(),
+        onPageChanged: (page) => scrollController.bottomNavigationBar.setTab(page.round()),
+        children: _children,
       ),
-      bottomNavigationBar: AnimatedBuilder(
-        animation: _pageController,
-        builder: (context, child) => BottomNavigationBar(
-          currentIndex: _selectedPage,
-          showUnselectedLabels: true,
-          onTap: (index) {
-            _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
-          },
-          items: [
-            ...widget.pages.map((e) => BottomNavigationBarItem(
-                icon: Icon(e.icon),
-                label: e.title
-            ))
-          ],
-        ),
+      bottomNavigationBar: ScrollBottomNavigationBar(
+        controller: scrollController,
+        showUnselectedLabels: true,
+        items: [
+          ...widget.pages.map((e) => BottomNavigationBarItem(
+              icon: Icon(e.icon, size: 22),
+              label: e.title
+          ))
+        ],
       ),
     );
   }

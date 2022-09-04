@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m13(thisTweetUserName) => "${thisTweetUserName} a retweeté";
 
   static String m14(num, numFormatted) =>
-      "{num, plural, zero{pas de tweets} one{un tweet} two{deux tweets} few{${numFormatted} de tweets} many{${numFormatted} tweet} other{{numFormatted tweets}}";
+      "${Intl.plural(num, zero: 'no tweets', one: 'un tweet', two: 'deux tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
 
   static String m15(widgetPlaceName) =>
       "Impossible de charger les tendances pour ${widgetPlaceName}";
@@ -93,6 +93,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Retour"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter a invalidé le jeton d\'accès. Essayez de relancer Fritter !"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Thème bleu basé sur la palette de couleurs de Twitter"),
@@ -141,6 +143,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage(
                 "Enregistrer dans le répertoire"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Téléchargement impossible. Ce média pourrais être seulement disponible sous forme de flux, ce que Fritter ne sais pas encore télécharger."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Chemin de téléchargement"),
         "downloading_media":
@@ -170,6 +174,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Abonnés"),
         "following": MessageLookupByLibrary.simpleMessage("Abonnements"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "Twitter informe que l\'accès est interdit"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter bleu"),
         "general": MessageLookupByLibrary.simpleMessage("Général"),
@@ -203,6 +209,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "On dirait que vous avez déjà envoyé un ping récemment 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Langue"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Nécessite un redémarrage"),
         "large": MessageLookupByLibrary.simpleMessage("Grand"),
         "legacy_android_import": MessageLookupByLibrary.simpleMessage(
             "Importation depuis un appareil Android ancien"),
@@ -239,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Oups ! Quelque chose a mal tourné 🥲"),
         "open_app_settings": MessageLookupByLibrary.simpleMessage(
             "Ouvrir les paramètres de l\'appli"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter informe que la page n\'existe pas, ce qui ne peux ne pas être vrai"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "Autorisation non accordée. Veuillez réessayer après avoir accordé l\'autorisation !"),
         "pick_a_color":
@@ -269,7 +280,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "retry": MessageLookupByLibrary.simpleMessage("Répondre"),
         "save": MessageLookupByLibrary.simpleMessage("Enregistrer"),
         "save_bandwidth_using_smaller_images": MessageLookupByLibrary.simpleMessage(
-            "Économiser de la bande passante en utilisant des images plus petites"),
+            "Économiser de la bande passante en chargeant des images plus petites"),
         "saved": MessageLookupByLibrary.simpleMessage("Enregistré"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Saluer"),
         "say_hello_emoji":
@@ -293,7 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Partager le lien vers le tweet"),
         "should_check_for_updates_description":
             MessageLookupByLibrary.simpleMessage(
-                "Vérifier les mises à jour quand Fritter démarrer"),
+                "Vérifier les mises à jour quand Fritter démarre"),
         "should_check_for_updates_label":
             MessageLookupByLibrary.simpleMessage("Vérifier les mises à jour"),
         "small": MessageLookupByLibrary.simpleMessage("Petit"),
@@ -335,7 +346,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Le chargement est trop long. Veuillez vérifier votre connexion réseau !"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
-            "Ce tweet n’est pas disponible"),
+            "Ce tweet n’est pas disponible Il a probablement été supprimé."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -401,6 +412,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible de charger les tweets pour le fil d\'actualité"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Impossible de rafraîchir la liste des abonnements"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible d\'exécuter les migrations de la base de données"),

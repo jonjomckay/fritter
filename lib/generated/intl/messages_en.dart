@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "Joined ${date}";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'no votes', one: 'one vote', two: 'two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
+      "${Intl.plural(num, zero: 'No votes', one: 'One vote', two: 'Two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
   static String m9(errorMessage) =>
       "Please check your Internet connection.\n\n${errorMessage}";
@@ -101,7 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribute"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("Address copied to clipboard"),
+            MessageLookupByLibrary.simpleMessage("Copied address to clipboard"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Copied version to clipboard"),
         "could_not_contact_twitter":
@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Always ask"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Save to directory"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Unable to download. This media may only be available as a stream, which Fritter cannot yet download."),
         "download_path": MessageLookupByLibrary.simpleMessage("Download path"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Downloading media..."),
@@ -307,7 +309,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Subscriptions"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Subtitles"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Media saved."),
+            MessageLookupByLibrary.simpleMessage("Saved the media!"),
         "system": MessageLookupByLibrary.simpleMessage("System"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -323,6 +325,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "The tweet did not contain any text. This is unexpected"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Theme Mode"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "There were no trends returned. This is unexpected! Please report as a bug, if possible."),

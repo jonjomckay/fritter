@@ -12,8 +12,9 @@ class ProfileTweets extends StatefulWidget {
   final User user;
   final String type;
   final bool includeReplies;
+  final List<String> pinnedTweets;
 
-  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies})
+  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies, required this.pinnedTweets})
       : super(key: key);
 
   @override
@@ -43,7 +44,7 @@ class _ProfileTweetsState extends State<ProfileTweets> {
 
   Future _loadTweets(String? cursor) async {
     try {
-      var result = await Twitter.getTweets(widget.user.idStr!, widget.type,
+      var result = await Twitter.getTweets(widget.user.idStr!, widget.type, widget.pinnedTweets,
           cursor: cursor, count: _pageSize, includeReplies: widget.includeReplies);
 
       if (result.cursorBottom == _pagingController.nextPageKey) {

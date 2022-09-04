@@ -3,19 +3,12 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/trends/_list.dart';
 import 'package:fritter/trends/_settings.dart';
-
 import 'package:fritter/trends/_tabs.dart';
 
-class TrendsScreen extends StatelessWidget with AppBarMixin {
-  const TrendsScreen({Key? key}) : super(key: key);
+class TrendsScreen extends StatelessWidget {
+  final ScrollController scrollController;
 
-  @override
-  AppBar getAppBar(BuildContext context) {
-    return AppBar(
-      title: Text(L10n.current.trends),
-      actions: createCommonAppBarActions(context),
-    );
-  }
+  const TrendsScreen({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +19,9 @@ class TrendsScreen extends StatelessWidget with AppBarMixin {
         onPressed: () async => showDialog(
           context: context,
           builder: (context) => const TrendsSettings(),
-        ),
+        )
       ),
-      body: const TrendsList(),
+      body: TrendsList(scrollController: scrollController),
     );
   }
 }

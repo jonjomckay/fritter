@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -16,6 +16,7 @@ import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
+import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -41,10 +42,12 @@ class SettingLocale {
   }
 }
 
-class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
+class SettingsGeneralFragment extends StatelessWidget {
   static final log = Logger('SettingsGeneralFragment');
 
-  const SettingsGeneralFragment({Key? key}) : super(key: key);
+  final ScrollController scrollController;
+
+  const SettingsGeneralFragment({Key? key, required this.scrollController}) : super(key: key);
 
   Future<void> _sendPing(BuildContext context) async {
     var deviceInfo = DeviceInfoPlugin();
@@ -68,7 +71,7 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': info.supportedAbis,
-        'device': info.device,
+        'device': info.device ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'android',
@@ -80,11 +83,11 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': [],
-        'device': info.utsname.machine,
+        'device': info.utsname.machine ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'ios',
-        'system': info.systemVersion,
+        'system': info.systemVersion ?? 'unknown',
         'version': packageInfo.buildNumber,
       };
     }
@@ -181,88 +184,89 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
   }
 
   @override
-  AppBar getAppBar(BuildContext context) {
-    return AppBar(title: Text(L10n.current.general));
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: ListView(children: [
-        PrefButton(
-          title: Text(L10n.of(context).say_hello),
-          subtitle: Text(
-            L10n.of(context)
-                .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
-          ),
-          onTap: () => _sendPing(context),
-          child: Text(L10n.of(context).say_hello_emoji),
-        ),
-        PrefDropdown(
-            fullWidth: false,
-            title: Text(L10n.current.language),
-            subtitle: Text(L10n.current.language_subtitle),
-            pref: optionLocale,
-            items: [
-              DropdownMenuItem(value: optionLocaleDefault, child: Text(L10n.current.system)),
-              ...L10n.delegate.supportedLocales
-                  .map((e) => SettingLocale.fromLocale(e))
-                  .sorted((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()))
-                  .map((e) => DropdownMenuItem(value: e.code, child: Text(e.name)))
-            ]),
-        if (getFlavor() != 'play')
-          PrefSwitch(
-            title: Text(L10n.of(context).should_check_for_updates_label),
-            pref: optionShouldCheckForUpdates,
-            subtitle: Text(L10n.of(context).should_check_for_updates_description),
-          ),
-        PrefDropdown(
-            fullWidth: false,
-            title: Text(L10n.of(context).default_tab),
+    return Scaffold(
+      appBar: ScrollAppBar(
+        controller: scrollController,
+        title: Text(L10n.current.general)
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: ListView(controller: scrollController, children: [
+          PrefButton(
+            title: Text(L10n.of(context).say_hello),
             subtitle: Text(
-              L10n.of(context).which_tab_is_shown_when_the_app_opens,
+              L10n.of(context)
+                  .send_a_non_identifying_ping_to_let_me_know_you_are_using_fritter_and_to_help_future_development,
             ),
-            pref: optionHomeInitialTab,
-            items: homePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
-        PrefDropdown(
-            fullWidth: false,
-            title: Text(L10n.of(context).media_size),
-            subtitle: Text(
-              L10n.of(context).save_bandwidth_using_smaller_images,
-            ),
-            pref: optionMediaSize,
-            items: [
-              DropdownMenuItem(
-                value: 'disabled',
-                child: Text(L10n.of(context).disabled),
-              ),
-              DropdownMenuItem(
-                value: 'thumb',
-                child: Text(L10n.of(context).thumbnail),
-              ),
-              DropdownMenuItem(
-                value: 'small',
-                child: Text(L10n.of(context).small),
-              ),
-              DropdownMenuItem(
-                value: 'medium',
-                child: Text(L10n.of(context).medium),
-              ),
-              DropdownMenuItem(
-                value: 'large',
-                child: Text(L10n.of(context).large),
-              ),
-            ]),
-        const DownloadTypeSetting(),
-        PrefCheckbox(
-          title: Text(L10n.of(context).enable_sentry),
-          subtitle: Text(
-            L10n.of(context).whether_errors_should_be_reported_to_sentry,
+            onTap: () => _sendPing(context),
+            child: Text(L10n.of(context).say_hello_emoji),
           ),
-          pref: optionErrorsSentryEnabled,
-        ),
-      ]),
+          PrefDropdown(
+              fullWidth: false,
+              title: Text(L10n.current.language),
+              subtitle: Text(L10n.current.language_subtitle),
+              pref: optionLocale,
+              items: [
+                DropdownMenuItem(value: optionLocaleDefault, child: Text(L10n.current.system)),
+                ...L10n.delegate.supportedLocales
+                    .map((e) => SettingLocale.fromLocale(e))
+                    .sorted((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()))
+                    .map((e) => DropdownMenuItem(value: e.code, child: Text(e.name)))
+              ]),
+          if (getFlavor() != 'play')
+            PrefSwitch(
+              title: Text(L10n.of(context).should_check_for_updates_label),
+              pref: optionShouldCheckForUpdates,
+              subtitle: Text(L10n.of(context).should_check_for_updates_description),
+            ),
+          PrefDropdown(
+              fullWidth: false,
+              title: Text(L10n.of(context).default_tab),
+              subtitle: Text(
+                L10n.of(context).which_tab_is_shown_when_the_app_opens,
+              ),
+              pref: optionHomeInitialTab,
+              items: homePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
+          PrefDropdown(
+              fullWidth: false,
+              title: Text(L10n.of(context).media_size),
+              subtitle: Text(
+                L10n.of(context).save_bandwidth_using_smaller_images,
+              ),
+              pref: optionMediaSize,
+              items: [
+                DropdownMenuItem(
+                  value: 'disabled',
+                  child: Text(L10n.of(context).disabled),
+                ),
+                DropdownMenuItem(
+                  value: 'thumb',
+                  child: Text(L10n.of(context).thumbnail),
+                ),
+                DropdownMenuItem(
+                  value: 'small',
+                  child: Text(L10n.of(context).small),
+                ),
+                DropdownMenuItem(
+                  value: 'medium',
+                  child: Text(L10n.of(context).medium),
+                ),
+                DropdownMenuItem(
+                  value: 'large',
+                  child: Text(L10n.of(context).large),
+                ),
+              ]),
+          const DownloadTypeSetting(),
+          PrefCheckbox(
+            title: Text(L10n.of(context).enable_sentry),
+            subtitle: Text(
+              L10n.of(context).whether_errors_should_be_reported_to_sentry,
+            ),
+            pref: optionErrorsSentryEnabled,
+          ),
+        ]),
+      ),
     );
   }
 }
@@ -277,6 +281,8 @@ class DownloadTypeSetting extends StatefulWidget {
 class DownloadTypeSettingState extends State<DownloadTypeSetting> {
   @override
   Widget build(BuildContext context) {
+    var downloadPath = PrefService.of(context).get<String>(optionDownloadPath) ?? '';
+
     return Column(
       children: [
         PrefDropdown(
@@ -299,7 +305,11 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
               var storagePermission = await Permission.storage.request();
               if (storagePermission.isGranted) {
                 String? directoryPath = await FilePicker.platform.getDirectoryPath();
+                if (directoryPath == null) {
+                  return;
+                }
 
+                // TODO: Gross. Figure out how to re-render automatically when the preference changes
                 setState(() {
                   PrefService.of(context).set(optionDownloadPath, directoryPath);
                 });
@@ -316,9 +326,9 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
             },
             title: Text(L10n.current.download_path),
             subtitle: Text(
-              PrefService.of(context).get(optionDownloadPath) == ''
+              downloadPath.isEmpty
                   ? L10n.current.not_set
-                  : PrefService.of(context).get(optionDownloadPath),
+                  : downloadPath,
             ),
             child: Text(L10n.current.choose),
           )
