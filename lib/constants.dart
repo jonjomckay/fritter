@@ -26,7 +26,7 @@ const optionThemeMode = 'theme.mode';
 const optionThemeTrueBlack = 'theme.true_black';
 const optionThemeColorScheme = 'theme.color_scheme';
 
-const optionTrendsLocation = 'trends.location';
+const optionUserTrendsLocations = 'trends.locations';
 
 const routeGroup = '/group';
 const routeProfile = '/profile';

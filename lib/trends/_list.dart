@@ -24,7 +24,7 @@ class _TrendsListState extends State<TrendsList> {
   void initState() {
     super.initState();
 
-    context.read<TrendsModel>().loadTrends();
+    //context.read<TrendsModel>().loadTrends();
   }
 
   @override
@@ -33,15 +33,14 @@ class _TrendsListState extends State<TrendsList> {
 
     return ScopedBuilder<TrendsModel, Object, List<Trends>>.transition(
       store: model,
-      onError: (context, e) => TripleBuilder<TrendLocationModel, Object, TrendLocation>(
-        store: context.read<TrendLocationModel>(),
+      onError: (context, e) => TripleBuilder<UserTrendLocationModel, Object, UserTrendLocations>(
+        store: context.read<UserTrendLocationModel>(),
         builder: (context, triple) {
           return FullPageErrorWidget(
             error: e,
             stackTrace: null,
-            prefix: L10n.of(context).unable_to_load_the_trends_for_widget_place_name(
-              triple.state.name!,
-            ),
+            prefix: L10n.of(context).unable_to_load_the_trends_for_widget_place_name(""),
+            // triple.state.name!,
             onRetry: () => model.loadTrends(),
           );
         },
@@ -71,17 +70,17 @@ class _TrendsListState extends State<TrendsList> {
             var trend = trends[index];
 
             return ListTile(
-              dense: true,
-              leading: Text('${++index}'),
-              title: Text(trend.name!),
-              subtitle: trend.tweetVolume == null
-                  ? null
-                  : Text(
-                L10n.of(context).tweets_number(
-                  trend.tweetVolume!,
-                  numberFormat.format(trend.tweetVolume),
-                ),
-              ),
+                dense: true,
+                leading: Text('${++index}'),
+                title: Text(trend.name!),
+                subtitle: trend.tweetVolume == null
+                    ? null
+                    : Text(
+                        L10n.of(context).tweets_number(
+                          trend.tweetVolume!,
+                          numberFormat.format(trend.tweetVolume),
+                        ),
+                      ),
                 onTap: () => Navigator.pushNamed(context, routeSearch,
                     arguments:
                         SearchArguments(1, focusInputOnOpen: false, query: Uri.decodeQueryComponent(trend.query!))));
