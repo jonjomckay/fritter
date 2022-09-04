@@ -273,6 +273,40 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
+                                                  if (user.friendsCount != null)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.person, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text.rich(TextSpan(
+                                                              children: [
+                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                              ]
+                                                          )),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  if (user.followersCount != null)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.person, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text.rich(TextSpan(
+                                                              children: [
+                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                              ]
+                                                          )),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   if (user.location != null && user.location!.isNotEmpty)
                                                     Padding(
                                                       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
