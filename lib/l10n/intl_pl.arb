@@ -430,5 +430,7 @@
   "language_subtitle": "Wymaga ponownego uruchomienia",
   "@language_subtitle": {},
   "download_media_no_url": "Nie można pobrać. Te multimedia mogą być dostępne tylko jako strumień, którego Fritter jeszcze nie obsługuje.",
-  "@download_media_no_url": {}
+  "@download_media_no_url": {},
+  "hide_sensitive_tweets": "Ukrywaj wrażliwe tweety",
+  "whether_to_hide_tweets_marked_as_sensitive": "Ukrywaj tweety oznaczone jako wrażliwe"
 }
