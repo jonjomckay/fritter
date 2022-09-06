@@ -432,7 +432,7 @@
   "download_media_no_url": "Nie można pobrać. Te multimedia mogą być dostępne tylko jako strumień, którego Fritter jeszcze nie obsługuje.",
   "@download_media_no_url": {},
   "hide_sensitive_tweets": "Ukrywaj wrażliwe tweety",
-  "whether_to_hide_tweets_marked_as_sensitive": "Ukrywaj tweety oznaczone jako wrażliwe"
+  "whether_to_hide_tweets_marked_as_sensitive": "Ukrywaj tweety oznaczone jako wrażliwe",
   "yes_please": "Tak, proszę",
   "@yes_please": {},
   "possibly_sensitive": "Potencjalnie wrażliwy",
