@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "Dołączył(a) ${date}";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'brak głosów', one: '1 głos', two: '2 głosy', few: '${numFormatted} głosy', many: '${numFormatted} głosów', other: '${numFormatted} głosów')}";
+      "${Intl.plural(num, zero: 'Brak głosów', one: '1 głos', two: '2 głosy', few: '${numFormatted} głosy', many: '${numFormatted} głosów', other: '${numFormatted} głosów')}";
 
   static String m9(errorMessage) =>
       "Sprawdź swoje połączenie internetowe.\n\n${errorMessage}";
@@ -264,6 +264,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Pamiętaj, że metoda, której używa Fritter do importowania subskrypcji, jest mocno ograniczona przez Twittera, więc może się to nie udać, jeśli masz dużo obserwowanych kont."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potencjalnie wrażliwy"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Ten profil może zawierać potencjalnie wrażliwe obrazy, język lub inne treści. Czy nadal chcesz go wyświetlić?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Ten tweet zawiera potencjalnie wrażliwe treści. Czy chcesz go wyświetlić?"),
         "prefix": MessageLookupByLibrary.simpleMessage("prefiks"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Profil prywatny"),
@@ -318,7 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Subskrypcje"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Napisy"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Zapisano multimedia"),
+            MessageLookupByLibrary.simpleMessage("Zapisano multimedia!"),
         "system": MessageLookupByLibrary.simpleMessage("Systemowy"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -334,6 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tweet nie zawierał żadnego tekstu. To nieoczekiwane"),
         "theme": MessageLookupByLibrary.simpleMessage("Motyw"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Tryb motywu"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Nie zwrócono żadnych trendów. To nieoczekiwane! Jeśli to możliwe, zgłoś błąd."),
@@ -451,6 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Czy chcesz włączyć automatyczne raportowanie błędów?"),
         "yes": MessageLookupByLibrary.simpleMessage("Tak"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Tak, proszę"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Nie zapisałeś(-aś) jeszcze żadnych tweetów!"),
@@ -462,7 +470,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Na Twoim urządzeniu jest wersja Androida starsza niż KitKat (4.4), więc dane można eksportować tylko do:"),
         "your_profile_must_be_public_otherwise_the_import_will_not_work":
             MessageLookupByLibrary.simpleMessage(
-                "Twój profil musi być publiczny, w przeciwnym razie import nie zadziała"),
+                "Profil musi być publiczny, inaczej import nie zadziała"),
         "your_report_will_be_sent_to_fritter_sentry_project":
             MessageLookupByLibrary.simpleMessage(
                 "Twoje zgłoszenie zostanie wysłane do projektu Fritter na Sentry, a szczegóły dotyczące prywatności można znaleźć na:")

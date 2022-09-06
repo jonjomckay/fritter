@@ -100,7 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("اغلاق"),
         "contribute": MessageLookupByLibrary.simpleMessage("المساهمة"),
         "copied_address_to_clipboard":
-            MessageLookupByLibrary.simpleMessage("تم نسخ العنوان إلى الحافظة"),
+            MessageLookupByLibrary.simpleMessage("نسخ العنوان إلى الحافظة"),
         "copied_version_to_clipboard":
             MessageLookupByLibrary.simpleMessage("نُسخ الإصدار إلى الحافظة"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
@@ -256,6 +256,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "يرجى ملاحظة أن الطريقة التي يستخدمها Fritter لاستيراد الاشتراكات محدودة بشكل كبير من قبل Twitter ، لذلك قد يفشل هذا إذا كان لديك الكثير من الحسابات المتابعة."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("يحتمل أن تكون حساسة"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "قد يتضمن ملف التعريف هذا صورًا أو لغة أو محتوى آخر يحتمل أن يكون حساسًا. هل مازلت تريد مشاهدته؟"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "تحتوي هذه التغريدة على محتوى يحتمل أن يكون حساسا. هل ترغب في مشاهدته؟"),
         "prefix": MessageLookupByLibrary.simpleMessage("السابقة"),
         "private_profile": MessageLookupByLibrary.simpleMessage("ملف شخصي خاص"),
         "released_under_the_mit_license": MessageLookupByLibrary.simpleMessage(
@@ -308,7 +314,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("الإشتراكات"),
         "subtitles": MessageLookupByLibrary.simpleMessage("السطرجة"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("تم حفظ الوسائط."),
+            MessageLookupByLibrary.simpleMessage("تم حفظ الوسائط!"),
         "system": MessageLookupByLibrary.simpleMessage("النظام"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -324,6 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "التغريدة لا تحتوي على أي نص. هذا غير متوقع"),
         "theme": MessageLookupByLibrary.simpleMessage("السمة"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("وضع النسق"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "لم يتم إرجاع أي ترند. هذا غير متوقع! رجائاً أبلغ عن خطأ، إذا كان ممكناً."),
@@ -438,6 +445,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "هل تُحب أن تفعل مُبَلغ الأخطاء الآلي؟"),
         "yes": MessageLookupByLibrary.simpleMessage("نعم"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("نعم، من فضلك"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("لم تحفظ أي تغريدة حتى الآن!"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
