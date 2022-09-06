@@ -2276,6 +2276,26 @@ class L10n {
     );
   }
 
+  /// `Hide sensitive tweets`
+  String get hide_sensitive_tweets {
+    return Intl.message(
+      'Hide sensitive tweets',
+      name: 'hide_sensitive_tweets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whether to hide tweets marked as sensitive`
+  String get whether_to_hide_tweets_marked_as_sensitive {
+    return Intl.message(
+      'Whether to hide tweets marked as sensitive',
+      name: 'whether_to_hide_tweets_marked_as_sensitive',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Potentially sensitive`
   String get possibly_sensitive {
     return Intl.message(
