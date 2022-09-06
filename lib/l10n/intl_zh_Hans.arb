@@ -369,7 +369,7 @@
   "@are_you_sure_you_want_to_delete_the_subscription_group_name_of_group": {},
   "tweets_number": "{num, plural, zero{0 推文} one{1 推文} two{2 推文} few{{numFormatted} 推文} many{{numFormatted} 推文} other{{numFormatted}推文}}",
   "@tweets_number": {},
-  "successfully_saved_the_media": "已保存媒体文件。",
+  "successfully_saved_the_media": "已保存媒体文件！",
   "@successfully_saved_the_media": {},
   "sorry_the_replied_tweet_could_not_be_found": "对不起，没有找到回复的推文！",
   "@sorry_the_replied_tweet_could_not_be_found": {},
@@ -430,5 +430,15 @@
   "language_subtitle": "需要重启应用",
   "@language_subtitle": {},
   "download_media_no_url": "无法下载。 此媒体可能仅作为在线流提供，Fritter 尚无法下载。",
-  "@download_media_no_url": {}
+  "@download_media_no_url": {},
+  "theme_mode": "主题模式",
+  "@theme_mode": {},
+  "yes_please": "是，请让我看",
+  "@yes_please": {},
+  "possibly_sensitive": "潜在敏感",
+  "@possibly_sensitive": {},
+  "possibly_sensitive_tweet": "此推文包含潜在的敏感内容。 你想看吗？",
+  "@possibly_sensitive_tweet": {},
+  "possibly_sensitive_profile": "此个人资料可能包括潜在的敏感图像、语言或其他内容。 你还是想看吗？",
+  "@possibly_sensitive_profile": {}
 }
