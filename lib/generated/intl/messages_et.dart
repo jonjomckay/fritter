@@ -94,6 +94,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Tagasi"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter on meie juurdepääsutunnuse kehtetuks tunnistanud. Palun proovi uuesti avada Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Sinine värviteema, mille aluseks on Twitteri kujundus"),
@@ -168,6 +170,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Järgijad"),
         "following": MessageLookupByLibrary.simpleMessage("Järgitavad"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "Twitter ütleb, et juurdepääs sellele sisule on keelatud"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue":
             MessageLookupByLibrary.simpleMessage("Fritter\'i sinine"),
@@ -202,6 +206,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tundub, et sa oled endast meile hiljuti teada andnud 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Keel"),
+        "language_subtitle": MessageLookupByLibrary.simpleMessage(
+            "Eeldab rakenduse uuesti käivitamist"),
         "large": MessageLookupByLibrary.simpleMessage("Suured pildid"),
         "legacy_android_import": MessageLookupByLibrary.simpleMessage(
             "Import vanemate Androidi versioonide jaoks"),
@@ -240,6 +247,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Hopsti! Midagi läks nüüd viltu 🥲"),
         "open_app_settings":
             MessageLookupByLibrary.simpleMessage("Ava rakenduse seadistused"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter ütleb, et lehte pole olemas, kuid see ei pruugi tõsi olla"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "Õigusi pole. Palun proovi pärast loa andmist uuesti!"),
         "pick_a_color":
@@ -272,7 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("salvesta"),
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage(
-                "Kasutades väiksemaid pildifaile võid säästa ribalaiust"),
+                "Kasutades väiksemaid pildifaile säästad ribalaiust"),
         "saved": MessageLookupByLibrary.simpleMessage("Salvestatud"),
         "say_hello": MessageLookupByLibrary.simpleMessage("Ütle meile tere"),
         "say_hello_emoji":
@@ -338,8 +347,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage(
                 "Andmete laadimine kestab liiga kaua. Palun vaata, kas sinu internetiühendus toimib!"),
-        "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("See säuts pole leitav"),
+        "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
+            "See säuts pole leitav. Ilmselt on ta juba kustutatud."),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -407,6 +416,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Selle andmevoo säutsude laadimine ei õnnestu"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Tellimuste sisu ei saa hetkel laadida"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Fritteri andmebaaside versiooniuuendus ei õnnestu"),

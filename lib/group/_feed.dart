@@ -110,13 +110,13 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           .toList();
 
       if (result.isEmpty) {
-        _pagingController.appendLastPage([]);
+        mounted ? _pagingController.appendLastPage([]) : null;
       } else {
         // If this page is the same as the last page we received before, assume it's the last page
         if (result.last.cursorBottom == _pagingController.nextPageKey) {
-          _pagingController.appendLastPage([]);
+          mounted ? _pagingController.appendLastPage([]) : null;
         } else {
-          _pagingController.appendPage(threads, result.last.cursorBottom);
+          mounted ? _pagingController.appendPage(threads, result.last.cursorBottom) : null;
         }
       }
     } catch (e, stackTrace) {

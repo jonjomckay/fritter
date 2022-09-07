@@ -871,6 +871,16 @@ class L10n {
     );
   }
 
+  /// `Theme Mode`
+  String get theme_mode {
+    return Intl.message(
+      'Theme Mode',
+      name: 'theme_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `System`
   String get system {
     return Intl.message(
@@ -1136,10 +1146,10 @@ class L10n {
     );
   }
 
-  /// `Address copied to clipboard`
+  /// `Copied address to clipboard`
   String get copied_address_to_clipboard {
     return Intl.message(
-      'Address copied to clipboard',
+      'Copied address to clipboard',
       name: 'copied_address_to_clipboard',
       desc: '',
       args: [],
@@ -1633,13 +1643,13 @@ class L10n {
     );
   }
 
-  /// `{num, plural, zero{no votes} one{one vote} two{two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}`
+  /// `{num, plural, zero{No votes} one{One vote} two{Two votes} few{{numFormatted} votes} many{{numFormatted} vote} other{{numFormatted} votes}}`
   String numberFormat_format_total_votes(num num, Object numFormatted) {
     return Intl.plural(
       num,
-      zero: 'no votes',
-      one: 'one vote',
-      two: 'two votes',
+      zero: 'No votes',
+      one: 'One vote',
+      two: 'Two votes',
       few: '$numFormatted votes',
       many: '$numFormatted vote',
       other: '$numFormatted votes',
@@ -1682,10 +1692,20 @@ class L10n {
     );
   }
 
-  /// `Media saved.`
+  /// `Unable to download. This media may only be available as a stream, which Fritter cannot yet download.`
+  String get download_media_no_url {
+    return Intl.message(
+      'Unable to download. This media may only be available as a stream, which Fritter cannot yet download.',
+      name: 'download_media_no_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved the media!`
   String get successfully_saved_the_media {
     return Intl.message(
-      'Media saved.',
+      'Saved the media!',
       name: 'successfully_saved_the_media',
       desc: '',
       args: [],
@@ -2259,13 +2279,16 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
       Locale.fromSubtags(languageCode: 'de'),
       Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'et'),
+      Locale.fromSubtags(languageCode: 'eu'),
       Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'hi'),
       Locale.fromSubtags(languageCode: 'id'),
       Locale.fromSubtags(languageCode: 'it'),
       Locale.fromSubtags(languageCode: 'ja'),
       Locale.fromSubtags(languageCode: 'ko'),
       Locale.fromSubtags(languageCode: 'ml'),
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
+      Locale.fromSubtags(languageCode: 'nl'),
       Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
       Locale.fromSubtags(languageCode: 'ru'),

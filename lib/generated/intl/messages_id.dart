@@ -89,6 +89,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group":
             m0,
         "back": MessageLookupByLibrary.simpleMessage("Kembali"),
+        "bad_guest_token": MessageLookupByLibrary.simpleMessage(
+            "Twitter telah membatalkan token akses kami. Coba buka ulang Fritter!"),
         "blue_theme_based_on_the_twitter_color_scheme":
             MessageLookupByLibrary.simpleMessage(
                 "Tema biru berdasarkan pada skema warna Twitter"),
@@ -161,6 +163,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Pengikut"),
         "following": MessageLookupByLibrary.simpleMessage("Mengikuti"),
+        "forbidden": MessageLookupByLibrary.simpleMessage(
+            "Twitter mengatakan bahwa akses ke sini terlarang"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter biru"),
         "general": MessageLookupByLibrary.simpleMessage("Umum"),
@@ -194,6 +198,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Sepertinya Anda sudah mengirim ping baru-baru ini 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Bahasa"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Memerlukan pemulaian ulang"),
         "large": MessageLookupByLibrary.simpleMessage("Besar"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Impor Android Lawas"),
@@ -230,6 +237,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Aduh! Ada yang tidak beres 🥲"),
         "open_app_settings":
             MessageLookupByLibrary.simpleMessage("Buka pengaturan aplikasi"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitter mengatakan halaman ini tidak ada, tetapi mungkin itu tidak benar"),
         "permission_not_granted": MessageLookupByLibrary.simpleMessage(
             "Izin tidak diberikan. Coba lagi setelah memberikannya!"),
         "pick_a_color":
@@ -327,8 +336,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "this_took_too_long_to_load_please_check_your_network_connection":
             MessageLookupByLibrary.simpleMessage(
                 "Ini perlu waktu lama untuk memuat. Mohon periksa koneksi jaringan Anda!"),
-        "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("Cuitan ini tidak tersedia"),
+        "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
+            "Cuitan ini tidak tersedia. Mungkin sudah dihapus"),
         "this_tweet_user_name_retweeted": m13,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
@@ -369,6 +378,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_group_settings":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memuat pengaturan grup"),
+        "unable_to_load_the_list_of_follows":
+            MessageLookupByLibrary.simpleMessage(
+                "Tidak bisa memuat daftar pengikut"),
+        "unable_to_load_the_next_page_of_follows":
+            MessageLookupByLibrary.simpleMessage(
+                "Tidak bisa memuat halaman selanjutnya dari pengikut"),
         "unable_to_load_the_next_page_of_replies":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memuat halaman balasan selanjutnya"),
@@ -388,6 +403,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_tweets_for_the_feed":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memuat cuitan untuk umpan"),
+        "unable_to_refresh_the_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Tidak bisa menyegarkan langganan"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa menjalankan migrasi basis data"),

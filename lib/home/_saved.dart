@@ -58,7 +58,7 @@ class _SavedScreenState extends State<SavedScreen> {
             var item = data[index];
             var tweet = TweetWithCard.fromJson(jsonDecode(item.content));
 
-            return TweetTile(tweet: tweet, clickable: true);
+            return TweetTile(key: Key(tweet.idStr!), tweet: tweet, clickable: true);
           },
         );
       },

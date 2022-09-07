@@ -14,7 +14,7 @@ import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
-import 'package:measured_size/measured_size.dart';
+import 'package:measure_size/measure_size.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -141,7 +141,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     var avatarHeight = 80;
 
     var profileImageTop = bannerHeight + 16 - 36 - mediaQuery.padding.top;
-    var profileStuffTop = bannerHeight;
+    var profileStuffTop = bannerHeight + 36;
 
     var theme = Theme.of(context);
 
@@ -165,9 +165,6 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   pinned: true,
                   snap: false,
                   forceElevated: innerBoxIsScrolled,
-                  actions: [
-                    FollowButton(user: profile)
-                  ],
                   bottom: TabBar(
                     controller: _tabController,
                     isScrollable: true,
@@ -233,8 +230,10 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                         children: [
                                           Row(
                                             children: [
-                                              Expanded(
+                                              Flexible(
                                                 child: Text(profile.name!,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                                               ),
                                               if (profile.verified ?? false) const SizedBox(width: 6),
@@ -248,7 +247,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 style: const TextStyle(fontSize: 14, color: Colors.white70)),
                                           ),
                                           if (profile.description != null && profile.description!.isNotEmpty)
-                                            MeasuredSize(
+                                            MeasureSize(
                                               onChange: (size) {
                                                 setState(() {
                                                   descriptionHeight = size.height;
@@ -263,7 +262,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           style: const TextStyle(height: 1.4),
                                                           children: _addLinksToText(context, profile.description!)))),
                                             ),
-                                          MeasuredSize(
+                                          MeasureSize(
                                             onChange: (size) {
                                               setState(() {
                                                 metadataHeight = size.height;
@@ -336,6 +335,11 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             ),
                             Container(
                               alignment: Alignment.topRight,
+                              child: FollowButton(user: profile),
+                              margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
+                            ),
+                            Container(
+                              alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
                               child: CircleAvatar(
                                 radius: 50,

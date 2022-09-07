@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -68,7 +68,7 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': info.supportedAbis,
-        'device': info.device,
+        'device': info.device ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'android',
@@ -80,11 +80,11 @@ class SettingsGeneralFragment extends StatelessWidget with AppBarMixin {
 
       metadata = {
         'abis': [],
-        'device': info.utsname.machine,
+        'device': info.utsname.machine ?? 'unknown',
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'ios',
-        'system': info.systemVersion,
+        'system': info.systemVersion ?? 'unknown',
         'version': packageInfo.buildNumber,
       };
     }
@@ -277,6 +277,8 @@ class DownloadTypeSetting extends StatefulWidget {
 class DownloadTypeSettingState extends State<DownloadTypeSetting> {
   @override
   Widget build(BuildContext context) {
+    var downloadPath = PrefService.of(context).get<String>(optionDownloadPath) ?? '';
+
     return Column(
       children: [
         PrefDropdown(
@@ -299,7 +301,11 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
               var storagePermission = await Permission.storage.request();
               if (storagePermission.isGranted) {
                 String? directoryPath = await FilePicker.platform.getDirectoryPath();
+                if (directoryPath == null) {
+                  return;
+                }
 
+                // TODO: Gross. Figure out how to re-render automatically when the preference changes
                 setState(() {
                   PrefService.of(context).set(optionDownloadPath, directoryPath);
                 });
@@ -316,9 +322,9 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
             },
             title: Text(L10n.current.download_path),
             subtitle: Text(
-              PrefService.of(context).get(optionDownloadPath) == ''
+              downloadPath.isEmpty
                   ? L10n.current.not_set
-                  : PrefService.of(context).get(optionDownloadPath),
+                  : downloadPath,
             ),
             child: Text(L10n.current.choose),
           )
