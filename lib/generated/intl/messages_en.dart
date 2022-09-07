@@ -177,6 +177,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Hide sensitive tweets"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "If you have any feedback on this feature, please leave it on"),
@@ -256,6 +258,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Please note that the method Fritter uses to import subscriptions is heavily rate-limited by Twitter, so this may fail if you have a lot of followed accounts."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potentially sensitive"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "This tweet contains potentially sensitive content. Would you like to view it?"),
         "prefix": MessageLookupByLibrary.simpleMessage("prefix"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Private profile"),
@@ -433,6 +441,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Whether errors should be reported to Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Whether to hide tweets marked as sensitive"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Which tab is shown when the app opens"),
@@ -440,6 +451,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Would you like to enable automatic error reporting?"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Yes, please"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "You haven\'t saved any tweets yet!"),

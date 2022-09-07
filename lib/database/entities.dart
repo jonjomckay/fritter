@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:fritter/group/group_model.dart';
+import 'package:fritter/user.dart';
 
 mixin ToMappable {
   Map<String, dynamic> toMap();
@@ -66,8 +67,8 @@ class Subscription with ToMappable {
   @override
   int get hashCode => id.hashCode;
 
-  User toUser() {
-    return User.fromJson({
+  UserWithExtra toUser() {
+    return UserWithExtra.fromJson({
       'id_str': id,
       'screen_name': screenName,
       'name': name,

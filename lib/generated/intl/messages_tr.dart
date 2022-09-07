@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "${date} tarihinde katıldı";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'oy yok', one: 'one oy', two: '', few: '${numFormatted} oy', many: '${numFormatted} oy', other: '${numFormatted} oy')}";
+      "${Intl.plural(num, zero: 'Oy yok', one: 'Bir oy', two: 'İki oy', few: '${numFormatted} oy', many: '${numFormatted} oy', other: '${numFormatted} oy')}";
 
   static String m9(errorMessage) =>
       "Lütfen internet bağlantınızı kontrol edin.\n\n${errorMessage}";
@@ -262,6 +262,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Fritter\'ın abonelikleri içe aktarmak için kullandığı yöntemin Twitter tarafından yüksek oranda sınırlandırıldığını, bu nedenle çok sayıda takip ettiğiniz hesap varsa bunun başarısız olabileceğini lütfen unutmayın."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Hassas olabilir"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Bu profil hassas olabilecek görüntüler, dil veya başka içerikler içerebilir. Yine de görüntülemek istiyor musunuz?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Bu tweet olası hassas içerik barındırmaktadır. Görüntülemek ister misiniz?"),
         "prefix": MessageLookupByLibrary.simpleMessage("ön ek"),
         "private_profile": MessageLookupByLibrary.simpleMessage("Gizli profil"),
         "released_under_the_mit_license": MessageLookupByLibrary.simpleMessage(
@@ -315,7 +321,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Abonelikler"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Altyazılar"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Medya kaydedildi."),
+            MessageLookupByLibrary.simpleMessage("Medya kaydedildi!"),
         "system": MessageLookupByLibrary.simpleMessage("Sistem"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -331,6 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tweet\'te herhangi bir metin yoktu. Bu beklenmedik bir şey"),
         "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Tema Modu"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Geri dönen trend yoktu. Bu beklenmedik! Mümkünse lütfen bir hata olarak bildirin."),
@@ -445,6 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Otomatik hata bildirimini etkinleştirmek ister misiniz?"),
         "yes": MessageLookupByLibrary.simpleMessage("Evet"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Evet, lütfen"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("Henüz tweet kaydetmediniz!"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":

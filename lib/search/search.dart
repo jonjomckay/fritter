@@ -90,7 +90,7 @@ class _SearchScreen extends StatelessWidget {
                 ),
                 Expanded(
                     child: TabBarView(children: [
-                      TweetSearchResultList<SearchUsersModel, User>(
+                      TweetSearchResultList<SearchUsersModel, UserWithExtra>(
                           queryController: _queryController,
                           store: context.read<SearchUsersModel>(),
                           searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),

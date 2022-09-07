@@ -299,9 +299,9 @@
   "@unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode": {},
   "catastrophic_failure": "Feci arıza",
   "@catastrophic_failure": {},
-  "successfully_saved_the_media": "Medya kaydedildi.",
+  "successfully_saved_the_media": "Medya kaydedildi!",
   "@successfully_saved_the_media": {},
-  "numberFormat_format_total_votes": "{num, plural, zero{oy yok} one{one oy} two{} few{{numFormatted} oy} many{{numFormatted} oy} other{{numFormatted} oy}}",
+  "numberFormat_format_total_votes": "{num, plural, zero{Oy yok} one{Bir oy} two{İki oy} few{{numFormatted} oy} many{{numFormatted} oy} other{{numFormatted} oy}}",
   "@numberFormat_format_total_votes": {},
   "unknown": "Bilinmeyen",
   "@unknown": {},
@@ -430,5 +430,15 @@
   "language": "Dil",
   "@language": {},
   "download_media_no_url": "İndirilemiyor. Bu medya yalnızca Fritter'ın henüz indiremediği bir akış olarak mevcut olabilir.",
-  "@download_media_no_url": {}
+  "@download_media_no_url": {},
+  "theme_mode": "Tema Modu",
+  "@theme_mode": {},
+  "yes_please": "Evet, lütfen",
+  "@yes_please": {},
+  "possibly_sensitive_tweet": "Bu tweet olası hassas içerik barındırmaktadır. Görüntülemek ister misiniz?",
+  "@possibly_sensitive_tweet": {},
+  "possibly_sensitive": "Hassas olabilir",
+  "@possibly_sensitive": {},
+  "possibly_sensitive_profile": "Bu profil hassas olabilecek görüntüler, dil veya başka içerikler içerebilir. Yine de görüntülemek istiyor musunuz?",
+  "@possibly_sensitive_profile": {}
 }

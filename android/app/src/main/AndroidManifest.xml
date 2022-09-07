@@ -67,6 +67,19 @@
                     android:host="www.twitter.com"
                     android:scheme="https" />
 
+                <!-- Discord embedding websites -->
+                <data
+                    android:host="fxtwitter.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="vxtwitter.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="*vxtwitter.com"
+                    android:scheme="https" />
+
                 <!-- Nitter instances from https://github.com/zedeus/nitter/wiki/Instances -->
 
                 <data

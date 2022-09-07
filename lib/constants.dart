@@ -14,6 +14,8 @@ const optionDownloadPath = 'download.path';
 const optionDownloadTypeDirectory = 'directory';
 const optionDownloadTypeAsk = 'ask';
 
+const optionTweetsHideSensitive = 'tweets.hide_sensitive';
+
 const optionLocale = 'locale';
 const optionLocaleDefault = 'system';
 
@@ -26,7 +28,7 @@ const optionThemeMode = 'theme.mode';
 const optionThemeTrueBlack = 'theme.true_black';
 const optionThemeColorScheme = 'theme.color_scheme';
 
-const optionTrendsLocation = 'trends.location';
+const optionUserTrendsLocations = 'trends.locations';
 
 const routeGroup = '/group';
 const routeProfile = '/profile';

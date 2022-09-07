@@ -82,10 +82,13 @@ class EmojiErrorWidget extends FritterErrorWidget {
   final String message;
   final String errorMessage;
   final Function? onRetry;
+  String retryText = '';
 
-  const EmojiErrorWidget(
-      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry})
-      : super(key: key);
+  EmojiErrorWidget(
+      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry, String? retryText})
+      : super(key: key) {
+      this.retryText = retryText ?? L10n.current.retry;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,29 +109,32 @@ class EmojiErrorWidget extends FritterErrorWidget {
             child:
                 Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 12),
-            child: ElevatedButton(
-              child: Text(L10n.of(context).back),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-          if (onRetry != null)
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(
               margin: const EdgeInsets.only(top: 12),
-              child: AsyncButtonBuilder(
-                showError: false,
-                showSuccess: false,
-                builder: (context, child, callback, buttonState) {
-                  return ElevatedButton(
-                    onPressed: callback,
-                    child: child,
-                  );
-                },
-                child: Text(L10n.of(context).retry),
-                onPressed: () => onRetry(),
+              child: ElevatedButton(
+                child: Text(L10n.of(context).back),
+                onPressed: () => Navigator.pop(context),
               ),
-            )
+            ),
+            const SizedBox(width: 16),
+            if (onRetry != null)
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                child: AsyncButtonBuilder(
+                  showError: false,
+                  showSuccess: false,
+                  builder: (context, child, callback, buttonState) {
+                    return ElevatedButton(
+                      onPressed: callback,
+                      child: child,
+                    );
+                  },
+                  child: Text(retryText),
+                  onPressed: () => onRetry(),
+                ),
+              )
+          ])
         ],
       ),
     );

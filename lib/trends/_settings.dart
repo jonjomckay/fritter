@@ -42,7 +42,7 @@ class _TrendsSettingsState extends State<TrendsSettings> {
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) {
-          var place = TrendLocation.fromJson(jsonDecode(prefs.get(optionTrendsLocation)));
+          var place = UserTrendLocations.fromJson(jsonDecode(prefs.get(optionUserTrendsLocations))).active;
 
           var countries = state.sorted((a, b) => a.name!.compareTo(b.name!)).groupBy((e) => e.country);
 
@@ -58,29 +58,29 @@ class _TrendsSettingsState extends State<TrendsSettings> {
                 selected: place.woeid == item.woeid,
                 groupValue: place.woeid,
                 onChanged: (value) async {
-                  await context.read<TrendLocationModel>().setTrendLocation(item);
+                  await context.read<UserTrendLocationModel>().set(item);
                   Navigator.pop(context);
                 });
           }
 
           return SizedBox(
-              width: double.maxFinite,
-              child: ListView.builder(
-                itemCount: countries.length,
-                itemBuilder: (context, index) {
-                  var name = names[index]!;
-                  if (name == '') {
-                    // If there's no country name, assume it's "Worldwide"
-                    return createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
-                  }
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: countries.length,
+              itemBuilder: (context, index) {
+                var name = names[index]!;
+                if (name == '') {
+                  // If there's no country name, assume it's "Worldwide"
+                  return createLocationTile(TrendLocation.fromJson({'name': 'Worldwide', 'woeid': 1}));
+                }
 
-                  return ExpansionTile(
-                    title: Text(name),
-                    children: [...countries[name]!.map((item) => createLocationTile(item))],
-                  );
-                },
-              ));
-
+                return ExpansionTile(
+                  title: Text(name),
+                  children: [...countries[name]!.map((item) => createLocationTile(item))],
+                );
+              },
+            ),
+          );
         },
       ),
     );

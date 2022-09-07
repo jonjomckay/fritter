@@ -179,7 +179,13 @@ Future<void> main() async {
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
     optionThemeColorScheme: 'aquaBlue',
-    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
+    optionTweetsHideSensitive: false,
+    optionUserTrendsLocations: jsonEncode({
+      'active': {'name': 'Worldwide', 'woeid': 1},
+      'locations': [
+        {'name': 'Worldwide', 'woeid': 1}
+      ]
+    })
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -258,7 +264,7 @@ Future<void> main() async {
         var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
         await subscriptionsModel.reloadSubscriptions();
 
-        var trendLocationModel = TrendLocationModel(prefService);
+        var trendLocationModel = UserTrendLocationModel(prefService);
 
         runApp(PrefService(
             service: prefService,
@@ -331,8 +337,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
-      setState(() {
-      });
+      setState(() {});
     });
 
     prefService.addKeyListener(optionLocale, () {
@@ -550,8 +555,7 @@ class _DefaultPageState extends State<DefaultPage> {
       return ScaffoldErrorWidget(
           error: _migrationError,
           stackTrace: _migrationStackTrace,
-          prefix: L10n.of(context).unable_to_run_the_database_migrations
-      );
+          prefix: L10n.of(context).unable_to_run_the_database_migrations);
     }
 
     return const HomeScreen();
