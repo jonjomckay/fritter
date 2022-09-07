@@ -37,10 +37,12 @@ class _TrendsTabBarState extends State<TrendsTabBar> with TickerProviderStateMix
     _tabController = getController();
 
     model.observer(onState: (state) {
-      _tabs = getTabs(state.locations, onDelete: (location) async => await model.remove(location));
-      _tabController = getController();
-      _tabController.index = state.indexOfActive;
-      setState(() {});
+      if (mounted) {
+        _tabs = getTabs(state.locations, onDelete: (location) async => await model.remove(location));
+        _tabController = getController();
+        _tabController.index = state.indexOfActive;
+        setState(() {});
+      }
     });
   }
 
