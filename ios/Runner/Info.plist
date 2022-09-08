@@ -51,7 +51,5 @@
       <string>https</string>
       <string>http</string>
     </array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
 </dict>
 </plist>
