@@ -330,8 +330,6 @@ class _MyAppState extends State<MyApp> {
     }
 
     void setDisableScreenshots(final bool secureModeEnabled) async {
-      print("#" * 40);
-      print(secureModeEnabled);
       if (secureModeEnabled) {
         await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
       } else {
