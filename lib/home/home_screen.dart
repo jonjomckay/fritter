@@ -55,27 +55,30 @@ class HomeScreen extends StatelessWidget {
       selectedPage = homePages.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab));
     }
 
-    return ScaffoldWithBottomNavigation(pages: homePages, selectedPage: selectedPage, builder: (scrollController) {
-      return [
-        ...homePages.map((e) {
-          switch (e.id) {
-            case 'feed':
-              return FeedScreen(scrollController: scrollController);
-            case 'subscriptions':
-              return SubscriptionsScreen(scrollController: scrollController);
-            case 'groups':
-              return GroupsScreen(scrollController: scrollController);
-            case 'trending':
-              return TrendsScreen(scrollController: scrollController);
-            case 'saved':
-              return SavedScreen(scrollController: scrollController);
-            default:
-            // TODO
-              return Container();
-          }
-        })
-      ];
-    });
+    return ScaffoldWithBottomNavigation(
+        pages: homePages,
+        selectedPage: selectedPage,
+        builder: (scrollController) {
+          return [
+            ...homePages.map((e) {
+              switch (e.id) {
+                case 'feed':
+                  return FeedScreen(scrollController: scrollController);
+                case 'subscriptions':
+                  return SubscriptionsScreen(scrollController: scrollController);
+                case 'groups':
+                  return GroupsScreen(scrollController: scrollController);
+                case 'trending':
+                  return TrendsScreen(scrollController: scrollController);
+                case 'saved':
+                  return SavedScreen(scrollController: scrollController);
+                default:
+                  // TODO
+                  return Container();
+              }
+            })
+          ];
+        });
   }
 }
 
@@ -84,7 +87,8 @@ class ScaffoldWithBottomNavigation extends StatefulWidget {
   final int selectedPage;
   final List<Widget> Function(ScrollController scrollController) builder;
 
-  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.selectedPage, required this.builder}) : super(key: key);
+  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.selectedPage, required this.builder})
+      : super(key: key);
 
   @override
   State<ScaffoldWithBottomNavigation> createState() => _ScaffoldWithBottomNavigationState();
@@ -106,8 +110,9 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
     _pageController = PageController(initialPage: _selectedPage);
 
     scrollController.bottomNavigationBar.setTab(_selectedPage);
-    scrollController.bottomNavigationBar.tabListener((index) {
-      _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
+
+    scrollController.bottomNavigationBar.tabListener((index) async {
+      _pageController.jumpToPage(index);
       _selectedPage = index;
     });
 
@@ -132,12 +137,7 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
       bottomNavigationBar: ScrollBottomNavigationBar(
         controller: scrollController,
         showUnselectedLabels: true,
-        items: [
-          ...widget.pages.map((e) => BottomNavigationBarItem(
-              icon: Icon(e.icon, size: 22),
-              label: e.title
-          ))
-        ],
+        items: [...widget.pages.map((e) => BottomNavigationBarItem(icon: Icon(e.icon, size: 22), label: e.title))],
       ),
     );
   }
