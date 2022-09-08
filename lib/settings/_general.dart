@@ -186,10 +186,7 @@ class SettingsGeneralFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
-        title: Text(L10n.current.general)
-      ),
+      appBar: ScrollAppBar(controller: scrollController, title: Text(L10n.current.general)),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: ListView(controller: scrollController, children: [
@@ -262,6 +259,11 @@ class SettingsGeneralFragment extends StatelessWidget {
             subtitle: Text(L10n.of(context).whether_to_hide_tweets_marked_as_sensitive),
             pref: optionTweetsHideSensitive,
           ),
+          PrefSwitch(
+            title: Text(L10n.of(context).disable_screenshots),
+            subtitle: Text(L10n.of(context).disable_screenshots_hint),
+            pref: optionDisableScreenshots,
+          ),
           const DownloadTypeSetting(),
           PrefCheckbox(
             title: Text(L10n.of(context).enable_sentry),
@@ -331,9 +333,7 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
             },
             title: Text(L10n.current.download_path),
             subtitle: Text(
-              downloadPath.isEmpty
-                  ? L10n.current.not_set
-                  : downloadPath,
+              downloadPath.isEmpty ? L10n.current.not_set : downloadPath,
             ),
             child: Text(L10n.current.choose),
           )

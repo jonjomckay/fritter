@@ -124,6 +124,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Date Subscribed"),
         "default_tab": MessageLookupByLibrary.simpleMessage("Default tab"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Disable screenshots"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices."),
         "disabled": MessageLookupByLibrary.simpleMessage("Disabled"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Don\'t send"),
         "donate": MessageLookupByLibrary.simpleMessage("Donate"),

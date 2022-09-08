@@ -95,6 +95,7 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+  flutter_windowmanager: ^0.2.0
 
 dev_dependencies:
   flutter_test:
