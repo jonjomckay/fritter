@@ -440,5 +440,9 @@
   "possibly_sensitive": "Hassas olabilir",
   "@possibly_sensitive": {},
   "possibly_sensitive_profile": "Bu profil hassas olabilecek görüntüler, dil veya başka içerikler içerebilir. Yine de görüntülemek istiyor musunuz?",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "Hassas olarak işaretlenen tweetlerin gizlenip gizlenmeyeceği",
+  "@whether_to_hide_tweets_marked_as_sensitive": {},
+  "hide_sensitive_tweets": "Hassas tweetleri gizle",
+  "@hide_sensitive_tweets": {}
 }
