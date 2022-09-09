@@ -182,6 +182,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "İşte gönderilecek veriler. Sadece gelecekte Fritter\'da hangi cihazların ve dillerin destekleneceğini belirlemek için kullanılacaktır."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Hassas tweetleri gizle"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Bu özellikle ilgili herhangi bir görüşünüz varsa lütfen geri bildirim yapın"),
@@ -445,6 +447,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Hataların Sentry\'ye bildirilip bildirilmeyeceğini belirler"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Hassas olarak işaretlenen tweetlerin gizlenip gizlenmeyeceği"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Uygulama açıldığında hangi sekmenin gösterileceğini belirler"),

@@ -178,6 +178,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "هنا البيانات التي سيتم إرسالها. سيتم استخدامه فقط لتحديد الأجهزة واللغات التي يجب دعمها في Fritter في المستقبل."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("إخفاء التغريدات الحساسة"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "إذا كان لديك أي تعليقات عن هذه الميزة، رجائاً اكتبها هنا"),
@@ -438,6 +440,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "ما إذا يجب على الأخطاء البرمجية أن يُبلّغ عنها إلى الحارس"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "ما إذا كنت تريد إخفاء التغريدات التي تم وضع علامة عليها على أنها حساسة"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "أي تبويب يظهر عندما يفتح التطبيق"),
