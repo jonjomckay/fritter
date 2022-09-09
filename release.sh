@@ -61,7 +61,11 @@ FDROID_METADATA=$(cat << EOF
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}0
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-x86_64-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-x86_64-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -78,7 +82,11 @@ FDROID_METADATA=$(cat << EOF
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}1
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -95,7 +103,11 @@ FDROID_METADATA=$(cat << EOF
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}2
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
