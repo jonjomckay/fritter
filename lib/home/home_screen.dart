@@ -8,6 +8,7 @@ import 'package:fritter/search/search.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/trends/trends.dart';
 import 'package:fritter/ui/physics.dart';
+import 'package:fritter/utils/debounce.dart';
 import 'package:pref/pref.dart';
 import 'package:scroll_bottom_navigation_bar/scroll_bottom_navigation_bar.dart';
 
@@ -126,7 +127,9 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
       body: PageView(
         controller: _pageController,
         physics: const LessSensitiveScrollPhysics(),
-        onPageChanged: (page) => scrollController.bottomNavigationBar.setTab(page.round()),
+        onPageChanged: (page) => Debouncer.debounce('page-change', const Duration(milliseconds: 200), () {
+          scrollController.bottomNavigationBar.setTab(page);
+        }),
         children: _children,
       ),
       bottomNavigationBar: ScrollBottomNavigationBar(
