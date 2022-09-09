@@ -71,6 +71,7 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-x64
 
@@ -87,6 +88,7 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-arm
 
@@ -103,6 +105,7 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-arm64
 EOF

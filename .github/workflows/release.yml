@@ -35,6 +35,7 @@ jobs:
           flutter config --no-analytics
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
+          flutter pub run intl_utils:generate
           flutter build apk --dart-define=app.flavor=github --no-tree-shake-icons
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
