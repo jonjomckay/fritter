@@ -386,7 +386,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                       )))
             ];
           },
-          body: ChangeNotifierProvider(
+          body: ChangeNotifierProvider<TweetContextState>(
             create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
             child: TabBarView(
               controller: _tabController,

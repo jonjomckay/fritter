@@ -4,11 +4,14 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/search/search_model.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
 class SearchArguments {
@@ -88,21 +91,24 @@ class _SearchScreen extends StatelessWidget {
                     Tab(icon: Icon(Icons.comment)),
                   ]),
                 ),
-                Expanded(
-                    child: TabBarView(children: [
-                      TweetSearchResultList<SearchUsersModel, UserWithExtra>(
-                          queryController: _queryController,
-                          store: context.read<SearchUsersModel>(),
-                          searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
-                          itemBuilder: (context, item) => UserTile(user: item)),
-                      TweetSearchResultList<SearchTweetsModel, TweetWithCard>(
-                          queryController: _queryController,
-                          store: context.read<SearchTweetsModel>(),
-                          searchFunction: (q) => context.read<SearchTweetsModel>().searchTweets(q),
-                          itemBuilder: (context, item) {
-                            return TweetTile(tweet: item, clickable: true);
-                          })
-                    ]))
+                ChangeNotifierProvider<TweetContextState>(
+                  create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+                  child: Expanded(
+                      child: TabBarView(children: [
+                        TweetSearchResultList<SearchUsersModel, UserWithExtra>(
+                            queryController: _queryController,
+                            store: context.read<SearchUsersModel>(),
+                            searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
+                            itemBuilder: (context, item) => UserTile(user: item)),
+                        TweetSearchResultList<SearchTweetsModel, TweetWithCard>(
+                            queryController: _queryController,
+                            store: context.read<SearchTweetsModel>(),
+                            searchFunction: (q) => context.read<SearchTweetsModel>().searchTweets(q),
+                            itemBuilder: (context, item) {
+                              return TweetTile(tweet: item, clickable: true);
+                            })
+                      ])),
+                )
               ],
             )),
       ),

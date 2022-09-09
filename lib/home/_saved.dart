@@ -42,7 +42,7 @@ class _SavedScreenState extends State<SavedScreen> {
         title: Text(L10n.current.saved),
         actions: createCommonAppBarActions(context),
       ),
-      body: ChangeNotifierProvider(
+      body: ChangeNotifierProvider<TweetContextState>(
         create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
         child: ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(
           store: model,
