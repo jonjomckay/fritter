@@ -34,7 +34,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
 
   GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: [], includeRetweets: false, includeReplies: false));
 
-  Future<void> loadGroup(String id) async {
+  Future<void> loadGroup() async {
     await execute(() async {
       var database = await Repository.readOnly();
 

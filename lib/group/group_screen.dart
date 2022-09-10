@@ -7,6 +7,7 @@ import 'package:fritter/group/group_model.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class GroupScreenArguments {
   final String id;
@@ -27,30 +28,15 @@ class GroupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
 
-    return Provider<GroupModel>(
-      create: (context) => GroupModel(args.id),
-      child: _SubscriptionGroupScreen(id: args.id, name: args.name),
-    );
+    return SubscriptionGroupScreen(scrollController: ScrollController(), id: args.id, name: args.name, actions: []);
   }
 }
 
-class SubscriptionGroupScreenContent extends StatefulWidget {
+class SubscriptionGroupScreenContent extends StatelessWidget {
   final String id;
   final ScrollController scrollController;
 
   const SubscriptionGroupScreenContent({Key? key, required this.id, required this.scrollController}) : super(key: key);
-
-  @override
-  State<SubscriptionGroupScreenContent> createState() => _SubscriptionGroupScreenContentState();
-}
-
-class _SubscriptionGroupScreenContentState extends State<SubscriptionGroupScreenContent> {
-  @override
-  void initState() {
-    super.initState();
-
-    context.read<GroupModel>().loadGroup(widget.id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,45 +58,60 @@ class _SubscriptionGroupScreenContentState extends State<SubscriptionGroupScreen
           users: users,
           includeReplies: group.includeReplies,
           includeRetweets: group.includeRetweets,
-          scrollController: widget.scrollController,
+          scrollController: scrollController,
         );
       },
     );
   }
 }
 
-class _SubscriptionGroupScreen extends StatelessWidget {
-  final ScrollController _scrollController = ScrollController();
-
+class SubscriptionGroupScreen extends StatelessWidget {
+  final ScrollController scrollController;
   final String id;
   final String name;
+  final List<Widget> actions;
 
-  _SubscriptionGroupScreen({Key? key, required this.id, required this.name}) : super(key: key);
+  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.name, required this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<GroupModel>();
+    return Provider<GroupModel>(
+      create: (context) {
+        var model = GroupModel(id);
+        model.loadGroup();
 
-    return Scaffold(
-      appBar: AppBar(title: Text(name), actions: [
-        IconButton(
-            icon: const Icon(Icons.arrow_upward),
-            onPressed: () async {
-              await _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
-            }),
-        IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () async {
-              await context.read<GroupModel>().loadGroup(id);
-            }),
-        IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () => showFeedSettings(context, model))
-      ]),
-      body: SubscriptionGroupScreenContent(
-        id: id,
-        scrollController: _scrollController,
-      ),
+        return model;
+      },
+      builder: (context, child) {
+        var model = context.read<GroupModel>();
+
+        return Scaffold(
+          appBar: ScrollAppBar(
+            controller: scrollController,
+            title: Text(name),
+            actions: [
+              IconButton(
+                  icon: const Icon(Icons.more_vert),
+                  onPressed: () => showFeedSettings(context, model)),
+              IconButton(
+                  icon: const Icon(Icons.arrow_upward),
+                  onPressed: () async {
+                    await scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+                  }),
+              IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () async {
+                    await model.loadGroup();
+                  }),
+              ...actions
+            ],
+          ),
+          body: SubscriptionGroupScreenContent(
+            id: id,
+            scrollController: scrollController,
+          ),
+        );
+      },
     );
   }
 }

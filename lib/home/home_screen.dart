@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
         ...homePages.map((e) {
           switch (e.id) {
             case 'feed':
-              return FeedScreen(scrollController: scrollController);
+              return FeedScreen(scrollController: scrollController, id: '-1', name: L10n.current.feed);
             case 'subscriptions':
               return SubscriptionsScreen(scrollController: scrollController);
             case 'groups':
