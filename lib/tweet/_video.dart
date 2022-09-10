@@ -5,13 +5,14 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
-import 'package:fritter/generated/l10n.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:wakelock/wakelock.dart';
 
 class TweetVideo extends StatefulWidget {
   final String username;
@@ -123,6 +124,15 @@ class _TweetVideoState extends State<TweetVideo> {
         );
       },
     );
+
+    _videoController!.addListener(() {
+      // Change wake lock screen
+      if (_chewieController!.isPlaying) {
+        Wakelock.enable();
+      } else {
+        Wakelock.disable();
+      }
+    });
   }
 
   void onTapPlay() {
@@ -167,6 +177,9 @@ class _TweetVideoState extends State<TweetVideo> {
     // TODO: These now seem to get called when the video player goes fullscreen. They shouldn't though
     _videoController?.dispose();
     _chewieController?.dispose();
+
+    Wakelock.disable();
+
     super.dispose();
   }
 }
