@@ -95,6 +95,7 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+  wakelock: ^0.6.2
 
 dev_dependencies:
   flutter_test:
