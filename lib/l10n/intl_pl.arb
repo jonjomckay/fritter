@@ -432,7 +432,9 @@
   "download_media_no_url": "Nie można pobrać. Te multimedia mogą być dostępne tylko jako strumień, którego Fritter jeszcze nie obsługuje.",
   "@download_media_no_url": {},
   "hide_sensitive_tweets": "Ukrywaj wrażliwe tweety",
+  "@hide_sensitive_tweets": {},
   "whether_to_hide_tweets_marked_as_sensitive": "Ukrywaj tweety oznaczone jako wrażliwe",
+  "@whether_to_hide_tweets_marked_as_sensitive": {},
   "yes_please": "Tak, proszę",
   "@yes_please": {},
   "possibly_sensitive": "Potencjalnie wrażliwy",
@@ -442,5 +444,7 @@
   "possibly_sensitive_profile": "Ten profil może zawierać potencjalnie wrażliwe obrazy, język lub inne treści. Czy nadal chcesz go wyświetlić?",
   "@possibly_sensitive_profile": {},
   "theme_mode": "Tryb motywu",
-  "@theme_mode": {}
+  "@theme_mode": {},
+  "disable_screenshots": "Wyłącz zrzuty ekranu",
+  "@disable_screenshots": {}
 }
