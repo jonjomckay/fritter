@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/status.dart';
@@ -412,7 +412,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       Catcher.reportCheckedError(TweetMissingDataException(tweet.idStr, ['createdAt']), null);
     }
 
-    return Consumer<HomeModel>(
+    return Consumer<ImportDataModel>(
         builder: (context, model, child) => Card(
               child: IntrinsicHeight(
                 child: Row(

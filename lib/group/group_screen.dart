@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/_feed.dart';
 import 'package:fritter/group/_settings.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_app_bar/scroll_app_bar.dart';

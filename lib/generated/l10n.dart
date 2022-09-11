@@ -2325,6 +2325,46 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to load your home pages`
+  String get unable_to_load_home_pages {
+    return Intl.message(
+      'Unable to load your home pages',
+      name: 'unable_to_load_home_pages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset pages to default`
+  String get reset_home_pages {
+    return Intl.message(
+      'Reset pages to default',
+      name: 'reset_home_pages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You must have at least 2 home screen pages`
+  String get you_must_have_at_least_2_home_screen_pages {
+    return Intl.message(
+      'You must have at least 2 home screen pages',
+      name: 'you_must_have_at_least_2_home_screen_pages',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

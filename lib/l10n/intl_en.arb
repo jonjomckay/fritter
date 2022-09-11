@@ -417,5 +417,9 @@
   "whether_to_hide_tweets_marked_as_sensitive": "Whether to hide tweets marked as sensitive",
   "possibly_sensitive": "Potentially sensitive",
   "possibly_sensitive_tweet": "This tweet contains potentially sensitive content. Would you like to view it?",
-  "possibly_sensitive_profile": "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?"
+  "possibly_sensitive_profile": "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?",
+  "home": "Home",
+  "unable_to_load_home_pages": "Unable to load your home pages",
+  "reset_home_pages": "Reset pages to default",
+  "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages"
 }

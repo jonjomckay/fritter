@@ -179,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future."),
         "hide_sensitive_tweets":
             MessageLookupByLibrary.simpleMessage("Hide sensitive tweets"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "If you have any feedback on this feature, please leave it on"),
@@ -274,6 +275,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Report a bug"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Reporting an error"),
+        "reset_home_pages":
+            MessageLookupByLibrary.simpleMessage("Reset pages to default"),
         "retry": MessageLookupByLibrary.simpleMessage("Retry"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "save_bandwidth_using_smaller_images":
@@ -377,6 +380,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Unable to find your saved tweets."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Unable to import"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Unable to load your home pages"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to load subscription groups"),
@@ -455,6 +460,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "You haven\'t saved any tweets yet!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "You must have at least 2 home screen pages"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:"),

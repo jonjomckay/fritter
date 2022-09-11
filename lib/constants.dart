@@ -4,6 +4,7 @@ const optionHelloLastBuild = 'hello.last_build';
 
 const optionShouldCheckForUpdates = 'should_check_for_updates';
 
+const optionHomePages = 'home.pages';
 const optionHomeInitialTab = 'home.initial_tab';
 
 const optionMediaSize = 'media.size';

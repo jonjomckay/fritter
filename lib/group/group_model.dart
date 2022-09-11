@@ -14,7 +14,7 @@ import 'package:uuid/uuid.dart';
 
 var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
 
-IconData? deserializeIconData(String iconData) {
+IconData deserializeIconData(String iconData) {
   try {
     var icon = deserializeIcon(jsonDecode(iconData));
     if (icon != null) {

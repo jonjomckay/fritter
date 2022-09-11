@@ -37,6 +37,11 @@ dependency_overrides:
     git:
       url: https://github.com/kabagouda/multi_select_flutter.git
       ref: abda500eae263fcd6b26d09f3c68d5fb9591df85
+  pref:
+    git:
+      url: https://github.com/jonjomckay/flutter_pref.git
+      ref: 04ffdce
+      path: pref
 
 dependencies:
   flutter:
