@@ -181,8 +181,6 @@ Future<void> main() async {
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
     optionThemeColorScheme: 'aquaBlue',
-    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
-
     optionTweetsHideSensitive: false,
     optionUserTrendsLocations: jsonEncode({
       'active': {'name': 'Worldwide', 'woeid': 1},
