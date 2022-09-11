@@ -76,7 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Account suspended"),
         "activate_non_confirmation_bias_mode_description":
             MessageLookupByLibrary.simpleMessage(
-                "Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments."),
+                "Hide tweet authors. Avoid confirmation bias based on authoritative arguments."),
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Activate non-confirmation bias mode"),

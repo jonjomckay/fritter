@@ -265,6 +265,11 @@ class SettingsGeneralFragment extends StatelessWidget {
             pref: optionDisableScreenshots,
           ),
           const DownloadTypeSetting(),
+          PrefSwitch(
+            title: Text(L10n.of(context).activate_non_confirmation_bias_mode_label),
+            pref: optionNonConfirmationBiasMode,
+            subtitle: Text(L10n.of(context).activate_non_confirmation_bias_mode_description),
+          ),
           PrefCheckbox(
             title: Text(L10n.of(context).enable_sentry),
             subtitle: Text(

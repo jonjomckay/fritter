@@ -468,6 +468,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                     ],
                                   ),
                                 ),
+                              const Spacer(),
                               IconButton(
                                 icon: const Icon(Icons.more_horiz),
                                 padding: EdgeInsets.zero,

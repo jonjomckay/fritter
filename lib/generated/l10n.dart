@@ -1056,10 +1056,10 @@ class L10n {
     );
   }
 
-  /// `Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.`
+  /// `Hide tweet authors. Avoid confirmation bias based on authoritative arguments.`
   String get activate_non_confirmation_bias_mode_description {
     return Intl.message(
-      'Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.',
+      'Hide tweet authors. Avoid confirmation bias based on authoritative arguments.',
       name: 'activate_non_confirmation_bias_mode_description',
       desc: '',
       args: [],

@@ -195,7 +195,7 @@
   "enable_sentry": "Enable Sentry?",
   "@enable_sentry": {},
   "activate_non_confirmation_bias_mode_label": "Activate non-confirmation bias mode",
-  "activate_non_confirmation_bias_mode_description": "Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.",
+  "activate_non_confirmation_bias_mode_description": "Hide tweet authors. Avoid confirmation bias based on authoritative arguments.",
   "whether_errors_should_be_reported_to_sentry": "Whether errors should be reported to Sentry",
   "@whether_errors_should_be_reported_to_sentry": {},
   "about": "About",

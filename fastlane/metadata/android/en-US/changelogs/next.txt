@@ -23,3 +23,4 @@
 * Added follower and following counts back to profiles (#245)
 * Added support for custom home screen pages (#160, #443)
 * Added support for disabling screenshots (#480, #355)
+* Added support for avoiding confirmation bias (#465)
