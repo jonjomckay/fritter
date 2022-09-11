@@ -136,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Selalu tanya"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Simpan ke direktori"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Tidak bisa mengunduh. Media ini hanya tersedia sebagai siaran, yang Fritter belum bisa mengunduhnya."),
         "download_path": MessageLookupByLibrary.simpleMessage("Jalur unduhan"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("Mengunduh media..."),
@@ -176,6 +178,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Berikut data yang akan dikirim. Ini hanya akan digunakan untuk menentukan perangkat dan bahasa mana yang akan didukung di Fritter di masa mendatang."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Sembunyikan cuitan sensitif"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Jika Anda punya umpan balik terhadap fitur ini, mohon tinggalkan di"),
@@ -257,6 +261,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Mohon dicatat bahwa metode yang Fritter gunakan untuk mengimpor langganan sangat dibatasi oleh Twitter, jadi ini mungkin akan gagal jika Anda mengikuti banyak akun."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Kemungkinan sensitif"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Profil ini mungkin mengandung gambar, bahasa, atau konten lain yang kemungkinan sensitif. Apakah Anda masih ingin melihatnya?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Cuitan ini mengandung konten yang kemungkinan sensitif. Apakah Anda ingin melihatnya?"),
         "prefix": MessageLookupByLibrary.simpleMessage("awalan"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Profil privat"),
@@ -311,7 +321,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Langganan"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Takarir"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Media tersimpan."),
+            MessageLookupByLibrary.simpleMessage("Media disimpan!"),
         "system": MessageLookupByLibrary.simpleMessage("Sistem"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -327,6 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Cuitan tidak mengandung teks apa pun. Ini tidak diduga"),
         "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Mode Tema"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak ada tren yang dikembalikan. Ini tidak terduga! Mohon laporkan sebagai masalah, jika mungkin."),
@@ -434,6 +445,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Apakah galat harus dilaporkan ke Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Untuk menyembunyikan cuitan yang ditandai sebagai sensitif"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Bilah mana yang ditampilkan ketika aplikasi dibuka"),
@@ -441,6 +455,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Apakah Anda ingin mengaktifkan pelaporan galat otomatis?"),
         "yes": MessageLookupByLibrary.simpleMessage("Ya"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Ya, silakan"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Anda belum menyimpan cuitan apa pun!"),

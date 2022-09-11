@@ -22,3 +22,4 @@
 * Added support for hiding NSFW tweets (#248)
 * Added follower and following counts back to profiles (#245)
 * Added support for custom home screen pages (#160, #443)
+* Added support for disabling screenshots (#480, #355)

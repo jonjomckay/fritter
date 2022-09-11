@@ -181,6 +181,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Zde jsou data, která budou odeslána. Budou použita pouze k určení, jaká zařízení a jazyky by měl v budoucnu Fritter podporovat."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Skrýt citlivé tweety"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Pokud máte ohledně této funkce jakoukoli zpětnou vazbu, zanechte ji prosím"),
@@ -447,6 +449,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Nastavit, zda mají být chyby nahlašovány do Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Zda skrývat tweety označené jako citlivé"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Karta, která bude zobrazena při otevření aplikace"),

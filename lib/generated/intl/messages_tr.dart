@@ -446,7 +446,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Yeni bir uygulama güncellemesi mevcut olduğunda"),
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
-                "Hataların Sentry\'ye bildirilip bildirilmeyeceğini belirler"),
+                "Hataların Sentry\'ye bildirilip bildirilmeyeceği"),
         "whether_to_hide_tweets_marked_as_sensitive":
             MessageLookupByLibrary.simpleMessage(
                 "Hassas olarak işaretlenen tweetlerin gizlenip gizlenmeyeceği"),

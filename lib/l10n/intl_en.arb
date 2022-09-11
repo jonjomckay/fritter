@@ -416,7 +416,7 @@
   "hide_sensitive_tweets": "Hide sensitive tweets",
   "whether_to_hide_tweets_marked_as_sensitive": "Whether to hide tweets marked as sensitive",
   "disable_screenshots": "Disable screenshots",
-  "disable_screenshots_hint": "This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices.",
+  "disable_screenshots_hint": "Prevent screenshots from being taken. This may not work on all devices.",
   "possibly_sensitive": "Potentially sensitive",
   "possibly_sensitive_tweet": "This tweet contains potentially sensitive content. Would you like to view it?",
   "possibly_sensitive_profile": "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?",

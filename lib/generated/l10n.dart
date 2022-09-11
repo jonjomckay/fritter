@@ -2306,10 +2306,10 @@ class L10n {
     );
   }
 
-  /// `This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices.`
+  /// `Prevent screenshots from being taken. This may not work on all devices.`
   String get disable_screenshots_hint {
     return Intl.message(
-      'This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices.',
+      'Prevent screenshots from being taken. This may not work on all devices.',
       name: 'disable_screenshots_hint',
       desc: '',
       args: [],

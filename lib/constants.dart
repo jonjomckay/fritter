@@ -1,8 +1,8 @@
+const optionDisableScreenshots = 'disable_screenshots';
+
 const optionErrorsSentryEnabled = 'errors.sentry_enabled';
 
 const optionHelloLastBuild = 'hello.last_build';
-
-const optionShouldCheckForUpdates = 'should_check_for_updates';
 
 const optionHomePages = 'home.pages';
 const optionHomeInitialTab = 'home.initial_tab';
@@ -15,10 +15,10 @@ const optionDownloadPath = 'download.path';
 const optionDownloadTypeDirectory = 'directory';
 const optionDownloadTypeAsk = 'ask';
 
-const optionTweetsHideSensitive = 'tweets.hide_sensitive';
-
 const optionLocale = 'locale';
 const optionLocaleDefault = 'system';
+
+const optionShouldCheckForUpdates = 'should_check_for_updates';
 
 const optionSubscriptionGroupsOrderByAscending = 'subscription_groups.order_by.ascending';
 const optionSubscriptionGroupsOrderByField = 'subscription_groups.order_by.field';
@@ -29,9 +29,9 @@ const optionThemeMode = 'theme.mode';
 const optionThemeTrueBlack = 'theme.true_black';
 const optionThemeColorScheme = 'theme.color_scheme';
 
-const optionUserTrendsLocations = 'trends.locations';
+const optionTweetsHideSensitive = 'tweets.hide_sensitive';
 
-const optionDisableScreenshots = 'native.disable_screenshots';
+const optionUserTrendsLocations = 'trends.locations';
 
 const routeGroup = '/group';
 const routeProfile = '/profile';

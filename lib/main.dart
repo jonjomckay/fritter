@@ -166,6 +166,7 @@ Future<void> main() async {
   await L10n.load(const Locale('en'));
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    optionDisableScreenshots: false,
     optionDownloadPath: '',
     optionDownloadType: optionDownloadTypeAsk,
     optionHomePages: defaultHomePages.map((e) => e.id).toList(),
@@ -186,7 +187,6 @@ Future<void> main() async {
         {'name': 'Worldwide', 'woeid': 1}
       ]
     }),
-    optionDisableScreenshots: false,
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -335,6 +335,7 @@ class _MyAppState extends State<MyApp> {
       _colorScheme = FlexScheme.values.byName(colorSchemeName);
     }
 
+    // TODO: This doesn't work on iOS
     void setDisableScreenshots(final bool secureModeEnabled) async {
       if (secureModeEnabled) {
         await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
