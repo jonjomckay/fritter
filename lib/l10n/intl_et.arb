@@ -440,5 +440,9 @@
   "possibly_sensitive_tweet": "Selles säutsus võib leiduda ebasobilikku sisu. Kas sa soovid seda näha?",
   "@possibly_sensitive_tweet": {},
   "possibly_sensitive_profile": "Selles profiilis võib leiduda ebasobilikke pilte, sõnakasutust või muud sisu. Ka sa siiski soovid seda vaadata?",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "hide_sensitive_tweets": "Peida võimaliku ebasobiliku sisuga säutsud",
+  "@hide_sensitive_tweets": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "Kas soovid peita säutse, kus võib olla ebasobilikku sisu",
+  "@whether_to_hide_tweets_marked_as_sensitive": {}
 }

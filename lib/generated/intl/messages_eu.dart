@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "${date}-ean sortua";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'no votes', one: 'one vote', two: 'two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
+      "${Intl.plural(num, zero: 'Botorik gabea', one: 'Boto bat', two: 'Bi boto', few: '${numFormatted} boto', many: '${numFormatted} boto', other: '${numFormatted} boto')}";
 
   static String m9(errorMessage) =>
       "Mesedez, egiaztatu Internet konexioa.\n\n${errorMessage}";
@@ -55,7 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m13(thisTweetUserName) => "${thisTweetUserName} birtxiotua";
 
   static String m14(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'no tweets', one: 'one tweet', two: 'two tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
+      "${Intl.plural(num, zero: 'Txorik gabea', one: 'Txio bat', two: 'Bi txio', few: '${numFormatted} txio', many: '${numFormatted} txio', other: '${numFormatted} txio')}";
 
   static String m15(widgetPlaceName) =>
       "Ezin dira joerak kargatu ${widgetPlaceName}";
@@ -181,6 +181,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Hona hemen bidaliko diren datuak. Etorkizunean Fritter-en zein gailu eta hizkuntza onartzen diren zehazteko soilik erabiliko da."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Ezkutatu txio sentikorrak"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Funtzio honi buruzko iruzkinen bat baduzu, utzi"),
@@ -237,7 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_set": MessageLookupByLibrary.simpleMessage("Ez da ezarri"),
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
-                "Oharra: Twitter-eko muga bat dela eta, litekeena da txio guztiak ez agertzea."),
+                "Oharra: Twitter-eko muga bat dela eta, litekeena da txio guztiak ez agertzea"),
         "numberFormat_format_total_votes": m8,
         "ok": MessageLookupByLibrary.simpleMessage("Ados"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
@@ -265,6 +267,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Kontuan izan Fritter-ek Twitter bidez harpidetzak inportatzeko erabiltzen duen modua oso mugatuta dagoela eta kontu asko jarraian baditu, huts egin dezakeela."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potentzialki sentikorra"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Baliteke profil honek irudi, hizkuntz edo bestelako eduki sentikorrak izan ditzazkeela. Hala ere ikusi nahi al duzu?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Txio honek eduki sentikorra du. Ikusi nahi al duzu?"),
         "prefix": MessageLookupByLibrary.simpleMessage("aurrizkia"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Profil pribatua"),
@@ -319,7 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Harpidetzak"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Azpitituluak"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Multimedia gordeta."),
+            MessageLookupByLibrary.simpleMessage("Multimedia gorde da!"),
         "system": MessageLookupByLibrary.simpleMessage("Sistema"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -332,8 +340,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("Github arazoa (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
-            MessageLookupByLibrary.simpleMessage("Txioak ez zuen testurik."),
+            MessageLookupByLibrary.simpleMessage("Txioak ez zuen testurik"),
         "theme": MessageLookupByLibrary.simpleMessage("Gaia"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Gaiaren modua"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Ez da joerarik itzuli. Hau ezustekoa! Mesedez, jakinarazi akats gisa, ahal baduzu."),
@@ -441,6 +450,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Akatsak Sentryri bidali behar litzaizkioke"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Sentikor gisa markatutako txioak ezkutatu"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Aplikazioa irekitzean erakutsiko den fitxa"),
@@ -448,6 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Akats txostenen berri emate automatikoa gaitu nahi duzu?"),
         "yes": MessageLookupByLibrary.simpleMessage("Bai"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Bai, mesedez"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Oraindik ez duzu txiorik gorde!"),

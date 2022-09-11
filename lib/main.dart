@@ -20,8 +20,9 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
+import 'package:fritter/home/home_model.dart';
 import 'package:fritter/home/home_screen.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
@@ -162,11 +163,12 @@ Future<void> main() async {
 
   setTimeagoLocales();
 
-  L10n.load(const Locale('en'));
+  await L10n.load(const Locale('en'));
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     optionDownloadPath: '',
     optionDownloadType: optionDownloadTypeAsk,
+    optionHomePages: defaultHomePages.map((e) => e.id).toList(),
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
     optionShouldCheckForUpdates: true,
@@ -257,10 +259,13 @@ Future<void> main() async {
           // Ignore, as we'll catch it later instead
         }
 
-        var homeModel = HomeModel();
+        var importDataModel = ImportDataModel();
 
         var groupsModel = GroupsModel(prefService);
         await groupsModel.reloadGroups();
+
+        var homeModel = HomeModel(prefService, groupsModel);
+        await homeModel.loadPages();
 
         var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
         await subscriptionsModel.reloadSubscriptions();
@@ -272,7 +277,8 @@ Future<void> main() async {
             child: MultiProvider(
               providers: [
                 Provider(create: (context) => groupsModel),
-                ChangeNotifierProvider(create: (context) => homeModel),
+                Provider(create: (context) => homeModel),
+                ChangeNotifierProvider(create: (context) => importDataModel),
                 Provider(create: (context) => subscriptionsModel),
                 Provider(create: (context) => SavedTweetModel()),
                 Provider(create: (context) => SearchTweetsModel()),

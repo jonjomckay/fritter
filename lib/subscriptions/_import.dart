@@ -7,7 +7,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/urls.dart';
@@ -42,7 +42,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       int total = 0;
 
       // TODO: Test this still works
-      var homeModel = context.read<HomeModel>();
+      var importModel = context.read<ImportDataModel>();
       var groupModel = context.read<GroupsModel>();
 
       while (true) {
@@ -55,7 +55,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         cursor = response.cursorBottom;
         total = total + response.users.length;
 
-        await homeModel.importData({
+        await importModel.importData({
           tableSubscription: [
             ...response.users.map((e) => Subscription(
                 id: e.idStr!,

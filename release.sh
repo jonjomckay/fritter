@@ -61,7 +61,11 @@ FDROID_METADATA=$(cat << EOF
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}0
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-x86_64-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-x86_64-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -71,13 +75,18 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-x64
 
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}1
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -87,13 +96,18 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-arm
 
 - versionName: $VERSION_NAME
   versionCode: ${VERSION_NUMBER}2
   commit: $VERSION_COMMIT
-  output: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+  sudo:
+    - apt-get update || apt-get update
+    - apt-get install -y openjdk-11-jdk-headless
+    - update-alternatives --auto java
+  output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
   srclibs:
     - flutter@$VERSION_FLUTTER
   rm:
@@ -103,6 +117,7 @@ FDROID_METADATA=$(cat << EOF
     - \$\$flutter\$\$/bin/flutter config --no-analytics
     - \$\$flutter\$\$/bin/flutter packages pub get
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
+    - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
       --target-platform=android-arm64
 EOF

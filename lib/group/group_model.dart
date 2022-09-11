@@ -14,7 +14,7 @@ import 'package:uuid/uuid.dart';
 
 var defaultGroupIcon = '{"pack":"material","key":"rss_feed"}';
 
-IconData? deserializeIconData(String iconData) {
+IconData deserializeIconData(String iconData) {
   try {
     var icon = deserializeIcon(jsonDecode(iconData));
     if (icon != null) {
@@ -34,7 +34,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
 
   GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: [], includeRetweets: false, includeReplies: false));
 
-  Future<void> loadGroup(String id) async {
+  Future<void> loadGroup() async {
     await execute(() async {
       var database = await Repository.readOnly();
 

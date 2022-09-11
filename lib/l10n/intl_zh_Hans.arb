@@ -440,5 +440,9 @@
   "possibly_sensitive_tweet": "此推文包含潜在的敏感内容。 你想看吗？",
   "@possibly_sensitive_tweet": {},
   "possibly_sensitive_profile": "此个人资料可能包括潜在的敏感图像、语言或其他内容。 你还是想看吗？",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "hide_sensitive_tweets": "隐藏敏感推文",
+  "@hide_sensitive_tweets": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "是否隐藏被标记为敏感的推文",
+  "@whether_to_hide_tweets_marked_as_sensitive": {}
 }

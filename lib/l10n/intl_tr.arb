@@ -231,7 +231,7 @@
   "@data_exported_to_fullPath": {},
   "help_make_fritter_even_better": "Fritter'ın daha da iyi olmasına yardımcı olun",
   "@help_make_fritter_even_better": {},
-  "whether_errors_should_be_reported_to_sentry": "Hataların Sentry'ye bildirilip bildirilmeyeceğini belirler",
+  "whether_errors_should_be_reported_to_sentry": "Hataların Sentry'ye bildirilip bildirilmeyeceği",
   "@whether_errors_should_be_reported_to_sentry": {},
   "medium": "Orta",
   "@medium": {},
@@ -440,5 +440,9 @@
   "possibly_sensitive": "Hassas olabilir",
   "@possibly_sensitive": {},
   "possibly_sensitive_profile": "Bu profil hassas olabilecek görüntüler, dil veya başka içerikler içerebilir. Yine de görüntülemek istiyor musunuz?",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "Hassas olarak işaretlenen tweetlerin gizlenip gizlenmeyeceği",
+  "@whether_to_hide_tweets_marked_as_sensitive": {},
+  "hide_sensitive_tweets": "Hassas tweetleri gizle",
+  "@hide_sensitive_tweets": {}
 }

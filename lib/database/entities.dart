@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/material.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/user.dart';
 
@@ -85,6 +86,8 @@ class SubscriptionGroup with ToMappable {
   final Color? color;
   final int numberOfMembers;
   final DateTime createdAt;
+
+  IconData get iconData => deserializeIconData(icon);
 
   SubscriptionGroup(
       {required this.id,

@@ -29,31 +29,32 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
       onState: (_, state) {
         if (state.isEmpty) {
           return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text('¯\\_(ツ)_/¯', style: TextStyle(fontSize: 32)),
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: const Text('¯\\_(ツ)_/¯', style: TextStyle(fontSize: 32)),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(L10n.of(context).no_subscriptions_try_searching_or_importing_some,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Theme.of(context).hintColor,
+                        )),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: ElevatedButton(
+                      child: Text(L10n.of(context).import_from_twitter),
+                      onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(L10n.of(context).no_subscriptions_try_searching_or_importing_some,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Theme.of(context).hintColor,
-                          )),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: ElevatedButton(
-                        child: Text(L10n.of(context).import_from_twitter),
-                        onPressed: () => Navigator.pushNamed(context, routeSubscriptionsImport),
-                      ),
-                    )
-                  ]));
+                  )
+                ]));
         }
 
         return ListView.builder(

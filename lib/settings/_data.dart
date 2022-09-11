@@ -10,7 +10,7 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/utils/legacy.dart';
 import 'package:logging/logging.dart';
@@ -72,7 +72,7 @@ class SettingsDataFragment extends StatelessWidget {
   Future<void> _importFromFile(BuildContext context, File file) async {
     var content = jsonDecode(file.readAsStringSync());
 
-    var homeModel = context.read<HomeModel>();
+    var importModel = context.read<ImportDataModel>();
     var groupModel = context.read<GroupsModel>();
     var prefs = PrefService.of(context);
 
@@ -105,7 +105,7 @@ class SettingsDataFragment extends StatelessWidget {
       dataToImport[tableSavedTweet] = tweets;
     }
 
-    await homeModel.importData(dataToImport);
+    await importModel.importData(dataToImport);
     await groupModel.reloadGroups();
     await context.read<SubscriptionsModel>().reloadSubscriptions();
     await context.read<SubscriptionsModel>().refreshSubscriptionData();

@@ -102,7 +102,7 @@ class _StatusScreenState extends State<_StatusScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ChangeNotifierProvider(
+      body: ChangeNotifierProvider<TweetContextState>(
         create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
         child: PagedListView<String?, TweetChain>(
           padding: EdgeInsets.zero,

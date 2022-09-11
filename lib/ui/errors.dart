@@ -10,6 +10,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/generated/l10n.dart';
 
 void showSnackBar(BuildContext context, {required String icon, required String message}) {
+  ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,15 +185,17 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;
   final String prefix;
+  final Function? onRetry;
+  final String? retryText;
 
-  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix})
+  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry, this.retryText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace),
+      body: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace, onRetry: onRetry, retryText: retryText),
     );
   }
 }
@@ -202,9 +205,10 @@ class FullPageErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
   final Function? onRetry;
+  final String? retryText;
 
   const FullPageErrorWidget(
-      {Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry})
+      {Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry, this.retryText})
       : super(key: key);
 
   @override
@@ -284,7 +288,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
             Container(
               margin: const EdgeInsets.only(top: 12),
               child: ElevatedButton(
-                child: Text(L10n.of(context).retry),
+                child: Text(retryText ?? L10n.of(context).retry),
                 onPressed: () => onRetry(),
               ),
             )

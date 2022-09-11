@@ -440,5 +440,9 @@
   "possibly_sensitive_tweet": "تحتوي هذه التغريدة على محتوى يحتمل أن يكون حساسا. هل ترغب في مشاهدته؟",
   "@possibly_sensitive_tweet": {},
   "possibly_sensitive_profile": "قد يتضمن ملف التعريف هذا صورًا أو لغة أو محتوى آخر يحتمل أن يكون حساسًا. هل مازلت تريد مشاهدته؟",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "hide_sensitive_tweets": "إخفاء التغريدات الحساسة",
+  "@hide_sensitive_tweets": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "ما إذا كنت تريد إخفاء التغريدات التي تم وضع علامة عليها على أنها حساسة",
+  "@whether_to_hide_tweets_marked_as_sensitive": {}
 }

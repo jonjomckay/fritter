@@ -440,5 +440,9 @@
   "possibly_sensitive_tweet": "Tento tweet obsahuje potenciálně citlivý obsah. Chcete jej zobrazit?",
   "@possibly_sensitive_tweet": {},
   "possibly_sensitive_profile": "Tento profil může obsahovat potenciálně citlivé obrázky, jazyk nebo jiný obsah. Chcete jej přesto zobrazit?",
-  "@possibly_sensitive_profile": {}
+  "@possibly_sensitive_profile": {},
+  "hide_sensitive_tweets": "Skrýt citlivé tweety",
+  "@hide_sensitive_tweets": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "Zda skrývat tweety označené jako citlivé",
+  "@whether_to_hide_tweets_marked_as_sensitive": {}
 }
