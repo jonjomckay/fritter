@@ -1046,6 +1046,26 @@ class L10n {
     );
   }
 
+  /// `Activate non-confirmation bias mode`
+  String get activate_non_confirmation_bias_mode_label {
+    return Intl.message(
+      'Activate non-confirmation bias mode',
+      name: 'activate_non_confirmation_bias_mode_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.`
+  String get activate_non_confirmation_bias_mode_description {
+    return Intl.message(
+      'Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments.',
+      name: 'activate_non_confirmation_bias_mode_description',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Whether errors should be reported to Sentry`
   String get whether_errors_should_be_reported_to_sentry {
     return Intl.message(

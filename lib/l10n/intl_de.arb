@@ -59,6 +59,8 @@
   "@the_file_does_not_exist_please_ensure_it_is_located_at_file_path": {},
   "enable_sentry": "Sentry aktivieren?",
   "@enable_sentry": {},
+  "activate_non_confirmation_bias_mode_label": "Anti-Bestätigungsfehler-Modus aktivieren",
+  "activate_non_confirmation_bias_mode_description": "Autor eines Tweets verstecken. Vermeide Bestätigungsfehler durch Autoritätsargumente.",
   "whether_errors_should_be_reported_to_sentry": "Ob Fehlermeldungen an Sentry gesendet werden sollen",
   "@whether_errors_should_be_reported_to_sentry": {},
   "about": "Über",

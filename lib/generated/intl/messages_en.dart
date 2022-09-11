@@ -74,6 +74,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Account suspended"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Hide the author of a tweet. Avoid confirmation bias based on authoritative arguments."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Activate non-confirmation bias mode"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Add to group"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "all_the_great_software_used_by_fritter":

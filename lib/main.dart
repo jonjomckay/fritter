@@ -172,6 +172,7 @@ Future<void> main() async {
     optionHomePages: defaultHomePages.map((e) => e.id).toList(),
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
+    optionNonConfirmationBiasMode: false,
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
     optionSubscriptionGroupsOrderByField: 'name',
@@ -180,6 +181,8 @@ Future<void> main() async {
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
     optionThemeColorScheme: 'aquaBlue',
+    optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
+
     optionTweetsHideSensitive: false,
     optionUserTrendsLocations: jsonEncode({
       'active': {'name': 'Worldwide', 'woeid': 1},

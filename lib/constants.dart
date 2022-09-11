@@ -33,6 +33,8 @@ const optionTweetsHideSensitive = 'tweets.hide_sensitive';
 
 const optionUserTrendsLocations = 'trends.locations';
 
+const optionNonConfirmationBiasMode = 'other.improve_non_confirmation_bias';
+
 const routeGroup = '/group';
 const routeProfile = '/profile';
 const routeSearch = '/search';

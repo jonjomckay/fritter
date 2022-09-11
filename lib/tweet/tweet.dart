@@ -23,6 +23,7 @@ import 'package:fritter/utils/urls.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -275,6 +276,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
+    final prefs = PrefService.of(context, listen: false);
+    final hideAuthorInformation = prefs.get(optionNonConfirmationBiasMode);
     var numberFormat = NumberFormat.compact();
     var theme = Theme.of(context);
 
@@ -450,19 +453,21 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                           },
                           title: Row(
                             children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                        child: Text(tweet.user!.name!,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(fontWeight: FontWeight.w500))),
-                                    if (tweet.user!.verified ?? false) const SizedBox(width: 4),
-                                    if (tweet.user!.verified ?? false)
-                                      Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
-                                  ],
+                              // Username
+                              if (!hideAuthorInformation)
+                                Flexible(
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                          child: Text(tweet.user!.name!,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(fontWeight: FontWeight.w500))),
+                                      if (tweet.user!.verified ?? false) const SizedBox(width: 4),
+                                      if (tweet.user!.verified ?? false)
+                                        Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                                    ],
+                                  ),
                                 ),
-                              ),
                               IconButton(
                                 icon: const Icon(Icons.more_horiz),
                                 padding: EdgeInsets.zero,
@@ -487,14 +492,14 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                                 return createSheetButton(
                                                   L10n.of(context).unsave,
                                                   Icons.bookmark,
-                                                      () async {
+                                                  () async {
                                                     await model.deleteSavedTweet(tweet.idStr!);
                                                     Navigator.pop(context);
                                                   },
                                                 );
                                               } else {
-                                                return createSheetButton(
-                                                    L10n.of(context).save, Icons.bookmark_outline, () async {
+                                                return createSheetButton(L10n.of(context).save, Icons.bookmark_outline,
+                                                    () async {
                                                   await model.saveTweet(tweet.idStr!, tweet.toJson());
                                                   Navigator.pop(context);
                                                 });
@@ -513,7 +518,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                                   'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
                                               Navigator.pop(context);
                                             }),
-                                            createSheetButton(L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
+                                            createSheetButton(
+                                                L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
                                               Share.share(
                                                   '$tweetText\n\nhttps://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
                                               Navigator.pop(context);
@@ -537,22 +543,29 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             ],
                           ),
                           subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment:
+                                hideAuthorInformation ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(
-                                  child: Text(
-                                '@${tweet.user!.screenName!}',
-                                overflow: TextOverflow.ellipsis,
-                              )),
-                              const SizedBox(width: 4),
+                              // Twitter name
+                              if (!hideAuthorInformation) ...[
+                                Flexible(
+                                    child: Text(
+                                  '@${tweet.user!.screenName!}',
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                                const SizedBox(width: 4),
+                              ],
                               if (createdAt != null)
                                 DefaultTextStyle(style: theme.textTheme.caption!, child: Timestamp(timestamp: createdAt))
                             ],
                           ),
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(64),
-                            child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
-                          ),
+                          // Profile picture
+                          leading: hideAuthorInformation
+                              ? null
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(64),
+                                  child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
+                                ),
                         ),
                         content,
                         media,
@@ -566,10 +579,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                               child: Row(
                                 children: [
                                   if (tweet.replyCount != null)
-                                    _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () {
+                                    _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null,
+                                        () {
                                       Navigator.pushNamed(context, routeStatus,
-                                          arguments:
-                                              StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
+                                          arguments: StatusScreenArguments(
+                                              id: tweet.idStr!, username: tweet.user!.screenName!));
                                     }),
                                   if (tweet.retweetCount != null)
                                     _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
