@@ -446,5 +446,7 @@
   "theme_mode": "Tryb motywu",
   "@theme_mode": {},
   "disable_screenshots": "Wyłącz zrzuty ekranu",
-  "@disable_screenshots": {}
+  "@disable_screenshots": {},
+  "disable_screenshots_hint": "Zapobiegaj robieniu zrzutów ekranu. Może to nie działać na wszystkich urządzeniach",
+  "@disable_screenshots_hint": {}
 }
