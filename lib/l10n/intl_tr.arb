@@ -231,7 +231,7 @@
   "@data_exported_to_fullPath": {},
   "help_make_fritter_even_better": "Fritter'ın daha da iyi olmasına yardımcı olun",
   "@help_make_fritter_even_better": {},
-  "whether_errors_should_be_reported_to_sentry": "Hataların Sentry'ye bildirilip bildirilmeyeceğini belirler",
+  "whether_errors_should_be_reported_to_sentry": "Hataların Sentry'ye bildirilip bildirilmeyeceği",
   "@whether_errors_should_be_reported_to_sentry": {},
   "medium": "Orta",
   "@medium": {},
