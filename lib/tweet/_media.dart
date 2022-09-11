@@ -76,7 +76,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
     var item = widget.media;
 
     if (_showMedia) {
-      media = TweetMediaThing(item: item, username: widget.username, size: size);
+      media = TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: false);
     } else {
       media = GestureDetector(
         child: Container(
@@ -255,7 +255,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
         itemBuilder: (BuildContext context, int index) {
           var item = widget.media[index];
 
-          return TweetMediaThing(item: item, username: widget.username, size: size);
+          return TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: true);
         },
         controller: ExtendedPageController(
           initialPage: widget.initialIndex,
@@ -272,8 +272,9 @@ class TweetMediaThing extends StatelessWidget {
   final Media item;
   final String username;
   final String size;
+  final bool pullToClose;
 
-  const TweetMediaThing({Key? key, required this.item, required this.username, required this.size}) : super(key: key);
+  const TweetMediaThing({Key? key, required this.item, required this.username, required this.size, required this.pullToClose}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +284,7 @@ class TweetMediaThing extends StatelessWidget {
     } else if (item.type == 'video') {
       media = TweetVideo(media: item, loop: false, username: username);
     } else if (item.type == 'photo') {
-      media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.scaleDown);
+      media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.scaleDown, pullToClose: pullToClose);
     } else {
       media = Text(L10n.of(context).unknown);
     }
