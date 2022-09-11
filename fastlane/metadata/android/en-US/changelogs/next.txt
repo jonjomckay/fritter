@@ -25,3 +25,4 @@
 * Added support for disabling screenshots (#480, #355 - thanks to @Myzel394!)
 * Added support for avoiding confirmation bias (#465 - thanks to @Myzel394!)
 * Fixed dragging on images bricking the whole app (#444, #477, #497)
+* Fixed retweets not appearing in group feeds (#494)
