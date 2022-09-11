@@ -414,5 +414,11 @@
   "choose": "Wählen",
   "@choose": {},
   "not_set": "Nicht festgelegt",
-  "@not_set": {}
+  "@not_set": {},
+  "language": "Sprache",
+  "language_subtitle": "Neustart erforderlich",
+  "hide_sensitive_tweets": "Sensible Tweets ausblenden",
+  "whether_to_hide_tweets_marked_as_sensitive": "Ob Tweets, die als sensibel markiert sind, ausgeblendet werden sollen",
+  "disable_screenshots": "Screenshots deaktivieren",
+  "disable_screenshots_hint": "Versucht zu verhindern, dass Screenshots von Fritter gemacht werden können. Dies ist keine Garantie und funktioniert möglicherweise nicht auf allen Geräten."
 }

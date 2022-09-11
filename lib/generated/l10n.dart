@@ -2296,6 +2296,26 @@ class L10n {
     );
   }
 
+  /// `Disable screenshots`
+  String get disable_screenshots {
+    return Intl.message(
+      'Disable screenshots',
+      name: 'disable_screenshots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices.`
+  String get disable_screenshots_hint {
+    return Intl.message(
+      'This will try to prevent screenshots from being taken of Fritter. This is not a guarantee, and may not work on all devices.',
+      name: 'disable_screenshots_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Potentially sensitive`
   String get possibly_sensitive {
     return Intl.message(

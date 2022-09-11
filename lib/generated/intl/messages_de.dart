@@ -129,6 +129,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "default_tab":
             MessageLookupByLibrary.simpleMessage("Registerkarte \"Standard\""),
         "delete": MessageLookupByLibrary.simpleMessage("Löschen"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Screenshots deaktivieren"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Versucht zu verhindern, dass Screenshots von Fritter gemacht werden können. Dies ist keine Garantie und funktioniert möglicherweise nicht auf allen Geräten."),
         "disabled": MessageLookupByLibrary.simpleMessage("Deaktiviert"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Nicht Senden"),
         "donate": MessageLookupByLibrary.simpleMessage("Spenden"),
@@ -180,6 +184,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Dies sind die zu sendenden Daten. Sie werden nur verwendet, um festzustellen, welche Geräte und Sprachen Fritter zukünftig unterstützen soll."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Sensible Tweets ausblenden"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Wenn Sie zu dieser Funktion eine Rückmeldung abgeben möchten, hinterlassen Sie sie bitte auf"),
@@ -202,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Es scheint, als hättest du bereits einen Ping gesendet. 🤔"),
         "joined": m7,
+        "language": MessageLookupByLibrary.simpleMessage("Sprache"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Neustart erforderlich"),
         "large": MessageLookupByLibrary.simpleMessage("Groß"),
         "legacy_android_import": MessageLookupByLibrary.simpleMessage(
             "Von Legacy-Android-Geräten importieren"),
@@ -431,6 +440,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Ob Fehlermeldungen an Sentry gesendet werden sollen"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Ob Tweets, die als sensibel markiert sind, ausgeblendet werden sollen"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Welche Registerkarte wird beim Öffnen der App angezeigt"),

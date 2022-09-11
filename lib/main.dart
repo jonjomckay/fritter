@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:fritter/catcher/nice_console_handler.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
@@ -75,16 +76,13 @@ Future checkForUpdates() async {
         }
 
         var details = NotificationDetails(
-            android: AndroidNotificationDetails('updates', 'Updates', channelDescription: 'When a new app update is available',
-              importance: Importance.max,
-              largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-              priority: Priority.high,
-              showWhen: false,
-              actions: [
-                AndroidNotificationAction(ignoredKey, 'Ignore this version')
-              ]
-            )
-        );
+            android: AndroidNotificationDetails('updates', 'Updates',
+                channelDescription: 'When a new app update is available',
+                importance: Importance.max,
+                largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+                priority: Priority.high,
+                showWhen: false,
+                actions: [AndroidNotificationAction(ignoredKey, 'Ignore this version')]));
 
         if (flavor == 'github') {
           await FlutterLocalNotificationsPlugin().show(
@@ -187,7 +185,8 @@ Future<void> main() async {
       'locations': [
         {'name': 'Worldwide', 'woeid': 1}
       ]
-    })
+    }),
+    optionDisableScreenshots: false,
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -236,7 +235,9 @@ Future<void> main() async {
           const InitializationSettings settings =
               InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
-          await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback, onDidReceiveNotificationResponse: (response) async {
+          await notifications
+              .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+                  onDidReceiveNotificationResponse: (response) async {
             var payload = response.payload;
             if (payload != null && payload.startsWith('https://')) {
               await openUri(payload);
@@ -334,12 +335,21 @@ class _MyAppState extends State<MyApp> {
       _colorScheme = FlexScheme.values.byName(colorSchemeName);
     }
 
+    void setDisableScreenshots(final bool secureModeEnabled) async {
+      if (secureModeEnabled) {
+        await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+      } else {
+        await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+      }
+    }
+
     // Set any already-enabled preferences
     setState(() {
       setLocale(prefService.get<String>(optionLocale));
       _themeMode = prefService.get(optionThemeMode);
       _trueBlack = prefService.get(optionThemeTrueBlack);
       setColorScheme(prefService.get(optionThemeColorScheme));
+      setDisableScreenshots(prefService.get(optionDisableScreenshots));
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
@@ -368,6 +378,12 @@ class _MyAppState extends State<MyApp> {
     prefService.addKeyListener(optionThemeColorScheme, () {
       setState(() {
         setColorScheme(prefService.get(optionThemeColorScheme));
+      });
+    });
+
+    prefService.addKeyListener(optionDisableScreenshots, () {
+      setState(() {
+        setDisableScreenshots(prefService.get(optionDisableScreenshots));
       });
     });
   }
@@ -439,7 +455,8 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
       title: 'Fritter',
-      theme: FlexThemeData.light(scheme: _colorScheme,
+      theme: FlexThemeData.light(
+        scheme: _colorScheme,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,
@@ -452,7 +469,9 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         appBarStyle: FlexAppBarStyle.primary,
       ),
-      darkTheme: FlexThemeData.dark(scheme: _colorScheme, darkIsTrueBlack: _trueBlack,
+      darkTheme: FlexThemeData.dark(
+        scheme: _colorScheme,
+        darkIsTrueBlack: _trueBlack,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 20,
         appBarOpacity: 0.95,

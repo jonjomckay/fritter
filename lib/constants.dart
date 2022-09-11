@@ -31,6 +31,8 @@ const optionThemeColorScheme = 'theme.color_scheme';
 
 const optionUserTrendsLocations = 'trends.locations';
 
+const optionDisableScreenshots = 'native.disable_screenshots';
+
 const routeGroup = '/group';
 const routeProfile = '/profile';
 const routeSearch = '/search';
