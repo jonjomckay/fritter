@@ -444,5 +444,21 @@
   "whether_to_hide_tweets_marked_as_sensitive": "Hassas olarak işaretlenen tweetlerin gizlenip gizlenmeyeceği",
   "@whether_to_hide_tweets_marked_as_sensitive": {},
   "hide_sensitive_tweets": "Hassas tweetleri gizle",
-  "@hide_sensitive_tweets": {}
+  "@hide_sensitive_tweets": {},
+  "home": "Ana sayfa",
+  "@home": {},
+  "unable_to_load_home_pages": "Ana sayfalarınız yüklenemiyor",
+  "@unable_to_load_home_pages": {},
+  "reset_home_pages": "Sayfaları öntanımlı olana sıfırla",
+  "@reset_home_pages": {},
+  "you_must_have_at_least_2_home_screen_pages": "En az 2 ana ekran sayfanız olmalıdır",
+  "@you_must_have_at_least_2_home_screen_pages": {},
+  "disable_screenshots": "Ekran görüntülerini devre dışı bırak",
+  "@disable_screenshots": {},
+  "disable_screenshots_hint": "Ekran görüntülerinin alınmasını engelleyin. Bu, tüm aygıtlarda çalışmayabilir.",
+  "@disable_screenshots_hint": {},
+  "activate_non_confirmation_bias_mode_label": "Doğrulama yanlılığı kapalı modunu etkinleştir",
+  "@activate_non_confirmation_bias_mode_label": {},
+  "activate_non_confirmation_bias_mode_description": "Tweet yazarlarını gizleyin. Yazarın argümanlara dayalı doğrulama yanlılığından kaçının.",
+  "@activate_non_confirmation_bias_mode_description": {}
 }
