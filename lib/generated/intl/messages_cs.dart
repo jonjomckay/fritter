@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "Připojen/a ${date}";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'žádné hlasy', one: 'jeden hlas', two: 'dva hlasy', few: '${numFormatted} hlasy', many: '${numFormatted} hlasů', other: '${numFormatted} hlasů')}";
+      "${Intl.plural(num, zero: 'Žádné hlasy', one: 'Jeden hlas', two: 'Dva hlasy', few: '${numFormatted} hlasy', many: '${numFormatted} hlasů', other: '${numFormatted} hlasů')}";
 
   static String m9(errorMessage) =>
       "Zkontrolujte prosím vaše připojení k internetu.\n\n${errorMessage}";
@@ -181,6 +181,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Zde jsou data, která budou odeslána. Budou použita pouze k určení, jaká zařízení a jazyky by měl v budoucnu Fritter podporovat."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Skrýt citlivé tweety"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Pokud máte ohledně této funkce jakoukoli zpětnou vazbu, zanechte ji prosím"),
@@ -262,6 +264,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Vezměte prosím na vědomí, že způsob, který používá Fritter pro import odběrů je silně limitován Twitterem, takže při velkém množství sledovaných účtů může tato akce selhat."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potenciálně citlivé"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Tento profil může obsahovat potenciálně citlivé obrázky, jazyk nebo jiný obsah. Chcete jej přesto zobrazit?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Tento tweet obsahuje potenciálně citlivý obsah. Chcete jej zobrazit?"),
         "prefix": MessageLookupByLibrary.simpleMessage("předpona"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Soukromý profil"),
@@ -317,7 +325,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Odběry"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Titulky"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Média uložena."),
+            MessageLookupByLibrary.simpleMessage("Média uložena!"),
         "system": MessageLookupByLibrary.simpleMessage("Systémové"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -333,6 +341,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Tweety neobsahoval žádný text. Toto je neočekávané"),
         "theme": MessageLookupByLibrary.simpleMessage("Téma"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Režim motivu"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Nebyly vráceny žádné trendy. Toto je neočekávané! Pokud je to možné, nahlaste to prosím jako chybu."),
@@ -440,6 +449,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Nastavit, zda mají být chyby nahlašovány do Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Zda skrývat tweety označené jako citlivé"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Karta, která bude zobrazena při otevření aplikace"),
@@ -447,6 +459,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Chcete povolit automatické nahlašování?"),
         "yes": MessageLookupByLibrary.simpleMessage("Ano"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Ano, prosím"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Zatím jste si neuložili žádné tweety!"),

@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "以下是将要发送的数据。 它只会用于识别Fritter未来应该支持的设备和语言。"),
+        "hide_sensitive_tweets": MessageLookupByLibrary.simpleMessage("隐藏敏感推文"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage("如果您对此功能有任何反馈，请留言给我们"),
         "import": MessageLookupByLibrary.simpleMessage("导入"),
@@ -219,6 +220,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "请注意，Fritter用来导入订阅的方法是受到Twitter限制的，所以如果你有多要导入的账号，这可能会失败。"),
+        "possibly_sensitive": MessageLookupByLibrary.simpleMessage("潜在敏感"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "此个人资料可能包括潜在的敏感图像、语言或其他内容。 你还是想看吗？"),
+        "possibly_sensitive_tweet":
+            MessageLookupByLibrary.simpleMessage("此推文包含潜在的敏感内容。 你想看吗？"),
         "prefix": MessageLookupByLibrary.simpleMessage("字首"),
         "private_profile": MessageLookupByLibrary.simpleMessage("个人简介"),
         "released_under_the_mit_license":
@@ -264,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("订阅"),
         "subtitles": MessageLookupByLibrary.simpleMessage("字幕"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("已保存媒体文件。"),
+            MessageLookupByLibrary.simpleMessage("已保存媒体文件！"),
         "system": MessageLookupByLibrary.simpleMessage("系统"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -278,6 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage("该推文没有包含任何文字。令人感叹"),
         "theme": MessageLookupByLibrary.simpleMessage("主题"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("主题模式"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "没有返回的热门。这是出乎意料的! 如果可能的话，请作为一个错误报告。"),
@@ -361,11 +368,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("当有新的应用可更新时"),
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage("是否向Sentry发送错误？👀"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage("是否隐藏被标记为敏感的推文"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage("打开应用时显示哪个页面"),
         "would_you_like_to_enable_automatic_error_reporting":
             MessageLookupByLibrary.simpleMessage("您想启用自动报告错误功能吗？"),
         "yes": MessageLookupByLibrary.simpleMessage("好"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("是，请让我看"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("您还没有保存任何推文呢！"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":

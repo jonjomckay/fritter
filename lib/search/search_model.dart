@@ -1,6 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/user.dart';
 
 class SearchTweetsModel extends StreamStore<Object, List<TweetWithCard>> {
   SearchTweetsModel() : super([]);
@@ -17,7 +18,7 @@ class SearchTweetsModel extends StreamStore<Object, List<TweetWithCard>> {
   }
 }
 
-class SearchUsersModel extends StreamStore<Object, List<User>> {
+class SearchUsersModel extends StreamStore<Object, List<UserWithExtra>> {
   SearchUsersModel() : super([]);
 
   Future<void> searchUsers(String query) async {

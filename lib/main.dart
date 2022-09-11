@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:fritter/catcher/nice_console_handler.dart';
 import 'package:fritter/catcher/null_handler.dart';
 import 'package:fritter/catcher/sentry_handler.dart';
@@ -19,8 +20,9 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/group/group_screen.dart';
+import 'package:fritter/home/home_model.dart';
 import 'package:fritter/home/home_screen.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
@@ -161,13 +163,16 @@ Future<void> main() async {
 
   setTimeagoLocales();
 
-  L10n.load(const Locale('en'));
+  await L10n.load(const Locale('en'));
 
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
+    optionDisableScreenshots: false,
     optionDownloadPath: '',
     optionDownloadType: optionDownloadTypeAsk,
+    optionHomePages: defaultHomePages.map((e) => e.id).toList(),
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
+    optionNonConfirmationBiasMode: false,
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
     optionSubscriptionGroupsOrderByField: 'name',
@@ -177,7 +182,14 @@ Future<void> main() async {
     optionThemeTrueBlack: false,
     optionThemeColorScheme: 'aquaBlue',
     optionTrendsLocation: jsonEncode({'name': 'Worldwide', 'woeid': 1}),
-    optionNonConfirmationBiasMode: false,
+
+    optionTweetsHideSensitive: false,
+    optionUserTrendsLocations: jsonEncode({
+      'active': {'name': 'Worldwide', 'woeid': 1},
+      'locations': [
+        {'name': 'Worldwide', 'woeid': 1}
+      ]
+    }),
   });
 
   var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
@@ -250,22 +262,26 @@ Future<void> main() async {
           // Ignore, as we'll catch it later instead
         }
 
-        var homeModel = HomeModel();
+        var importDataModel = ImportDataModel();
 
         var groupsModel = GroupsModel(prefService);
         await groupsModel.reloadGroups();
 
+        var homeModel = HomeModel(prefService, groupsModel);
+        await homeModel.loadPages();
+
         var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
         await subscriptionsModel.reloadSubscriptions();
 
-        var trendLocationModel = TrendLocationModel(prefService);
+        var trendLocationModel = UserTrendLocationModel(prefService);
 
         runApp(PrefService(
             service: prefService,
             child: MultiProvider(
               providers: [
                 Provider(create: (context) => groupsModel),
-                ChangeNotifierProvider(create: (context) => homeModel),
+                Provider(create: (context) => homeModel),
+                ChangeNotifierProvider(create: (context) => importDataModel),
                 Provider(create: (context) => subscriptionsModel),
                 Provider(create: (context) => SavedTweetModel()),
                 Provider(create: (context) => SearchTweetsModel()),
@@ -322,12 +338,22 @@ class _MyAppState extends State<MyApp> {
       _colorScheme = FlexScheme.values.byName(colorSchemeName);
     }
 
+    // TODO: This doesn't work on iOS
+    void setDisableScreenshots(final bool secureModeEnabled) async {
+      if (secureModeEnabled) {
+        await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+      } else {
+        await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+      }
+    }
+
     // Set any already-enabled preferences
     setState(() {
       setLocale(prefService.get<String>(optionLocale));
       _themeMode = prefService.get(optionThemeMode);
       _trueBlack = prefService.get(optionThemeTrueBlack);
       setColorScheme(prefService.get(optionThemeColorScheme));
+      setDisableScreenshots(prefService.get(optionDisableScreenshots));
     });
 
     prefService.addKeyListener(optionShouldCheckForUpdates, () {
@@ -356,6 +382,12 @@ class _MyAppState extends State<MyApp> {
     prefService.addKeyListener(optionThemeColorScheme, () {
       setState(() {
         setColorScheme(prefService.get(optionThemeColorScheme));
+      });
+    });
+
+    prefService.addKeyListener(optionDisableScreenshots, () {
+      setState(() {
+        setDisableScreenshots(prefService.get(optionDisableScreenshots));
       });
     });
   }

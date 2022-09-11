@@ -10,6 +10,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/generated/l10n.dart';
 
 void showSnackBar(BuildContext context, {required String icon, required String message}) {
+  ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,10 +83,13 @@ class EmojiErrorWidget extends FritterErrorWidget {
   final String message;
   final String errorMessage;
   final Function? onRetry;
+  String retryText = '';
 
-  const EmojiErrorWidget(
-      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry})
-      : super(key: key);
+  EmojiErrorWidget(
+      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry, String? retryText})
+      : super(key: key) {
+      this.retryText = retryText ?? L10n.current.retry;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,29 +110,32 @@ class EmojiErrorWidget extends FritterErrorWidget {
             child:
                 Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 12),
-            child: ElevatedButton(
-              child: Text(L10n.of(context).back),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-          if (onRetry != null)
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(
               margin: const EdgeInsets.only(top: 12),
-              child: AsyncButtonBuilder(
-                showError: false,
-                showSuccess: false,
-                builder: (context, child, callback, buttonState) {
-                  return ElevatedButton(
-                    onPressed: callback,
-                    child: child,
-                  );
-                },
-                child: Text(L10n.of(context).retry),
-                onPressed: () => onRetry(),
+              child: ElevatedButton(
+                child: Text(L10n.of(context).back),
+                onPressed: () => Navigator.pop(context),
               ),
-            )
+            ),
+            const SizedBox(width: 16),
+            if (onRetry != null)
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                child: AsyncButtonBuilder(
+                  showError: false,
+                  showSuccess: false,
+                  builder: (context, child, callback, buttonState) {
+                    return ElevatedButton(
+                      onPressed: callback,
+                      child: child,
+                    );
+                  },
+                  child: Text(retryText),
+                  onPressed: () => onRetry(),
+                ),
+              )
+          ])
         ],
       ),
     );
@@ -178,15 +185,17 @@ class ScaffoldErrorWidget extends FritterErrorWidget {
   final Object? error;
   final StackTrace? stackTrace;
   final String prefix;
+  final Function? onRetry;
+  final String? retryText;
 
-  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix})
+  const ScaffoldErrorWidget({Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry, this.retryText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace),
+      body: FullPageErrorWidget(error: error, prefix: prefix, stackTrace: stackTrace, onRetry: onRetry, retryText: retryText),
     );
   }
 }
@@ -196,9 +205,10 @@ class FullPageErrorWidget extends FritterErrorWidget {
   final StackTrace? stackTrace;
   final String prefix;
   final Function? onRetry;
+  final String? retryText;
 
   const FullPageErrorWidget(
-      {Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry})
+      {Key? key, required this.error, required this.stackTrace, required this.prefix, this.onRetry, this.retryText})
       : super(key: key);
 
   @override
@@ -278,7 +288,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
             Container(
               margin: const EdgeInsets.only(top: 12),
               child: ElevatedButton(
-                child: Text(L10n.of(context).retry),
+                child: Text(retryText ?? L10n.of(context).retry),
                 onPressed: () => onRetry(),
               ),
             )

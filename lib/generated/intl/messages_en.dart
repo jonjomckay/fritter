@@ -130,6 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Date Subscribed"),
         "default_tab": MessageLookupByLibrary.simpleMessage("Default tab"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Disable screenshots"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Prevent screenshots from being taken. This may not work on all devices."),
         "disabled": MessageLookupByLibrary.simpleMessage("Disabled"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Don\'t send"),
         "donate": MessageLookupByLibrary.simpleMessage("Donate"),
@@ -183,6 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Here is the data that will be sent. It will only be used to determine which devices and languages to support in Fritter in the future."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Hide sensitive tweets"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "If you have any feedback on this feature, please leave it on"),
@@ -262,6 +269,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Please note that the method Fritter uses to import subscriptions is heavily rate-limited by Twitter, so this may fail if you have a lot of followed accounts."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potentially sensitive"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "This tweet contains potentially sensitive content. Would you like to view it?"),
         "prefix": MessageLookupByLibrary.simpleMessage("prefix"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Private profile"),
@@ -272,6 +285,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Report a bug"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Reporting an error"),
+        "reset_home_pages":
+            MessageLookupByLibrary.simpleMessage("Reset pages to default"),
         "retry": MessageLookupByLibrary.simpleMessage("Retry"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "save_bandwidth_using_smaller_images":
@@ -375,6 +390,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Unable to find your saved tweets."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Unable to import"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Unable to load your home pages"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to load subscription groups"),
@@ -439,6 +456,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Whether errors should be reported to Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Whether to hide tweets marked as sensitive"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Which tab is shown when the app opens"),
@@ -446,9 +466,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Would you like to enable automatic error reporting?"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Yes, please"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "You haven\'t saved any tweets yet!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "You must have at least 2 home screen pages"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Your device is running a version of Android older than KitKat (4.4), so data can only be imported from:"),

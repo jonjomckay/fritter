@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home_model.dart';
+import 'package:fritter/import_data_model.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/status.dart';
@@ -13,6 +13,7 @@ import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/tweet/tweet_exceptions.dart';
+import 'package:fritter/ui/dates.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/iterables.dart';
@@ -25,7 +26,6 @@ import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class TweetTile extends StatefulWidget {
   final bool clickable;
@@ -279,6 +279,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     final prefs = PrefService.of(context, listen: false);
     final hideAuthorInformation = prefs.get(optionNonConfirmationBiasMode);
     var numberFormat = NumberFormat.compact();
+    var theme = Theme.of(context);
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
 
@@ -295,7 +296,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(media: tweet.extendedEntities!.media!, username: this.tweet.user!.screenName!);
+      media = TweetMedia(sensitive: tweet.possiblySensitive, media: tweet.extendedEntities!.media!, username: this.tweet.user!.screenName!);
     }
 
     Widget retweetBanner = Container();
@@ -414,7 +415,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       Catcher.reportCheckedError(TweetMissingDataException(tweet.idStr, ['createdAt']), null);
     }
 
-    return Consumer<HomeModel>(
+    return Consumer<ImportDataModel>(
         builder: (context, model, child) => Card(
               child: IntrinsicHeight(
                 child: Row(
@@ -555,8 +556,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                 const SizedBox(width: 4),
                               ],
                               if (createdAt != null)
-                                Text(timeago.format(createdAt, locale: Intl.shortLocale(Intl.getCurrentLocale())),
-                                    style: Theme.of(context).textTheme.caption)
+                                DefaultTextStyle(style: theme.textTheme.caption!, child: Timestamp(timestamp: createdAt))
                             ],
                           ),
                           // Profile picture

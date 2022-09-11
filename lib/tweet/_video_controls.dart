@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+import '../generated/l10n.dart';
+
 // This class is mostly taken directly from Chewie, which is released under the MIT License
 // https://github.com/fluttercommunity/chewie/blob/0d997f8ded29ae2151a6935668d8654a6deb8fa6/lib/src/material/material_controls.dart
 class FritterMaterialControls extends StatefulWidget {
@@ -168,8 +170,7 @@ class _MaterialControlsState extends State<FritterMaterialControls>
           _onSpeedButtonTap();
         },
         iconData: Icons.speed,
-        title: chewieController.optionsTranslation?.playbackSpeedButtonText ??
-            'Playback speed',
+        title: L10n.of(context).playback_speed,
       )
     ];
 
@@ -194,8 +195,7 @@ class _MaterialControlsState extends State<FritterMaterialControls>
               useRootNavigator: chewieController.useRootNavigator,
               builder: (context) => OptionsDialog(
                 options: options,
-                cancelButtonText:
-                chewieController.optionsTranslation?.cancelButtonText,
+                cancelButtonText: L10n.of(context).cancel,
               ),
             );
           }
@@ -271,7 +271,7 @@ class _MaterialControlsState extends State<FritterMaterialControls>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   if (chewieController.isLive)
-                    const Expanded(child: Text('LIVE'))
+                    Expanded(child: Text(L10n.of(context).live))
                   else
                     _buildPosition(iconColor),
                   if (chewieController.allowMuting)

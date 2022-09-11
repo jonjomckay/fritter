@@ -234,6 +234,7 @@
   "@no": {},
   "yes": "Yes",
   "@yes": {},
+  "yes_please": "Yes, please",
   "are_you_sure": "Are you sure?",
   "@are_you_sure": {},
   "are_you_sure_you_want_to_delete_the_subscription_group_name_of_group": "Are you sure you want to delete the subscription group {name}?",
@@ -413,5 +414,16 @@
   "choose": "Choose",
   "not_set": "Not set",
   "language": "Language",
-  "language_subtitle": "Requires a restart"
+  "language_subtitle": "Requires a restart",
+  "hide_sensitive_tweets": "Hide sensitive tweets",
+  "whether_to_hide_tweets_marked_as_sensitive": "Whether to hide tweets marked as sensitive",
+  "disable_screenshots": "Disable screenshots",
+  "disable_screenshots_hint": "Prevent screenshots from being taken. This may not work on all devices.",
+  "possibly_sensitive": "Potentially sensitive",
+  "possibly_sensitive_tweet": "This tweet contains potentially sensitive content. Would you like to view it?",
+  "possibly_sensitive_profile": "This profile may include potentially sensitive images, language, or other content. Do you still want to view it?",
+  "home": "Home",
+  "unable_to_load_home_pages": "Unable to load your home pages",
+  "reset_home_pages": "Reset pages to default",
+  "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages"
 }

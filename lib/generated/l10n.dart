@@ -1256,6 +1256,16 @@ class L10n {
     );
   }
 
+  /// `Yes, please`
+  String get yes_please {
+    return Intl.message(
+      'Yes, please',
+      name: 'yes_please',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure?`
   String get are_you_sure {
     return Intl.message(
@@ -2281,6 +2291,116 @@ class L10n {
     return Intl.message(
       'Requires a restart',
       name: 'language_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide sensitive tweets`
+  String get hide_sensitive_tweets {
+    return Intl.message(
+      'Hide sensitive tweets',
+      name: 'hide_sensitive_tweets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whether to hide tweets marked as sensitive`
+  String get whether_to_hide_tweets_marked_as_sensitive {
+    return Intl.message(
+      'Whether to hide tweets marked as sensitive',
+      name: 'whether_to_hide_tweets_marked_as_sensitive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable screenshots`
+  String get disable_screenshots {
+    return Intl.message(
+      'Disable screenshots',
+      name: 'disable_screenshots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prevent screenshots from being taken. This may not work on all devices.`
+  String get disable_screenshots_hint {
+    return Intl.message(
+      'Prevent screenshots from being taken. This may not work on all devices.',
+      name: 'disable_screenshots_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Potentially sensitive`
+  String get possibly_sensitive {
+    return Intl.message(
+      'Potentially sensitive',
+      name: 'possibly_sensitive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This tweet contains potentially sensitive content. Would you like to view it?`
+  String get possibly_sensitive_tweet {
+    return Intl.message(
+      'This tweet contains potentially sensitive content. Would you like to view it?',
+      name: 'possibly_sensitive_tweet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This profile may include potentially sensitive images, language, or other content. Do you still want to view it?`
+  String get possibly_sensitive_profile {
+    return Intl.message(
+      'This profile may include potentially sensitive images, language, or other content. Do you still want to view it?',
+      name: 'possibly_sensitive_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to load your home pages`
+  String get unable_to_load_home_pages {
+    return Intl.message(
+      'Unable to load your home pages',
+      name: 'unable_to_load_home_pages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset pages to default`
+  String get reset_home_pages {
+    return Intl.message(
+      'Reset pages to default',
+      name: 'reset_home_pages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You must have at least 2 home screen pages`
+  String get you_must_have_at_least_2_home_screen_pages {
+    return Intl.message(
+      'You must have at least 2 home screen pages',
+      name: 'you_must_have_at_least_2_home_screen_pages',
       desc: '',
       args: [],
     );

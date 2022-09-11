@@ -8,7 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:fritter/generated/l10n.dart';
 
 class ProfileFollows extends StatefulWidget {
-  final User user;
+  final UserWithExtra user;
   final String type;
 
   const ProfileFollows({Key? key, required this.user, required this.type}) : super(key: key);
@@ -18,7 +18,7 @@ class ProfileFollows extends StatefulWidget {
 }
 
 class _ProfileFollowsState extends State<ProfileFollows> {
-  late PagingController<int?, User> _pagingController;
+  late PagingController<int?, UserWithExtra> _pagingController;
 
   final int _pageSize = 200;
 
@@ -64,7 +64,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int?, User>(
+    return PagedListView<int?, UserWithExtra>(
       padding: EdgeInsets.zero,
       pagingController: _pagingController,
       addAutomaticKeepAlives: false,

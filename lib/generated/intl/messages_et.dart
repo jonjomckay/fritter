@@ -106,7 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Sulge"),
         "contribute": MessageLookupByLibrary.simpleMessage("Osale arenduses"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
-            "Aadress on kopeeritud lõikelauale"),
+            "Kopeerisin aadressi lõikelauale"),
         "copied_version_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Kopeerisin versiooni lõikelauale"),
         "could_not_contact_twitter":
@@ -141,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Alati küsi"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Salvesta kausta"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Allalaadimine ei õnnestu. See meedia võib olla saadaval vaid voogedastusena ning Fritter veel ei oska teda alla laadida."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Allalaadimiste kaust"),
         "downloading_media":
@@ -184,6 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Siin näed meile saadetavaid andmeid. Me kasutame seda vaid selleks, et omada ülevaadet seadmetest ja keeltest, mida Fritter võiks ka tulevikus toetada."),
+        "hide_sensitive_tweets": MessageLookupByLibrary.simpleMessage(
+            "Peida võimaliku ebasobiliku sisuga säutsud"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Kui sul on selle funktsioonaalsuse kohta tagasisidet, palun kirjuta sellest aadressil"),
@@ -267,6 +271,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Palun arvesta, et Fritter kasutab tellimuste impordiks päringut, mille kasutamise sagedust Twitter piirab. Seega kui sul on palju järgitavaid kontosid, siis import ei pruugi õnnestuda."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Võimalik ebasobilik sisu"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Selles profiilis võib leiduda ebasobilikke pilte, sõnakasutust või muud sisu. Ka sa siiski soovid seda vaadata?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Selles säutsus võib leiduda ebasobilikku sisu. Kas sa soovid seda näha?"),
         "prefix": MessageLookupByLibrary.simpleMessage("eesliide"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Privaatne profiil"),
@@ -322,7 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Tellimused"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Subtiitrid"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Meedia on salvestatud."),
+            MessageLookupByLibrary.simpleMessage("Salvestasin meedia!"),
         "system": MessageLookupByLibrary.simpleMessage("Süsteemi teema"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -338,6 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Säutsus puudus sisu. See on nüüd küll ootamatu"),
         "theme": MessageLookupByLibrary.simpleMessage("Kujundus"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Kujundusrežiim"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Päringu vastuses polnud andmeid hetkel populaarsemate viidete ja otsingute kohta. Seda ei oleks nüüd küll pidanud juhtuma! Kui võimalik siis palun saada meile veateade."),
@@ -447,6 +458,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Vigadest teatamine Sentry veebirakenduse abil"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Kas soovid peita säutse, kus võib olla ebasobilikku sisu"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Missugune vaade on kuvatud rakenduse käivitamisel"),
@@ -454,6 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Kas sa luba vigadest automaatselt teatada?"),
         "yes": MessageLookupByLibrary.simpleMessage("Jah"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Jah, palun"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Sa pole veel ühtegi säutsu salvestanud!"),

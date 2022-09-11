@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
 import 'package:measure_size/measure_size.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -273,6 +273,40 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
+                                                  if (user.friendsCount != null)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.person, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text.rich(TextSpan(
+                                                              children: [
+                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                              ]
+                                                          )),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  if (user.followersCount != null)
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const Icon(Icons.person, size: 12, color: Colors.white),
+                                                          const SizedBox(width: 4),
+                                                          Text.rich(TextSpan(
+                                                              children: [
+                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                              ]
+                                                          )),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   if (user.location != null && user.location!.isNotEmpty)
                                                     Padding(
                                                       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
@@ -352,16 +386,19 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                       )))
             ];
           },
-          body: TabBarView(
-            controller: _tabController,
-            physics: const LessSensitiveScrollPhysics(),
-            children: [
-              ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
-              ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
-              ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
-              ProfileFollows(user: user, type: 'following'),
-              ProfileFollows(user: user, type: 'followers'),
-            ],
+          body: ChangeNotifierProvider<TweetContextState>(
+            create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+            child: TabBarView(
+              controller: _tabController,
+              physics: const LessSensitiveScrollPhysics(),
+              children: [
+                ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
+                ProfileFollows(user: user, type: 'following'),
+                ProfileFollows(user: user, type: 'followers'),
+              ],
+            ),
           ),
         ),
 
@@ -379,5 +416,16 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
         )
       ]),
     );
+  }
+}
+
+class TweetContextState extends ChangeNotifier {
+  bool hideSensitive;
+
+  TweetContextState(this.hideSensitive);
+
+  void setHideSensitive(bool value) {
+    hideSensitive = value;
+    notifyListeners();
   }
 }

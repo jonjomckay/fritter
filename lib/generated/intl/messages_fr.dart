@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(date) => "S\'est inscrit·e le ${date}";
 
   static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'aucun vote', one: 'un vote', two: 'deux votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
+      "${Intl.plural(num, zero: 'Aucun vote', one: 'Un vote', two: 'Deux votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
   static String m9(errorMessage) =>
       "Veuillez vérifier votre connexion Internet.\n\n${errorMessage}";
@@ -105,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "close": MessageLookupByLibrary.simpleMessage("Fermer"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribuer"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
-            "Adresse copiée dans le presse-papiers"),
+            "Copie de l\'adresse dans le presse-papiers"),
         "copied_version_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Copie de la version dans le presse-papiers"),
         "could_not_contact_twitter": MessageLookupByLibrary.simpleMessage(
@@ -187,6 +187,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Voici les données qui seront envoyées. Elles ne seront utilisées que pour déterminer les appareils et les langues à prendre en charge dans Fritter à l\'avenir."),
+        "hide_sensitive_tweets": MessageLookupByLibrary.simpleMessage(
+            "Masquer les tweets sensibles"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Si vous avez des commentaires sur cette fonctionnalité, veuillez m\'en faire part"),
@@ -268,6 +270,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Veuillez noter que la méthode utilisée par Fritter pour importer les abonnements est fortement limitée par Twitter, cela peut donc échouer si vous avez beaucoup de comptes suivis."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potentiellement sensible"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Ce profil peut contenir des images, un langage ou d\'autres contenus potentiellement sensibles. Voulez-vous toujours le consulter ?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Ce tweet contient un contenu potentiellement sensible. Voulez-vous le voir ?"),
         "prefix": MessageLookupByLibrary.simpleMessage("préfixe"),
         "private_profile": MessageLookupByLibrary.simpleMessage("Profil privé"),
         "released_under_the_mit_license":
@@ -320,7 +328,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Abonnements"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Sous-titres"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Média sauvegardé."),
+            MessageLookupByLibrary.simpleMessage("Le média est sauvegardé !"),
         "system": MessageLookupByLibrary.simpleMessage("Système"),
         "tap_to_download_release_version": m10,
         "tap_to_show_getMediaType_item_type": m11,
@@ -336,6 +344,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Le tweet ne contenait aucun texte. C’est inattendu"),
         "theme": MessageLookupByLibrary.simpleMessage("Thème"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Mode du thème"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Aucune tendance n\'a été retournée. C\'est inattendu ! Veuillez le signaler comme un bug, si possible."),
@@ -442,6 +451,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Si les erreurs doivent être signalées à Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "La possibilité de masquer les tweets marqués comme sensibles"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Quel onglet s’affiche à l’ouverture de l’application"),
@@ -449,6 +461,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Voulez-vous activer le rapport d\'erreur automatique ?"),
         "yes": MessageLookupByLibrary.simpleMessage("Oui"),
+        "yes_please":
+            MessageLookupByLibrary.simpleMessage("Oui, s\'il vous plaît"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Vous n\'avez pas encore enregistré de tweets !"),

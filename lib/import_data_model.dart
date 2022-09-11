@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 
 
-class HomeModel extends ChangeNotifier {
+class ImportDataModel extends ChangeNotifier {
   static final log = Logger('HomeModel');
 
   Future importData(Map<String, List<ToMappable>> data) async {
