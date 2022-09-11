@@ -425,5 +425,6 @@
   "home": "Home",
   "unable_to_load_home_pages": "Unable to load your home pages",
   "reset_home_pages": "Reset pages to default",
-  "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages"
+  "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages",
+  "group_name": "Group: {name}"
 }

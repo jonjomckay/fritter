@@ -44,11 +44,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ScaffoldWithBottomNavigation(
       selectedPage: 0,
       pages: [
-        NavigationPage('general', L10n.current.general, Icons.settings),
-        NavigationPage('home', L10n.current.home, Icons.home),
-        NavigationPage('theme', L10n.current.theme, Icons.format_paint),
-        NavigationPage('data', L10n.current.data, Icons.storage),
-        NavigationPage('about', L10n.current.about, Icons.help),
+        NavigationPage('general', (c) => L10n.of(c).general, Icons.settings),
+        NavigationPage('home', (c) => L10n.of(c).home, Icons.home),
+        NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint),
+        NavigationPage('data', (c) => L10n.of(c).data, Icons.storage),
+        NavigationPage('about', (c) => L10n.of(c).about, Icons.help),
       ],
       builder: (scrollController) {
         return [

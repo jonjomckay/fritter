@@ -33,6 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "Finished with ${snapshotData} users";
 
+  static String m20(name) => "Group: ${name}";
+
   static String m6(snapshotData) => "${snapshotData} users imported so far";
 
   static String m7(date) => "Joined ${date}";
@@ -179,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blue"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
+        "group_name": m20,
         "groups": MessageLookupByLibrary.simpleMessage("Groups"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Help make Fritter even better"),

@@ -2405,6 +2405,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Group: {name}`
+  String group_name(Object name) {
+    return Intl.message(
+      'Group: $name',
+      name: 'group_name',
+      desc: '',
+      args: [name],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

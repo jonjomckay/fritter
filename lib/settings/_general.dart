@@ -224,7 +224,7 @@ class SettingsGeneralFragment extends StatelessWidget {
                 L10n.of(context).which_tab_is_shown_when_the_app_opens,
               ),
               pref: optionHomeInitialTab,
-              items: defaultHomePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.title))).toList()),
+              items: defaultHomePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.titleBuilder(context)))).toList()),
           PrefDropdown(
               fullWidth: false,
               title: Text(L10n.of(context).media_size),

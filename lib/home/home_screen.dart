@@ -18,12 +18,14 @@ import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_bottom_navigation_bar/scroll_bottom_navigation_bar.dart';
 
+typedef NavigationTitleBuilder = String Function(BuildContext context);
+
 class NavigationPage {
   final String id;
-  final String title;
+  final NavigationTitleBuilder titleBuilder;
   final IconData icon;
 
-  NavigationPage(this.id, this.title, this.icon);
+  NavigationPage(this.id, this.titleBuilder, this.icon);
 }
 
 List<Widget> createCommonAppBarActions(BuildContext context) {
@@ -42,11 +44,11 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
 }
 
 final List<NavigationPage> defaultHomePages = [
-  NavigationPage('feed', L10n.current.feed, Icons.rss_feed),
-  NavigationPage('subscriptions', L10n.current.subscriptions, Icons.subscriptions),
-  NavigationPage('groups', L10n.current.groups, Icons.group),
-  NavigationPage('trending', L10n.current.trending, Icons.trending_up),
-  NavigationPage('saved', L10n.current.saved, Icons.bookmark),
+  NavigationPage('feed', (c) => L10n.of(c).feed, Icons.rss_feed),
+  NavigationPage('subscriptions', (c) => L10n.of(c).subscriptions, Icons.subscriptions),
+  NavigationPage('groups', (c) => L10n.of(c).groups, Icons.group),
+  NavigationPage('trending', (c) => L10n.of(c).trending, Icons.trending_up),
+  NavigationPage('saved', (c) => L10n.of(c).saved, Icons.bookmark),
 ];
 
 class HomeScreen extends StatelessWidget {
@@ -81,7 +83,7 @@ class HomeScreen extends StatelessWidget {
           return [
             ...pages.map((e) {
               if (e.id.startsWith('group-')) {
-                return FeedScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), name: e.title);
+                return FeedScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), name: e.titleBuilder(context));
               }
 
               switch (e.id) {
@@ -181,7 +183,7 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
         items: [
           ..._pages.map((e) => BottomNavigationBarItem(
               icon: Icon(e.icon, size: 22),
-              label: e.title
+              label: e.titleBuilder(context)
           ))
         ],
       ),

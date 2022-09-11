@@ -49,7 +49,7 @@ class SettingsHomeFragment extends StatelessWidget {
                 return CheckboxListTile(
                   key: Key(page.id),
                   secondary: const Icon(Icons.drag_handle),
-                  title: Text(page.page.title),
+                  title: Text(page.page.titleBuilder(context)),
                   value: page.selected,
                   onChanged: (value) async {
                     var selected = value ?? false;

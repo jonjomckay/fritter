@@ -163,8 +163,6 @@ Future<void> main() async {
 
   setTimeagoLocales();
 
-  await L10n.load(const Locale('en'));
-
   final prefService = await PrefServiceShared.init(prefix: 'pref_', defaults: {
     optionDisableScreenshots: false,
     optionDownloadPath: '',
