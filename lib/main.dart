@@ -34,6 +34,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/trends/trends_model.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
@@ -170,6 +171,7 @@ Future<void> main() async {
     optionHomePages: defaultHomePages.map((e) => e.id).toList(),
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
+    optionsMediaDefaultMute: false,
     optionNonConfirmationBiasMode: false,
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,
@@ -271,6 +273,8 @@ Future<void> main() async {
 
         var trendLocationModel = UserTrendLocationModel(prefService);
 
+        var videoMuteModel = VideoMuteModel(prefService);
+
         runApp(PrefService(
             service: prefService,
             child: MultiProvider(
@@ -285,6 +289,7 @@ Future<void> main() async {
                 Provider(create: (context) => trendLocationModel),
                 Provider(create: (context) => TrendLocationsModel()),
                 Provider(create: (context) => TrendsModel(trendLocationModel)),
+                Provider(create: (context) => videoMuteModel),
               ],
               child: DevicePreview(
                 enabled: !kReleaseMode,

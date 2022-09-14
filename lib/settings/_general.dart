@@ -224,7 +224,9 @@ class SettingsGeneralFragment extends StatelessWidget {
                 L10n.of(context).which_tab_is_shown_when_the_app_opens,
               ),
               pref: optionHomeInitialTab,
-              items: defaultHomePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.titleBuilder(context)))).toList()),
+              items: defaultHomePages
+                  .map((e) => DropdownMenuItem(value: e.id, child: Text(e.titleBuilder(context))))
+                  .toList()),
           PrefDropdown(
               fullWidth: false,
               title: Text(L10n.of(context).media_size),
@@ -254,6 +256,13 @@ class SettingsGeneralFragment extends StatelessWidget {
                   child: Text(L10n.of(context).large),
                 ),
               ]),
+
+          /// TODO: translate
+          PrefSwitch(
+            pref: optionsMediaDefaultMute,
+            title: Text('Mute videos'),
+            subtitle: Text('"Whether all videos should be muted"'),
+          ),
           PrefCheckbox(
             title: Text(L10n.of(context).hide_sensitive_tweets),
             subtitle: Text(L10n.of(context).whether_to_hide_tweets_marked_as_sensitive),

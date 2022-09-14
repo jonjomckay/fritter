@@ -5,14 +5,18 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
+import 'package:fritter/constants.dart';
 import 'package:path/path.dart' as path;
+import 'package:pref/pref.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:provider/provider.dart';
 
 class TweetVideo extends StatefulWidget {
   final String username;
@@ -46,6 +50,14 @@ class _TweetVideoState extends State<TweetVideo> {
     var variants = widget.media.videoInfo?.variants ?? [];
     var url = variants[0].url!;
     _videoController = VideoPlayerController.network(url);
+
+    var model = context.read<VideoMuteModel>();
+    var volume = model.state.feedIsMuted ? 0.0 : _videoController!.value.volume;
+    _videoController!.setVolume(volume);
+
+    _videoController!.addListener(() {
+      model.toggleFeedMuting(_videoController!);
+    });
 
     _chewieController = ChewieController(
       aspectRatio: getAspectRatio(),
@@ -149,26 +161,25 @@ class _TweetVideoState extends State<TweetVideo> {
     return AspectRatio(
       aspectRatio: getAspectRatio(),
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        child: _showVideo
-          ? _Video(controller: _chewieController!)
-          : GestureDetector(
-              onTap: onTapPlay,
-              child: Stack(alignment: Alignment.center, children: [
-                ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
-                Center(
-                  child: CenterPlayButton(
-                    backgroundColor: Colors.black54,
-                    iconColor: Colors.white,
-                    isFinished: false,
-                    isPlaying: false,
-                    show: true,
-                    onPressed: onTapPlay,
-                  ),
-                )
-              ]),
-            )
-          ),
+          duration: const Duration(milliseconds: 150),
+          child: _showVideo
+              ? _Video(controller: _chewieController!)
+              : GestureDetector(
+                  onTap: onTapPlay,
+                  child: Stack(alignment: Alignment.center, children: [
+                    ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
+                    Center(
+                      child: CenterPlayButton(
+                        backgroundColor: Colors.black54,
+                        iconColor: Colors.white,
+                        isFinished: false,
+                        isPlaying: false,
+                        show: true,
+                        onPressed: onTapPlay,
+                      ),
+                    )
+                  ]),
+                )),
     );
   }
 
@@ -205,4 +216,44 @@ class _Video extends StatelessWidget {
       ),
     );
   }
+}
+
+class VideoMuteModel extends StreamStore<Object, MuteSettings> {
+  final BasePrefService prefs;
+
+  VideoMuteModel(this.prefs) : super(MuteSettings()) {
+    prefs.addKeyListener(optionsMediaDefaultMute, () async {
+      await loadSettings();
+    });
+  }
+
+  Future<void> loadSettings() async {
+    await execute(() async {
+      var settings = MuteSettings(
+        shouldMuteFeed: prefs.get(optionsMediaDefaultMute),
+        feedIsMuted: prefs.get(optionsMediaDefaultMute),
+      );
+      return settings;
+    });
+  }
+
+  Future<void> toggleFeedMuting(VideoPlayerController controller) async {
+    var volume = controller.value.volume;
+    if (state.feedIsMuted && volume > 0 || !state.feedIsMuted && volume == 0) {
+      await execute(() async {
+        state.feedIsMuted = !state.feedIsMuted;
+        return state;
+      });
+    }
+  }
+}
+
+class MuteSettings {
+  bool shouldMuteFeed;
+  bool feedIsMuted;
+
+  MuteSettings({
+    this.shouldMuteFeed = false,
+    this.feedIsMuted = false,
+  });
 }
