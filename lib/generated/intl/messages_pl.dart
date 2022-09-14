@@ -76,6 +76,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("O aplikacji"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Konto zawieszone"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Ukrywaj autorów tweetów. Unikaj efektu potwierdzenia opartego na autorytatywnych argumentach"),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Aktywuj tryb bez efektu potwierdzenia"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Dodaj do grupy"),
         "all": MessageLookupByLibrary.simpleMessage("Wszystkie"),
         "all_the_great_software_used_by_fritter":
@@ -126,6 +132,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Data subskrypcji"),
         "default_tab": MessageLookupByLibrary.simpleMessage("Domyślna karta"),
         "delete": MessageLookupByLibrary.simpleMessage("Usuń"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Wyłącz zrzuty ekranu"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Zapobiegaj robieniu zrzutów ekranu. Może to nie działać na wszystkich urządzeniach"),
         "disabled": MessageLookupByLibrary.simpleMessage("Wyłączone"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Nie wysyłaj"),
         "donate": MessageLookupByLibrary.simpleMessage("Przekaż datek"),
@@ -184,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Oto dane, które zostaną wysłane. Zostaną wykorzystane tylko do określenia, które urządzenia i języki będą obsługiwane we Fritterze w przyszłości."),
         "hide_sensitive_tweets":
             MessageLookupByLibrary.simpleMessage("Ukrywaj wrażliwe tweety"),
+        "home": MessageLookupByLibrary.simpleMessage("Karty"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Jeśli masz jakieś uwagi na temat tej funkcji, zgłoś je w"),
@@ -280,6 +291,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Zgłoś błąd"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Zgłaszanie błędu"),
+        "reset_home_pages":
+            MessageLookupByLibrary.simpleMessage("Przywróć domyślne"),
         "retry": MessageLookupByLibrary.simpleMessage("Ponów"),
         "save": MessageLookupByLibrary.simpleMessage("Zapisz"),
         "save_bandwidth_using_smaller_images":
@@ -385,6 +398,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nie można znaleźć Twoich zapisanych tweetów."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Nie można zaimportować"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Nie można załadować Twoich kart"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Nie można załadować grup subskrypcji"),
@@ -462,6 +477,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Nie zapisałeś(-aś) jeszcze żadnych tweetów!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "Musisz mieć co najmniej 2 karty"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Na Twoim urządzeniu jest wersja Androida starsza niż KitKat (4.4), więc dane można importować tylko z:"),

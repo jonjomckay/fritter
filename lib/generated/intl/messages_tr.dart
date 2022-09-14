@@ -76,6 +76,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("Hakkında"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Hesap askıya alındı"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Tweet yazarlarını gizleyin. Yazarın argümanlara dayalı doğrulama yanlılığından kaçının."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Doğrulama yanlılığı kapalı modunu etkinleştir"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Gruba ekle"),
         "all": MessageLookupByLibrary.simpleMessage("Hepsi"),
         "all_the_great_software_used_by_fritter":
@@ -127,6 +133,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Abone Olunan Tarih"),
         "default_tab": MessageLookupByLibrary.simpleMessage("Varsayılan sekme"),
         "delete": MessageLookupByLibrary.simpleMessage("Sil"),
+        "disable_screenshots": MessageLookupByLibrary.simpleMessage(
+            "Ekran görüntülerini devre dışı bırak"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Ekran görüntülerinin alınmasını engelleyin. Bu, tüm aygıtlarda çalışmayabilir."),
         "disabled": MessageLookupByLibrary.simpleMessage("Devre dışı"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Gönderme"),
         "donate": MessageLookupByLibrary.simpleMessage("Bağış yapın"),
@@ -184,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "İşte gönderilecek veriler. Sadece gelecekte Fritter\'da hangi cihazların ve dillerin destekleneceğini belirlemek için kullanılacaktır."),
         "hide_sensitive_tweets":
             MessageLookupByLibrary.simpleMessage("Hassas tweetleri gizle"),
+        "home": MessageLookupByLibrary.simpleMessage("Ana sayfa"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Bu özellikle ilgili herhangi bir görüşünüz varsa lütfen geri bildirim yapın"),
@@ -279,6 +290,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Hata bildir"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Hata bildirme"),
+        "reset_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Sayfaları öntanımlı olana sıfırla"),
         "retry": MessageLookupByLibrary.simpleMessage("Yeniden dene"),
         "save": MessageLookupByLibrary.simpleMessage("Kaydet"),
         "save_bandwidth_using_smaller_images":
@@ -385,6 +398,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Kayıtlı tweet\'leriniz bulunamıyor."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("İçe aktarılamıyor"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Ana sayfalarınız yüklenemiyor"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Abonelik grupları yüklenemiyor"),
@@ -460,6 +475,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "yes_please": MessageLookupByLibrary.simpleMessage("Evet, lütfen"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("Henüz tweet kaydetmediniz!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "En az 2 ana ekran sayfanız olmalıdır"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Cihazınız KitKat\'tan (4.4) daha eski bir Android sürümü çalıştırıyor, bu nedenle veriler yalnızca şuradan içe aktarılabilir:"),
