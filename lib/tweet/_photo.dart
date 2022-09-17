@@ -8,8 +8,9 @@ class TweetPhoto extends StatefulWidget {
   final BoxFit fit;
   final String size;
   final bool pullToClose;
+  final bool inPageView;
 
-  const TweetPhoto({Key? key, required this.uri, this.fit = BoxFit.fitWidth, required this.size, required this.pullToClose}) : super(key: key);
+  const TweetPhoto({Key? key, required this.uri, this.fit = BoxFit.fitWidth, required this.size, required this.pullToClose, required this.inPageView}) : super(key: key);
 
   @override
   State<TweetPhoto> createState() => _TweetPhotoState();
@@ -35,6 +36,7 @@ class _TweetPhotoState extends State<TweetPhoto> with SingleTickerProviderStateM
         enableSlideOutPage: widget.pullToClose,
         initGestureConfigHandler: (state) {
           return GestureConfig(
+            inPageView: widget.inPageView,
             minScale: 0.9,
             animationMinScale: 0.7,
             maxScale: 4.0,
