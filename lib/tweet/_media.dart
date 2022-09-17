@@ -40,9 +40,13 @@ class _TweetMediaItemState extends State<_TweetMediaItem> {
     var mediaSize = PrefService.of(context, listen: false).get(optionMediaSize);
     if (mediaSize == 'disabled') {
       // If the image is cached already, show the media
-      cachedImageExists(widget.media.mediaUrlHttps!).then((value) => setState(() {
+      cachedImageExists(widget.media.mediaUrlHttps!).then((value) {
+        if (mounted) {
+          setState(() {
             _showMedia = value;
-          }));
+          });
+        }
+      });
     } else {
       setState(() {
         _showMedia = true;
