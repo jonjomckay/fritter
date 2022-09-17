@@ -16,21 +16,21 @@ import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
-class TweetMediaItem extends StatefulWidget {
+class _TweetMediaItem extends StatefulWidget {
   final int index;
   final int total;
   final Media media;
   final String username;
 
-  const TweetMediaItem(
+  const _TweetMediaItem(
       {Key? key, required this.index, required this.total, required this.media, required this.username})
       : super(key: key);
 
   @override
-  State<TweetMediaItem> createState() => _TweetMediaItemState();
+  State<_TweetMediaItem> createState() => _TweetMediaItemState();
 }
 
-class _TweetMediaItemState extends State<TweetMediaItem> {
+class _TweetMediaItemState extends State<_TweetMediaItem> {
   bool _showMedia = false;
 
   @override
@@ -76,7 +76,7 @@ class _TweetMediaItemState extends State<TweetMediaItem> {
     var item = widget.media;
 
     if (_showMedia) {
-      media = TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: false, inPageView: false);
+      media = _TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: false, inPageView: false);
     } else {
       media = GestureDetector(
         child: Container(
@@ -169,7 +169,7 @@ class _TweetMediaState extends State<TweetMedia> {
                         builder: (context) =>
                             TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
                 child:
-                TweetMediaItem(media: item, index: index + 1, total: widget.media.length, username: widget.username),
+                _TweetMediaItem(media: item, index: index + 1, total: widget.media.length, username: widget.username),
               );
             },
           ),
@@ -255,7 +255,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
         itemBuilder: (BuildContext context, int index) {
           var item = widget.media[index];
 
-          return TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: true, inPageView: true);
+          return _TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: true, inPageView: true);
         },
         controller: ExtendedPageController(
           initialPage: widget.initialIndex,
@@ -268,14 +268,14 @@ class _TweetMediaViewState extends State<TweetMediaView> {
   }
 }
 
-class TweetMediaThing extends StatelessWidget {
+class _TweetMediaThing extends StatelessWidget {
   final Media item;
   final String username;
   final String size;
   final bool pullToClose;
   final bool inPageView;
 
-  const TweetMediaThing({Key? key, required this.item, required this.username, required this.size, required this.pullToClose, required this.inPageView}) : super(key: key);
+  const _TweetMediaThing({Key? key, required this.item, required this.username, required this.size, required this.pullToClose, required this.inPageView}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
