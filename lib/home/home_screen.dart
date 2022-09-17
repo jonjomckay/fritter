@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                 case 'feed':
                   return FeedScreen(scrollController: scrollController, id: '-1', name: L10n.current.feed);
                 case 'subscriptions':
-                  return SubscriptionsScreen(scrollController: scrollController);
+                  return const SubscriptionsScreen();
                 case 'groups':
                   return GroupsScreen(scrollController: scrollController);
                 case 'trending':

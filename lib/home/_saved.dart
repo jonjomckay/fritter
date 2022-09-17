@@ -13,7 +13,6 @@ import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class SavedScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -36,12 +35,21 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     var model = context.read<SavedTweetModel>();
 
-    return Scaffold(
-      appBar: ScrollAppBar(
-        controller: widget.scrollController,
-        title: Text(L10n.current.saved),
-        actions: createCommonAppBarActions(context),
-      ),
+    return NestedScrollView(
+      controller: widget.scrollController,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            pinned: false,
+            snap: true,
+            floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(L10n.current.saved),
+            ),
+            actions: createCommonAppBarActions(context),
+          )
+        ];
+      },
       body: ChangeNotifierProvider<TweetContextState>(
         create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
         child: ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(

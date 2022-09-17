@@ -9,14 +9,12 @@ import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/import_data_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/utils/legacy.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 const String legacyExportFileName = 'fritter.json';
 
@@ -64,10 +62,9 @@ class SettingsData {
 class SettingsDataFragment extends StatelessWidget {
   static final log = Logger('SettingsDataFragment');
 
-  final ScrollController scrollController;
   final String legacyExportPath;
 
-  const SettingsDataFragment({Key? key, required this.scrollController, required this.legacyExportPath}) : super(key: key);
+  const SettingsDataFragment({Key? key, required this.legacyExportPath}) : super(key: key);
 
   Future<void> _importFromFile(BuildContext context, File file) async {
     var content = jsonDecode(file.readAsStringSync());
@@ -118,13 +115,12 @@ class SettingsDataFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
+      appBar: AppBar(
         title: Text(L10n.current.data)
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
-        child: ListView(controller: scrollController, children: [
+        child: ListView(children: [
           PrefLabel(
             leading: const Icon(Icons.import_export),
             title: Text(L10n.of(context).import),

@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/settings/_general.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:pref/pref.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 import 'package:simple_icons/simple_icons.dart';
 
 class SettingsAboutFragment extends StatelessWidget {
-  final ScrollController scrollController;
   final String appVersion;
 
-  const SettingsAboutFragment({Key? key, required this.scrollController, required this.appVersion}) : super(key: key);
+  const SettingsAboutFragment({Key? key, required this.appVersion}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
+      appBar: AppBar(
         title: Text(L10n.current.about)
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
-        child: ListView(controller: scrollController, children: [
+        child: ListView(children: [
           PrefLabel(
             leading: const Icon(Icons.info),
             title: Text(L10n.of(context).version),

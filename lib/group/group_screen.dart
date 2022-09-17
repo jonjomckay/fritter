@@ -7,7 +7,6 @@ import 'package:fritter/group/_settings.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class GroupScreenArguments {
   final String id;
@@ -34,9 +33,8 @@ class GroupScreen extends StatelessWidget {
 
 class SubscriptionGroupScreenContent extends StatelessWidget {
   final String id;
-  final ScrollController scrollController;
 
-  const SubscriptionGroupScreenContent({Key? key, required this.id, required this.scrollController}) : super(key: key);
+  const SubscriptionGroupScreenContent({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +56,6 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
           users: users,
           includeReplies: group.includeReplies,
           includeRetweets: group.includeRetweets,
-          scrollController: scrollController,
         );
       },
     );
@@ -85,31 +82,38 @@ class SubscriptionGroupScreen extends StatelessWidget {
       builder: (context, child) {
         var model = context.read<GroupModel>();
 
-        return Scaffold(
-          appBar: ScrollAppBar(
-            controller: scrollController,
-            title: Text(name),
-            actions: [
-              IconButton(
-                  icon: const Icon(Icons.more_vert),
-                  onPressed: () => showFeedSettings(context, model)),
-              IconButton(
-                  icon: const Icon(Icons.arrow_upward),
-                  onPressed: () async {
-                    await scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
-                  }),
-              IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () async {
-                    await model.loadGroup();
-                  }),
-              ...actions
-            ],
-          ),
-          body: SubscriptionGroupScreenContent(
-            id: id,
-            scrollController: scrollController,
-          ),
+        return NestedScrollView(
+          controller: scrollController,
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                pinned: false,
+                snap: true,
+                floating: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(name),
+                ),
+                actions: [
+                  IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () => showFeedSettings(context, model)),
+                  IconButton(
+                      icon: const Icon(Icons.arrow_upward),
+                      onPressed: () async {
+                        await scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+                      }),
+                  IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () async {
+                        await model.loadGroup();
+                      }),
+                  ...actions
+                ],
+              )
+            ];
+          },
+          body: SubscriptionGroupScreenContent(id: id),
         );
       },
     );

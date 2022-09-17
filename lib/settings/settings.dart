@@ -52,11 +52,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ],
       builder: (scrollController) {
         return [
-          SettingsGeneralFragment(scrollController: scrollController),
-          SettingsHomeFragment(scrollController: scrollController),
-          SettingsThemeFragment(scrollController: scrollController),
-          SettingsDataFragment(scrollController: scrollController, legacyExportPath: _legacyExportPath),
-          SettingsAboutFragment(scrollController: scrollController, appVersion: appVersion)
+          const SettingsGeneralFragment(),
+          const SettingsHomeFragment(),
+          const SettingsThemeFragment(),
+          SettingsDataFragment(legacyExportPath: _legacyExportPath),
+          SettingsAboutFragment(appVersion: appVersion)
         ];
       },
     );

@@ -5,18 +5,14 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/subscriptions/_list.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class SubscriptionsScreen extends StatelessWidget {
-  final ScrollController scrollController;
-
-  const SubscriptionsScreen({Key? key, required this.scrollController}) : super(key: key);
+  const SubscriptionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
+      appBar: AppBar(
         title: Text(L10n.current.subscriptions),
         actions: [
           IconButton(
@@ -52,7 +48,7 @@ class SubscriptionsScreen extends StatelessWidget {
           ...createCommonAppBarActions(context)
         ],
       ),
-      body: SubscriptionUsers(scrollController: scrollController),
+      body: SubscriptionUsers(),
     );
   }
 }

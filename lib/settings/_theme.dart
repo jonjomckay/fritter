@@ -2,26 +2,21 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:pref/pref.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class SettingsThemeFragment extends StatelessWidget {
-  final ScrollController scrollController;
-
-  const SettingsThemeFragment({Key? key, required this.scrollController}) : super(key: key);
+  const SettingsThemeFragment({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
+      appBar: AppBar(
         title: Text(L10n.current.theme)
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
-        child: ListView(controller: scrollController, children: [
+        child: ListView(children: [
           PrefDropdown(fullWidth: false, title: Text(L10n.of(context).theme_mode), pref: optionThemeMode, items: [
             DropdownMenuItem(
               value: 'system',

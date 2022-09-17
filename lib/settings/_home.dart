@@ -4,20 +4,16 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class SettingsHomeFragment extends StatelessWidget {
-  final ScrollController scrollController;
-
-  const SettingsHomeFragment({Key? key, required this.scrollController}) : super(key: key);
+  const SettingsHomeFragment({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var model = context.read<HomeModel>();
 
     return Scaffold(
-      appBar: ScrollAppBar(
-        controller: scrollController,
+      appBar: AppBar(
         title: Text(L10n.current.home),
         actions: [
           IconButton(
@@ -41,7 +37,6 @@ class SettingsHomeFragment extends StatelessWidget {
           onLoading: (_) => const Center(child: CircularProgressIndicator()),
           onState: (_, data) {
             return ReorderableListView.builder(
-              scrollController: scrollController,
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var page = data[index];

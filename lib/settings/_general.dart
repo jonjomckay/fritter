@@ -16,7 +16,6 @@ import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 String getFlavor() {
   const flavor = String.fromEnvironment('app.flavor');
@@ -45,9 +44,7 @@ class SettingLocale {
 class SettingsGeneralFragment extends StatelessWidget {
   static final log = Logger('SettingsGeneralFragment');
 
-  final ScrollController scrollController;
-
-  const SettingsGeneralFragment({Key? key, required this.scrollController}) : super(key: key);
+  const SettingsGeneralFragment({Key? key}) : super(key: key);
 
   Future<void> _sendPing(BuildContext context) async {
     var deviceInfo = DeviceInfoPlugin();
@@ -186,10 +183,10 @@ class SettingsGeneralFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScrollAppBar(controller: scrollController, title: Text(L10n.current.general)),
+      appBar: AppBar(title: Text(L10n.current.general)),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
-        child: ListView(controller: scrollController, children: [
+        child: ListView(children: [
           PrefButton(
             title: Text(L10n.of(context).say_hello),
             subtitle: Text(
