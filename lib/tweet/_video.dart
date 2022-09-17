@@ -1,6 +1,5 @@
 import 'package:catcher/catcher.dart';
 import 'package:chewie/chewie.dart';
-import 'package:chewie/src/center_play_button.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
