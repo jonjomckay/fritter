@@ -79,7 +79,6 @@ Future checkForUpdates() async {
             android: AndroidNotificationDetails('updates', 'Updates',
                 channelDescription: 'When a new app update is available',
                 importance: Importance.max,
-                largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
                 priority: Priority.high,
                 showWhen: false,
                 actions: [AndroidNotificationAction(ignoredKey, 'Ignore this version')]));
@@ -232,7 +231,7 @@ Future<void> main() async {
           FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
           const InitializationSettings settings =
-              InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
+              InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
 
           await notifications
               .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
