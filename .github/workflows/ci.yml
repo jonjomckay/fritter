@@ -24,7 +24,7 @@ jobs:
       - name: Install and set up Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.0.5'
+          flutter-version: '3.3.2'
 
       - name:
         run: echo $SIGNING_KEY | base64 -d > android/app/key.jks
