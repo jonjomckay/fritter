@@ -173,6 +173,8 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
         controller: _pageController,
         physics: const LessSensitiveScrollPhysics(),
         onPageChanged: (page) => Debouncer.debounce('page-change', const Duration(milliseconds: 200), () {
+          // Reset the height when the page changes, otherwise the navigation bar stays hidden forever
+          scrollController.bottomNavigationBar.heightNotifier.value = 1;
           scrollController.bottomNavigationBar.setTab(page);
         }),
         children: _children,
