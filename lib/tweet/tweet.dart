@@ -183,6 +183,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     });
   }
 
+  void onClickOpenTweet() {
+    Navigator.pushNamed(context, routeStatus,
+        arguments: StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
+  }
+
+
   List<TweetTextPart> convertTextPartsToTweetEntities(List<String> parts) {
     List<TweetTextPart> translatedParts = [];
 
@@ -384,6 +390,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   }
                 })
               ]),
+              onTap: onClickOpenTweet,
             )),
       );
     }
@@ -580,12 +587,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                               child: Row(
                                 children: [
                                   if (tweet.replyCount != null)
-                                    _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null,
-                                        () {
-                                      Navigator.pushNamed(context, routeStatus,
-                                          arguments: StatusScreenArguments(
-                                              id: tweet.idStr!, username: tweet.user!.screenName!));
-                                    }),
+                                    _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, onClickOpenTweet),
                                   if (tweet.retweetCount != null)
                                     _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                                   if (tweet.quoteCount != null)
