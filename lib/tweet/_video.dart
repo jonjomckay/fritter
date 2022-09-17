@@ -157,7 +157,7 @@ class _TweetVideoState extends State<TweetVideo> {
               child: Stack(alignment: Alignment.center, children: [
                 ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
                 Center(
-                  child: CenterPlayButton(
+                  child: FritterCenterPlayButton(
                     backgroundColor: Colors.black54,
                     iconColor: Colors.white,
                     isFinished: false,

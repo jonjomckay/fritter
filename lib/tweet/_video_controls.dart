@@ -642,24 +642,22 @@ class FritterCenterPlayButton extends StatelessWidget {
           child: GestureDetector(
             onTap: onPressed,
             child: Container(
+              // NOTE: Added specific sizes here, otherwise it fills the container on Flutter 3.3.2
+              width: 64,
+              height: 64,
               decoration: BoxDecoration(
                 color: backgroundColor,
                 shape: BoxShape.circle,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                // Always set the iconSize on the IconButton, not on the Icon itself:
-                // https://github.com/flutter/flutter/issues/52980
-                child: IconButton(
-                  iconSize: 32,
-                  icon: isFinished
-                      ? Icon(Icons.replay, color: iconColor)
-                      : AnimatedPlayPause(
-                    color: iconColor,
-                    playing: isPlaying,
-                  ),
-                  onPressed: onPressed,
+              child: IconButton(
+                iconSize: 32,
+                icon: isFinished
+                    ? Icon(Icons.replay, color: iconColor)
+                    : AnimatedPlayPause(
+                  color: iconColor,
+                  playing: isPlaying,
                 ),
+                onPressed: onPressed,
               ),
             ),
           ),

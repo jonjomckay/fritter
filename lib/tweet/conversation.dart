@@ -38,21 +38,14 @@ class _TweetConversationState extends State<TweetConversation> {
           isThread: i == 0));
     }
 
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: Colors.white, width: 4))
+      ),
+      child: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-            color: Colors.white,
-            width: 4,
-          ),
-          Expanded(
-              child: Column(
-            children: [
-              ...tiles,
-            ],
-          )),
+          ...tiles,
         ],
       ),
     );
