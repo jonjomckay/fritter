@@ -313,11 +313,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         children: [
           TextSpan(
               text: L10n.of(context).this_tweet_user_name_retweeted(this.tweet.user!.name!, createRelativeDate(this.tweet.createdAt!)),
-              style: Theme.of(context).textTheme.caption)
+              style: theme.textTheme.caption)
         ],
       );
 
-      retweetSidebar = Container(color: Theme.of(context).secondaryHeaderColor, width: 4);
+      retweetSidebar = Container(color: theme.secondaryHeaderColor, width: 4);
     }
 
     Widget replyToTile = Container();
@@ -339,9 +339,9 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         },
         icon: Icons.reply,
         children: [
-          TextSpan(text: '${L10n.of(context).replying_to} ', style: Theme.of(context).textTheme.caption),
+          TextSpan(text: '${L10n.of(context).replying_to} ', style: theme.textTheme.caption),
           TextSpan(
-              text: '@$replyTo', style: Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.bold)),
+              text: '@$replyTo', style: theme.textTheme.caption!.copyWith(fontWeight: FontWeight.bold)),
         ],
       );
     }
@@ -359,7 +359,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       if (tweet.quotedStatusWithCard != null) {
         quotedTweet = Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.circular(8)),
+              border: Border.all(color: theme.primaryColor), borderRadius: BorderRadius.circular(8)),
           margin: const EdgeInsets.all(8),
           child: TweetTile(
             clickable: true,
@@ -437,14 +437,14 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         _TweetTileLeading(icon: Icons.push_pin, children: [
                           TextSpan(
                             text: L10n.of(context).pinned_tweet,
-                            style: Theme.of(context).textTheme.caption,
+                            style: theme.textTheme.caption,
                           )
                         ]),
                       if (isThread)
                         _TweetTileLeading(icon: Icons.forum, children: [
                           TextSpan(
                             text: L10n.of(context).thread,
-                            style: Theme.of(context).textTheme.caption,
+                            style: theme.textTheme.caption,
                           )
                         ]),
                       ListTile(
