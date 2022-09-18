@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Faili ei leidu. Palun kontrolli, et ta asuks siin ${filePath}";
 
-  static String m13(thisTweetUserName) =>
+  static String m13(thisTweetUserName, timeAgo) =>
       "Kordussäuts kasutajalt ${thisTweetUserName}";
 
   static String m14(num, numFormatted) =>

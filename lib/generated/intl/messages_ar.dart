@@ -50,7 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "الملف غير موجود. رجائاً تأكد أنه موجو في ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} أعاد التغريد";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} أعاد التغريد";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'لا تغريدات', one: 'تغريدة واحدة', two: 'تغريدتان', few: '${numFormatted} تغريدات', many: '${numFormatted} تغريدة', other: '${numFormatted} تغريدات')}";

@@ -52,7 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Fitxategia ez da existitzen. Mesedez, ziurtatu ${filePath} helbidean dagoela";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} birtxiotua";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} birtxiotua";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'Txorik gabea', one: 'Txio bat', two: 'Bi txio', few: '${numFormatted} txio', many: '${numFormatted} txio', other: '${numFormatted} txio')}";

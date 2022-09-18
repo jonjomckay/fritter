@@ -49,7 +49,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Berkas tidak ada. Pastikan bahwa itu terletak di ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} mencuit ulang";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} mencuit ulang";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'tidak ada cuitan', one: '1 cuitan', two: '2 cuitan', few: '${numFormatted} cuitan', many: '${numFormatted} cuitan', other: '${numFormatted} cuitan')}";

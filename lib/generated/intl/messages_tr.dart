@@ -52,7 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Dosya yok. Lütfen ${filePath} konumunda olduğundan emin olun";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} retweet\'ledi";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} retweet\'ledi";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'tweet yok', one: 'bir tweet', two: 'iki tweet', few: '${numFormatted} tweet', many: '${numFormatted} tweet', other: '${numFormatted} tweet')}";

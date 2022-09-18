@@ -52,7 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "The file does not exist. Please ensure it is located at ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} retweeted";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} retweeted ${timeAgo}";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'no tweets', one: 'one tweet', two: 'two tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";

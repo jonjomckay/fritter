@@ -53,7 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Файл не существует. Пожалуйста, убедитесь, что он находится по адресу ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} ретвитнул(а)";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} ретвитнул(а)";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'нет твитов', one: 'твит', two: 'твита', few: '${numFormatted} твитов', many: '${numFormatted} твитов', other: '${numFormatted} твит')}";

@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m12(filePath) => "ファイルが存在しません。${filePath}に存在することを確認してください";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName}がリツイート";
+  static String m13(thisTweetUserName, timeAgo) => "${thisTweetUserName}がリツイート";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 ツイート', one: '1 ツイート', two: '2 ツイート', few: '${numFormatted} ツイート', many: '${numFormatted} ツイート', other: '${numFormatted} ツイート')}";

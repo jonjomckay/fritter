@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m12(filePath) => "该文件不存在。请确保它位于${filePath}的位置";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} 转发了推文";
+  static String m13(thisTweetUserName, timeAgo) => "${thisTweetUserName} 转发了推文";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 推文', one: '1 推文', two: '2 推文', few: '${numFormatted} 推文', many: '${numFormatted} 推文', other: '${numFormatted}推文')}";

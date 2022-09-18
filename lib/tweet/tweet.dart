@@ -312,7 +312,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         icon: Icons.repeat,
         children: [
           TextSpan(
-              text: L10n.of(context).this_tweet_user_name_retweeted(this.tweet.user!.name!),
+              text: L10n.of(context).this_tweet_user_name_retweeted(this.tweet.user!.name!, createRelativeDate(this.tweet.createdAt!)),
               style: Theme.of(context).textTheme.caption)
         ],
       );

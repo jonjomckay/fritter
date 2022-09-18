@@ -51,7 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "El fitxer no existeix. Assegureu-vos que es troba a ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} retuitejat";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} retuitejat";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'cap tweets', one: 'un tweet', two: 'dos tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";

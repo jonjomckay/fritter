@@ -329,7 +329,7 @@
   "@live": {},
   "download": "Download",
   "@download": {},
-  "this_tweet_user_name_retweeted": "{thisTweetUserName} retweeted",
+  "this_tweet_user_name_retweeted": "{thisTweetUserName} retweeted {timeAgo}",
   "@this_tweet_user_name_retweeted": {},
   "sorry_the_replied_tweet_could_not_be_found": "Sorry, the replied tweet could not be found!",
   "@sorry_the_replied_tweet_could_not_be_found": {},

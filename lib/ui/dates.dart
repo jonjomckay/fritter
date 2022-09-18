@@ -4,6 +4,10 @@ import 'package:timeago/timeago.dart' as timeago;
 
 final absoluteDateFormat = DateFormat.yMMMd().add_Hms();
 
+String createRelativeDate(DateTime dateTime) {
+  return timeago.format(dateTime, locale: Intl.shortLocale(Intl.getCurrentLocale()));
+}
+
 class Timestamp extends StatefulWidget {
   final DateTime timestamp;
 
@@ -22,10 +26,6 @@ class _TimestampState extends State<Timestamp> {
   void initState() {
     super.initState();
     formattedTime = createRelativeDate(widget.timestamp);
-  }
-
-  String createRelativeDate(DateTime dateTime) {
-    return timeago.format(dateTime, locale: Intl.shortLocale(Intl.getCurrentLocale()));
   }
 
   @override

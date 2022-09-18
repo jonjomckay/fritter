@@ -1792,13 +1792,14 @@ class L10n {
     );
   }
 
-  /// `{thisTweetUserName} retweeted`
-  String this_tweet_user_name_retweeted(Object thisTweetUserName) {
+  /// `{thisTweetUserName} retweeted {timeAgo}`
+  String this_tweet_user_name_retweeted(
+      Object thisTweetUserName, Object timeAgo) {
     return Intl.message(
-      '$thisTweetUserName retweeted',
+      '$thisTweetUserName retweeted $timeAgo',
       name: 'this_tweet_user_name_retweeted',
       desc: '',
-      args: [thisTweetUserName],
+      args: [thisTweetUserName, timeAgo],
     );
   }
 

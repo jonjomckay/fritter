@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Plik nie istnieje. Upewnij się, że znajduje się w ${filePath}";
 
-  static String m13(thisTweetUserName) =>
+  static String m13(thisTweetUserName, timeAgo) =>
       "${thisTweetUserName} podał(a) dalej tweeta";
 
   static String m14(num, numFormatted) =>

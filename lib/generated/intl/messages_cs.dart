@@ -50,7 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Soubor neexistuje. Ujistěte se, že se nachází v ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} retweetnul";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} retweetnul";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'žádné tweety', one: 'jeden tweet', two: 'dva tweety', few: '${numFormatted} tweety', many: '${numFormatted} tweetů', other: '${numFormatted} tweetů')}";

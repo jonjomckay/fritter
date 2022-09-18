@@ -51,7 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m12(filePath) =>
       "Filen finnes ikke. Sørg for at den er å finne i ${filePath}";
 
-  static String m13(thisTweetUserName) => "${thisTweetUserName} re-tvitret";
+  static String m13(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} re-tvitret";
 
   static String m14(num, numFormatted) =>
       "${Intl.plural(num, zero: 'ingen tvitringer', one: 'én tvitring', two: 'to tvitringer', few: '${numFormatted} tvitringer', many: '${numFormatted} tvitringer', other: '${numFormatted} tvitringer')}";
