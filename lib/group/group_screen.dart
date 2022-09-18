@@ -1,3 +1,4 @@
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
@@ -6,7 +7,9 @@ import 'package:fritter/group/_feed.dart';
 import 'package:fritter/group/_settings.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/utils/iterables.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/iterables.dart';
 
 class GroupScreenArguments {
   final String id;
@@ -49,16 +52,33 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
           return Container();
         }
 
-        var users = group.subscriptions.map((e) => e.screenName).toList();
+        // Split the users into chunks, oldest first, to prevent thrashing of all groups when a new user is added
+        var users = group.subscriptions
+            .sorted((a, b) => a.createdAt.compareTo(b.createdAt))
+            .toList();
+
+        var chunks = partition(users, 16)
+            .map((e) => SubscriptionGroupFeedChunk(e))
+            .toList();
 
         return SubscriptionGroupFeed(
           group: group,
-          users: users,
+          chunks: chunks,
           includeReplies: group.includeReplies,
           includeRetweets: group.includeRetweets,
         );
       },
     );
+  }
+}
+
+class SubscriptionGroupFeedChunk {
+  final List<Subscription> users;
+
+  SubscriptionGroupFeedChunk(this.users);
+
+  String get hash {
+    return sha1.convert(users.map((e) => e.id).join(', ').codeUnits).toString();
   }
 }
 

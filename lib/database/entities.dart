@@ -31,13 +31,15 @@ class Subscription with ToMappable {
   final String name;
   final String? profileImageUrlHttps;
   final bool verified;
+  final DateTime createdAt;
 
   Subscription(
       {required this.id,
       required this.screenName,
       required this.name,
       required this.profileImageUrlHttps,
-      required this.verified});
+      required this.verified,
+      required this.createdAt});
 
   factory Subscription.fromMap(Map<String, Object?> map) {
     // TODO: Remove this after a while, as it's to handle broken exports from v2.10.0
@@ -53,7 +55,9 @@ class Subscription with ToMappable {
             ? map['verified'] as bool
             : verifiedIsInt
                 ? map['verified'] == 1
-                : false);
+                : false,
+      createdAt: DateTime.parse(map['created_at'] as String)
+    );
   }
 
   @override

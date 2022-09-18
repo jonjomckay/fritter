@@ -45,6 +45,8 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       var importModel = context.read<ImportDataModel>();
       var groupModel = context.read<GroupsModel>();
 
+      var createdAt = DateTime.now();
+
       while (true) {
         var response = await Twitter.getProfileFollows(
           screenName,
@@ -58,11 +60,13 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
         await importModel.importData({
           tableSubscription: [
             ...response.users.map((e) => Subscription(
-                id: e.idStr!,
-                name: e.name!,
-                profileImageUrlHttps: e.profileImageUrlHttps,
-                screenName: e.screenName!,
-                verified: e.verified ?? false))
+              id: e.idStr!,
+              name: e.name!,
+              profileImageUrlHttps: e.profileImageUrlHttps,
+              screenName: e.screenName!,
+              verified: e.verified ?? false,
+              createdAt: createdAt
+            ))
           ]
         });
 

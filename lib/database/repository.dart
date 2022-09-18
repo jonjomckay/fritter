@@ -7,6 +7,8 @@ import 'package:uuid/uuid.dart';
 
 const String databaseName = 'fritter.db';
 
+const String tableFeedGroupChunk = 'feed_group_chunk';
+const String tableFeedGroupCursor = 'feed_group_cursor';
 const String tableSavedTweet = 'saved_tweet';
 const String tableSubscription = 'subscription';
 const String tableSubscriptionGroup = 'subscription_group';
@@ -157,17 +159,30 @@ class Repository {
           await db.update(tableSubscriptionGroup, {'icon': defaultGroupIcon},
               where: "icon IS NULL OR icon = '' OR icon = ?", whereArgs: ['rss_feed']);
         }))
+      ],
+      17: [
+        SqlMigration(
+            'CREATE TABLE IF NOT EXISTS $tableFeedGroupCursor (id INTEGER PRIMARY KEY, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
+            reverseSql: 'DROP TABLE $tableFeedGroupCursor'),
+        SqlMigration(
+            'CREATE TABLE IF NOT EXISTS $tableFeedGroupChunk (cursor_id INTEGER NOT NULL, hash VARCHAR NOT NULL, cursor_top VARCHAR, cursor_bottom VARCHAR, response VARCHAR, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
+            reverseSql: 'DROP TABLE $tableFeedGroupChunk'),
       ]
     });
     await openDatabase(
       databaseName,
-      version: 16,
+      version: 17,
       onUpgrade: myMigrationPlan,
       onCreate: myMigrationPlan,
       onDowngrade: myMigrationPlan,
     );
 
     log.info('Finished migrating database');
+
+    // Clean up any old feed chunks and cursors
+    var repository = await writable();
+    await repository.delete(tableFeedGroupChunk, where: "created_at <= date('now', '-30 day')");
+    await repository.delete(tableFeedGroupCursor, where: "created_at <= date('now', '-30 day')");
 
     return true;
   }

@@ -27,3 +27,4 @@
 * Fixed dragging on images bricking the whole app (#444, #477, #497)
 * Fixed retweets not appearing in group feeds (#494)
 * Tapping on tweet text now opens the tweet again (#246)
+* Added more efficient feed fetching, with 30 day tweet storage

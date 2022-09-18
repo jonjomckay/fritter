@@ -1,4 +1,12 @@
 extension Iterables<E> on Iterable<E> {
+  E? get firstOrNull {
+    if (isEmpty) {
+      return null;
+    }
+
+    return first;
+  }
+
   E? firstWhereOrNull(bool Function(E element) test) {
     for (var element in this) {
       if (test(element)) {

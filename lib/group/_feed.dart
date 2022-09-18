@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
+import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
@@ -11,10 +15,11 @@ import 'package:fritter/utils/iterables.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SubscriptionGroupFeed extends StatefulWidget {
   final SubscriptionGroupGet group;
-  final List<String> users;
+  final List<SubscriptionGroupFeedChunk> chunks;
   final bool includeReplies;
   final bool includeRetweets;
   final ScrollController? scrollController;
@@ -22,7 +27,7 @@ class SubscriptionGroupFeed extends StatefulWidget {
   const SubscriptionGroupFeed(
       {Key? key,
       required this.group,
-      required this.users,
+      required this.chunks,
       required this.includeReplies,
       required this.includeRetweets,
       this.scrollController})
@@ -40,8 +45,8 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     super.initState();
 
     _pagingController = PagingController(firstPageKey: null);
-    _pagingController.addPageRequestListener((cursor) {
-      _listTweets(cursor);
+    _pagingController.addPageRequestListener((cursor) async {
+      await _listTweets(cursor);
     });
   }
 
@@ -60,48 +65,117 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     }
   }
 
-  Future _listTweets(String? cursor) async {
-    try {
-      List<Future<TweetStatus>> futures = [];
+  Future<String> createCursor(Database repository) async {
+    return (await repository.insert(tableFeedGroupCursor, {}, nullColumnHack: 'id')).toString();
+  }
 
-      // TODO: Split into groups, and have a max_id per group
-      var query = '';
-      if (!widget.includeReplies) {
-        query += '-filter:replies ';
-      }
+  String _buildSearchQuery(List<Subscription> users) {
+    var query = '';
+    if (!widget.includeReplies) {
+      query += '-filter:replies ';
+    }
 
-      if (!widget.includeRetweets) {
-        query += '-filter:retweets ';
+    if (!widget.includeRetweets) {
+      query += '-filter:retweets ';
+    } else {
+      query += 'include:nativeretweets ';
+    }
+
+    var remainingLength = 490 - query.length;
+
+    for (var user in users) {
+      var queryToAdd = 'from:${user.screenName}';
+
+      // If we can add this user to the query and still be less than ~500 characters, do so
+      if (query.length + queryToAdd.length < remainingLength) {
+        if (query.isNotEmpty) {
+          query += '+OR+';
+        }
+
+        query += queryToAdd;
       } else {
-        query += 'include:nativeretweets ';
+        // Otherwise, add the search future and start a new one
+        assert(false, 'should never reach here');
+        query = queryToAdd;
       }
+    }
 
-      var remainingLength = 490 - query.length;
+    return query;
+  }
 
-      for (var user in widget.users) {
-        var queryToAdd = 'from:$user';
+  /// Search for our next "page" of tweets.
+  ///
+  /// Here, each page is actually a set of mappings, where the ID of each set is the hash of all the user IDs in that
+  /// set. We store this along with the top and bottom pagination cursors, which we use to perform pagination for all
+  /// sets at the same time, allowing us to create a feed made up of individual search queries.
+  Future _listTweets(String? cursorKey) async {
+    try {
+      List<Future<List<TweetChain>>> futures = [];
 
-        // If we can add this user to the query and still be less than ~500 characters, do so
-        if (query.length + queryToAdd.length < remainingLength) {
-          if (query.isNotEmpty) {
-            query += '+OR+';
+      var repository = await Repository.writable();
+      var nextCursor = await createCursor(repository);
+
+      for (var chunk in widget.chunks) {
+        var hash = chunk.hash;
+        
+        futures.add(Future(() async {
+          var tweets = <TweetChain>[];
+
+          String? searchCursor;
+
+          if (cursorKey == null) {
+            // We're loading the initial content for the feed screen, so load all the chunks we already have
+            var storedChunks = await repository.query(tableFeedGroupChunk, where: 'hash = ?', whereArgs: [hash], orderBy: 'created_at DESC');
+
+            // Make sure we load any existing stored tweets from the chunk
+            var storedChunksTweets = storedChunks
+              .map((e) => jsonDecode(e['response'] as String))
+              .map((e) => List.from(e))
+              .expand((e) => e.map((c) => TweetChain.fromJson(c)))
+              .toList();
+
+            tweets.addAll(storedChunksTweets);
+
+            // Use the latest chunk's top cursor to load any new tweets since the last time we checked
+            var latestChunk = storedChunks.firstOrNull;
+            if (latestChunk != null) {
+              searchCursor = latestChunk['cursor_top'] as String;
+            } else {
+              // Otherwise we need to perform a fresh load from scratch for this chunk
+              searchCursor = null;
+            }
+          } else {
+            // We're currently at the end of our current feed, so load the oldest chunk and use its cursor to load more
+            var storedChunks = await repository.query(tableFeedGroupChunk, where: 'cursor_id = ? AND hash = ?', whereArgs: [int.parse(cursorKey), hash]);
+            if (storedChunks.isNotEmpty) {
+              searchCursor = storedChunks.first['cursor_bottom'] as String;
+            } else {
+              searchCursor = null;
+            }
           }
 
-          query += queryToAdd;
-        } else {
-          // Otherwise, add the search future and start a new one
-          futures.add(Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: cursor, mode: 'live'));
+          // Perform our search for the next page of results for this chunk, and add those tweets to our collection
+          var query = _buildSearchQuery(chunk.users);
+          var result = await Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: searchCursor, mode: 'live');
 
-          query = queryToAdd;
-        }
+          tweets.addAll(result.chains);
+
+          // Make sure we insert the set of cursors for this latest chunk, ready for the next time we paginate
+          await repository.insert(tableFeedGroupChunk, {
+            'cursor_id': int.parse(nextCursor),
+            'hash': hash,
+            'cursor_top': result.cursorTop,
+            'cursor_bottom': result.cursorBottom,
+            'response': jsonEncode(result.chains.map((e) => e.toJson()).toList())
+          });
+
+          return tweets;
+        }));
       }
 
-      // Add any remaining query as a search future too
-      futures.add(Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: cursor, mode: 'live'));
-
+      // Wait for all our searches to complete, then build our list of tweet conversations
       var result = (await Future.wait(futures));
       var threads = result
-          .map((e) => e.chains)
           .expand((element) => element)
           .sorted((a, b) {
             var aCreatedAt = a.tweets[0].createdAt;
@@ -119,10 +193,10 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         mounted ? _pagingController.appendLastPage([]) : null;
       } else {
         // If this page is the same as the last page we received before, assume it's the last page
-        if (result.last.cursorBottom == _pagingController.nextPageKey) {
+        if (nextCursor == _pagingController.nextPageKey) {
           mounted ? _pagingController.appendLastPage([]) : null;
         } else {
-          mounted ? _pagingController.appendPage(threads, result.last.cursorBottom) : null;
+          mounted ? _pagingController.appendPage(threads, nextCursor) : null;
         }
       }
     } catch (e, stackTrace) {
@@ -135,7 +209,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.users.isEmpty) {
+    if (widget.chunks.isEmpty) {
       return Scaffold(
         body: Center(
           child: Text(L10n.of(context).this_group_contains_no_subscriptions),
