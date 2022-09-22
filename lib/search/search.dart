@@ -35,17 +35,31 @@ class SearchScreen extends StatelessWidget {
 }
 
 
-class _SearchScreen extends StatelessWidget {
+class _SearchScreen extends StatefulWidget {
   final int initialTab;
+  final String? query;
+  bool focusInputOnOpen;
+
+  _SearchScreen({Key? key, required this.initialTab, this.query, this.focusInputOnOpen = false}) : super(key: key);
+
+  @override
+  State<_SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<_SearchScreen> {
   final TextEditingController _queryController = TextEditingController();
+
   final FocusNode focusNode = FocusNode();
 
-  _SearchScreen({Key? key, required this.initialTab, String? query, bool focusInputOnOpen = false}) : super(key: key) {
-    if (focusInputOnOpen) {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.focusInputOnOpen) {
       focusNode.requestFocus();
     }
 
-    _queryController.text = query ?? '';
+    _queryController.text = widget.query ?? '';
 
     // TODO: Focussing makes the selection go to the start?!
   }
@@ -81,7 +95,7 @@ class _SearchScreen extends StatelessWidget {
         ),
         body: DefaultTabController(
             length: 2,
-            initialIndex: initialTab,
+            initialIndex: widget.initialTab,
             child: Column(
               children: [
                 Material(
