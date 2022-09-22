@@ -9,7 +9,7 @@ String createRelativeDate(DateTime dateTime) {
 }
 
 class Timestamp extends StatefulWidget {
-  final DateTime timestamp;
+  final DateTime? timestamp;
 
   const Timestamp({Key? key, required this.timestamp}) : super(key: key);
 
@@ -20,24 +20,33 @@ class Timestamp extends StatefulWidget {
 class _TimestampState extends State<Timestamp> {
   bool _useRelativeTimestamp = true;
 
-  late String formattedTime;
+  String formattedTime = '';
 
   @override
   void initState() {
     super.initState();
-    formattedTime = createRelativeDate(widget.timestamp);
+
+    var timestamp = widget.timestamp;
+    if (timestamp != null) {
+      formattedTime = createRelativeDate(timestamp);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var timestamp = widget.timestamp;
+    if (timestamp == null) {
+      return Container();
+    }
+
     return GestureDetector(
       child: Text(formattedTime),
       onTap: () {
         setState(() {
           if (_useRelativeTimestamp) {
-            formattedTime = createRelativeDate(widget.timestamp);
+            formattedTime = createRelativeDate(timestamp);
           } else {
-            formattedTime = absoluteDateFormat.format(widget.timestamp);
+            formattedTime = absoluteDateFormat.format(timestamp);
           }
 
           _useRelativeTimestamp = !_useRelativeTimestamp;
