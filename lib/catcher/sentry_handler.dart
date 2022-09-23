@@ -139,11 +139,11 @@ class FritterSentryHandler extends ReportHandler {
       if (context != null) {
         var isEnabled = _isSentryEnabled;
         if (isEnabled != null && isEnabled) {
-          showSnackBar(context, icon: '🕵️', message: L10n.of(context).an_error_was_reported_to_sentry_thank_you);
+          showSnackBar(context, clearBefore: false, icon: '🕵️', message: L10n.of(context).an_error_was_reported_to_sentry_thank_you);
         }
 
         if (isEnabled == null || isEnabled == false) {
-          showSnackBar(context,
+          showSnackBar(context, clearBefore: false,
               icon: '💖', message: L10n.of(context).thanks_for_reporting_we_will_try_and_fix_it_in_no_time);
         }
       }

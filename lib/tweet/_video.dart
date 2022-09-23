@@ -8,6 +8,7 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
+import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -78,16 +79,6 @@ class _TweetVideoState extends State<TweetVideo> {
               context,
               videoUri,
               fileName,
-              onError: (response) {
-                Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
-
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    L10n.of(context)
-                        .unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
-                  ),
-                ));
-              },
               onStart: () {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

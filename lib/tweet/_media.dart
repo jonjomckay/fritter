@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -227,16 +226,6 @@ class _TweetMediaViewState extends State<TweetMediaView> {
                 context,
                 uri,
                 fileName,
-                onError: (response) {
-                  Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
-
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                      L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
-                          response.statusCode),
-                    ),
-                  ));
-                },
                 onStart: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(L10n.of(context).downloading_media),

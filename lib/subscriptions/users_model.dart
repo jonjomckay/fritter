@@ -4,7 +4,6 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/user.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:logging/logging.dart';
 import 'package:pref/pref.dart';

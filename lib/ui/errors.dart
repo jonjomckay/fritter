@@ -9,8 +9,11 @@ import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/generated/l10n.dart';
 
-void showSnackBar(BuildContext context, {required String icon, required String message}) {
-  ScaffoldMessenger.of(context).clearSnackBars();
+void showSnackBar(BuildContext context, {required String icon, required String message, bool clearBefore = true}) {
+  if (clearBefore) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+  }
+
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
