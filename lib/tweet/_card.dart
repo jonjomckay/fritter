@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/tweet/_media.dart';
 import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:intl/intl.dart';
@@ -187,7 +188,7 @@ class TweetCard extends StatelessWidget {
         var media = unifiedCard['media_entities'][unifiedCard['component_objects']['media_1']['data']['id']];
         var uri = unifiedCard['destination_objects']['browser_with_docked_media_1']['data']['url_data']['url'];
 
-        var child = TweetVideo(username: tweet.user!.screenName!, loop: false, media: Media.fromJson(media));
+        var child = TweetMedia(media: [Media.fromJson(media)], username: tweet.user!.screenName!, sensitive: false);
         return _createWebsiteCard(context, unifiedCard, uri, imageSize, child);
       default:
         Catcher.reportCheckedError('Unsupported unified card type ${unifiedCard['type']} encountered', null);
