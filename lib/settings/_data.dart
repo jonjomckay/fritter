@@ -20,14 +20,16 @@ const String legacyExportFileName = 'fritter.json';
 
 class SettingsData {
   final Map<String, dynamic>? settings;
-  final List<Subscription>? subscriptions;
+  final List<SearchSubscription>? searchSubscriptions;
+  final List<UserSubscription>? userSubscriptions;
   final List<SubscriptionGroup>? subscriptionGroups;
   final List<SubscriptionGroupMember>? subscriptionGroupMembers;
   final List<SavedTweet>? tweets;
 
   SettingsData(
       {required this.settings,
-        required this.subscriptions,
+        required this.searchSubscriptions,
+        required this.userSubscriptions,
         required this.subscriptionGroups,
         required this.subscriptionGroupMembers,
         required this.tweets});
@@ -35,8 +37,11 @@ class SettingsData {
   factory SettingsData.fromJson(Map<String, dynamic> json) {
     return SettingsData(
         settings: json['settings'],
-        subscriptions: json['subscriptions'] != null
-            ? List.from(json['subscriptions']).map((e) => Subscription.fromMap(e)).toList()
+        searchSubscriptions: json['searchSubscriptions'] != null
+            ? List.from(json['searchSubscriptions']).map((e) => SearchSubscription.fromMap(e)).toList()
+            : null,
+        userSubscriptions: json['subscriptions'] != null
+            ? List.from(json['subscriptions']).map((e) => UserSubscription.fromMap(e)).toList()
             : null,
         subscriptionGroups: json['subscriptionGroups'] != null
             ? List.from(json['subscriptionGroups']).map((e) => SubscriptionGroup.fromMap(e)).toList()
@@ -50,7 +55,8 @@ class SettingsData {
   Map<String, dynamic> toJson() {
     return {
       'settings': settings,
-      'subscriptions': subscriptions?.map((e) => e.toMap()).toList(),
+      'searchSubscriptions': searchSubscriptions?.map((e) => e.toMap()).toList(),
+      'subscriptions': userSubscriptions?.map((e) => e.toMap()).toList(),
       'subscriptionGroups': subscriptionGroups?.map((e) => e.toMap()).toList(),
       'subscriptionGroupMembers': subscriptionGroupMembers?.map((e) => e.toMap()).toList(),
       'tweets': tweets?.map((e) => e.toMap()).toList()
@@ -82,9 +88,14 @@ class SettingsDataFragment extends StatelessWidget {
 
     var dataToImport = <String, List<ToMappable>>{};
 
-    var subscriptions = data.subscriptions;
-    if (subscriptions != null) {
-      dataToImport[tableSubscription] = subscriptions;
+    var searchSubscriptions = data.searchSubscriptions;
+    if (searchSubscriptions != null) {
+      dataToImport[tableSearchSubscription] = searchSubscriptions;
+    }
+
+    var userSubscriptions = data.userSubscriptions;
+    if (userSubscriptions != null) {
+      dataToImport[tableSubscription] = userSubscriptions;
     }
 
     var subscriptionGroups = data.subscriptionGroups;

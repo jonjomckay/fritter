@@ -42,7 +42,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
 
       if (id == '-1') {
         var subscriptions = (await database.query(tableSubscription))
-            .map((e) => Subscription.fromMap(e))
+            .map((e) => UserSubscription.fromMap(e))
             .toList(growable: false);
 
         return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
@@ -52,7 +52,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
       var subscriptions = (await database.rawQuery(
           'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
           [id]))
-          .map((e) => Subscription.fromMap(e))
+          .map((e) => UserSubscription.fromMap(e))
           .toList(growable: false);
 
       // TODO: Factory

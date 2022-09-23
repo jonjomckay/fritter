@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_tweets.dart';
@@ -369,8 +370,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             ),
                             Container(
                               alignment: Alignment.topRight,
-                              child: FollowButton(user: user),
                               margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
+                              child: FollowButton(user: UserSubscription.fromUser(user)),
                             ),
                             Container(
                               alignment: Alignment.topLeft,

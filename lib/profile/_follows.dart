@@ -1,7 +1,7 @@
 import 'package:catcher/catcher.dart';
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -69,7 +69,7 @@ class _ProfileFollowsState extends State<ProfileFollows> {
       pagingController: _pagingController,
       addAutomaticKeepAlives: false,
       builderDelegate: PagedChildBuilderDelegate(
-        itemBuilder: (context, user, index) => UserTile(user: user),
+        itemBuilder: (context, user, index) => UserTile(user: UserSubscription.fromUser(user)),
         firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
           error: _pagingController.error[0],
           stackTrace: _pagingController.error[1],

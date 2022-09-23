@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:fritter/database/entities.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/settings/_data.dart';
@@ -135,7 +136,8 @@ class _SettingsExportScreenState extends State<SettingsExportScreen> {
 
                 var data = SettingsData(
                     settings: settings,
-                    subscriptions: subscriptions,
+                    searchSubscriptions: subscriptions?.whereType<SearchSubscription>().toList(),
+                    userSubscriptions: subscriptions?.whereType<UserSubscription>().toList(),
                     subscriptionGroups: subscriptionGroups,
                     subscriptionGroupMembers: subscriptionGroupMembers,
                     tweets: tweets);

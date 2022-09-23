@@ -1,9 +1,9 @@
-import 'dart:ui';
-
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/user.dart';
+import 'package:intl/intl.dart';
+
+final DateFormat sqliteDateFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
 
 mixin ToMappable {
   Map<String, dynamic> toMap();
@@ -25,7 +25,7 @@ class SavedTweet with ToMappable {
   }
 }
 
-class Subscription with ToMappable {
+abstract class Subscription with ToMappable {
   final String id;
   final String screenName;
   final String name;
@@ -33,20 +33,57 @@ class Subscription with ToMappable {
   final bool verified;
   final DateTime createdAt;
 
-  Subscription(
-      {required this.id,
-      required this.screenName,
-      required this.name,
-      required this.profileImageUrlHttps,
-      required this.verified,
-      required this.createdAt});
+  Subscription({required this.id,
+        required this.screenName,
+        required this.name,
+        required this.profileImageUrlHttps,
+        required this.verified,
+        required this.createdAt});
+}
 
-  factory Subscription.fromMap(Map<String, Object?> map) {
+class SearchSubscription extends Subscription {
+  SearchSubscription({required super.id, required super.createdAt})
+      : super(name: id, screenName: id, verified: false, profileImageUrlHttps: null);
+
+  factory SearchSubscription.fromMap(Map<String, Object?> map) {
+    return SearchSubscription(
+        id: map['id'] as String,
+        createdAt: DateTime.parse(map['created_at'] as String));
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is SearchSubscription && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: Created at date format
+    return {
+      'id': id,
+      'created_at': sqliteDateFormat.format(createdAt)
+    };
+  }
+}
+
+class UserSubscription extends Subscription {
+  UserSubscription(
+      {required super.id,
+      required super.screenName,
+      required super.name,
+      required super.profileImageUrlHttps,
+      required super.verified,
+      required super.createdAt});
+
+  factory UserSubscription.fromMap(Map<String, Object?> map) {
     // TODO: Remove this after a while, as it's to handle broken exports from v2.10.0
     var verifiedIsBool = map['verified'] is bool;
     var verifiedIsInt = map['verified'] is int;
+    var createdAt = map['created_at'] == null ? DateTime.now() : DateTime.parse(map['created_at'] as String);
 
-    return Subscription(
+    return UserSubscription(
         id: map['id'] as String,
         screenName: map['screen_name'] as String,
         name: map['name'] as String,
@@ -56,21 +93,38 @@ class Subscription with ToMappable {
             : verifiedIsInt
                 ? map['verified'] == 1
                 : false,
-      createdAt: DateTime.parse(map['created_at'] as String)
+      createdAt: createdAt
     );
   }
 
-  @override
-  Map<String, dynamic> toMap() {
-    return {'id': id, 'screen_name': screenName, 'name': name, 'verified': verified ? 1 : 0};
+  factory UserSubscription.fromUser(UserWithExtra user) {
+    return UserSubscription(
+        id: user.idStr!,
+        screenName: user.screenName!,
+        name: user.name!,
+        profileImageUrlHttps: user.profileImageUrlHttps,
+        verified: user.verified!,
+        createdAt: user.createdAt!);
   }
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Subscription && runtimeType == other.runtimeType && id == other.id;
+      identical(this, other) || other is UserSubscription && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'screen_name': screenName,
+      'name': name,
+      'profile_image_url_https': profileImageUrlHttps,
+      'verified': verified ? 1 : 0,
+      'created_at': sqliteDateFormat.format(createdAt)
+    };
+  }
 
   UserWithExtra toUser() {
     return UserWithExtra.fromJson({

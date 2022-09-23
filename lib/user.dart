@@ -48,7 +48,7 @@ class UserAvatar extends StatelessWidget {
 }
 
 class UserTile extends StatelessWidget {
-  final UserWithExtra user;
+  final Subscription user;
 
   const UserTile({Key? key, required this.user}) : super(key: key);
 
@@ -59,9 +59,9 @@ class UserTile extends StatelessWidget {
       leading: UserAvatar(uri: user.profileImageUrlHttps),
       title: Row(
         children: [
-          Flexible(child: Text(user.name!, maxLines: 1, overflow: TextOverflow.ellipsis)),
-          if (user.verified!) const SizedBox(width: 6),
-          if (user.verified!) const Icon(Icons.verified, size: 14, color: Colors.blue)
+          Flexible(child: Text(user.name, maxLines: 1, overflow: TextOverflow.ellipsis)),
+          if (user.verified) const SizedBox(width: 6),
+          if (user.verified) const Icon(Icons.verified, size: 14, color: Colors.blue)
         ],
       ),
       subtitle: Text('@${user.screenName}', maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -77,7 +77,7 @@ class UserTile extends StatelessWidget {
 }
 
 class FollowButtonSelectGroupDialog extends StatefulWidget {
-  final UserWithExtra user;
+  final Subscription user;
   final bool followed;
   final List<String> groupsForUser;
 
@@ -117,14 +117,14 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
         }
 
         // Then add them to all the selected groups
-        await groupModel.saveUserGroupMembership(widget.user.idStr!, memberships);
+        await groupModel.saveUserGroupMembership(widget.user.id, memberships);
       },
     );
   }
 }
 
 class FollowButton extends StatelessWidget {
-  final UserWithExtra user;
+  final Subscription user;
 
   const FollowButton({Key? key, required this.user}) : super(key: key);
 
@@ -135,7 +135,7 @@ class FollowButton extends StatelessWidget {
     return ScopedBuilder<SubscriptionsModel, Object, List<Subscription>>(
       store: model,
       onState: (_, state) {
-        var followed = state.any((element) => element.id == user.idStr);
+        var followed = state.any((element) => element.id == user.id);
 
         var icon = followed ? const Icon(Icons.person_remove) : const Icon(Icons.person_add);
         var text = followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
@@ -152,7 +152,7 @@ class FollowButton extends StatelessWidget {
           onSelected: (value) async {
             switch (value) {
               case 'add_to_group':
-                var groups = await context.read<GroupsModel>().listGroupsForUser(user.idStr!);
+                var groups = await context.read<GroupsModel>().listGroupsForUser(user.id);
                 showDialog(
                     context: context,
                     builder: (_) => FollowButtonSelectGroupDialog(

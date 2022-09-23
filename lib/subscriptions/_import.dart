@@ -59,7 +59,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
 
         await importModel.importData({
           tableSubscription: [
-            ...response.users.map((e) => Subscription(
+            ...response.users.map((e) => UserSubscription(
               id: e.idStr!,
               name: e.name!,
               profileImageUrlHttps: e.profileImageUrlHttps,
