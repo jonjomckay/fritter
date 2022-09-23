@@ -281,7 +281,7 @@
   "@live": {},
   "download": "Pobierz",
   "@download": {},
-  "this_tweet_user_name_retweeted": "{thisTweetUserName} podał(a) dalej tweeta",
+  "this_tweet_user_name_retweeted": "{thisTweetUserName} podał(a) dalej tweeta {timeAgo}",
   "@this_tweet_user_name_retweeted": {},
   "replying_to": "W odpowiedzi do",
   "@replying_to": {},
@@ -460,5 +460,11 @@
   "activate_non_confirmation_bias_mode_label": "Aktywuj tryb bez efektu potwierdzenia",
   "@activate_non_confirmation_bias_mode_label": {},
   "activate_non_confirmation_bias_mode_description": "Ukrywaj autorów tweetów. Unikaj efektu potwierdzenia opartego na autorytatywnych argumentach",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "confirm_close_fritter": "Czy na pewno chcesz zamknąć Frittera?",
+  "@confirm_close_fritter": {},
+  "search_term": "Fraza wyszukiwania",
+  "@search_term": {},
+  "group_name": "Grupa: {name}",
+  "@group_name": {}
 }
