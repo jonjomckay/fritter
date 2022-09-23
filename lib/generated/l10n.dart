@@ -2416,6 +2416,16 @@ class L10n {
       args: [name],
     );
   }
+
+  /// `Are you sure you want to close Fritter?`
+  String get confirm_close_fritter {
+    return Intl.message(
+      'Are you sure you want to close Fritter?',
+      name: 'confirm_close_fritter',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

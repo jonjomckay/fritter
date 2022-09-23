@@ -582,7 +582,30 @@ class _DefaultPageState extends State<DefaultPage> {
           prefix: L10n.of(context).unable_to_run_the_database_migrations);
     }
 
-    return const HomeScreen();
+    return WillPopScope(
+      onWillPop: () async {
+        var result = await showDialog<bool>(
+            context: context,
+            builder: (c) => AlertDialog(
+              title: Text(L10n.current.are_you_sure),
+              content: Text(L10n.current.confirm_close_fritter),
+              actions: [
+                TextButton(
+                  child: Text(L10n.current.no),
+                  onPressed: () => Navigator.pop(c, false),
+                ),
+                TextButton(
+                  child: Text(L10n.current.yes),
+                  onPressed: () => Navigator.pop(c, true),
+                ),
+              ],
+            )
+        );
+
+        return result ?? false;
+      },
+      child: const HomeScreen()
+    );
   }
 
   @override

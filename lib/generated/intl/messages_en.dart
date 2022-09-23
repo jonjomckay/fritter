@@ -108,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Catastrophic failure"),
         "choose": MessageLookupByLibrary.simpleMessage("Choose"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to close Fritter?"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribute"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Copied address to clipboard"),
