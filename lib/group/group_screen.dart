@@ -58,7 +58,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
             .toList();
 
         var chunks = partition(users, 16)
-            .map((e) => SubscriptionGroupFeedChunk(e))
+            .map((e) => SubscriptionGroupFeedChunk(e, group.includeReplies, group.includeRetweets))
             .toList();
 
         return SubscriptionGroupFeed(
@@ -74,11 +74,15 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
 
 class SubscriptionGroupFeedChunk {
   final List<Subscription> users;
+  final bool includeReplies;
+  final bool includeRetweets;
 
-  SubscriptionGroupFeedChunk(this.users);
+  SubscriptionGroupFeedChunk(this.users, this.includeReplies, this.includeRetweets);
 
   String get hash {
-    return sha1.convert(users.map((e) => e.id).join(', ').codeUnits).toString();
+    var toHash = '${users.map((e) => e.id).join(', ')}$includeReplies$includeRetweets';
+
+    return sha1.convert(toHash.codeUnits).toString();
   }
 }
 
