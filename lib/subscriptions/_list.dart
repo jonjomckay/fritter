@@ -69,6 +69,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
               dense: true,
               leading: const SizedBox(width: 48, child: Icon(Icons.search)),
               title: Text(user.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+              subtitle: Text(L10n.current.search_term),
               trailing: SizedBox(
                 width: 36,
                 child: FollowButton(user: user),

@@ -48,15 +48,23 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
         return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
       }
 
+      var searchSubscriptions = (await database.rawQuery(
+          'SELECT s.* FROM $tableSearchSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
+          .map((e) => SearchSubscription.fromMap(e))
+          .toList(growable: false);
 
-      var subscriptions = (await database.rawQuery(
-          'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
-          [id]))
+      var userSubscriptions = (await database.rawQuery(
+          'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => UserSubscription.fromMap(e))
           .toList(growable: false);
 
       // TODO: Factory
-      return SubscriptionGroupGet(id: group['id'] as String, name: group['name'] as String, subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
+      return SubscriptionGroupGet(
+          id: group['id'] as String,
+          name: group['name'] as String,
+          subscriptions: [...userSubscriptions, ...searchSubscriptions],
+          includeReplies: group['include_replies'] == 1,
+          includeRetweets: group['include_retweets'] == 1);
     });
   }
 

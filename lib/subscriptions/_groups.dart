@@ -344,14 +344,19 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                   itemBuilder: (context, index) {
                     var subscription = subscriptionsModel.state[index];
 
+                    var subtitle = subscription is SearchSubscription
+                      ? L10n.current.search_term
+                      : '@${subscription.screenName}';
+
+                    var icon = subscription is SearchSubscription
+                      ? const SizedBox(width: 48, child: Icon(Icons.search))
+                      : UserAvatar(uri: subscription.profileImageUrlHttps);
+
                     return CheckboxListTile(
                       dense: true,
-                      secondary: ClipRRect(
-                        borderRadius: BorderRadius.circular(64),
-                        child: UserAvatar(uri: subscription.profileImageUrlHttps),
-                      ),
+                      secondary: icon,
                       title: Text(subscription.name),
-                      subtitle: Text('@${subscription.screenName}'),
+                      subtitle: Text(subtitle),
                       selected: members.contains(subscription.id),
                       value: members.contains(subscription.id),
                       onChanged: (v) => setState(() {

@@ -427,5 +427,6 @@
   "reset_home_pages": "Reset pages to default",
   "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages",
   "group_name": "Group: {name}",
-  "confirm_close_fritter": "Are you sure you want to close Fritter?"
+  "confirm_close_fritter": "Are you sure you want to close Fritter?",
+  "search_term": "Search term"
 }

@@ -84,7 +84,12 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
     var remainingLength = 490 - query.length;
 
     for (var user in users) {
-      var queryToAdd = 'from:${user.screenName}';
+      var queryToAdd = '';
+      if (user is UserSubscription) {
+        queryToAdd = 'from:${user.screenName}';
+      } else if (user is SearchSubscription) {
+        queryToAdd = '"${user.id}"';
+      }
 
       // If we can add this user to the query and still be less than ~500 characters, do so
       if (query.length + queryToAdd.length < remainingLength) {

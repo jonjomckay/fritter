@@ -302,6 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello": MessageLookupByLibrary.simpleMessage("Say Hello"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Say Hello 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "search_term": MessageLookupByLibrary.simpleMessage("Search term"),
         "select": MessageLookupByLibrary.simpleMessage("Select"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(

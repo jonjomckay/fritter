@@ -2426,6 +2426,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Search term`
+  String get search_term {
+    return Intl.message(
+      'Search term',
+      name: 'search_term',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
