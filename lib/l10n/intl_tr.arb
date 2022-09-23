@@ -307,7 +307,7 @@
   "@unknown": {},
   "download": "İndir",
   "@download": {},
-  "this_tweet_user_name_retweeted": "{thisTweetUserName} retweet'ledi",
+  "this_tweet_user_name_retweeted": "{thisTweetUserName} {timeAgo} retweet'ledi",
   "@this_tweet_user_name_retweeted": {},
   "the_tweet_did_not_contain_any_text_this_is_unexpected": "Tweet'te herhangi bir metin yoktu. Bu beklenmedik bir şey",
   "@the_tweet_did_not_contain_any_text_this_is_unexpected": {},
@@ -460,5 +460,11 @@
   "activate_non_confirmation_bias_mode_label": "Doğrulama yanlılığı kapalı modunu etkinleştir",
   "@activate_non_confirmation_bias_mode_label": {},
   "activate_non_confirmation_bias_mode_description": "Tweet yazarlarını gizleyin. Yazarın argümanlara dayalı doğrulama yanlılığından kaçının.",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "confirm_close_fritter": "Fritter'ı kapatmak istediğinizden emin misiniz?",
+  "@confirm_close_fritter": {},
+  "search_term": "Arama terimi",
+  "@search_term": {},
+  "group_name": "Grup: {name}",
+  "@group_name": {}
 }
