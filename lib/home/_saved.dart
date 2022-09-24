@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class SavedScreen extends StatefulWidget {
   final ScrollController scrollController;
-  
+
   const SavedScreen({Key? key, required this.scrollController}) : super(key: key);
 
   @override
@@ -43,9 +43,7 @@ class _SavedScreenState extends State<SavedScreen> {
             pinned: false,
             snap: true,
             floating: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(L10n.current.saved),
-            ),
+            title: Text(L10n.current.saved),
             actions: createCommonAppBarActions(context),
           )
         ];

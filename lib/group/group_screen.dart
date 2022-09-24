@@ -53,9 +53,7 @@ class SubscriptionGroupScreenContent extends StatelessWidget {
         }
 
         // Split the users into chunks, oldest first, to prevent thrashing of all groups when a new user is added
-        var users = group.subscriptions
-            .sorted((a, b) => a.createdAt.compareTo(b.createdAt))
-            .toList();
+        var users = group.subscriptions.sorted((a, b) => a.createdAt.compareTo(b.createdAt)).toList();
 
         var chunks = partition(users, 16)
             .map((e) => SubscriptionGroupFeedChunk(e, group.includeReplies, group.includeRetweets))
@@ -92,7 +90,9 @@ class SubscriptionGroupScreen extends StatelessWidget {
   final String name;
   final List<Widget> actions;
 
-  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.name, required this.actions}) : super(key: key);
+  const SubscriptionGroupScreen(
+      {Key? key, required this.scrollController, required this.id, required this.name, required this.actions})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,17 +115,14 @@ class SubscriptionGroupScreen extends StatelessWidget {
                 pinned: false,
                 snap: true,
                 floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(name),
-                ),
+                title: Text(name.replaceFirst('Group: ', '')),
                 actions: [
-                  IconButton(
-                      icon: const Icon(Icons.more_vert),
-                      onPressed: () => showFeedSettings(context, model)),
+                  IconButton(icon: const Icon(Icons.more_vert), onPressed: () => showFeedSettings(context, model)),
                   IconButton(
                       icon: const Icon(Icons.arrow_upward),
                       onPressed: () async {
-                        await scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+                        await scrollController.animateTo(0,
+                            duration: const Duration(seconds: 1), curve: Curves.easeInOut);
                       }),
                   IconButton(
                       icon: const Icon(Icons.refresh),

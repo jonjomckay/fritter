@@ -13,43 +13,40 @@ class GroupsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        controller: scrollController,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              pinned: false,
-              snap: true,
-              floating: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(L10n.current.groups),
+        body: NestedScrollView(
+      controller: scrollController,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            pinned: false,
+            snap: true,
+            floating: true,
+            title: Text(L10n.current.groups),
+            actions: [
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.sort),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'name',
+                    child: Text(L10n.of(context).name),
+                  ),
+                  PopupMenuItem(
+                    value: 'created_at',
+                    child: Text(L10n.of(context).date_created),
+                  ),
+                ],
+                onSelected: (value) => context.read<GroupsModel>().changeOrderSubscriptionGroupsBy(value),
               ),
-              actions: [
-                PopupMenuButton<String>(
-                  icon: const Icon(Icons.sort),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'name',
-                      child: Text(L10n.of(context).name),
-                    ),
-                    PopupMenuItem(
-                      value: 'created_at',
-                      child: Text(L10n.of(context).date_created),
-                    ),
-                  ],
-                  onSelected: (value) => context.read<GroupsModel>().changeOrderSubscriptionGroupsBy(value),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.sort_by_alpha),
-                  onPressed: () => context.read<GroupsModel>().toggleOrderSubscriptionGroupsAscending(),
-                ),
-                ...createCommonAppBarActions(context),
-              ],
-            )
-          ];
-        },
-        body: SubscriptionGroups(scrollController: scrollController),
-      )
-    );
+              IconButton(
+                icon: const Icon(Icons.sort_by_alpha),
+                onPressed: () => context.read<GroupsModel>().toggleOrderSubscriptionGroupsAscending(),
+              ),
+              ...createCommonAppBarActions(context),
+            ],
+          )
+        ];
+      },
+      body: SubscriptionGroups(scrollController: scrollController),
+    ));
   }
 }
