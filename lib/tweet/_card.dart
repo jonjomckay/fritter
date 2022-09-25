@@ -337,6 +337,41 @@ class TweetCard extends StatelessWidget {
           Catcher.reportCheckedError(e, stackTrace);
           return Container();
         }
+      case '745291183405076480:broadcast':
+        var uri = card['binding_values']['card_url']['string_value'];
+        var image = card['binding_values']['broadcast_thumbnail$imageKey']?['image_value']['url'];
+        var key = card['binding_values']['broadcast_media_key']['string_value'];
+
+        var width = double.parse(card['binding_values']['broadcast_width']['string_value']);
+        var height = double.parse(card['binding_values']['broadcast_height']['string_value']);
+
+        var aspectRatio = width / height;
+
+        var child = TweetVideo(username: 'username', loop: false, metadata: TweetVideoMetadata(aspectRatio, image, () async {
+          var broadcast = await Twitter.getBroadcastDetails(key);
+
+          return TweetVideoUrls(broadcast['source']['noRedirectPlaybackUrl'], null);
+        }));
+
+        var username = card['binding_values']['broadcaster_username']['string_value'];
+        var title = card['binding_values']['broadcast_title']['string_value'];
+
+        // TODO: Figure out what states we can receive
+        var state = card['binding_values']['broadcast_state']['string_value'];
+
+        return _createCard(
+            uri,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (imageSize != 'disabled') child,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  child: _createListTile(context, title, '@$username', null),
+                ),
+              ],
+            ));
       default:
         Catcher.reportCheckedError(UnknownCardType(tweet.idStr, card['name']), null);
         return Container();

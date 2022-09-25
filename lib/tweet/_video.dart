@@ -1,25 +1,58 @@
-import 'package:catcher/catcher.dart';
 import 'package:chewie/chewie.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
-import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wakelock/wakelock.dart';
 
+class TweetVideoUrls {
+  final String streamUrl;
+  final String? downloadUrl;
+
+  TweetVideoUrls(this.streamUrl, this.downloadUrl);
+}
+
+class TweetVideoMetadata {
+  final double aspectRatio;
+  final String imageUrl;
+  final Future<TweetVideoUrls> Function() streamUrlsBuilder;
+
+  TweetVideoMetadata(this.aspectRatio, this.imageUrl, this.streamUrlsBuilder);
+
+  factory TweetVideoMetadata.fromMedia(Media media) {
+    var aspectRatio = media.videoInfo?.aspectRatio == null
+        ? 1.0
+        : media.videoInfo!.aspectRatio![0] / media.videoInfo!.aspectRatio![1];
+
+    var variants = media.videoInfo?.variants ?? [];
+    var streamUrl = variants[0].url!;
+    var imageUrl = media.mediaUrlHttps!;
+
+    // Find the MP4 video with the highest bitrate
+    var downloadUrl = variants
+        .where((e) => e.bitrate != null)
+        .where((e) => e.url != null)
+        .where((e) => e.contentType == 'video/mp4')
+        .sorted((a, b) => a.bitrate!.compareTo(b.bitrate!))
+        .map((e) => e.url)
+        .firstWhereOrNull((e) => e != null);
+
+    return TweetVideoMetadata(aspectRatio, imageUrl, () async => TweetVideoUrls(streamUrl, downloadUrl));
+  }
+}
+
 class TweetVideo extends StatefulWidget {
   final String username;
   final bool loop;
-  final Media media;
+  final TweetVideoMetadata metadata;
 
-  const TweetVideo({Key? key, required this.username, required this.loop, required this.media}) : super(key: key);
+  const TweetVideo({Key? key, required this.username, required this.loop, required this.metadata}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TweetVideoState();
@@ -31,24 +64,15 @@ class _TweetVideoState extends State<TweetVideo> {
   VideoPlayerController? _videoController;
   ChewieController? _chewieController;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  Future<void> _loadVideo() async {
+    var urls = await widget.metadata.streamUrlsBuilder();
+    var streamUrl = urls.streamUrl;
+    var downloadUrl = urls.downloadUrl;
 
-  double getAspectRatio() {
-    return widget.media.videoInfo?.aspectRatio == null
-        ? _videoController!.value.aspectRatio
-        : widget.media.videoInfo!.aspectRatio![0] / widget.media.videoInfo!.aspectRatio![1];
-  }
-
-  void _loadVideo() {
-    var variants = widget.media.videoInfo?.variants ?? [];
-    var url = variants[0].url!;
-    _videoController = VideoPlayerController.network(url);
+    _videoController = VideoPlayerController.network(streamUrl!);
 
     _chewieController = ChewieController(
-      aspectRatio: getAspectRatio(),
+      aspectRatio: widget.metadata.aspectRatio,
       autoInitialize: true,
       autoPlay: true,
       allowMuting: true,
@@ -57,14 +81,7 @@ class _TweetVideoState extends State<TweetVideo> {
       additionalOptions: (context) => [
         OptionItem(
           onTap: () async {
-            // Find the MP4 video with the highest bitrate
-            var video = variants
-                .where((e) => e.bitrate != null)
-                .where((e) => e.url != null)
-                .where((e) => e.contentType == 'video/mp4')
-                .sorted((a, b) => a.bitrate!.compareTo(b.bitrate!))
-                .firstWhereOrNull((element) => element.url != null);
-
+            var video = downloadUrl;
             if (video == null) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(L10n.current.download_media_no_url),
@@ -72,7 +89,7 @@ class _TweetVideoState extends State<TweetVideo> {
               return;
             }
 
-            var videoUri = Uri.parse(video.url!);
+            var videoUri = Uri.parse(video);
             var fileName = '${widget.username}-${path.basename(videoUri.path)}';
 
             await downloadUriToPickedFile(
@@ -125,8 +142,8 @@ class _TweetVideoState extends State<TweetVideo> {
     });
   }
 
-  void onTapPlay() {
-    _loadVideo();
+  Future<void> onTapPlay() async {
+    await _loadVideo();
 
     setState(() {
       _showVideo = true;
@@ -137,7 +154,7 @@ class _TweetVideoState extends State<TweetVideo> {
   Widget build(BuildContext context) {
     // TODO: This is a bit flickery, but will do for now
     return AspectRatio(
-      aspectRatio: getAspectRatio(),
+      aspectRatio: widget.metadata.aspectRatio,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
         child: _showVideo
@@ -145,7 +162,7 @@ class _TweetVideoState extends State<TweetVideo> {
           : GestureDetector(
               onTap: onTapPlay,
               child: Stack(alignment: Alignment.center, children: [
-                ExtendedImage.network(widget.media.mediaUrlHttps!, width: double.infinity, fit: BoxFit.fitWidth),
+                ExtendedImage.network(widget.metadata.imageUrl, width: double.infinity, fit: BoxFit.fitWidth),
                 Center(
                   child: FritterCenterPlayButton(
                     backgroundColor: Colors.black54,

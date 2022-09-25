@@ -487,6 +487,12 @@ class Twitter {
 
     return {for (var e in tweets) e.idStr!: e};
   }
+
+  static Future<Map<String, dynamic>> getBroadcastDetails(String key) async {
+    var response = await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/1.1/live_video_stream/status/$key'));
+
+    return json.decode(response.body);
+  }
 }
 
 class TweetWithCard extends Tweet {
