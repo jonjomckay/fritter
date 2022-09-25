@@ -94,7 +94,7 @@ class TweetCard extends StatelessWidget {
             ),
           if (uri != null)
             Container(
-              margin: const EdgeInsets.only(top: 8),
+              margin: EdgeInsets.only(top: description == null ? 4 : 8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -329,6 +329,29 @@ class TweetCard extends StatelessWidget {
         return _createVoteCard(context, card, 3);
       case 'poll4choice_text_only':
         return _createVoteCard(context, card, 4);
+      case 'promo_website':
+        // https://twitter.com/CMEGroup/status/1573288572647612416
+        var url = card['binding_values']['website_url']['string_value'];
+        var image = card['binding_values']['promo_image$imageKey']?['image_value'];
+        var title = card['binding_values']['title']['string_value'];
+        var vanityUrl = card['binding_values']['vanity_url']['string_value'];
+
+        return _createCard(url, Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _createImage(imageSize, image, BoxFit.contain),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              child: _createListTile(
+                  context,
+                  title,
+                  null,
+                  vanityUrl
+              ),
+            ),
+          ],
+        ));
       case 'unified_card':
         try {
           return _createUnifiedCard(context, card, imageKey, imageSize);
