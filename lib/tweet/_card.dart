@@ -337,7 +337,33 @@ class TweetCard extends StatelessWidget {
           Catcher.reportCheckedError(e, stackTrace);
           return Container();
         }
+      case '745291183405076480:live_event':
+        // https://twitter.com/Erdoanz11/status/1573765738032152577
+        var url = card['binding_values']['card_url']['string_value'];
+        var image = card['binding_values']['event_thumbnail$imageKey']?['image_value'];
+
+        var author = card['binding_values']['author']['user_value']['id_str'];
+        var user = card['users'][author]['screen_name'];
+
+        // TODO: This opens the URL externally. Create a screen for it in Fritter
+        return _createCard(url, Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _createImage(imageSize, image, BoxFit.contain),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              child: _createListTile(
+                  context,
+                  card['binding_values']['event_title']['string_value'],
+                  card['binding_values']['event_subtitle']?['string_value'],
+                  '@$user'
+              ),
+            ),
+          ],
+        ));
       case '745291183405076480:broadcast':
+        // https://twitter.com/KwasiKwarteng/status/1573229010779516929
         var uri = card['binding_values']['card_url']['string_value'];
         var image = card['binding_values']['broadcast_thumbnail$imageKey']?['image_value']['url'];
         var key = card['binding_values']['broadcast_media_key']['string_value'];
@@ -359,6 +385,7 @@ class TweetCard extends StatelessWidget {
         // TODO: Figure out what states we can receive
         var state = card['binding_values']['broadcast_state']['string_value'];
 
+        // TODO: This opens the URL externally. Create a screen for it in Fritter
         return _createCard(
             uri,
             Column(
