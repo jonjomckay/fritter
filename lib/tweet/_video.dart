@@ -174,24 +174,29 @@ class _TweetVideoState extends State<TweetVideo> {
   }
 }
 
-class _Video extends StatelessWidget {
+class _Video extends StatefulWidget {
   final ChewieController controller;
 
   const _Video({Key? key, required this.controller}) : super(key: key);
 
   @override
+  State<_Video> createState() => _VideoState();
+}
+
+class _VideoState extends State<_Video> {
+  @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: UniqueKey(),
       onVisibilityChanged: (info) {
-        if (controller.hasListeners) {
-          if (info.visibleFraction == 0 && !controller.isFullScreen) {
-            controller.pause();
+        if (mounted) {
+          if (info.visibleFraction == 0 && !widget.controller.isFullScreen) {
+            widget.controller.pause();
           }
         }
       },
       child: Chewie(
-        controller: controller,
+        controller: widget.controller,
       ),
     );
   }
