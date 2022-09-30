@@ -111,7 +111,7 @@ class _StatusScreenState extends State<_StatusScreen> {
         if (widget.simpleSession) {
           SystemNavigator.pop();
         }
-        return false;
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(),
