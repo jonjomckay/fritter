@@ -543,6 +543,7 @@ class _DefaultPageState extends State<DefaultPage> {
             arguments: StatusScreenArguments(
               id: statusId,
               username: username,
+              simpleSession: true,
             ));
         return;
       }
