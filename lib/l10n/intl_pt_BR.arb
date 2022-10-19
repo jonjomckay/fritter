@@ -450,5 +450,21 @@
   "page_not_found": "Twitter diz que a página não existe, mas isso pode não ser verdade",
   "@page_not_found": {},
   "activate_non_confirmation_bias_mode_description": "Esconda autores de tweets. Evitar confirmação de viés baseado em argumentos autoritários.",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "confirm_close_fritter": "Tem certeza de que deseja fechar o Fritter?",
+  "@confirm_close_fritter": {},
+  "search_term": "Buscar termo",
+  "@search_term": {},
+  "whether_to_hide_tweets_marked_as_sensitive": "Se os tweets marcados como sensíveis devem ser ocultados",
+  "@whether_to_hide_tweets_marked_as_sensitive": {},
+  "group_name": "Grupo: {name}",
+  "@group_name": {},
+  "home": "Início",
+  "@home": {},
+  "unable_to_load_home_pages": "Não foi possível carregar suas páginas iniciais",
+  "@unable_to_load_home_pages": {},
+  "reset_home_pages": "Redefinir páginas para o padrão",
+  "@reset_home_pages": {},
+  "you_must_have_at_least_2_home_screen_pages": "Você deve ter pelo menos 2 páginas de tela inicial",
+  "@you_must_have_at_least_2_home_screen_pages": {}
 }
