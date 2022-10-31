@@ -7,6 +7,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/_follows.dart';
+import 'package:fritter/profile/_saved.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/search/search.dart';
@@ -122,7 +123,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       nestedScrollViewState.innerController.addListener(_listen);
     });
 
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
 
     var description = widget.profile.user.description;
     if (description == null || description.isEmpty) {
@@ -285,6 +286,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                       Tab(
                         child: Text(
                           L10n.of(context).followers,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      ///TODO: translation
+                      Tab(
+                        child: Text(
+                          'Saved Tweets',
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -497,6 +505,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
                 ProfileFollows(user: user, type: 'following'),
                 ProfileFollows(user: user, type: 'followers'),
+                ProfileSaved(user: user),
               ],
             ),
           ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/user.dart';
@@ -23,6 +25,9 @@ class SavedTweet with ToMappable {
   Map<String, dynamic> toMap() {
     return {'id': id, 'content': content};
   }
+
+  String get userId => jsonDecode(content)['user']['id_str'] as String;
+
 }
 
 abstract class Subscription with ToMappable {
