@@ -7,6 +7,7 @@ import 'package:fritter/tweet/_video_controls.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wakelock/wakelock.dart';
@@ -70,6 +71,14 @@ class _TweetVideoState extends State<TweetVideo> {
     var downloadUrl = urls.downloadUrl;
 
     _videoController = VideoPlayerController.network(streamUrl!);
+
+    var model = context.read<VideoContextState>();
+    var volume = model.isMuted ? 0.0 : _videoController!.value.volume;
+    _videoController!.setVolume(volume);
+
+    _videoController!.addListener(() {
+        model.setIsMuted(_videoController!.value!.volume);
+    });
 
     _chewieController = ChewieController(
       aspectRatio: widget.metadata.aspectRatio,
@@ -218,3 +227,21 @@ class _VideoState extends State<_Video> {
     );
   }
 }
+
+class VideoContextState extends ChangeNotifier{
+
+  bool isMuted;
+
+  VideoContextState(this.isMuted);
+
+  void setIsMuted(double volume){
+
+    if(isMuted && volume > 0 || !isMuted && volume == 0){
+      isMuted = !isMuted;
+    }
+
+  }
+
+}
+
+
