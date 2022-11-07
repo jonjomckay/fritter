@@ -12,27 +12,9 @@ import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
-    {required Function() onStart,
-    required Function() onSuccess}) async {
+Future<String> downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
+    {required Function() onStart, required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
-
-  downloadFile() async {
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    }
-
-    Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
-            response.statusCode),
-      ),
-    ));
-    return null;
-  }
 
   try {
     var isLegacy = await isLegacyAndroid();
@@ -42,21 +24,22 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
       await Directory(p.dirname(fullPath)).create(recursive: true);
 
-      var response = await downloadFile();
+      var response = await downloadFile(context, uri);
       if (response != null) {
         await File(fullPath).writeAsBytes(response);
 
         onSuccess();
+        return fullPath;
       }
     } else {
       onStart();
-      var responseTask = downloadFile();
+      var responseTask = downloadFile(context, uri);
 
       var storagePermission = await Permission.storage.request();
 
       var response = await responseTask;
       if (response == null) {
-        return;
+        return '';
       }
 
       final downloadType = PrefService.of(context).get(optionDownloadType);
@@ -64,14 +47,14 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
       // If the user wants to pick a file every time a download happens
       if (downloadType == optionDownloadTypeAsk || downloadPath == '') {
-        var fileInfo = await FlutterFileDialog.saveFile(
-            params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
+        var fileInfo =
+            await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
         if (fileInfo == null) {
-          return;
+          return '';
         }
 
         onSuccess();
-        return;
+        return fileInfo;
       }
 
       // Otherwise, check we have the storage permission
@@ -79,23 +62,43 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(L10n.current.permission_not_granted),
-            action: SnackBarAction(label: L10n.current.open_app_settings,
+            action: SnackBarAction(
+              label: L10n.current.open_app_settings,
               onPressed: openAppSettings,
             ),
           ),
         );
 
         await openAppSettings();
-        return;
+        return '';
       }
 
       // Finally, save to the user-defined directory
-      await File(p.join(downloadPath, sanitizedFilename)).writeAsBytes(response);
+      var savedFile = p.join(downloadPath, sanitizedFilename);
+      await File(savedFile).writeAsBytes(response);
       onSuccess();
+      return savedFile;
     }
   } catch (e, s) {
     Catcher.reportCheckedError('Unable to save the media. The error was $e', s);
 
     showSnackBar(context, icon: '🙊', message: e.toString());
   }
+  return '';
+}
+
+Future downloadFile(BuildContext context, Uri uri) async {
+  var response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return response.bodyBytes;
+  }
+
+  Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
+
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(
+      L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
+    ),
+  ));
+  return null;
 }
