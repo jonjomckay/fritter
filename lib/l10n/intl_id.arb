@@ -451,7 +451,7 @@
   "@group_name": {},
   "you_must_have_at_least_2_home_screen_pages": "Anda harus paling tidak memiliki dua halaman beranda",
   "@you_must_have_at_least_2_home_screen_pages": {},
-  "disable_screenshots_hint": "Cegah tangkapan layar untuk diambil. Ini mungkin tidak bekerja pada semua perangkat",
+  "disable_screenshots_hint": "Cegah tangkapan layar untuk diambil. Ini mungkin tidak bekerja pada semua perangkat.",
   "@disable_screenshots_hint": {},
   "unable_to_load_home_pages": "Tidak bisa memuat beranda Anda",
   "@unable_to_load_home_pages": {},
@@ -460,5 +460,9 @@
   "disable_screenshots": "Nonaktifkan tangkap layar",
   "@disable_screenshots": {},
   "home": "Beranda",
-  "@home": {}
+  "@home": {},
+  "activate_non_confirmation_bias_mode_label": "Aktifkan mode bias non-konfirmasi",
+  "@activate_non_confirmation_bias_mode_label": {},
+  "activate_non_confirmation_bias_mode_description": "Sembunyikan pembuat cuitan. Hindari bias konfirmasi berdasarkan argumen otoritatif.",
+  "@activate_non_confirmation_bias_mode_description": {}
 }
