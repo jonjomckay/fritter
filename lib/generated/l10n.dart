@@ -2436,6 +2436,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Subscriptions can only be imported from public profiles`
+  String get only_public_subscriptions_can_be_imported {
+    return Intl.message(
+      'Subscriptions can only be imported from public profiles',
+      name: 'only_public_subscriptions_can_be_imported',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -253,6 +253,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Note: Due to a Twitter limitation, not all tweets may be included"),
         "numberFormat_format_total_votes": m8,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "Subscriptions can only be imported from public profiles"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oops! Something went wrong 🥲"),
         "open_app_settings":

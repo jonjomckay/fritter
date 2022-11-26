@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
@@ -82,7 +83,6 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       await context.read<SubscriptionsModel>().refreshSubscriptionData();
       _streamController?.close();
     } catch (e, stackTrace) {
-      Catcher.reportCheckedError(e, stackTrace);
       _streamController?.addError(e, stackTrace);
     }
   }
@@ -155,6 +155,12 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                   builder: (context, snapshot) {
                     var error = snapshot.error;
                     if (error != null) {
+                      if (error is HttpException && error.statusCode == 401) {
+                        return createEmojiError(TwitterError(uri: error.uri, code: 22, message: L10n.current.only_public_subscriptions_can_be_imported));
+                      }
+
+                      Catcher.reportCheckedError(error, snapshot.stackTrace);
+
                       return FullPageErrorWidget(
                         error: snapshot.error,
                         stackTrace: snapshot.stackTrace,
