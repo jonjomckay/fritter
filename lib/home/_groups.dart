@@ -21,9 +21,7 @@ class GroupsScreen extends StatelessWidget {
               pinned: false,
               snap: true,
               floating: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(L10n.current.groups),
-              ),
+              title: Text(L10n.current.groups),
               actions: [
                 PopupMenuButton<String>(
                   icon: const Icon(Icons.sort),
