@@ -47,6 +47,10 @@ class _ProfileFollowsState extends State<ProfileFollows> {
         count: _pageSize,
       );
 
+      if (!mounted) {
+        return;
+      }
+
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
       } else if (result.cursorBottom == 0) {

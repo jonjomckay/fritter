@@ -70,6 +70,10 @@ class _StatusScreenState extends State<_StatusScreen> {
       var isFirstPage = _pagingController.nextPageKey == null;
 
       var result = await Twitter.getTweet(widget.id, cursor: cursor);
+      if (!mounted) {
+        return;
+      }
+
       if (result.cursorBottom != null && result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
       } else {

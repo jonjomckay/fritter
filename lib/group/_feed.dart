@@ -194,14 +194,18 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           })
           .toList();
 
+      if (!mounted) {
+        return;
+      }
+
       if (result.isEmpty) {
-        mounted ? _pagingController.appendLastPage([]) : null;
+        _pagingController.appendLastPage([]);
       } else {
         // If this page is the same as the last page we received before, assume it's the last page
         if (nextCursor == _pagingController.nextPageKey) {
-          mounted ? _pagingController.appendLastPage([]) : null;
+          _pagingController.appendLastPage([]);
         } else {
-          mounted ? _pagingController.appendPage(threads, nextCursor) : null;
+          _pagingController.appendPage(threads, nextCursor);
         }
       }
     } catch (e, stackTrace) {

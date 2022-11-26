@@ -52,6 +52,10 @@ class _ProfileTweetsState extends State<ProfileTweets> {
       var result = await Twitter.getTweets(widget.user.idStr!, widget.type, widget.pinnedTweets,
           cursor: cursor, count: _pageSize, includeReplies: widget.includeReplies);
 
+      if (!mounted) {
+        return;
+      }
+
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
       } else {

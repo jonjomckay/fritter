@@ -40,3 +40,4 @@
 * Fixed smaller images not filling the bounding box (#512)
 * Fixed retweeted media being saved with the wrong tweet author name (#509, #532 - thanks to @johann-gambol!)
 * Fixed non-t.co URLs breaking profile headers (#557)
+* Stopped pagination from happening after the user navigates away
