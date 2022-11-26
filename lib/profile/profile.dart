@@ -184,6 +184,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     // The height of the app bar should be all the inner components, plus any margins
     var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 8 + descriptionHeight;
 
+    var metadataTextStyle = const TextStyle(fontSize: 12.5);
+
     return Scaffold(
       body: Stack(children: [
         NestedScrollView(
@@ -313,8 +315,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text.rich(TextSpan(
                                                               children: [
-                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: metadataTextStyle)
                                                               ]
                                                           )),
                                                         ],
@@ -330,8 +332,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text.rich(TextSpan(
                                                               children: [
-                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: metadataTextStyle)
                                                               ]
                                                           )),
                                                         ],
@@ -345,7 +347,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         children: [
                                                           const Icon(Icons.place, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
-                                                          Text(user.location!, style: const TextStyle(fontSize: 13)),
+                                                          Text(user.location!, style: metadataTextStyle),
                                                         ],
                                                       ),
                                                     ),
@@ -368,7 +370,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           var displayUrl = url.displayUrl ?? url.url;
                                                           var expandedUrl = url.expandedUrl ?? url.url;
 
-                                                          var textStyle = const TextStyle(fontSize: 12.5);
+                                                          var textStyle = metadataTextStyle;
                                                           if (displayUrl == null || expandedUrl == null) {
                                                             return Text(L10n.current.unsupported_url, style: textStyle.copyWith(color: theme.hintColor));
                                                           }
@@ -391,7 +393,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text(L10n.of(context)
                                                               .joined(DateFormat('MMMM yyyy').format(user.createdAt!)),
-                                                              style: const TextStyle(fontSize: 13)
+                                                              style: metadataTextStyle
                                                           ),
                                                         ],
                                                       ),
