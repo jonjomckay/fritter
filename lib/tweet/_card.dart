@@ -156,7 +156,7 @@ class TweetCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (imageSize != 'disabled') media,
+            media,
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: _createListTile(context, unifiedCard['component_objects']['details_1']['data']['title']['content'],
@@ -276,7 +276,7 @@ class TweetCard extends StatelessWidget {
             _findCardUrl(card),
             Row(
               children: [
-                if (imageSize != 'disabled') Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.contain)),
+                Expanded(flex: 1, child: _createImage(imageSize, image, BoxFit.contain)),
                 Expanded(
                     flex: 4,
                     child: _createListTile(
@@ -295,7 +295,7 @@ class TweetCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (imageSize != 'disabled') _createImage(imageSize, image, BoxFit.contain),
+                _createImage(imageSize, image, BoxFit.contain),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: _createListTile(
@@ -415,7 +415,7 @@ class TweetCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (imageSize != 'disabled') child,
+                child,
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: _createListTile(context, title, '@$username', null),
