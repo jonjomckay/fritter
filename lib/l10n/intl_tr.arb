@@ -466,5 +466,7 @@
   "search_term": "Arama terimi",
   "@search_term": {},
   "group_name": "Grup: {name}",
-  "@group_name": {}
+  "@group_name": {},
+  "only_public_subscriptions_can_be_imported": "Abonelikler yalnızca herkese açık profillerden içe aktarılabilir",
+  "@only_public_subscriptions_can_be_imported": {}
 }
