@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
 import 'package:fritter/catcher/exceptions.dart';
-import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/user.dart';
@@ -119,6 +119,32 @@ class _FritterTwitterClient extends TwitterClient {
   }
 }
 
+class UnknownProfileResultType implements Exception {
+  final String type;
+  final String message;
+  final String uri;
+
+  UnknownProfileResultType(this.type, this.message, this.uri);
+
+  @override
+  String toString() {
+    return 'Unknown profile result type: {type: $type, message: $message, uri: $uri}';
+  }
+}
+
+class UnknownProfileUnavailableReason implements Exception {
+  final String reason;
+  final String uri;
+
+  UnknownProfileUnavailableReason(this.reason, this.uri);
+
+  @override
+  String toString() {
+    return 'Unknown profile unavailable reason: {reason: $reason, uri: $uri}';
+  }
+}
+
+
 class Twitter {
   static final TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
@@ -169,9 +195,30 @@ class Twitter {
       }
     }
 
+    var result = content['data']?['user']?['result'];
+    if (result == null) {
+      // TODO
+    }
 
-    var user = UserWithExtra.fromJson({...content['data']['user']['result']['legacy'], 'id_str': content['data']['user']['result']['rest_id']});
-    var pins = List<String>.from(content['data']['user']['result']['legacy']['pinned_tweet_ids_str']);
+    var resultType = result['__typename'];
+    if (resultType != null) {
+      switch (resultType) {
+        case 'UserUnavailable':
+          var code = result['reason'];
+          if (code == 'Suspended') {
+            throw TwitterError(code: 63, message: result['reason'], uri: uri.toString());
+          } else {
+            Catcher.reportCheckedError(UnknownProfileUnavailableReason(code, uri.toString()), null);
+            throw TwitterError(code: -1, message: result['reason'], uri: uri.toString());
+          }
+        default:
+          Catcher.reportCheckedError(UnknownProfileResultType(resultType, result['reason'], uri.toString()), null);
+          break;
+      }
+    }
+
+    var user = UserWithExtra.fromJson({...result['legacy'], 'id_str': result['rest_id']});
+    var pins = List<String>.from(result['legacy']['pinned_tweet_ids_str']);
 
     return Profile(user, pins);
   }

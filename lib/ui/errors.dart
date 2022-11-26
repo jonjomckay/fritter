@@ -5,8 +5,10 @@ import 'dart:io';
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
+import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 
 void showSnackBar(BuildContext context, {required String icon, required String message, bool clearBefore = true}) {
@@ -118,7 +120,20 @@ class EmojiErrorWidget extends FritterErrorWidget {
               margin: const EdgeInsets.only(top: 12),
               child: ElevatedButton(
                 child: Text(L10n.of(context).back),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  // Check if we can actually pop the last route, as we might have opened here directly from another app
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                    return;
+                  }
+
+                  // If we're running on Android, close the app gracefully. Otherwise, return to the home screen
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else {
+                    Navigator.pushReplacementNamed(context, routeHome);
+                  }
+                },
               ),
             ),
             const SizedBox(width: 16),

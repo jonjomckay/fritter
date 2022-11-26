@@ -486,7 +486,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: themeMode,
       initialRoute: '/',
       routes: {
-        '/': (context) => const DefaultPage(),
+        routeHome: (context) => const DefaultPage(),
         routeGroup: (context) => const GroupScreen(),
         routeProfile: (context) => const ProfileScreen(),
         routeSearch: (context) => const SearchScreen(),

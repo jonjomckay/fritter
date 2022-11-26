@@ -31,3 +31,4 @@
 * Added support for saving searches as subscriptions (#229)
 * Now asking for confirmation when closing Fritter, to prevent accidental quitting (#504)
 * Added support for viewing broadcasts and events
+* Added better error handling for suspended profiles (#554)
