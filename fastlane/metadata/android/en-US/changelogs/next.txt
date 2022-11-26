@@ -38,3 +38,4 @@
 * Fixed home page order not being restored after a restart (#520)
 * Fixed retweet replies not showing (#517, #531 - thanks to @johann-gambol!)
 * Fixed smaller images not filling the bounding box (#512)
+* Fixed retweeted media being saved with the wrong tweet author name (#509, #532 - thanks to @johann-gambol!)

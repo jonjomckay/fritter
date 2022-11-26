@@ -304,13 +304,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-
-      var baseTweet = this.tweet.retweetedStatus ?? this.tweet;
-
       media = TweetMedia(
-          sensitive: baseTweet.possiblySensitive,
-          media: baseTweet.extendedEntities!.media!,
-          username: baseTweet.user!.screenName!,
+          sensitive: tweet.possiblySensitive,
+          media: tweet.extendedEntities!.media!,
+          username: tweet.user!.screenName!,
       );
     }
 
