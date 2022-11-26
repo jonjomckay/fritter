@@ -7,6 +7,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +71,7 @@ class UserTile extends StatelessWidget {
         child: FollowButton(user: user),
       ),
       onTap: () {
-        Navigator.pushNamed(context, routeProfile, arguments: user.screenName);
+        Navigator.pushNamed(context, routeProfile, arguments: ProfileScreenArguments(user.id, user.screenName));
       },
     );
   }

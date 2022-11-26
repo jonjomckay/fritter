@@ -18,24 +18,46 @@ import 'package:measure_size/measure_size.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
+class ProfileScreenArguments {
+  final String? id;
+  final String? screenName;
+
+  ProfileScreenArguments(this.id, this.screenName);
+
+  factory ProfileScreenArguments.fromId(String id) {
+    return ProfileScreenArguments(id, null);
+  }
+
+  factory ProfileScreenArguments.fromScreenName(String screenName) {
+    return ProfileScreenArguments(null, screenName);
+  }
+}
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final username = ModalRoute.of(context)!.settings.arguments as String;
+    final args = ModalRoute.of(context)!.settings.arguments as ProfileScreenArguments;
 
     return Provider(
-      create: (context) => ProfileModel()..loadProfile(username),
-      child: _ProfileScreen(username: username)
+      create: (context) {
+        if (args.id != null) {
+          return ProfileModel()..loadProfileById(args.id!);
+        } else {
+          return ProfileModel()..loadProfileByScreenName(args.screenName!);
+        }
+      },
+      child: _ProfileScreen(id: args.id, screenName: args.screenName)
     );
   }
 }
 
 class _ProfileScreen extends StatelessWidget {
-  final String username;
+  final String? id;
+  final String? screenName;
 
-  const _ProfileScreen({Key? key, required this.username}) : super(key: key);
+  const _ProfileScreen({Key? key, required this.id, required this.screenName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +68,13 @@ class _ProfileScreen extends StatelessWidget {
           error: error,
           stackTrace: null,
           prefix: L10n.of(context).unable_to_load_the_profile,
-          onRetry: () => context.read<ProfileModel>().loadProfile(username),
+          onRetry: () {
+            if (id != null) {
+              return context.read<ProfileModel>().loadProfileById(id!);
+            } else {
+              return context.read<ProfileModel>().loadProfileByScreenName(screenName!);
+            }
+          },
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) => ProfileScreenBody(profile: state),
@@ -109,7 +137,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
       if (type == '@') {
         onTap = () async {
-          Navigator.pushNamed(context, routeProfile, arguments: full.substring(1));
+          Navigator.pushNamed(context, routeProfile,
+              arguments: ProfileScreenArguments.fromScreenName(full.substring(1)));
         };
       }
 

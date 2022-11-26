@@ -529,7 +529,8 @@ class _DefaultPageState extends State<DefaultPage> {
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
     if (link.pathSegments.length == 1) {
-      Navigator.pushReplacementNamed(context, routeProfile, arguments: link.pathSegments.first);
+      Navigator.pushReplacementNamed(context, routeProfile,
+          arguments: ProfileScreenArguments.fromScreenName(link.pathSegments.first));
       return;
     }
 

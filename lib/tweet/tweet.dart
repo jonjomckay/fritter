@@ -6,6 +6,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/import_data_model.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/status.dart';
@@ -100,7 +101,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         source: tweet.entities?.userMentions,
         getNewEntity: (UserMention mention) {
           return TweetUserMention(mention, () {
-            Navigator.pushNamed(context, routeProfile, arguments: mention.screenName!);
+            Navigator.pushNamed(context, routeProfile,
+                arguments: ProfileScreenArguments(mention.idStr, mention.screenName));
           });
         });
 
@@ -454,7 +456,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             return;
                           }
 
-                          Navigator.pushNamed(context, routeProfile, arguments: tweet.user!.screenName!);
+                          Navigator.pushNamed(context, routeProfile,
+                              arguments: ProfileScreenArguments(tweet.user!.idStr, tweet.user!.screenName));
                         },
                         title: Row(
                           children: [

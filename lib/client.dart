@@ -175,13 +175,29 @@ class Twitter {
     'include_quote_count': 'true'
   };
 
-  static Future<Profile> getProfile(String username) async {
+  static Future<Profile> getProfileById(String id) async {
+    var uri = Uri.https('twitter.com', '/i/api/graphql/Qs44y3K0SXxItjNi6mUFQA/UserByRestId', {
+      'variables': jsonEncode({'userId': id, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
+      'features': jsonEncode({
+        'responsive_web_graphql_timeline_navigation_enabled': true,
+        'responsive_web_twitter_blue_verified_badge_is_enabled': true,
+        'verified_phone_label_enabled': false,
+      })
+    });
+
+    return _getProfile(uri);
+  }
+
+  static Future<Profile> getProfileByScreenName(String screenName) async {
     var uri = Uri.https('twitter.com', '/i/api/graphql/vG3rchZtwqiwlKgUYCrTRA/UserByScreenName', {
-      'variables': jsonEncode({'screen_name': username, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
+      'variables': jsonEncode({'screen_name': screenName, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
       'features': jsonEncode({'responsive_web_graphql_timeline_navigation_enabled': false})
     });
 
+    return _getProfile(uri);
+  }
 
+  static Future<Profile> _getProfile(Uri uri) async {
     var response = await _twitterApi.client.get(uri);
     var content = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -211,6 +227,9 @@ class Twitter {
             Catcher.reportCheckedError(UnknownProfileUnavailableReason(code, uri.toString()), null);
             throw TwitterError(code: -1, message: result['reason'], uri: uri.toString());
           }
+        case 'User':
+          // This means everything's fine
+          break;
         default:
           Catcher.reportCheckedError(UnknownProfileResultType(resultType, result['reason'], uri.toString()), null);
           break;

@@ -33,3 +33,4 @@
 * Added support for viewing broadcasts and events
 * Added better error handling for suspended profiles (#554)
 * Fixed some tweets not being able to translate (#547)
+* Fixed errors when loading profiles with changed usernames (#541)

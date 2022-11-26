@@ -48,7 +48,7 @@ class SubscriptionsScreen extends StatelessWidget {
           ...createCommonAppBarActions(context)
         ],
       ),
-      body: SubscriptionUsers(),
+      body: const SubscriptionUsers(),
     );
   }
 }
