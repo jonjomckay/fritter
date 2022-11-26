@@ -429,5 +429,6 @@
   "group_name": "Group: {name}",
   "confirm_close_fritter": "Are you sure you want to close Fritter?",
   "search_term": "Search term",
-  "only_public_subscriptions_can_be_imported": "Subscriptions can only be imported from public profiles"
+  "only_public_subscriptions_can_be_imported": "Subscriptions can only be imported from public profiles",
+  "unsupported_url": "Unsupported URL"
 }

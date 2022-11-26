@@ -365,10 +365,18 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                             return Container();
                                                           }
 
+                                                          var displayUrl = url.displayUrl ?? url.url;
+                                                          var expandedUrl = url.expandedUrl ?? url.url;
+
+                                                          var textStyle = const TextStyle(fontSize: 12.5);
+                                                          if (displayUrl == null || expandedUrl == null) {
+                                                            return Text(L10n.current.unsupported_url, style: textStyle.copyWith(color: theme.hintColor));
+                                                          }
+
                                                           return InkWell(
-                                                            child: Text(url.displayUrl!,
-                                                                style: const TextStyle(color: Colors.blue, fontSize: 13)),
-                                                            onTap: () => openUri(url.expandedUrl!),
+                                                            child: Text(displayUrl,
+                                                                style: textStyle.copyWith(color: Colors.blue)),
+                                                            onTap: () => openUri(expandedUrl),
                                                           );
                                                         }),
                                                       ],

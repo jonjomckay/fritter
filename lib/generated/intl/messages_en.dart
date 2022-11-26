@@ -451,6 +451,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
         "unsave": MessageLookupByLibrary.simpleMessage("Unsave"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Unsubscribe"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("Unsupported URL"),
         "update_to_release_version_through_your_fdroid_client": m19,
         "updates": MessageLookupByLibrary.simpleMessage("Updates"),
         "use_true_black_for_the_dark_mode_theme":

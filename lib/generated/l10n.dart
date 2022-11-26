@@ -2446,6 +2446,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Unsupported URL`
+  String get unsupported_url {
+    return Intl.message(
+      'Unsupported URL',
+      name: 'unsupported_url',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
