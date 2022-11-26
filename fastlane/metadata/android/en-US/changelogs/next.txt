@@ -35,3 +35,4 @@
 * Fixed some tweets not being able to translate (#547)
 * Fixed errors when loading profiles with changed usernames (#541)
 * Fixed home page title placement and overflow issues (#521)
+* Fixed home page order not being restored after a restart (#520)

@@ -73,7 +73,10 @@ class HomeScreen extends StatelessWidget {
       ),
       onLoading: (_) => const Center(child: CircularProgressIndicator()),
       onState: (_, state) {
-        var pages = state.where((element) => element.selected).map((e) => e.page).toList();
+        var pages = state
+              .where((element) => element.selected)
+              .map((e) => e.page)
+              .toList();
 
         if (prefs.getKeys().contains(optionHomeInitialTab)) {
           selectedPage = max(0, pages.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab)));
