@@ -32,3 +32,4 @@
 * Now asking for confirmation when closing Fritter, to prevent accidental quitting (#504)
 * Added support for viewing broadcasts and events
 * Added better error handling for suspended profiles (#554)
+* Fixed some tweets not being able to translate (#547)

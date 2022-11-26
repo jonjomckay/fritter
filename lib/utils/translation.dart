@@ -1,6 +1,7 @@
 import 'package:catcher/catcher.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_cache/flutter_cache.dart' as cache;
+import 'package:fritter/utils/iterables.dart';
 import 'package:fritter/utils/misc.dart';
 import 'package:logging/logging.dart';
 
@@ -39,14 +40,38 @@ class TranslationAPI {
   }
 
   static Future<TranslationAPIResult> translate(String id, List<String> text, String sourceLanguage) async {
-    var formData = {'q': text, 'source': sourceLanguage, 'target': getShortSystemLocale()};
+    var hasTextOrNot = text.map((e) => e.isNotEmpty ? true : false).toList();
+
+    var formData = {
+      // We need to strip out any empty parts, as the API barfs on them sometimes
+      'q': text.where((e) => e.isNotEmpty).toList(),
+      'source': sourceLanguage,
+      'target': getShortSystemLocale(),
+      'format': 'text'
+    };
 
     var key = 'translation.$sourceLanguage.$id';
 
     // return cacheRequest(key, () async {
-    return sendRequest('/translate', 'Unable to send translation request',
+    var res = await sendRequest('/translate', 'Unable to send translation request',
         data: formData, options: Options(method: 'POST'));
     // });
+
+    if (res.success) {
+      // We need to rehydrate the empty text parts that we stripped out earlier
+      var translatedTexts = List.from(res.body['translatedText']);
+
+      var translatedIndex = 0;
+      var result = hasTextOrNot
+          .mapWithIndex((hasText, i) => hasText ? translatedTexts[translatedIndex++] : text[i])
+          .toList();
+
+      return TranslationAPIResult(success: res.success, body: {
+        'translatedText': result
+      });
+    }
+
+    return res;
   }
 
   static Future<TranslationAPIResult> cacheRequest(
