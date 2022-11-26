@@ -278,7 +278,7 @@ class _TweetMediaThing extends StatelessWidget {
     } else if (item.type == 'video') {
       media = TweetVideo(metadata: TweetVideoMetadata.fromMedia(item), loop: false, username: username);
     } else if (item.type == 'photo') {
-      media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.scaleDown, pullToClose: pullToClose, inPageView: inPageView);
+      media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.contain, pullToClose: pullToClose, inPageView: inPageView);
     } else {
       media = Text(L10n.of(context).unknown);
     }
