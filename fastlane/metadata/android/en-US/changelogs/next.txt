@@ -36,3 +36,4 @@
 * Fixed errors when loading profiles with changed usernames (#541)
 * Fixed home page title placement and overflow issues (#521)
 * Fixed home page order not being restored after a restart (#520)
+* Fixed retweet replies not showing (#517, #531 - thanks to @johann-gambol!)
