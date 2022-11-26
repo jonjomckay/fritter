@@ -186,8 +186,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   }
 
   void onClickOpenTweet() {
+    var baseTweet = tweet.retweetedStatus ?? tweet;
+
     Navigator.pushNamed(context, routeStatus,
-        arguments: StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
+        arguments: StatusScreenArguments(id: baseTweet.idStr!, username: baseTweet.user!.screenName!));
   }
 
 
