@@ -119,7 +119,7 @@ class _FritterTwitterClient extends TwitterClient {
   }
 }
 
-class UnknownProfileResultType implements Exception {
+class UnknownProfileResultType with SyntheticException implements Exception {
   final String type;
   final String message;
   final String uri;
@@ -132,7 +132,7 @@ class UnknownProfileResultType implements Exception {
   }
 }
 
-class UnknownProfileUnavailableReason implements Exception {
+class UnknownProfileUnavailableReason with SyntheticException implements Exception {
   final String reason;
   final String uri;
 

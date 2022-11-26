@@ -31,7 +31,7 @@ abstract class FritterErrorWidget extends StatelessWidget {
   const FritterErrorWidget({Key? key}) : super(key: key);
 }
 
-class UnknownTwitterErrorCode implements Exception {
+class UnknownTwitterErrorCode with SyntheticException implements Exception {
   final int code;
   final String message;
   final String uri;

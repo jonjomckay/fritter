@@ -4,6 +4,7 @@ import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -429,7 +430,7 @@ class TweetCard extends StatelessWidget {
   }
 }
 
-class UnknownCardType implements Exception {
+class UnknownCardType with SyntheticException implements Exception {
   final String? tweet;
   final String type;
 

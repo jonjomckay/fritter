@@ -1,4 +1,6 @@
-class TweetMissingDataException implements Exception {
+import 'package:fritter/catcher/exceptions.dart';
+
+class TweetMissingDataException with SyntheticException implements Exception {
   final String? id;
   final List<String> missingFields;
 

@@ -21,3 +21,7 @@ class ManuallyReportedException {
 
   ManuallyReportedException(this.exception);
 }
+
+class SyntheticException {
+
+}
