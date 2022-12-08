@@ -257,7 +257,6 @@ class Twitter {
       'cursor': cursor,
       'max_id': maxId,
       'q': query,
-      'query_source': 'typed_query',
       'pc': '1',
       'tweet_search_mode': mode,
       'spelling_corrections': '1',
@@ -274,7 +273,6 @@ class Twitter {
       'count': limit.toString(),
       'max_id': maxId,
       'q': query,
-      'query_source': 'typed_query',
       'pc': '1',
       'spelling_corrections': '1',
       'result_filter': 'user'
