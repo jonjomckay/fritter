@@ -74,13 +74,19 @@ FDROID_METADATA=$(cat << EOF
   rm:
     - ios
     - test
-  build:
+  prebuild:
+    # Change pub cache location so that the dart packages are scanned by the scanner
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter config --no-analytics
-    - \$\$flutter\$\$/bin/flutter packages pub get
+    - \$\$flutter\$\$/bin/flutter pub get
+  build:
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
     - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
-      --target-platform=android-x64
+      --target-platform=android-x64 --build-number=\$\$VERCODE\$\$
+  scandelete:
+    - .pub-cache
 
 - versionName: $VERSION_NAME
   versionCode: $VERSION_NUMBER_FDROID_ABI_2
@@ -91,13 +97,19 @@ FDROID_METADATA=$(cat << EOF
   rm:
     - ios
     - test
-  build:
+  prebuild:
+    # Change pub cache location so that the dart packages are scanned by the scanner
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter config --no-analytics
-    - \$\$flutter\$\$/bin/flutter packages pub get
+    - \$\$flutter\$\$/bin/flutter pub get
+  build:
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
     - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
-      --target-platform=android-arm
+      --target-platform=android-arm --build-number=\$\$VERCODE\$\$
+  scandelete:
+    - .pub-cache
 
 - versionName: $VERSION_NAME
   versionCode: $VERSION_NUMBER_FDROID_ABI_3
@@ -108,13 +120,19 @@ FDROID_METADATA=$(cat << EOF
   rm:
     - ios
     - test
-  build:
+  prebuild:
+    # Change pub cache location so that the dart packages are scanned by the scanner
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter config --no-analytics
-    - \$\$flutter\$\$/bin/flutter packages pub get
+    - \$\$flutter\$\$/bin/flutter pub get
+  build:
+    - export PUB_CACHE=$(pwd)/.pub-cache
     - \$\$flutter\$\$/bin/flutter packages pub run flutter_oss_licenses:generate.dart
     - \$\$flutter\$\$/bin/flutter packages pub run intl_utils:generate
     - \$\$flutter\$\$/bin/flutter build apk --release --no-tree-shake-icons --split-per-abi
-      --target-platform=android-arm64
+      --target-platform=android-arm64 --build-number=\$\$VERCODE\$\$
+  scandelete:
+    - .pub-cache
 EOF
 )
 
