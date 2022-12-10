@@ -82,9 +82,9 @@ android {
                 variant.outputs.all { output ->
                     def abiName = output.getFilter(OutputFile.ABI)
                     if (abiName == null) {
-                        outputFileName = "fritter-${defaultConfig.versionName}.apk"
+                        outputFileName = "fritter-v${defaultConfig.versionName}.apk"
                     } else {
-                        outputFileName = "fritter-${defaultConfig.versionName}_${abiName}.apk"
+                        outputFileName = "fritter-v${defaultConfig.versionName}_${abiName}.apk"
                     }
                 }
             }
