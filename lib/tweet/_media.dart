@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -215,8 +216,11 @@ class _TweetMediaViewState extends State<TweetMediaView> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: const Icon(Icons.file_download),
+          AsyncButtonBuilder(
+            child: const Icon(Icons.file_download),
+            builder: (context, child, callback, buttonState) {
+              return IconButton(onPressed: callback, icon: child);
+            },
             onPressed: () async {
               var url = path.basename(_media.mediaUrlHttps!);
               var fileName = '${widget.username}-$url';
@@ -238,7 +242,7 @@ class _TweetMediaViewState extends State<TweetMediaView> {
                 },
               );
             },
-          )
+          ),
         ],
       ),
       body: ExtendedImageGesturePageView.builder(

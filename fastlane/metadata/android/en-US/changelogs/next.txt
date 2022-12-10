@@ -1,1 +1,2 @@
 * Fixed the database migration for saved searches, by making it idempotent (#586)
+* Fixed crash caused by tapping download multiple times (#576)
