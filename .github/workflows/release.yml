@@ -38,7 +38,7 @@ jobs:
           flutter pub run intl_utils:generate
 
           # Create a directory for our release APKs	
-          mkdir build/app/outputs/release
+          mkdir -pv build/app/outputs/release
 
           # Build our big boy APK, and move it into the release APKs folder
           flutter build apk --dart-define=app.flavor=github --release --no-tree-shake-icons
