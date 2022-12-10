@@ -55,7 +55,7 @@ fi
 echo "" > fastlane/metadata/android/en-US/changelogs/next.txt
 
 # Commit the changes
-git add pubspec.yaml fastlane/metadata/android/en-US/changelogs/next.txt fastlane/metadata/android/en-US/changelogs/"$VERSION_NUMBER"*.txt
+git add pubspec.yaml fastlane/metadata/android/en-US/changelogs/next.txt fastlane/metadata/android/en-US/changelogs/3*.txt
 git commit -m "Tagging v$VERSION_NAME"
 git tag v"$VERSION_NAME"
 
