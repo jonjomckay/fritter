@@ -33,6 +33,14 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
+      - name: Cache build directory
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-build-${{ hashFiles('**/build') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
       - name: Build
         run: |
           flutter config --no-analytics
