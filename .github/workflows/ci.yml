@@ -39,7 +39,17 @@ jobs:
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
           flutter pub run intl_utils:generate
+
+          # Create a directory for our release APKs
+          mkdir build/app/outputs/release
+
+          # Build our big boy APK, and move it into the release APKs folder
           flutter build apk --dart-define=app.flavor=github --release --no-tree-shake-icons
+          mv build/app/outputs/flutter-apk/*-release.apk build/app/outputs/release
+
+          # Build our ABI-specific APKs and move them into the release APKs folder
+          flutter build apk --dart-define=app.flavor=github --release --no-tree-shake-icons --split-per-abi --target-platform=andro>
+          mv build/app/outputs/flutter-apk/*-release.apk build/app/outputs/release
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -50,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: apk-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/release/*.apk
 
 #  ios:
 #    runs-on: macos-latest

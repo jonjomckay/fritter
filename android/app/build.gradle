@@ -77,6 +77,17 @@ android {
 
         release {
             signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def abiName = output.getFilter(OutputFile.ABI)
+                    if (abiName == null) {
+                        outputFileName = "fritter-${defaultConfig.versionName}.apk"
+                    } else {
+                        outputFileName = "fritter-${defaultConfig.versionName}_${abiName}.apk"
+                    }
+                }
+            }
         }
     }
 }

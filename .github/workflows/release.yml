@@ -36,38 +36,32 @@ jobs:
           flutter pub get
           flutter pub run flutter_oss_licenses:generate.dart
           flutter pub run intl_utils:generate
-          flutter build apk --dart-define=app.flavor=github --no-tree-shake-icons
+
+          # Create a directory for our release APKs	
+          mkdir build/app/outputs/release
+
+          # Build our big boy APK, and move it into the release APKs folder
+          flutter build apk --dart-define=app.flavor=github --release --no-tree-shake-icons
+          mv build/app/outputs/apk/release/*.apk build/app/outputs/release
+
+          # Build our ABI-specific APKs and move them into the release APKs folder
+          flutter build apk --dart-define=app.flavor=github --release --no-tree-shake-icons --split-per-abi --target-platform=android-x64,android-arm,android-arm64
+          mv build/app/outputs/apk/release/*.apk build/app/outputs/release
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PATH: key.jks
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        id: upload-release-assets
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
           prerelease: false
-      
-      - name: Get the tag
-        id: get_tag
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/apk/release/app-release.apk
-          asset_name: fritter-${{ steps.get_tag.outputs.VERSION }}.apk
-          asset_content_type: application/vnd.android.package-archive
+          files: |
+            build/app/outputs/release/*.apk
 
       - name: Publish the release
         uses: eregon/publish-release@v1
