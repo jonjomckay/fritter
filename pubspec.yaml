@@ -18,84 +18,72 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 3.0.0-beta6+300000772
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependency_overrides:
   auto_direction:
     git:
       url: https://github.com/AhmedAlYousif/auto_direction.git
       ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
-  catcher:
-    git:
-      url: https://github.com/ThexXTURBOXx/catcher.git
-      ref: 5c1df82b56339fe534058594f8f72c327c9cab85
-  flutter_iconpicker:
-    git:
-      url: https://github.com/Ahmadre/FlutterIconPicker.git
-      ref: bae6bb92d815efac1a1fded14b0d6573bdcdcaa1
-  multi_select_flutter:
-    git:
-      url: https://github.com/kabagouda/multi_select_flutter.git
-      ref: abda500eae263fcd6b26d09f3c68d5fb9591df85
   pref:
     git:
-      url: https://github.com/jonjomckay/flutter_pref.git
-      ref: 04ffdce
+      url: https://github.com/DavBfr/flutter_pref.git
+      ref: 3b4d275617023ed124614c0eff7aa6033a9077a1
       path: pref
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.3
 
   async_button_builder: ^2.3.0+1
   auto_direction: ^0.0.6
-  catcher: ^0.6.9
-  chewie: ^1.3.4
+  catcher: ^0.7.0
+  chewie: ^1.3.6
   crypto: 3.0.2
-  dart_twitter_api: ^0.5.6+1
-  device_info_plus: ^4.1.2
+  dart_twitter_api: ^0.5.7+1
+  device_info_plus: ^7.0.0
   device_preview: ^1.1.0
-  dotted_border: ^2.0.0+2
-  extended_image: ^6.2.1
-  faker: ^2.0.0
+  dotted_border: ^2.0.0+3
+  extended_image: ^6.3.4
+  faker: ^2.1.0
   ffcache: ^1.1.0
-  flex_color_scheme: ^6.0.0
+  flex_color_scheme: ^6.1.1
   flutter_cache: ^0.1.0
-  file_picker: ^5.0.1
+  file_picker: ^5.2.3
   flutter_colorpicker: ^1.0.3
-  flutter_file_dialog: ^2.3.0
-  flutter_iconpicker: ^3.1.4+1
-  flutter_local_notifications: ^10.0.0-dev.20
+  flutter_file_dialog: ^2.3.2
+  flutter_iconpicker: ^3.2.2
+  flutter_local_notifications: ^12.0.4
   flutter_localized_locales: ^2.0.3
-  flutter_triple: ^1.2.7+2
+  flutter_triple: ^1.2.7+4
   flutter_windowmanager: ^0.2.0
   html_unescape: ^2.0.0
-  http: ^0.13.4
+  http: ^0.13.5
   infinite_scroll_pagination: ^3.2.0
   intl: ^0.17.0
-  logging: ^1.0.2
-  measure_size: ^3.0.1
-  multi_select_flutter: ^4.1.2
+  logging: ^1.1.0
+  measure_size: ^4.0.0
+  multi_select_flutter: ^4.1.3
   package_info: ^2.0.2
-  path: ^1.8.1
+  path: ^1.8.2
   path_provider: ^2.0.11
-  permission_handler: ^8.2.5
+  permission_handler: ^10.2.0
   pref: ^2.6.0
+  provider: ^6.0.4
   quiver: ^3.1.0
   scroll_bottom_navigation_bar: ^4.0.0
   scroll_to_index: ^3.0.1
-  sentry_flutter: ^6.6.1
+  sentry_flutter: ^6.18.0
   share: ^2.0.4
-  simple_icons: ^7.1.0
-  sqflite: ^2.0.2+1
-  sqflite_common: ^2.2.1+1
+  simple_icons: ^7.10.0
+  sqflite: ^2.2.2
+  sqflite_common: ^2.4.0+2
   sqflite_migration_plan: ^1.0.0
-  timeago: ^3.2.2
+  timeago: ^3.3.0
   uni_links2: ^0.6.0+2
-  url_launcher: ^6.1.4
-  uuid: ^3.0.6
-  video_player: ^2.4.5
+  url_launcher: ^6.1.7
+  uuid: ^3.0.7
+  video_player: ^2.4.9
   visibility_detector: ^0.3.3
   wakelock: ^0.6.2
 
@@ -106,11 +94,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: ^0.9.3
+  flutter_launcher_icons: ^0.11.0
   flutter_lints:
   flutter_oss_licenses: ^2.0.1
-  intl_utils: ^2.6.1
-  sqflite_common_ffi: ^2.1.1+1
+  intl_utils: ^2.8.1
+  sqflite_common_ffi: ^2.2.0+1
 
 flutter_icons:
   android: "launcher_icon"
