@@ -209,7 +209,7 @@ packages:
     source: hosted
     version: "1.1.0"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       url: "https://pub.dartlang.org"
