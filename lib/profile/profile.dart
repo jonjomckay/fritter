@@ -410,7 +410,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             Container(
                               alignment: Alignment.topRight,
                               margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
-                              child: FollowButton(user: UserSubscription.fromUser(user)),
+                              child: FollowButton(user: UserSubscription.fromUser(user), color: Colors.white),
                             ),
                             Container(
                               alignment: Alignment.topLeft,
