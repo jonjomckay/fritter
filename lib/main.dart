@@ -534,8 +534,26 @@ class _DefaultPageState extends State<DefaultPage> {
       return;
     }
 
-    if (link.pathSegments.length > 2) {
-      if (link.pathSegments[1] == 'status') {
+    if (link.pathSegments.length == 2) {
+      var secondSegment = link.pathSegments[1];
+
+      // https://twitter.com/i/redirect?url=https%3A%2F%2Ftwitter.com%2Fi%2Ftopics%2Ftweet%2F1447290060123033601
+      if (secondSegment == 'redirect') {
+        // This is a redirect URL, so we should extract it and use that as our initial link instead
+        var redirect = link.queryParameters['url'];
+        if (redirect == null) {
+          // TODO
+          return;
+        }
+
+        handleInitialLink(Uri.parse(redirect));
+        return;
+      }
+    }
+
+    if (link.pathSegments.length == 3) {
+      var segment2 = link.pathSegments[1];
+      if (segment2 == 'status') {
         // Assume it's a tweet
         var username = link.pathSegments[0];
         var statusId = link.pathSegments[2];
