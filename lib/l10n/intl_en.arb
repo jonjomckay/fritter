@@ -430,5 +430,6 @@
   "confirm_close_fritter": "Are you sure you want to close Fritter?",
   "search_term": "Search term",
   "only_public_subscriptions_can_be_imported": "Subscriptions can only be imported from public profiles",
-  "unsupported_url": "Unsupported URL"
+  "unsupported_url": "Unsupported URL",
+  "saved_tweet_too_large": "This saved tweet could not be displayed, as it's too big to load. Please report it to the developers."
 }

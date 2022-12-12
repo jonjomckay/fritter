@@ -2,4 +2,5 @@
 * Fixed crash caused by tapping download multiple times (#576)
 * Fixed home and profile tabs resetting their position when switching (#533)
 * Fixed follow icon visibility on profiles in the light theme (#505)
+* Fixed crash when encountering oversized tweets
 * Added support for opening redirect links from emails (#257)

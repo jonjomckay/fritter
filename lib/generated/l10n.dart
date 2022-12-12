@@ -2456,6 +2456,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `This saved tweet could not be displayed, as it's too big to load. Please report it to the developers.`
+  String get saved_tweet_too_large {
+    return Intl.message(
+      'This saved tweet could not be displayed, as it\'s too big to load. Please report it to the developers.',
+      name: 'saved_tweet_too_large',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

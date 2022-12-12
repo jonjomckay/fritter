@@ -302,6 +302,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Save bandwidth with smaller images"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "This saved tweet could not be displayed, as it\'s too big to load. Please report it to the developers."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Say Hello"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Say Hello 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:async_button_builder/async_button_builder.dart';
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
@@ -69,7 +72,14 @@ class _SavedScreenState extends State<SavedScreen> {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var item = data[index];
-                var tweet = TweetWithCard.fromJson(jsonDecode(item.content));
+
+                var content = item.content;
+                if (content == null) {
+                  // The tweet is probably too big to fit inside the cursor and has been removed from the result set
+                  return SavedTweetTooLarge(id: item.id);
+                }
+
+                var tweet = TweetWithCard.fromJson(jsonDecode(content));
 
                 return TweetTile(key: Key(tweet.idStr!), tweet: tweet, clickable: true);
               },
@@ -78,5 +88,53 @@ class _SavedScreenState extends State<SavedScreen> {
         ),
       ),
     );
+  }
+}
+
+class SavedTweetTooLarge extends StatelessWidget {
+  final String id;
+
+  const SavedTweetTooLarge({Key? key, required this.id}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.error, color: Colors.red),
+              title: Text(L10n.current.oops_something_went_wrong),
+              subtitle: Text(L10n.current.saved_tweet_too_large),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 64),
+              child: AsyncButtonBuilder(
+                successDuration: const Duration(days: 1),
+                builder: (context, child, callback, buttonState) {
+                  return TextButton(onPressed: callback, child: child);
+                },
+                onPressed: () async => Catcher.reportCheckedError(SavedTweetTooLargeException(id), null),
+                child: Text(L10n.current.report),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class SavedTweetTooLargeException with SyntheticException implements Exception {
+  final String id;
+
+  SavedTweetTooLargeException(this.id);
+
+  @override
+  String toString() {
+    return 'The saved tweet with the ID $id was too large';
   }
 }

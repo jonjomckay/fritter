@@ -11,12 +11,12 @@ mixin ToMappable {
 
 class SavedTweet with ToMappable {
   final String id;
-  final String content;
+  final String? content;
 
   SavedTweet({required this.id, required this.content});
 
   factory SavedTweet.fromMap(Map<String, Object?> map) {
-    return SavedTweet(id: map['id'] as String, content: map['content'] as String);
+    return SavedTweet(id: map['id'] as String, content: map['content'] as String?);
   }
 
   @override
