@@ -480,9 +480,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                               : tweet.user!.name!,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(fontWeight: FontWeight.w500))),
-                                  if (tweet.user!.verified ?? false) const SizedBox(width: 4),
-                                  if (tweet.user!.verified ?? false)
+                                  if (!hideAuthorInformation && (tweet.user!.verified ?? false)) ...[
+                                    const SizedBox(width: 4),
                                     Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                                  ]
                                 ],
                               ),
                             ),
