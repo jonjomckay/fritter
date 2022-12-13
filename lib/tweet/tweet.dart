@@ -470,23 +470,22 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         title: Row(
                           children: [
                             // Username
-                            if (!hideAuthorInformation)
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                        child: Text(
-                                            hideAuthorInformation
-                                                ? L10n.of(context).generic_username
-                                                : tweet.user!.name!,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(fontWeight: FontWeight.w500))),
-                                    if (tweet.user!.verified ?? false) const SizedBox(width: 4),
-                                    if (tweet.user!.verified ?? false)
-                                      Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
-                                  ],
-                                ),
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                      child: Text(
+                                          hideAuthorInformation
+                                              ? L10n.of(context).generic_username
+                                              : tweet.user!.name!,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontWeight: FontWeight.w500))),
+                                  if (tweet.user!.verified ?? false) const SizedBox(width: 4),
+                                  if (tweet.user!.verified ?? false)
+                                    Icon(Icons.verified, size: 18, color: Theme.of(context).primaryColor)
+                                ],
                               ),
+                            ),
                             const Spacer(),
                             InkWell(
                               child: const Icon(Icons.more_horiz),
