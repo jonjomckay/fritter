@@ -285,11 +285,15 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     final prefs = PrefService.of(context, listen: false);
-    final hideAuthorInformation = prefs.get(optionNonConfirmationBiasMode);
-    var numberFormat = NumberFormat.compact();
-    var theme = Theme.of(context);
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
+
+    // If the user is on a profile, all the shown tweets are from that profile, so it makes no sense to hide it
+    final isTweetOnSameProfile = currentUsername != null && currentUsername == tweet.user!.screenName;
+    final hideAuthorInformation = !isTweetOnSameProfile && prefs.get(optionNonConfirmationBiasMode);
+
+    var numberFormat = NumberFormat.compact();
+    var theme = Theme.of(context);
 
     if (tweet.isTombstone ?? false) {
       return SizedBox(
