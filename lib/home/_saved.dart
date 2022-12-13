@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:async_button_builder/async_button_builder.dart';
-import 'package:catcher/catcher.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';

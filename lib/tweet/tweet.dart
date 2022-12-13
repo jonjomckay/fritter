@@ -1,5 +1,5 @@
 import 'package:auto_direction/auto_direction.dart';
-import 'package:catcher/catcher.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';

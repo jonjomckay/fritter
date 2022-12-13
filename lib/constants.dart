@@ -35,6 +35,8 @@ const optionUserTrendsLocations = 'trends.locations';
 
 const optionNonConfirmationBiasMode = 'other.improve_non_confirmation_bias';
 
+const optionWizardCompleted = 'wizard.completed';
+
 const routeHome = '/';
 const routeGroup = '/group';
 const routeProfile = '/profile';

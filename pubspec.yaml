@@ -27,8 +27,8 @@ dependency_overrides:
       ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
   pref:
     git:
-      url: https://github.com/DavBfr/flutter_pref.git
-      ref: 3b4d275617023ed124614c0eff7aa6033a9077a1
+      url: https://github.com/jonjomckay/flutter_pref.git
+      ref: 7066164003f772ccfca64a14ea7231cbf7749671
       path: pref
 
 dependencies:
@@ -37,7 +37,6 @@ dependencies:
 
   async_button_builder: ^2.3.0+1
   auto_direction: ^0.0.6
-  catcher: ^0.7.0
   chewie: ^1.3.6
   crypto: 3.0.2
   dart_twitter_api: ^0.5.7+1
@@ -73,7 +72,7 @@ dependencies:
   quiver: ^3.1.0
   scroll_bottom_navigation_bar: ^4.0.0
   scroll_to_index: ^3.0.1
-  sentry_flutter: ^6.18.0
+  sentry_flutter: ^6.18.1
   share: ^2.0.4
   simple_icons: ^7.10.0
   sqflite: ^2.2.2
