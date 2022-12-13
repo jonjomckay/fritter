@@ -2466,6 +2466,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `User`
+  String get generic_username {
+    return Intl.message(
+      'User',
+      name: 'generic_username',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -183,6 +183,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blau"),
         "general": MessageLookupByLibrary.simpleMessage("Allgemeines"),
+        "generic_username": MessageLookupByLibrary.simpleMessage("Benutzer"),
         "groups": MessageLookupByLibrary.simpleMessage("Gruppen"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Dazu beitragen, Fritter noch besser zu machen"),

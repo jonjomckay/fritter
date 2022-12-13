@@ -471,7 +471,10 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                 child: Row(
                                   children: [
                                     Flexible(
-                                        child: Text(tweet.user!.name!,
+                                        child: Text(
+                                            hideAuthorInformation
+                                                ? L10n.of(context).generic_username
+                                                : tweet.user!.name!,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontWeight: FontWeight.w500))),
                                     if (tweet.user!.verified ?? false) const SizedBox(width: 4),
@@ -568,7 +571,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                         ),
                         // Profile picture
                         leading: hideAuthorInformation
-                            ? null
+                            ? const Icon(Icons.account_circle_rounded, size: 48)
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(64),
                                 child: UserAvatar(uri: tweet.user!.profileImageUrlHttps),
