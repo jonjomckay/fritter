@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:catcher/catcher.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:fritter/constants.dart';

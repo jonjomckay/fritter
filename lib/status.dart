@@ -1,4 +1,4 @@
-import 'package:catcher/catcher.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';

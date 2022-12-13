@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:catcher/catcher.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
@@ -12,9 +12,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
-import 'package:fritter/catcher/nice_console_handler.dart';
-import 'package:fritter/catcher/null_handler.dart';
-import 'package:fritter/catcher/sentry_handler.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -30,6 +27,7 @@ import 'package:fritter/search/search_model.dart';
 import 'package:fritter/settings/_general.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
+import 'package:fritter/setup.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
@@ -186,124 +184,218 @@ Future<void> main() async {
         {'name': 'Worldwide', 'woeid': 1}
       ]
     }),
+    optionWizardCompleted: false
   });
 
-  var sentryOptions = SentryOptions(dsn: 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282');
-  sentryOptions.sendDefaultPii = false;
-  sentryOptions.attachStacktrace = true;
+  // CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
+  //   NiceConsoleHandler(),
+  //   FritterSentryHandler(
+  //       sentryHub: sentryHub, sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled))
+  // ], localizationOptions: [
+  //   LocalizationOptions('en',
+  //       dialogReportModeDescription:
+  //       'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
+  //       dialogReportModeTitle: 'Send report',
+  //       dialogReportModeAccept: 'Send',
+  //       dialogReportModeCancel: "Don't send")
+  // ], explicitExceptionHandlersMap: {
+  //   'SocketException': NullHandler()
+  // }, customParameters: {
+  //   'flavor': getFlavor()
+  // });
 
-  var sentryClient = SentryClient(sentryOptions);
-  var sentryHub = Hub(sentryOptions);
-  sentryHub.bindClient(sentryClient);
+  await SentryFlutter.init((options) {
+    // Disable the Native SDK as it tries to contact Sentry on startup, which we can't do as Sentry is opt-in
+    options.autoInitializeNativeSdk = false;
+    options.attachStacktrace = true;
+    options.dsn = 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282';
+    options.sendDefaultPii = false;
 
-  CatcherOptions catcherOptions = CatcherOptions(SilentReportMode(), [
-    NiceConsoleHandler(),
-    FritterSentryHandler(
-        sentryHub: sentryHub, sentryEnabledStream: prefService.stream<bool?>(optionErrorsSentryEnabled))
-  ], localizationOptions: [
-    LocalizationOptions('en',
-        dialogReportModeDescription:
-            'A crash report has been generated, and can be emailed to the Fritter developers to help fix the problem.\n\nThe report contains device-specific information, so please feel free to remove any information you may wish to not disclose!\n\nView our privacy policy at fritter.cc/privacy to see how your report is handled.',
-        dialogReportModeTitle: 'Send report',
-        dialogReportModeAccept: 'Send',
-        dialogReportModeCancel: "Don't send")
-  ], explicitExceptionHandlersMap: {
-    'SocketException': NullHandler()
-  }, customParameters: {
-    'flavor': getFlavor()
-  });
+    options.beforeSend = (event, {hint}) {
+      var enabled = prefService.get(optionErrorsSentryEnabled);
+      if (enabled == null || enabled == false) {
+        return null;
+      }
 
-  Catcher(
-      debugConfig: catcherOptions,
-      releaseConfig: catcherOptions,
-      enableLogger: false,
-      runAppFunction: () async {
-        TripleObserver.addListener((triple) {
-          if (triple.error != null) {
-            Catcher.reportCheckedError(triple.error, null);
-          }
-        });
+      // Whether we should send the error report this time, or not, as we have 4 outcomes
+//     bool sendThisTime = _isSentryEnabled ?? false;
+//     if (!sendThisTime) {
+//       // If the user clicked the manual report button, ignore any stored preference
+//       sendThisTime = error.error is ManuallyReportedException;
+//     }
+//
+//     // If we have a UI context, and the user hasn't configured if Sentry should be used
+//     if (context != null && _isSentryEnabled == null) {
+//       if (_isModalOpen) {
+//         return true;
+//       }
+//
+//       await showDialog(
+//           context: context,
+//           builder: (context) {
+//             _isModalOpen = true;
+//
+//             return AlertDialog(
+//               title: Text(L10n.of(context).reporting_an_error),
+//               content: Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     L10n.of(context).something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated,
+//                   ),
+//                   const SizedBox(height: 16),
+//                   Text(
+//                     L10n.of(context).would_you_like_to_enable_automatic_error_reporting,
+//                   ),
+//                   const SizedBox(height: 16),
+//                   Text(
+//                     L10n.of(context).your_report_will_be_sent_to_fritter_sentry_project,
+//                   ),
+//                   const SizedBox(height: 16),
+//                   InkWell(
+//                     child: const Text('https://fritter.cc/privacy', style: TextStyle(color: Colors.blue)),
+//                     onTap: () async => await openUri('https://fritter.cc/privacy'),
+//                   )
+//                 ],
+//               ),
+//               actions: [
+//                 TextButton(
+//                   onPressed: () {
+//                     sendThisTime = true;
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text(L10n.of(context).send_once),
+//                 ),
+//                 TextButton(
+//                   onPressed: () {
+//                     sendThisTime = true;
+//                     PrefService.of(context).set(optionErrorsSentryEnabled, true);
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text(L10n.of(context).send_always),
+//                 ),
+//                 TextButton(
+//                   onPressed: () {
+//                     sendThisTime = false;
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text(L10n.of(context).don_not_send),
+//                 ),
+//                 TextButton(
+//                   onPressed: () {
+//                     sendThisTime = false;
+//                     PrefService.of(context).set(optionErrorsSentryEnabled, false);
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text(L10n.of(context).never_send),
+//                 )
+//               ],
+//             );
+//           },
+//           routeSettings: const RouteSettings(name: 'sentryRoute'));
+//
+//       _isModalOpen = false;
+//     }
+//
+//     if (sendThisTime == false) {
+//       return true;
+//     }
 
-        Logger.root.onRecord.listen((event) async {
-          log(event.message, error: event.error, stackTrace: event.stackTrace);
-        });
+      // We don't want to report SocketExceptions as there's so many of them, and they're not super useful
+      if (event.throwable is SocketException) {
+        return null;
+      }
 
-        if (Platform.isAndroid) {
-          FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+      return event;
+    };
+  }, appRunner: () async {
+    Sentry.configureScope((scope) => scope.setTag('flavor', getFlavor()));
 
-          const InitializationSettings settings =
-              InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+    TripleObserver.addListener((triple) {
+      if (triple.error != null) {
+        Catcher.reportCheckedError(triple.error, null);
+      }
+    });
 
-          await notifications
-              .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
-                  onDidReceiveNotificationResponse: (response) async {
+    Logger.root.onRecord.listen((event) async {
+      log(event.message, error: event.error, stackTrace: event.stackTrace);
+    });
+
+    if (Platform.isAndroid) {
+      FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+
+      const InitializationSettings settings =
+      InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+
+      await notifications
+          .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+          onDidReceiveNotificationResponse: (response) async {
             var payload = response.payload;
             if (payload != null && payload.startsWith('https://')) {
               await openUri(payload);
             }
           });
 
-          var flavor = getFlavor();
-          var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
-          if (flavor != 'play' && shouldCheckForUpdates) {
-            // Don't check for updates for the Play Store build or if user disabled it.
-            checkForUpdates();
-          }
-        }
+      var flavor = getFlavor();
+      var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+      if (flavor != 'play' && shouldCheckForUpdates) {
+        // Don't check for updates for the Play Store build or if user disabled it.
+        checkForUpdates();
+      }
+    }
 
-        // Run the migrations early, so models work. We also do this later on so we can display errors to the user
-        try {
-          await Repository().migrate();
-        } catch (_) {
-          // Ignore, as we'll catch it later instead
-        }
+    // Run the migrations early, so models work. We also do this later on so we can display errors to the user
+    try {
+      await Repository().migrate();
+    } catch (_) {
+      // Ignore, as we'll catch it later instead
+    }
 
-        var importDataModel = ImportDataModel();
+    var importDataModel = ImportDataModel();
 
-        var groupsModel = GroupsModel(prefService);
-        await groupsModel.reloadGroups();
+    var groupsModel = GroupsModel(prefService);
+    await groupsModel.reloadGroups();
 
-        var homeModel = HomeModel(prefService, groupsModel);
-        await homeModel.loadPages();
+    var homeModel = HomeModel(prefService, groupsModel);
+    await homeModel.loadPages();
 
-        var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
-        await subscriptionsModel.reloadSubscriptions();
+    var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
+    await subscriptionsModel.reloadSubscriptions();
 
-        var trendLocationModel = UserTrendLocationModel(prefService);
+    var trendLocationModel = UserTrendLocationModel(prefService);
 
-        runApp(PrefService(
-            service: prefService,
-            child: MultiProvider(
-              providers: [
-                Provider(create: (context) => groupsModel),
-                Provider(create: (context) => homeModel),
-                ChangeNotifierProvider(create: (context) => importDataModel),
-                Provider(create: (context) => subscriptionsModel),
-                Provider(create: (context) => SavedTweetModel()),
-                Provider(create: (context) => SearchTweetsModel()),
-                Provider(create: (context) => SearchUsersModel()),
-                Provider(create: (context) => trendLocationModel),
-                Provider(create: (context) => TrendLocationsModel()),
-                Provider(create: (context) => TrendsModel(trendLocationModel)),
-              ],
-              child: DevicePreview(
-                enabled: !kReleaseMode,
-                builder: (context) => MyApp(hub: sentryHub),
-              ),
-            )));
-      });
+    runApp(PrefService(
+        service: prefService,
+        child: MultiProvider(
+          providers: [
+            Provider(create: (context) => groupsModel),
+            Provider(create: (context) => homeModel),
+            ChangeNotifierProvider(create: (context) => importDataModel),
+            Provider(create: (context) => subscriptionsModel),
+            Provider(create: (context) => SavedTweetModel()),
+            Provider(create: (context) => SearchTweetsModel()),
+            Provider(create: (context) => SearchUsersModel()),
+            Provider(create: (context) => trendLocationModel),
+            Provider(create: (context) => TrendLocationsModel()),
+            Provider(create: (context) => TrendsModel(trendLocationModel)),
+          ],
+          child: DevicePreview(
+            enabled: !kReleaseMode,
+            builder: (context) => const FritterApp(),
+          ),
+        )));
+  });
 }
 
-class MyApp extends StatefulWidget {
-  final Hub hub;
-
-  const MyApp({Key? key, required this.hub}) : super(key: key);
+class FritterApp extends StatefulWidget {
+  const FritterApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<FritterApp> createState() => _FritterAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FritterAppState extends State<FritterApp> {
   static final log = Logger('_MyAppState');
 
   String _themeMode = 'system';
@@ -452,8 +544,7 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: L10n.delegate.supportedLocales,
       locale: _locale ?? DevicePreview.locale(context),
-      navigatorKey: Catcher.navigatorKey,
-      navigatorObservers: [SentryNavigatorObserver(hub: widget.hub)],
+      navigatorObservers: [SentryNavigatorObserver()],
       title: 'Fritter',
       theme: FlexThemeData.light(
         scheme: _colorScheme,
@@ -523,10 +614,9 @@ class DefaultPage extends StatefulWidget {
 }
 
 class _DefaultPageState extends State<DefaultPage> {
-  late StreamSubscription _sub;
-
   Object? _migrationError;
   StackTrace? _migrationStackTrace;
+  StreamSubscription? _sub;
 
   void handleInitialLink(Uri link) {
     // Assume it's a username if there's only one segment
@@ -616,35 +706,40 @@ class _DefaultPageState extends State<DefaultPage> {
           prefix: L10n.of(context).unable_to_run_the_database_migrations);
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        var result = await showDialog<bool>(
-            context: context,
-            builder: (c) => AlertDialog(
-              title: Text(L10n.current.are_you_sure),
-              content: Text(L10n.current.confirm_close_fritter),
-              actions: [
-                TextButton(
-                  child: Text(L10n.current.no),
-                  onPressed: () => Navigator.pop(c, false),
-                ),
-                TextButton(
-                  child: Text(L10n.current.yes),
-                  onPressed: () => Navigator.pop(c, true),
-                ),
-              ],
-            )
-        );
+    var prefs = PrefService.of(context);
+    if (prefs.get(optionWizardCompleted)) {
+      return WillPopScope(
+          onWillPop: () async {
+            var result = await showDialog<bool>(
+                context: context,
+                builder: (c) => AlertDialog(
+                  title: Text(L10n.current.are_you_sure),
+                  content: Text(L10n.current.confirm_close_fritter),
+                  actions: [
+                    TextButton(
+                      child: Text(L10n.current.no),
+                      onPressed: () => Navigator.pop(c, false),
+                    ),
+                    TextButton(
+                      child: Text(L10n.current.yes),
+                      onPressed: () => Navigator.pop(c, true),
+                    ),
+                  ],
+                )
+            );
 
-        return result ?? false;
-      },
-      child: const HomeScreen()
-    );
+            return result ?? false;
+          },
+          child: const HomeScreen()
+      );
+    }
+
+    return SetupWizard();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _sub.cancel();
+    _sub?.cancel();
   }
 }
