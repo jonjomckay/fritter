@@ -159,6 +159,7 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
       setState(() {
         _children = widget.builder(scrollController);
         _pages = widget.pages;
+        scrollController.bottomNavigationBar.setTab(widget.selectedPage);
       });
     }
   }

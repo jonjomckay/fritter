@@ -5,5 +5,6 @@
 * Fixed crash when encountering oversized tweets
 * Fixed deleted users throwing a null pointer (#593)
 * Fixed infinite loop blocking first startup (#592)
+* Fixed brick caused by deleting the last or current home tab (#590)
 * Added support for opening redirect links from emails (#257)
 * Added pull-to-refresh and scroll-to-top on profiles (#589)
