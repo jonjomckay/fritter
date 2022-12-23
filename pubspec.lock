@@ -755,9 +755,9 @@ packages:
     dependency: "direct main"
     description:
       path: pref
-      ref: "3b4d275617023ed124614c0eff7aa6033a9077a1"
-      resolved-ref: "3b4d275617023ed124614c0eff7aa6033a9077a1"
-      url: "https://github.com/DavBfr/flutter_pref.git"
+      ref: "7066164003f772ccfca64a14ea7231cbf7749671"
+      resolved-ref: "7066164003f772ccfca64a14ea7231cbf7749671"
+      url: "https://github.com/jonjomckay/flutter_pref.git"
     source: git
     version: "2.7.0"
   process:
