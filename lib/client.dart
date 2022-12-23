@@ -213,7 +213,7 @@ class Twitter {
 
     var result = content['data']?['user']?['result'];
     if (result == null) {
-      // TODO
+      throw TwitterError(uri: uri.toString(), code: 50, message: L10n.current.user_not_found);
     }
 
     var resultType = result['__typename'];

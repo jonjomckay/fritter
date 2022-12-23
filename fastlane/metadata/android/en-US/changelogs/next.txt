@@ -3,5 +3,6 @@
 * Fixed home and profile tabs resetting their position when switching (#533)
 * Fixed follow icon visibility on profiles in the light theme (#505)
 * Fixed crash when encountering oversized tweets
+* Fixed deleted users throwing a null pointer (#593)
 * Added support for opening redirect links from emails (#257)
 * Added pull-to-refresh and scroll-to-top on profiles (#589)
