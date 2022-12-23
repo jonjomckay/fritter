@@ -4,3 +4,4 @@
 * Fixed follow icon visibility on profiles in the light theme (#505)
 * Fixed crash when encountering oversized tweets
 * Added support for opening redirect links from emails (#257)
+* Added pull-to-refresh and scroll-to-top on profiles (#589)

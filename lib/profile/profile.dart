@@ -95,7 +95,11 @@ class ProfileScreenBody extends StatefulWidget {
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   static const defaultHeight = 256.12345;
 
+  final GlobalKey<NestedScrollViewState> nestedScrollViewKey = GlobalKey();
+
   late TabController _tabController;
+
+  bool _showBackToTopButton = false;
 
   double descriptionHeight = defaultHeight;
   double metadataHeight = defaultHeight;
@@ -107,6 +111,15 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var nestedScrollViewState = nestedScrollViewKey.currentState;
+      if (nestedScrollViewState == null) {
+        return;
+      }
+
+      nestedScrollViewState.innerController.addListener(_listen);
+    });
+
     _tabController = TabController(length: 5, vsync: this);
 
     var description = widget.profile.user.description;
@@ -114,6 +127,45 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       descriptionHeight = 0;
       descriptionResized = true;
     }
+  }
+
+  @override
+  void dispose() {
+    nestedScrollViewKey.currentState?.innerController.removeListener(_listen);
+
+    super.dispose();
+  }
+
+  void _listen() {
+    var nestedScrollViewState = nestedScrollViewKey.currentState;
+    if (nestedScrollViewState == null) {
+      return;
+    }
+
+    if (!nestedScrollViewState.innerController.hasClients) {
+      return;
+    }
+
+    // Show the "scroll to top" button if we scroll down a bit, and hide it if we go back above
+    if (nestedScrollViewState.innerController.positions.any((element) => element.pixels >= 400)) {
+      if (!_showBackToTopButton) {
+        setState(() {
+          _showBackToTopButton = true;
+        });
+      }
+    } else {
+      if (_showBackToTopButton) {
+        setState(() {
+          _showBackToTopButton = false;
+        });
+      }
+    }
+  }
+
+  void _scrollToTop() {
+    // We scroll the outer controller (the whole nested scroll view and children) to the top
+    nestedScrollViewKey.currentState?.outerController
+        .animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 
   List<InlineSpan> _addLinksToText(BuildContext context, String content) {
@@ -189,6 +241,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     return Scaffold(
       body: Stack(children: [
         NestedScrollView(
+          key: nestedScrollViewKey,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -455,6 +508,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 ),
         )
       ]),
+      floatingActionButton: _showBackToTopButton == false
+          ? null
+          : FloatingActionButton(
+        onPressed: _scrollToTop,
+        child: const Icon(Icons.arrow_upward),
+      ),
     );
   }
 }
