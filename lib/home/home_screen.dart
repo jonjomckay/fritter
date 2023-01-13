@@ -56,58 +56,89 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // If we have an initial tab set, use it as the initial index
-    int selectedPage = 0;
-
     var prefs = PrefService.of(context);
     var model = context.read<HomeModel>();
 
+    return _HomeScreen(prefs: prefs, model: model);
+  }
+}
+
+class _HomeScreen extends StatefulWidget {
+  final BasePrefService prefs;
+  final HomeModel model;
+
+  const _HomeScreen({Key? key, required this.prefs, required this.model}) : super(key: key);
+
+  @override
+  State<_HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<_HomeScreen> {
+  int _selectedPage = 0;
+  List<NavigationPage> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _buildPages(widget.model.state);
+    widget.model.observer(onState: _buildPages);
+  }
+
+  void _buildPages(List<HomePage> state) {
+    var pages = state
+        .where((element) => element.selected)
+        .map((e) => e.page)
+        .toList();
+
+    if (widget.prefs.getKeys().contains(optionHomeInitialTab)) {
+      _selectedPage = max(0, pages.indexWhere((element) => element.id == widget.prefs.get(optionHomeInitialTab)));
+    }
+
+    setState(() {
+      _pages = pages;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ScopedBuilder<HomeModel, Object, List<HomePage>>.transition(
-      store: model,
-      onError: (_, e) => ScaffoldErrorWidget(
-        prefix: L10n.current.unable_to_load_home_pages,
-        error: e,
-        stackTrace: null,
-        onRetry: () async => await model.resetPages(),
-        retryText: L10n.current.reset_home_pages,
-      ),
-      onLoading: (_) => const Center(child: CircularProgressIndicator()),
-      onState: (_, state) {
-        var pages = state
-              .where((element) => element.selected)
-              .map((e) => e.page)
-              .toList();
+        store: widget.model,
+        onError: (_, e) => ScaffoldErrorWidget(
+          prefix: L10n.current.unable_to_load_home_pages,
+          error: e,
+          stackTrace: null,
+          onRetry: () async => await widget.model.resetPages(),
+          retryText: L10n.current.reset_home_pages,
+        ),
+        onLoading: (_) => const Center(child: CircularProgressIndicator()),
+        onState: (_, state) {
+          return ScaffoldWithBottomNavigation(pages: _pages, selectedPage: _selectedPage, builder: (scrollController) {
+            return [
+              ..._pages.map((e) {
+                if (e.id.startsWith('group-')) {
+                  return FeedScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), name: e.titleBuilder(context));
+                }
 
-        if (prefs.getKeys().contains(optionHomeInitialTab)) {
-          selectedPage = max(0, pages.indexWhere((element) => element.id == prefs.get(optionHomeInitialTab)));
+                switch (e.id) {
+                  case 'feed':
+                    return FeedScreen(scrollController: scrollController, id: '-1', name: L10n.current.feed);
+                  case 'subscriptions':
+                    return const SubscriptionsScreen();
+                  case 'groups':
+                    return GroupsScreen(scrollController: scrollController);
+                  case 'trending':
+                    return TrendsScreen(scrollController: scrollController);
+                  case 'saved':
+                    return SavedScreen(scrollController: scrollController);
+                  default:
+                  // TODO
+                    return Container();
+                }
+              })
+            ];
+          });
         }
-
-        return ScaffoldWithBottomNavigation(pages: pages, selectedPage: selectedPage, builder: (scrollController) {
-          return [
-            ...pages.map((e) {
-              if (e.id.startsWith('group-')) {
-                return FeedScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), name: e.titleBuilder(context));
-              }
-
-              switch (e.id) {
-                case 'feed':
-                  return FeedScreen(scrollController: scrollController, id: '-1', name: L10n.current.feed);
-                case 'subscriptions':
-                  return const SubscriptionsScreen();
-                case 'groups':
-                  return GroupsScreen(scrollController: scrollController);
-                case 'trending':
-                  return TrendsScreen(scrollController: scrollController);
-                case 'saved':
-                  return SavedScreen(scrollController: scrollController);
-                default:
-                // TODO
-                  return Container();
-              }
-            })
-          ];
-        });
-      }
     );
   }
 }

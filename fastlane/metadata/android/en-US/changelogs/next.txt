@@ -7,5 +7,6 @@
 * Fixed infinite loop blocking first startup (#592)
 * Fixed brick caused by deleting the last or current home tab (#590)
 * Fixed crash when scrolling to the top of large profiles (#607)
+* Fixed the home screen scrolling when choosing a trend tab (#601)
 * Added support for opening redirect links from emails (#257)
 * Added pull-to-refresh and scroll-to-top on profiles (#589)
