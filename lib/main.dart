@@ -566,6 +566,19 @@ class _DefaultPageState extends State<DefaultPage> {
         return;
       }
     }
+
+    if (link.pathSegments.length == 4) {
+      var segment2 = link.pathSegments[1];
+      var segment3 = link.pathSegments[2];
+      var segment4 = link.pathSegments[3];
+
+      // https://twitter.com/i/topics/tweet/1447290060123033601
+      if (segment2 == 'topics' && segment3 == 'tweet') {
+        Navigator.pushReplacementNamed(context, routeStatus,
+            arguments: StatusScreenArguments(id: segment4, username: null));
+        return;
+      }
+    }
   }
 
   @override
