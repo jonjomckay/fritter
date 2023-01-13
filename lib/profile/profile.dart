@@ -164,8 +164,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
   void _scrollToTop() {
     // We scroll the outer controller (the whole nested scroll view and children) to the top
-    nestedScrollViewKey.currentState?.outerController
-        .animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    // TODO: No animation due to Flutter crashing on huge lists (https://github.com/flutter/flutter/issues/52207) (#607)
+    nestedScrollViewKey.currentState?.outerController.jumpTo(0);
   }
 
   List<InlineSpan> _addLinksToText(BuildContext context, String content) {
