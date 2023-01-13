@@ -1,4 +1,5 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
@@ -240,8 +241,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
     return Scaffold(
       body: Stack(children: [
-        NestedScrollView(
+        ExtendedNestedScrollView(
           key: nestedScrollViewKey,
+          onlyOneScrollInBody: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
