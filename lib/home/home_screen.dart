@@ -6,6 +6,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/_feed.dart';
 import 'package:fritter/home/_groups.dart';
+import 'package:fritter/home/_missing.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/home_model.dart';
 import 'package:fritter/search/search.dart';
@@ -74,7 +75,7 @@ class _HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<_HomeScreen> {
-  int _selectedPage = 0;
+  int _initialPage = 0;
   List<NavigationPage> _pages = [];
 
   @override
@@ -92,7 +93,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         .toList();
 
     if (widget.prefs.getKeys().contains(optionHomeInitialTab)) {
-      _selectedPage = max(0, pages.indexWhere((element) => element.id == widget.prefs.get(optionHomeInitialTab)));
+      _initialPage = max(0, pages.indexWhere((element) => element.id == widget.prefs.get(optionHomeInitialTab)));
     }
 
     setState(() {
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) {
-          return ScaffoldWithBottomNavigation(pages: _pages, selectedPage: _selectedPage, builder: (scrollController) {
+          return ScaffoldWithBottomNavigation(pages: _pages, initialPage: _initialPage, builder: (scrollController) {
             return [
               ..._pages.map((e) {
                 if (e.id.startsWith('group-')) {
@@ -132,8 +133,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                   case 'saved':
                     return SavedScreen(scrollController: scrollController);
                   default:
-                  // TODO
-                    return Container();
+                    return const MissingScreen();
                 }
               })
             ];
@@ -145,10 +145,10 @@ class _HomeScreenState extends State<_HomeScreen> {
 
 class ScaffoldWithBottomNavigation extends StatefulWidget {
   final List<NavigationPage> pages;
-  final int selectedPage;
+  final int initialPage;
   final List<Widget> Function(ScrollController scrollController) builder;
 
-  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.selectedPage, required this.builder}) : super(key: key);
+  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.initialPage, required this.builder}) : super(key: key);
 
   @override
   State<ScaffoldWithBottomNavigation> createState() => _ScaffoldWithBottomNavigationState();
@@ -157,48 +157,63 @@ class ScaffoldWithBottomNavigation extends StatefulWidget {
 class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigation> {
   final ScrollController scrollController = ScrollController();
 
-  late PageController _pageController;
+  PageController? _pageController;
   late List<Widget> _children;
   late List<NavigationPage> _pages;
-  late int _selectedPage;
 
   @override
   void initState() {
     super.initState();
 
-    _pages = widget.pages;
+    _pages = _padToMinimumPagesLength(widget.pages);
 
-    _selectedPage = widget.selectedPage;
+    _pageController = PageController(initialPage: widget.initialPage);
 
-    _pageController = PageController(initialPage: _selectedPage);
-
-    scrollController.bottomNavigationBar.setTab(_selectedPage);
+    scrollController.bottomNavigationBar.setTab(widget.initialPage);
     scrollController.bottomNavigationBar.tabListener((index) {
-      _pageController.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
-      _selectedPage = index;
+      _pageController?.animateToPage(index, curve: Curves.easeInOut, duration: const Duration(milliseconds: 100));
     });
 
     _children = widget.builder(scrollController);
   }
 
+  List<NavigationPage> _padToMinimumPagesLength(List<NavigationPage> pages) {
+    var widgetPages = pages;
+    if (widgetPages.length < 2) {
+      widgetPages.addAll(List.generate(2 - widgetPages.length, (index) {
+        return NavigationPage('none', (context) => L10n.current.missing_page, Icons.disabled_by_default);
+      }));
+    }
+
+    return widgetPages;
+  }
 
   @override
   void didUpdateWidget(ScaffoldWithBottomNavigation oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    var newPages = _padToMinimumPagesLength(widget.pages);
     if (oldWidget.pages != widget.pages) {
       setState(() {
         _children = widget.builder(scrollController);
-        _pages = widget.pages;
-        scrollController.bottomNavigationBar.setTab(widget.selectedPage);
+        _pages = newPages;
       });
+    }
+
+    var page = _pageController?.page?.toInt();
+    if (page != null) {
+      // Ensure we're not trying to show a page that no longer exists (i.e. one that was selected, but now deleted)
+      var currentTab = scrollController.bottomNavigationBar.tabNotifier.value;
+      if (currentTab >= newPages.length) {
+        scrollController.bottomNavigationBar.tabNotifier.value = newPages.length - 1;
+      }
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _pageController.dispose();
+    _pageController?.dispose();
   }
 
   @override

@@ -2466,6 +2466,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Missing page`
+  String get missing_page {
+    return Intl.message(
+      'Missing page',
+      name: 'missing_page',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to have at least 2 home screen pages.`
+  String get two_home_pages_required {
+    return Intl.message(
+      'You need to have at least 2 home screen pages.',
+      name: 'two_home_pages_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose pages`
+  String get choose_pages {
+    return Intl.message(
+      'Choose pages',
+      name: 'choose_pages',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

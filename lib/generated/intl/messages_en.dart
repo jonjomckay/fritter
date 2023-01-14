@@ -107,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Catastrophic failure"),
         "choose": MessageLookupByLibrary.simpleMessage("Choose"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Choose pages"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Are you sure you want to close Fritter?"),
@@ -234,6 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("Media"),
         "media_size": MessageLookupByLibrary.simpleMessage("Media size"),
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Missing page"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "never_send": MessageLookupByLibrary.simpleMessage("Never send"),
         "newTrans": MessageLookupByLibrary.simpleMessage("New"),
@@ -394,6 +396,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Replies"),
         "tweets_number": m14,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "You need to have at least 2 home screen pages."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to find the available trend locations."),

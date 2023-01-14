@@ -89,9 +89,10 @@ class EmojiErrorWidget extends FritterErrorWidget {
   final String errorMessage;
   final Function? onRetry;
   String retryText = '';
+  final bool showBackButton;
 
   EmojiErrorWidget(
-      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry, String? retryText})
+      {Key? key, required this.emoji, required this.message, required this.errorMessage, this.onRetry, String? retryText, this.showBackButton = true})
       : super(key: key) {
       this.retryText = retryText ?? L10n.current.retry;
   }
@@ -116,27 +117,29 @@ class EmojiErrorWidget extends FritterErrorWidget {
                 Text(errorMessage, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).hintColor)),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              margin: const EdgeInsets.only(top: 12),
-              child: ElevatedButton(
-                child: Text(L10n.of(context).back),
-                onPressed: () {
-                  // Check if we can actually pop the last route, as we might have opened here directly from another app
-                  if (Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                    return;
-                  }
+            if (showBackButton)
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                child: ElevatedButton(
+                  child: Text(L10n.of(context).back),
+                  onPressed: () {
+                    // Check if we can actually pop the last route, as we might have opened here directly from another app
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                      return;
+                    }
 
-                  // If we're running on Android, close the app gracefully. Otherwise, return to the home screen
-                  if (Platform.isAndroid) {
-                    SystemNavigator.pop();
-                  } else {
-                    Navigator.pushReplacementNamed(context, routeHome);
-                  }
-                },
+                    // If we're running on Android, close the app gracefully. Otherwise, return to the home screen
+                    if (Platform.isAndroid) {
+                      SystemNavigator.pop();
+                    } else {
+                      Navigator.pushReplacementNamed(context, routeHome);
+                    }
+                  },
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
+            if (onRetry != null)
+              const SizedBox(width: 16),
             if (onRetry != null)
               Container(
                 margin: const EdgeInsets.only(top: 12),

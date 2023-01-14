@@ -41,5 +41,6 @@ const routeProfile = '/profile';
 const routeSearch = '/search';
 const routeSettings = '/settings';
 const routeSettingsExport = '/settings/export';
+const routeSettingsHome = '/settings/home';
 const routeStatus = '/status';
 const routeSubscriptionsImport = '/subscriptions/import';

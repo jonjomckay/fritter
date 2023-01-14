@@ -491,6 +491,7 @@ class _MyAppState extends State<MyApp> {
         routeSearch: (context) => const SearchScreen(),
         routeSettings: (context) => const SettingsScreen(),
         routeSettingsExport: (context) => const SettingsExportScreen(),
+        routeSettingsHome: (context) => const SettingsScreen(initialPage: 'home'),
         routeStatus: (context) => const StatusScreen(),
         routeSubscriptionsImport: (context) => const SubscriptionImportScreen()
       },
