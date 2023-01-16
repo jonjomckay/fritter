@@ -466,5 +466,7 @@
   "activate_non_confirmation_bias_mode_label": "تفعيل نمط التحيز غير المؤكد",
   "@activate_non_confirmation_bias_mode_label": {},
   "activate_non_confirmation_bias_mode_description": "إخفاء مؤلفي التغريدات. تجنب التحيز التأكيدي بناء على الحجج الموثوقة.",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "only_public_subscriptions_can_be_imported": "لا يمكن استيراد الاشتراكات إلا من الملفات الشخصية العامة",
+  "@only_public_subscriptions_can_be_imported": {}
 }
