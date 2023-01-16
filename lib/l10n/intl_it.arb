@@ -475,7 +475,7 @@
   "@saved_tweet_too_large": {},
   "missing_page": "Pagina mancante",
   "@missing_page": {},
-  "two_home_pages_required": "È necessario avere almeno due pagine nella home.",
+  "two_home_pages_required": "È necessario avere almeno 2 pagine della schermata iniziale.",
   "@two_home_pages_required": {},
   "choose_pages": "Scegli le pagine",
   "@choose_pages": {}
