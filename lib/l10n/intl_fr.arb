@@ -476,5 +476,7 @@
   "missing_page": "Page manquante",
   "@missing_page": {},
   "saved_tweet_too_large": "Ce tweet enregistré n'a pas pu être affiché, car il est trop lourd à charger. Veuillez le signaler aux développeurs.",
-  "@saved_tweet_too_large": {}
+  "@saved_tweet_too_large": {},
+  "unsupported_url": "URL non pris en charge",
+  "@unsupported_url": {}
 }
