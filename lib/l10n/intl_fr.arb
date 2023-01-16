@@ -466,5 +466,7 @@
   "disable_screenshots_hint": "Empêche la prise de captures d'écran. Cela peut ne pas fonctionner sur tous les appareils.",
   "@disable_screenshots_hint": {},
   "group_name": "Groupe : {name}",
-  "@group_name": {}
+  "@group_name": {},
+  "only_public_subscriptions_can_be_imported": "Les abonnements ne peuvent seulement être importés de profils publics",
+  "@only_public_subscriptions_can_be_imported": {}
 }
