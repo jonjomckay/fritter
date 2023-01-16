@@ -467,7 +467,7 @@
   "@disable_screenshots_hint": {},
   "group_name": "Groupe : {name}",
   "@group_name": {},
-  "only_public_subscriptions_can_be_imported": "Les abonnements peuvent être importés seulement de profils publics",
+  "only_public_subscriptions_can_be_imported": "Les abonnements ne peuvent seulement être importés de profils publics",
   "@only_public_subscriptions_can_be_imported": {},
   "two_home_pages_required": "Vous devez disposer d'au moins deux pages d'écran d'accueil.",
   "@two_home_pages_required": {},
