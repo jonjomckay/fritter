@@ -466,5 +466,17 @@
   "you_must_have_at_least_2_home_screen_pages": "Hai bisogno di avere almeno due pagine nella home",
   "@you_must_have_at_least_2_home_screen_pages": {},
   "unable_to_load_home_pages": "Impossibile caricare le tue pagine home",
-  "@unable_to_load_home_pages": {}
+  "@unable_to_load_home_pages": {},
+  "only_public_subscriptions_can_be_imported": "Le iscrizioni possono essere importate soltanto da profili pubblici",
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "URL non supportato",
+  "@unsupported_url": {},
+  "saved_tweet_too_large": "Non è stato possibile visualizzare questo tweet salvato, poiché è troppo grande per essere caricato. Si prega di segnalarlo agli sviluppatori.",
+  "@saved_tweet_too_large": {},
+  "missing_page": "Pagina mancante",
+  "@missing_page": {},
+  "two_home_pages_required": "È necessario avere almeno 2 pagine della schermata iniziale.",
+  "@two_home_pages_required": {},
+  "choose_pages": "Scegli le pagine",
+  "@choose_pages": {}
 }
