@@ -466,5 +466,17 @@
   "unable_to_load_home_pages": "Nepodařilo se načíst vaše domovské stránky",
   "@unable_to_load_home_pages": {},
   "activate_non_confirmation_bias_mode_description": "Skrýt autory tweetů. Vyhněte se konfirmačnímu zkreslení na základě autoritativních argumentů.",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "only_public_subscriptions_can_be_imported": "Odběry lze importovat pouze z veřejných profilů",
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "Nepodporovaná adresa URL",
+  "@unsupported_url": {},
+  "missing_page": "Chybějící stránka",
+  "@missing_page": {},
+  "two_home_pages_required": "Musíte mít alespoň 2 stránky domovské obrazovky.",
+  "@two_home_pages_required": {},
+  "choose_pages": "Vybrat stránky",
+  "@choose_pages": {},
+  "saved_tweet_too_large": "Tento uložený tweet nebylo možné zobrazit, protože je příliš velký na to, aby se načetl. Nahlaste to prosím vývojářům.",
+  "@saved_tweet_too_large": {}
 }
