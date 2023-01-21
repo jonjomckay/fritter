@@ -244,6 +244,7 @@
   "are_you_sure": "Ви впевнені?",
   "@are_you_sure": {},
   "toggle_all": "Перемкнути все",
+<<<<<<< HEAD
   "@toggle_all": {},
   "enter_your_twitter_username": "Введіть своє ім'я користувача у Twitter",
   "@enter_your_twitter_username": {},
@@ -305,4 +306,5 @@
   "@unable_to_find_the_available_trend_locations": {},
   "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible": "Немає повернених трендів. Це неочікувано! Будь ласка, повідомте про помилку, якщо можливо.",
   "@there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible": {}
+  "@toggle_all": {}
 }
