@@ -244,7 +244,6 @@
   "are_you_sure": "Ви впевнені?",
   "@are_you_sure": {},
   "toggle_all": "Перемкнути все",
-<<<<<<< HEAD
   "@toggle_all": {},
   "enter_your_twitter_username": "Введіть своє ім'я користувача у Twitter",
   "@enter_your_twitter_username": {},
@@ -281,6 +280,7 @@
   "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "Вибір окремих облікових записів для імпорту та призначення груп вже заплановано на майбутнє!",
   "@selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": {},
   "username": "Ім'я користувача",
+<<<<<<< HEAD
   "@username": {},
   "unable_to_import": "Не вдалося імпортувати",
   "@unable_to_import": {},
@@ -307,4 +307,5 @@
   "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible": "Немає повернених трендів. Це неочікувано! Будь ласка, повідомте про помилку, якщо можливо.",
   "@there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible": {}
   "@toggle_all": {}
+  "@username": {}
 }
