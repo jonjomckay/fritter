@@ -280,7 +280,6 @@
   "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "Вибір окремих облікових записів для імпорту та призначення груп вже заплановано на майбутнє!",
   "@selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": {},
   "username": "Ім'я користувача",
-<<<<<<< HEAD
   "@username": {},
   "unable_to_import": "Не вдалося імпортувати",
   "@unable_to_import": {},
