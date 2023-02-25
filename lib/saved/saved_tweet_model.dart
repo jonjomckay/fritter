@@ -30,12 +30,12 @@ class SavedTweetModel extends StreamStore<Object, List<SavedTweet>> {
       var database = await Repository.readOnly();
 
       return (await database.query(tableSavedTweet, orderBy: 'saved_at DESC'))
-          .map((e) => SavedTweet(id: e['id'] as String, content: e['content'] as String?))
+          .map((e) => SavedTweet.fromMap(e))
           .toList();
     });
   }
 
-  Future<void> saveTweet(String id, Map<String, dynamic> content) async {
+  Future<void> saveTweet(String id, String? user, Map<String, dynamic> content) async {
     log.info('Saving tweet with the ID $id');
 
     await execute(() async {
@@ -43,8 +43,8 @@ class SavedTweetModel extends StreamStore<Object, List<SavedTweet>> {
 
       var encodedContent = jsonEncode(content);
 
-      await database.insert(tableSavedTweet, {'id': id, 'content': encodedContent});
-      state.add(SavedTweet(id: id, content: encodedContent));
+      await database.insert(tableSavedTweet, {'id': id, 'user_id': user, 'content': encodedContent});
+      state.add(SavedTweet(id: id, user: user, content: encodedContent));
 
       return state;
     });

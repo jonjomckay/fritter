@@ -81,22 +81,33 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var item = data[index];
-
-                var content = item.content;
-                if (content == null) {
-                  // The tweet is probably too big to fit inside the cursor and has been removed from the result set
-                  return SavedTweetTooLarge(id: item.id);
-                }
-
-                var tweet = TweetWithCard.fromJson(jsonDecode(content));
-
-                return TweetTile(key: Key(tweet.idStr!), tweet: tweet, clickable: true);
+                return SavedTweetTile(id: item.id, content: item.content);
               },
             );
           },
         ),
       ),
     );
+  }
+}
+
+class SavedTweetTile extends StatelessWidget {
+  final String id;
+  final String? content;
+
+  const SavedTweetTile({Key? key, required this.id, this.content}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var content = this.content;
+    if (content == null) {
+      // The tweet is probably too big to fit inside the cursor and has been removed from the result set
+      return SavedTweetTooLarge(id: id);
+    }
+
+    var tweet = TweetWithCard.fromJson(jsonDecode(content));
+
+    return TweetTile(key: Key(tweet.idStr!), tweet: tweet, clickable: true);
   }
 }
 

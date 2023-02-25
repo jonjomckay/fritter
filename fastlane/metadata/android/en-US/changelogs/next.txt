@@ -14,3 +14,4 @@
 * Added pull-to-refresh and scroll-to-top on profiles (#589)
 * Added support for sharing images (#556 - thanks @ramosmauricio!)
 * Added support for muting media by default (#553 - thanks @johann-gambol!)
+* Added saved tweets as a tab on the profile screen (#549 - thanks @johann-gambol!)
