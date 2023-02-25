@@ -253,7 +253,7 @@ class SettingsGeneralFragment extends StatelessWidget {
               ]),
           /// TODO: translate
           PrefSwitch(
-            pref: optionsMediaDefaultMute,
+            pref: optionMediaDefaultMute,
             title: Text('Mute videos'),
             subtitle: Text('"Whether all videos should be muted by default"'),
           ),

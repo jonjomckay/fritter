@@ -486,7 +486,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
           body: MultiProvider(
             providers: [
               ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
-              ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionsMediaDefaultMute))),
+              ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
             ],
             child: TabBarView(
               controller: _tabController,
