@@ -2516,6 +2516,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Share using a custom base URL (optional)`
+  String get share_base_url {
+    return Intl.message(
+      'Share using a custom base URL (optional)',
+      name: 'share_base_url',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

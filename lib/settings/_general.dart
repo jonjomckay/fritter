@@ -221,7 +221,9 @@ class SettingsGeneralFragment extends StatelessWidget {
                 L10n.of(context).which_tab_is_shown_when_the_app_opens,
               ),
               pref: optionHomeInitialTab,
-              items: defaultHomePages.map((e) => DropdownMenuItem(value: e.id, child: Text(e.titleBuilder(context)))).toList()),
+              items: defaultHomePages
+                  .map((e) => DropdownMenuItem(value: e.id, child: Text(e.titleBuilder(context))))
+                  .toList()),
           PrefDropdown(
               fullWidth: false,
               title: Text(L10n.of(context).media_size),
@@ -261,6 +263,17 @@ class SettingsGeneralFragment extends StatelessWidget {
             subtitle: Text(L10n.of(context).whether_to_hide_tweets_marked_as_sensitive),
             pref: optionTweetsHideSensitive,
           ),
+          PrefText(
+              label: L10n.of(context).share_base_url,
+              pref: optionShareBaseUrl,
+              validator: (value) {
+                if (value == null || value.isEmpty || value.startsWith(RegExp("^https?://\\S+"))) {
+                  return null;
+                }
+
+                return 'http(s)://domain(:port)';
+              },
+              hintText: "https://twitter.com"),
           PrefSwitch(
             title: Text(L10n.of(context).disable_screenshots),
             subtitle: Text(L10n.of(context).disable_screenshots_hint),

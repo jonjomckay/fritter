@@ -289,6 +289,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     var numberFormat = NumberFormat.compact();
     var theme = Theme.of(context);
 
+    var shareBaseUrlOption = prefs.get(optionShareBaseUrl);
+    var shareBaseUrl = shareBaseUrlOption != null && shareBaseUrlOption.isNotEmpty
+        ? shareBaseUrlOption
+        : 'https://twitter.com';
+
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
 
     if (tweet.isTombstone ?? false) {
@@ -528,13 +533,13 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                               ),
                                               createSheetButton(L10n.of(context).share_tweet_link, Icons.share, () async {
                                                 Share.share(
-                                                    'https://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                                    '$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
                                                 Navigator.pop(context);
                                               }),
                                               createSheetButton(
                                                   L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
                                                 Share.share(
-                                                    '$tweetText\n\nhttps://twitter.com/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                                    '$tweetText\n\n$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
                                                 Navigator.pop(context);
                                               }),
                                               const Padding(

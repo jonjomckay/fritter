@@ -323,6 +323,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Send a non-identifying ping to let me know you\'re using Fritter, and to help future development"),
         "send_always": MessageLookupByLibrary.simpleMessage("Send always"),
         "send_once": MessageLookupByLibrary.simpleMessage("Send once"),
+        "share_base_url": MessageLookupByLibrary.simpleMessage(
+            "Share using a custom base URL (optional)"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Share tweet content"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
