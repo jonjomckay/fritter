@@ -29,7 +29,6 @@ import 'package:fritter/search/search_model.dart';
 import 'package:fritter/settings/_general.dart';
 import 'package:fritter/settings/settings.dart';
 import 'package:fritter/settings/settings_export_screen.dart';
-import 'package:fritter/setup.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
@@ -197,7 +196,6 @@ Future<void> main() async {
         {'name': 'Worldwide', 'woeid': 1}
       ]
     }),
-    optionWizardCompleted: false
   });
 
   TripleObserver.addListener((triple) {
@@ -622,35 +620,28 @@ class _DefaultPageState extends State<DefaultPage> {
           prefix: L10n.of(context).unable_to_run_the_database_migrations);
     }
 
-    var prefs = PrefService.of(context);
-    if (prefs.get(optionWizardCompleted)) {
-      return WillPopScope(
-          onWillPop: () async {
-            var result = await showDialog<bool>(
-                context: context,
-                builder: (c) => AlertDialog(
-                  title: Text(L10n.current.are_you_sure),
-                  content: Text(L10n.current.confirm_close_fritter),
-                  actions: [
-                    TextButton(
-                      child: Text(L10n.current.no),
-                      onPressed: () => Navigator.pop(c, false),
-                    ),
-                    TextButton(
-                      child: Text(L10n.current.yes),
-                      onPressed: () => Navigator.pop(c, true),
-                    ),
-                  ],
-                )
-            );
+    return WillPopScope(
+        onWillPop: () async {
+          var result = await showDialog<bool>(
+              context: context,
+              builder: (c) => AlertDialog(
+                    title: Text(L10n.current.are_you_sure),
+                    content: Text(L10n.current.confirm_close_fritter),
+                    actions: [
+                      TextButton(
+                        child: Text(L10n.current.no),
+                        onPressed: () => Navigator.pop(c, false),
+                      ),
+                      TextButton(
+                        child: Text(L10n.current.yes),
+                        onPressed: () => Navigator.pop(c, true),
+                      ),
+                    ],
+                  ));
 
-            return result ?? false;
-          },
-          child: const HomeScreen()
-      );
-    }
-
-    return SetupWizard();
+          return result ?? false;
+        },
+        child: const HomeScreen());
   }
 
   @override
