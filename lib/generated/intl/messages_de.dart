@@ -34,43 +34,43 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(snapshotData) =>
       "Beendet mit insgesamt ${snapshotData} Nutzern";
 
-  static String m6(snapshotData) =>
+  static String m7(snapshotData) =>
       "${snapshotData} bisher importierte Benutzer";
 
-  static String m7(date) => "Beigetreten am ${date}";
+  static String m8(date) => "Beigetreten am ${date}";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "{Anzahl, Plural, Keine{Keine Stimmen} Eine{Eine Stimme} Zwei{Zwei Stimmen} Einige{${numFormatted} Stimmen} Viele{${numFormatted} Stimmen} Andere{${numFormatted} Stimmen}}";
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Bitte Internetverbindung überprüfen.\n\n\n${errorMessage}";
 
-  static String m10(releaseVersion) =>
+  static String m11(releaseVersion) =>
       "Antippen, um Version ${releaseVersion} herunterzuladen";
 
-  static String m11(getMediaType) => "Antippen, um ${getMediaType} anzuzeigen";
+  static String m12(getMediaType) => "Antippen, um ${getMediaType} anzuzeigen";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "Diese Datei existiert nicht. Bitte stellen Sie sicher, dass sie sich in folgendem Verzeichnis befindet: ${filePath}";
 
-  static String m13(thisTweetUserName, timeAgo) =>
+  static String m14(thisTweetUserName, timeAgo) =>
       "Re-Tweet durch ${thisTweetUserName}";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "{Anzahl, Plural, Keiner{keine Tweets} Einer{ein Tweet} Zwei{zwei Tweets} Einige{${numFormatted} Tweets} Viele{${numFormatted} Tweets} Andere{${numFormatted} Tweets}}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "Trends für ${widgetPlaceName} konnten nicht geladen werden";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Medien konnten nicht gespeichert werden. Twitter gab folgenden Statuscode zurück: ${responseStatusCode}";
 
-  static String m17(e) => "Der Ping konnte nicht gesendet werden. ${e}";
+  static String m18(e) => "Der Ping konnte nicht gesendet werden. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Der Ping konnte nicht gesendet werden. Der Status-Code lautet ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Update auf Version ${releaseVersion} über Ihren F-Droid-Client";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -203,7 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aus Twitter importieren"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Abonnements importieren"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Antworten mit einschließen"),
         "include_retweets":
@@ -214,7 +214,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "Es scheint, als hättest du bereits einen Ping gesendet. 🤔"),
-        "joined": m7,
+        "joined": m8,
         "language": MessageLookupByLibrary.simpleMessage("Sprache"),
         "language_subtitle":
             MessageLookupByLibrary.simpleMessage("Neustart erforderlich"),
@@ -248,7 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Hinweis: Aufgrund einer Beschränkung seitens Twitter sind möglicherweise nicht alle Tweets enthalten"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oh nein! Ein Fehler ist aufgetreten 🥲"),
@@ -264,7 +264,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Angehefteter Tweet"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Wiedergabegeschwindigkeit"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("Bitte einen Namen angeben"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -328,14 +328,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Medien gespeichert."),
         "system": MessageLookupByLibrary.simpleMessage("System"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Danke für die Unterstützung von Fritter! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Danke für die Meldung. Wir versuchen, das Problem schnellstmöglich zu beheben!"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue": MessageLookupByLibrary.simpleMessage(
             "die GitHub-Ausgabe (Nr. 143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -353,7 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Das Laden hat zu lange gedauert. Bitte Internetverbindung prüfen!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Dieser Tweet ist nicht verfügbar"),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Dieser Nutzer folgt niemandem!"),
@@ -377,7 +377,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Antworten"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Die verfügbaren Orts-/Land-Angaben für Trends konnten nicht gefunden werden."),
@@ -410,7 +410,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Die Suchergebnisse können nicht geladen werden."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "Der Tweet konnte nicht geladen werden"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -422,9 +422,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Die Datenbankmigrationen konnten nicht durchgeführt werden"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Die Trendortpräferenz kann nicht gestreamt werden"),
@@ -432,7 +432,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave":
             MessageLookupByLibrary.simpleMessage("Speichern rückgängig machen"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abo abbestellen"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Updates"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

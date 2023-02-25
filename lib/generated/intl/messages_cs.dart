@@ -32,42 +32,44 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "Dokončeno s ${snapshotData} uživateli";
 
-  static String m6(snapshotData) =>
+  static String m6(name) => "Skupina: ${name}";
+
+  static String m7(snapshotData) =>
       "Zatím importováno ${snapshotData} uživatelů";
 
-  static String m7(date) => "Připojen/a ${date}";
+  static String m8(date) => "Připojen/a ${date}";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "${Intl.plural(num, zero: 'Žádné hlasy', one: 'Jeden hlas', two: 'Dva hlasy', few: '${numFormatted} hlasy', many: '${numFormatted} hlasů', other: '${numFormatted} hlasů')}";
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Zkontrolujte prosím vaše připojení k internetu.\n\n${errorMessage}";
 
-  static String m10(releaseVersion) => "Ťukněte pro stažení ${releaseVersion}";
+  static String m11(releaseVersion) => "Ťukněte pro stažení ${releaseVersion}";
 
-  static String m11(getMediaType) => "Ťukněte pro zobrazení ${getMediaType}";
+  static String m12(getMediaType) => "Ťukněte pro zobrazení ${getMediaType}";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "Soubor neexistuje. Ujistěte se, že se nachází v ${filePath}";
 
-  static String m13(thisTweetUserName, timeAgo) =>
-      "${thisTweetUserName} retweetnul";
+  static String m14(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} retweetnul ${timeAgo}";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: 'žádné tweety', one: 'jeden tweet', two: 'dva tweety', few: '${numFormatted} tweety', many: '${numFormatted} tweetů', other: '${numFormatted} tweetů')}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "Nepodařilo se načíst trendy pro ${widgetPlaceName}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Nepodařilo se uložit média. Twitter vrátil stav ${responseStatusCode}";
 
-  static String m17(e) => "Nepodařilo se odeslat ping. ${e}";
+  static String m18(e) => "Nepodařilo se odeslat ping. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Nepodařilo se poslat ping. Stavový kód byl ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Aktualizovat na ${releaseVersion} pomocí F-Droidu";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -75,6 +77,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("O aplikaci"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Účet pozastaven"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Skrýt autory tweetů. Vyhněte se konfirmačnímu zkreslení na základě autoritativních argumentů."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Aktivovat režim zkreslení bez potvrzení"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Přidat do skupiny"),
         "all": MessageLookupByLibrary.simpleMessage("Vše"),
@@ -101,6 +109,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Katastrofické selhání"),
         "choose": MessageLookupByLibrary.simpleMessage("Vybrat"),
         "close": MessageLookupByLibrary.simpleMessage("Zavřít"),
+        "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
+            "Opravdu chcete zavřít Fritter?"),
         "contribute": MessageLookupByLibrary.simpleMessage("Pomoct s vývojem"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Adresa zkopírována do schránky"),
@@ -125,6 +135,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "date_subscribed": MessageLookupByLibrary.simpleMessage("Datum odběru"),
         "default_tab": MessageLookupByLibrary.simpleMessage("Výchozí karta"),
         "delete": MessageLookupByLibrary.simpleMessage("Odstranit"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Zakázat snímky obrazovky"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Zabránit pořizování snímků obrazovky. Nemusí fungovat na všech zařízeních."),
         "disabled": MessageLookupByLibrary.simpleMessage("Zakázáno"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Neposílat"),
         "donate": MessageLookupByLibrary.simpleMessage("Přispět"),
@@ -174,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter_blue":
             MessageLookupByLibrary.simpleMessage("Fritterová modrá"),
         "general": MessageLookupByLibrary.simpleMessage("Obecné"),
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Skupiny"),
         "help_make_fritter_even_better":
             MessageLookupByLibrary.simpleMessage("Pomozte vylepšit Fritter"),
@@ -184,6 +199,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Zde jsou data, která budou odeslána. Budou použita pouze k určení, jaká zařízení a jazyky by měl v budoucnu Fritter podporovat."),
         "hide_sensitive_tweets":
             MessageLookupByLibrary.simpleMessage("Skrýt citlivé tweety"),
+        "home": MessageLookupByLibrary.simpleMessage("Domů"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Pokud máte ohledně této funkce jakoukoli zpětnou vazbu, zanechte ji prosím"),
@@ -194,7 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Importovat z Twitteru"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Importovat odběry"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Zahrnout odpovědi"),
         "include_retweets":
@@ -205,7 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "Vypadá to, že jste již nedávno poslali ping 🤔"),
-        "joined": m7,
+        "joined": m8,
         "language": MessageLookupByLibrary.simpleMessage("Jazyk"),
         "language_subtitle":
             MessageLookupByLibrary.simpleMessage("Vyžaduje restart"),
@@ -239,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Poznámka: kvuli imitaci Twitteru nemusí byt zahrnuty všechny tweety"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("Jejda! Něco se pokazilo 🥲"),
@@ -256,7 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Připnutý tweet"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Rychlost přehrávání"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("Zadejte prosím název"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -282,6 +298,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Nahlásit chybu"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Nahlašování chyby"),
+        "reset_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Obnovit výchozí nastavení stránek"),
         "retry": MessageLookupByLibrary.simpleMessage("Zkusit znovu"),
         "save": MessageLookupByLibrary.simpleMessage("Uložit"),
         "save_bandwidth_using_smaller_images":
@@ -292,6 +310,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Řekněte ahoj 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Hledat"),
+        "search_term": MessageLookupByLibrary.simpleMessage("Hledaný výraz"),
         "select": MessageLookupByLibrary.simpleMessage("Vybrat"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
@@ -328,14 +347,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Média uložena!"),
         "system": MessageLookupByLibrary.simpleMessage("Systémové"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Děkujeme za pomoc Fritteru! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Děkujeme za nahlášení. Chybu se pokusíme opravit co nejdříve budeme moct!"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("problém na GitHubu (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -354,7 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Tento obsah se načítal příliš dlouho. Zkontrolujte prosím vaše připojení k internetu!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Tento tweet je nedostupný. Nejspíš byl odstraněn."),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Tento uživatel nikoho nesleduje!"),
@@ -377,7 +396,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweety"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweety a odpovědi"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se nalézt umístění trendů."),
@@ -386,6 +405,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nepodařilo se nalézt vaše uložené tweety."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Import se nezdařil"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Nepodařilo se načíst vaše domovské stránky"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se načíst skupiny odběrů"),
@@ -411,7 +432,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se načíst výsledky hledání."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Nepodařilo se načíst tweet"),
         "unable_to_load_the_tweets":
@@ -426,16 +447,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se spustit migrace databáze"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se stremovat předvolbu umístění trendů"),
         "unknown": MessageLookupByLibrary.simpleMessage("Neznámé"),
         "unsave": MessageLookupByLibrary.simpleMessage("Zrušit uložení"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Zrušit odběr"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Aktualizace"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(
@@ -464,6 +485,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Zatím jste si neuložili žádné tweety!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "Musíte mít alespoň 2 stránky domovské obrazovky"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Vaše zařízení používá verzi Androidu starší než KitKat (4.4), takže data mohou být importována pouze z:"),

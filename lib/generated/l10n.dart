@@ -2505,6 +2505,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'ar'),
+      Locale.fromSubtags(languageCode: 'be'),
+      Locale.fromSubtags(languageCode: 'be', scriptCode: 'Latn'),
       Locale.fromSubtags(languageCode: 'ca'),
       Locale.fromSubtags(languageCode: 'cs'),
       Locale.fromSubtags(languageCode: 'de'),
@@ -2520,10 +2522,13 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
       Locale.fromSubtags(languageCode: 'ml'),
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
       Locale.fromSubtags(languageCode: 'nl'),
+      Locale.fromSubtags(languageCode: 'or'),
       Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+      Locale.fromSubtags(languageCode: 'ro'),
       Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'tr'),
+      Locale.fromSubtags(languageCode: 'uk'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
     ];
   }

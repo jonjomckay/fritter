@@ -32,36 +32,36 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "${snapshotData}ユーザのインポートが完了しました";
 
-  static String m6(snapshotData) => "${snapshotData}ユーザがインポートされました";
+  static String m7(snapshotData) => "${snapshotData}ユーザがインポートされました";
 
-  static String m7(date) => "${date}に登録";
+  static String m8(date) => "${date}に登録";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 票', one: '1 票', two: '2 票', few: '${numFormatted} 票', many: '${numFormatted} 票', other: '${numFormatted} 票')}";
 
-  static String m9(errorMessage) => "インターネット接続を確認してください。\n\n${errorMessage}";
+  static String m10(errorMessage) => "インターネット接続を確認してください。\n\n${errorMessage}";
 
-  static String m10(releaseVersion) => "タップしてダウンロード：${releaseVersion}";
+  static String m11(releaseVersion) => "タップしてダウンロード：${releaseVersion}";
 
-  static String m11(getMediaType) => "タップして${getMediaType}を表示";
+  static String m12(getMediaType) => "タップして${getMediaType}を表示";
 
-  static String m12(filePath) => "ファイルが存在しません。${filePath}に存在することを確認してください";
+  static String m13(filePath) => "ファイルが存在しません。${filePath}に存在することを確認してください";
 
-  static String m13(thisTweetUserName, timeAgo) => "${thisTweetUserName}がリツイート";
+  static String m14(thisTweetUserName, timeAgo) => "${thisTweetUserName}がリツイート";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 ツイート', one: '1 ツイート', two: '2 ツイート', few: '${numFormatted} ツイート', many: '${numFormatted} ツイート', other: '${numFormatted} ツイート')}";
 
-  static String m15(widgetPlaceName) => "${widgetPlaceName}のトレンドを読み込めませんでした";
+  static String m16(widgetPlaceName) => "${widgetPlaceName}のトレンドを読み込めませんでした";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "メディアを保存できませんでした。Twitterから返されたステータス：${responseStatusCode}";
 
-  static String m17(e) => "Pingの送信に失敗しました。${e}";
+  static String m18(e) => "Pingの送信に失敗しました。${e}";
 
-  static String m18(statusCode) => "Pingを送信できませんでした。ステータスコード：${statusCode}";
+  static String m19(statusCode) => "Pingを送信できませんでした。ステータスコード：${statusCode}";
 
-  static String m19(releaseVersion) => "F-Droidクライアントから${releaseVersion}に更新";
+  static String m20(releaseVersion) => "F-Droidクライアントから${releaseVersion}に更新";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -163,7 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Twitterからインポート"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("登録アカウントをインポートする"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies": MessageLookupByLibrary.simpleMessage("返信を含める"),
         "include_retweets": MessageLookupByLibrary.simpleMessage("リツイートを含める"),
         "it_looks_like_you_have_already_said_hello_from_this_version_of_fritter":
@@ -171,7 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "既にこのバージョンのFritterから挨拶を送っているようです！"),
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage("既に最近pingを送信しているようです。🤔"),
-        "joined": m7,
+        "joined": m8,
         "large": MessageLookupByLibrary.simpleMessage("大"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("インポート(レガシー端末)"),
@@ -200,7 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "注意：Twitterの制限により全てのツイートが含まれない可能性があります"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("問題が発生しました🥲"),
@@ -211,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pick_an_icon": MessageLookupByLibrary.simpleMessage("アイコンを選択！"),
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("固定ツイート"),
         "playback_speed": MessageLookupByLibrary.simpleMessage("再生速度"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("グループ名を入力してください"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -269,14 +269,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("メディアが保存されました。"),
         "system": MessageLookupByLibrary.simpleMessage("システム"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter":
             MessageLookupByLibrary.simpleMessage("Fritterを支援いただきありがとうございます！💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "レポートありがとうございます。できるだけ早く修正いたします！"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("GitHub issue (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -292,7 +292,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "読み込みに時間がかかり過ぎています。ネットワーク接続を確認してください！"),
         "this_tweet_is_unavailable":
             MessageLookupByLibrary.simpleMessage("ツイートが利用できません"),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage("このユーザは誰もフォローしていません！"),
         "this_user_does_not_have_anyone_following_them":
@@ -311,7 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "true_black": MessageLookupByLibrary.simpleMessage("トゥルーブラック？"),
         "tweets": MessageLookupByLibrary.simpleMessage("ツイート"),
         "tweets_and_replies": MessageLookupByLibrary.simpleMessage("ツイートと返信"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage("利用可能なトレンドの地域が見つかりませんでした。"),
         "unable_to_find_your_saved_tweets":
@@ -336,7 +336,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("プロフィールを読み込めませんでした"),
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage("検索結果の読み込みに失敗しました。"),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("ツイートの読み込みに失敗しました"),
         "unable_to_load_the_tweets":
@@ -346,15 +346,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage("データベース移行ができませんでした"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage("トレンドの地域設定をストリームできませんでした"),
         "unknown": MessageLookupByLibrary.simpleMessage("不明"),
         "unsave": MessageLookupByLibrary.simpleMessage("保存取り消し"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("登録解除する"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage("ダークテーマで完全な黒を使用する"),

@@ -33,43 +33,45 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "${snapshotData} kullanıcı ile tamamlandı";
 
-  static String m6(snapshotData) =>
+  static String m6(name) => "Grup: ${name}";
+
+  static String m7(snapshotData) =>
       "Şimdiye kadar ${snapshotData} kullanıcı içe aktarıldı";
 
-  static String m7(date) => "${date} tarihinde katıldı";
+  static String m8(date) => "${date} tarihinde katıldı";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "${Intl.plural(num, zero: 'Oy yok', one: 'Bir oy', two: 'İki oy', few: '${numFormatted} oy', many: '${numFormatted} oy', other: '${numFormatted} oy')}";
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Lütfen internet bağlantınızı kontrol edin.\n\n${errorMessage}";
 
-  static String m10(releaseVersion) =>
+  static String m11(releaseVersion) =>
       "${releaseVersion} sürümünü indirmek için dokunun";
 
-  static String m11(getMediaType) => "${getMediaType} göstermek için dokunun";
+  static String m12(getMediaType) => "${getMediaType} göstermek için dokunun";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "Dosya yok. Lütfen ${filePath} konumunda olduğundan emin olun";
 
-  static String m13(thisTweetUserName, timeAgo) =>
-      "${thisTweetUserName} retweet\'ledi";
+  static String m14(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} ${timeAgo} retweet\'ledi";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: 'tweet yok', one: 'bir tweet', two: 'iki tweet', few: '${numFormatted} tweet', many: '${numFormatted} tweet', other: '${numFormatted} tweet')}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "${widgetPlaceName} için trendler yüklenemiyor";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Medya kaydedilemiyor. Twitter ${responseStatusCode} durumuyla döndü";
 
-  static String m17(e) => "Ping gönderilemiyor. ${e}";
+  static String m18(e) => "Ping gönderilemiyor. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Ping gönderilemedi. Durum kodu ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "F-Droid istemciniz aracılığıyla ${releaseVersion} sürümüne güncelleyin";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -108,6 +110,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Feci arıza"),
         "choose": MessageLookupByLibrary.simpleMessage("Seç"),
         "close": MessageLookupByLibrary.simpleMessage("Kapat"),
+        "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
+            "Fritter\'ı kapatmak istediğinizden emin misiniz?"),
         "contribute": MessageLookupByLibrary.simpleMessage("Katkıda bulunun"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("Adres panoya kopyalandı"),
@@ -178,13 +182,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "feed": MessageLookupByLibrary.simpleMessage("Akış"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtreler"),
         "finished_with_snapshotData_users": m5,
-        "followers": MessageLookupByLibrary.simpleMessage("Takipçiler"),
+        "followers": MessageLookupByLibrary.simpleMessage("Takipçi"),
         "following": MessageLookupByLibrary.simpleMessage("Takip ediyor"),
         "forbidden": MessageLookupByLibrary.simpleMessage(
             "Twitter buna erişimin yasak olduğunu söylüyor"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter mavisi"),
         "general": MessageLookupByLibrary.simpleMessage("Genel"),
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Gruplar"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Fritter\'ın daha da iyi olmasına yardımcı olun"),
@@ -206,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Twitter\'dan içe aktar"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Abonelikleri içe aktar"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Yanıtları dahil et"),
         "include_retweets":
@@ -217,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "Görünüşe göre yakın zamanda bir ping göndermişsin 🤔"),
-        "joined": m7,
+        "joined": m8,
         "language": MessageLookupByLibrary.simpleMessage("Dil"),
         "language_subtitle":
             MessageLookupByLibrary.simpleMessage("Yeniden başlatma gerektirir"),
@@ -251,8 +256,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Not: Twitter sınırlaması nedeniyle, tüm tweet\'ler dahil edilmeyebilir"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("TAMAM"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "Abonelikler yalnızca herkese açık profillerden içe aktarılabilir"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Hop! Bir şeyler ters gitti 🥲"),
         "open_app_settings":
@@ -267,7 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Sabitlenmiş tweet"),
         "playback_speed": MessageLookupByLibrary.simpleMessage("Oynatma hızı"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("Lütfen bir ad girin"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -303,6 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Merhaba de 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Ara"),
+        "search_term": MessageLookupByLibrary.simpleMessage("Arama terimi"),
         "select": MessageLookupByLibrary.simpleMessage("Seç"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
@@ -339,14 +348,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Medya kaydedildi!"),
         "system": MessageLookupByLibrary.simpleMessage("Sistem"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Fritter\'a yardım ettiğin için teşekkürler! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Bildirdiğiniz için teşekkürler. En kısa sürede düzeltmeye çalışacağız!"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("GitHub sorunu (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -365,7 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Bunun yüklenmesi çok uzun sürdü. Lütfen internet bağlantınızı kontrol edin!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Bu tweete ulaşılamıyor. Muhtemelen silindi."),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Bu kullanıcı kimseyi takip etmiyor!"),
@@ -390,7 +399,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweet\'ler"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweet\'ler & Yanıtlar"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Mevcut trend konumları bulunamadı."),
@@ -425,7 +434,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Arama sonuçları yüklenemiyor."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Tweet yüklenemedi"),
         "unable_to_load_the_tweets":
@@ -439,16 +448,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Veritabanı geçişleri çalıştırılamıyor"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Trend konumu tercihi aktarılamıyor"),
         "unknown": MessageLookupByLibrary.simpleMessage("Bilinmeyen"),
         "unsave": MessageLookupByLibrary.simpleMessage("Kaydetmeyi iptal et"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abonelikten çık"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Güncellemeler"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

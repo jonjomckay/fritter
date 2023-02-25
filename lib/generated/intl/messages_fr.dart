@@ -34,43 +34,45 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(snapshotData) =>
       "Terminé avec les utilisateurs ${snapshotData}";
 
-  static String m6(snapshotData) =>
+  static String m6(name) => "Groupe : ${name}";
+
+  static String m7(snapshotData) =>
       "${snapshotData} utilisateurs importés jusqu\'à présent";
 
-  static String m7(date) => "S\'est inscrit·e le ${date}";
+  static String m8(date) => "S\'est inscrit·e le ${date}";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "${Intl.plural(num, zero: 'Aucun vote', one: 'Un vote', two: 'Deux votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Veuillez vérifier votre connexion Internet.\n\n${errorMessage}";
 
-  static String m10(releaseVersion) =>
+  static String m11(releaseVersion) =>
       "Appuyez pour télécharger ${releaseVersion}";
 
-  static String m11(getMediaType) => "Appuyer pour afficher ${getMediaType}";
+  static String m12(getMediaType) => "Appuyer pour afficher ${getMediaType}";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "Le fichier n’existe pas. Veuillez vous assurer qu’il se trouve à ${filePath}";
 
-  static String m13(thisTweetUserName, timeAgo) =>
-      "${thisTweetUserName} a retweeté";
+  static String m14(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} a retweeté ${timeAgo}";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: 'no tweets', one: 'un tweet', two: 'deux tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "Impossible de charger les tendances pour ${widgetPlaceName}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Impossible d\'enregistrer le média. Twitter a renvoyé un statut de ${responseStatusCode}";
 
-  static String m17(e) => "Impossible d\'envoyer le ping. ${e}";
+  static String m18(e) => "Impossible d\'envoyer le ping. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Impossible d\'envoyer le ping. Le code d\'erreur était ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Mise à jour vers ${releaseVersion} via votre client F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -78,6 +80,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("À propos"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Compte suspendu"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Masque les auteurs des tweets. Évite les biais de confirmation basés sur des arguments faisant autorité."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Activer le mode biais de non-confirmation"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Ajouter au groupe"),
         "all": MessageLookupByLibrary.simpleMessage("Tout"),
@@ -104,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Défaillance catastrophique"),
         "choose": MessageLookupByLibrary.simpleMessage("Choisissez"),
         "close": MessageLookupByLibrary.simpleMessage("Fermer"),
+        "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
+            "Êtes-vous sûr de vouloir fermer Fritter ?"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribuer"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Copie de l\'adresse dans le presse-papiers"),
@@ -131,6 +141,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "default_tab":
             MessageLookupByLibrary.simpleMessage("Onglet par défaut"),
         "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
+        "disable_screenshots": MessageLookupByLibrary.simpleMessage(
+            "Désactiver les captures d\'écran"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Empêche la prise de captures d\'écran. Cela peut ne pas fonctionner sur tous les appareils."),
         "disabled": MessageLookupByLibrary.simpleMessage("Désactivé"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Ne pas envoyer"),
         "donate": MessageLookupByLibrary.simpleMessage("Faire un don"),
@@ -180,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter bleu"),
         "general": MessageLookupByLibrary.simpleMessage("Général"),
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Groupes"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Contribuer à l\'amélioration de Fritter"),
@@ -190,6 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Voici les données qui seront envoyées. Elles ne seront utilisées que pour déterminer les appareils et les langues à prendre en charge dans Fritter à l\'avenir."),
         "hide_sensitive_tweets": MessageLookupByLibrary.simpleMessage(
             "Masquer les tweets sensibles"),
+        "home": MessageLookupByLibrary.simpleMessage("Accueil"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Si vous avez des commentaires sur cette fonctionnalité, veuillez m\'en faire part"),
@@ -200,7 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Importer depuis Twitter"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Importer des abonnements"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Inclure les réponses"),
         "include_retweets":
@@ -211,7 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "On dirait que vous avez déjà envoyé un ping récemment 🤔"),
-        "joined": m7,
+        "joined": m8,
         "language": MessageLookupByLibrary.simpleMessage("Langue"),
         "language_subtitle":
             MessageLookupByLibrary.simpleMessage("Nécessite un redémarrage"),
@@ -245,7 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Note : En raison d\'une limitation de Twitter, tous les tweets peuvent ne pas être inclus"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Oups ! Quelque chose a mal tourné 🥲"),
@@ -262,7 +278,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Tweet épinglé"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Vitesse de lecture"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("Veuillez entrer un nom"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -286,6 +302,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Signaler un bug"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Signaler une erreur"),
+        "reset_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Réinitialiser les pages par défaut"),
         "retry": MessageLookupByLibrary.simpleMessage("Répondre"),
         "save": MessageLookupByLibrary.simpleMessage("Enregistrer"),
         "save_bandwidth_using_smaller_images": MessageLookupByLibrary.simpleMessage(
@@ -295,6 +313,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Dites bonjour 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Recherche"),
+        "search_term":
+            MessageLookupByLibrary.simpleMessage("Terme de recherche"),
         "select": MessageLookupByLibrary.simpleMessage("Sélectionner"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
@@ -331,14 +351,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Le média est sauvegardé !"),
         "system": MessageLookupByLibrary.simpleMessage("Système"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Merci d\'avoir aidé Fritter ! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Merci de le signaler. Nous allons essayer de le corriger en un rien de temps !"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("le problème GitHub (nº 143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -357,7 +377,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Le chargement est trop long. Veuillez vérifier votre connexion réseau !"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Ce tweet n’est pas disponible Il a probablement été supprimé."),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Cet utilisateur ne suit personne !"),
@@ -380,7 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Réponses"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible de trouver les emplacements de tendance disponibles."),
@@ -389,6 +409,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Impossible de trouver vos tweets enregistrés."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Importation impossible"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Impossible de charger vos pages d\'accueil"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible de charger les groupes d\'abonnement"),
@@ -414,7 +436,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible de charger les résultats de la recherche."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "Impossible de charger le tweet"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -429,16 +451,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Impossible d\'exécuter les migrations de la base de données"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Impossible de diffuser la préférence de localisation de la tendance"),
         "unknown": MessageLookupByLibrary.simpleMessage("Inconnu"),
         "unsave": MessageLookupByLibrary.simpleMessage("Désenregistrer"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Se désabonner"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Mises à jour"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(
@@ -467,6 +489,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Vous n\'avez pas encore enregistré de tweets !"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "Vous devez avoir au moins 2 pages d\'écran d\'accueil"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Votre appareil fonctionne sous une version d\'Android antérieure à KitKat (4.4). Les données ne peuvent donc être importées qu\'à partir de cet appareil :"),

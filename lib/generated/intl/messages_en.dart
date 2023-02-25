@@ -33,43 +33,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "Finished with ${snapshotData} users";
 
-  static String m20(name) => "Group: ${name}";
+  static String m6(name) => "Group: ${name}";
 
-  static String m6(snapshotData) => "${snapshotData} users imported so far";
+  static String m7(snapshotData) => "${snapshotData} users imported so far";
 
-  static String m7(date) => "Joined ${date}";
+  static String m8(date) => "Joined ${date}";
 
-  static String m8(num, numFormatted) =>
+  static String m9(num, numFormatted) =>
       "${Intl.plural(num, zero: 'No votes', one: 'One vote', two: 'Two votes', few: '${numFormatted} votes', many: '${numFormatted} vote', other: '${numFormatted} votes')}";
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Please check your Internet connection.\n\n${errorMessage}";
 
-  static String m10(releaseVersion) => "Tap to download ${releaseVersion}";
+  static String m11(releaseVersion) => "Tap to download ${releaseVersion}";
 
-  static String m11(getMediaType) => "Tap to show ${getMediaType}";
+  static String m12(getMediaType) => "Tap to show ${getMediaType}";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "The file does not exist. Please ensure it is located at ${filePath}";
 
-  static String m13(thisTweetUserName, timeAgo) =>
+  static String m14(thisTweetUserName, timeAgo) =>
       "${thisTweetUserName} retweeted ${timeAgo}";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: 'no tweets', one: 'one tweet', two: 'two tweets', few: '${numFormatted} tweets', many: '${numFormatted} tweet', other: '${numFormatted} tweets')}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "Unable to load the trends for ${widgetPlaceName}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Unable to save the media. Twitter returned a status of ${responseStatusCode}";
 
-  static String m17(e) => "Unable to send the ping. ${e}";
+  static String m18(e) => "Unable to send the ping. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Unable to send the ping. The status code was ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Update to ${releaseVersion} through your F-Droid client";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -185,7 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blue"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
-        "group_name": m20,
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Groups"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Help make Fritter even better"),
@@ -207,7 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Import from Twitter"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Import subscriptions"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Include replies"),
         "include_retweets":
@@ -218,7 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "It looks like you\'ve already sent a ping recently 🤔"),
-        "joined": m7,
+        "joined": m8,
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "language_subtitle":
             MessageLookupByLibrary.simpleMessage("Requires a restart"),
@@ -253,7 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Note: Due to a Twitter limitation, not all tweets may be included"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "only_public_subscriptions_can_be_imported":
             MessageLookupByLibrary.simpleMessage(
@@ -271,7 +271,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Pinned tweet"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Playback speed"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name":
             MessageLookupByLibrary.simpleMessage("Please enter a name"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -346,14 +346,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Saved the media!"),
         "system": MessageLookupByLibrary.simpleMessage("System"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Thanks for helping Fritter! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Thanks for reporting. We\'ll try and fix it in no time!"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("the GitHub issue (#143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
@@ -372,7 +372,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "This took too long to load. Please check your network connection!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "This tweet is unavailable. It was probably deleted."),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "This user does not follow anyone!"),
@@ -395,7 +395,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweets"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets & Replies"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
             "You need to have at least 2 home screen pages."),
         "unable_to_find_the_available_trend_locations":
@@ -433,7 +433,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to load the search results."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet":
             MessageLookupByLibrary.simpleMessage("Unable to load the tweet"),
         "unable_to_load_the_tweets":
@@ -448,9 +448,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Unable to run the database migrations"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Unable to stream the trend location preference"),
@@ -459,7 +459,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Unsubscribe"),
         "unsupported_url":
             MessageLookupByLibrary.simpleMessage("Unsupported URL"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Updates"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(

@@ -33,41 +33,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "Finito con ${snapshotData} utenti";
 
-  static String m6(snapshotData) => "${snapshotData} utenti importati finora";
+  static String m6(name) => "Gruppo: ${name}";
 
-  static String m7(date) => "Iscrizione a ${date}";
+  static String m7(snapshotData) => "${snapshotData} utenti importati finora";
 
-  static String m8(num, numFormatted) =>
-      "${Intl.plural(num, zero: 'nessun voto', one: 'un voto', two: 'due voti', few: '${numFormatted} voti', many: '${numFormatted} voto', other: '${numFormatted} voti')}";
+  static String m8(date) => "Iscrizione a ${date}";
 
-  static String m9(errorMessage) =>
+  static String m9(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'Nessun voto', one: 'Un voto', two: 'Due voti', few: '${numFormatted} voti', many: '${numFormatted} voto', other: '${numFormatted} voti')}";
+
+  static String m10(errorMessage) =>
       "Per favore controlla la tua connessione a Internet.\n\n${errorMessage}";
 
-  static String m10(releaseVersion) => "Clicca per scaricare ${releaseVersion}";
+  static String m11(releaseVersion) => "Clicca per scaricare ${releaseVersion}";
 
-  static String m11(getMediaType) => "Tocca per mostrare ${getMediaType}";
+  static String m12(getMediaType) => "Tocca per mostrare ${getMediaType}";
 
-  static String m12(filePath) =>
+  static String m13(filePath) =>
       "Il file non esiste. Si prega di assicurarsi che sia situato in ${filePath}";
 
-  static String m13(thisTweetUserName, timeAgo) =>
-      "${thisTweetUserName} ha ritwittato";
+  static String m14(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName} ha ritwittato ${timeAgo}";
 
-  static String m14(num, numFormatted) =>
+  static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: 'nessun tweet', one: 'un tweet', two: 'due tweet', few: '${numFormatted} tweet', many: '${numFormatted} tweet', other: '${numFormatted} tweet')}";
 
-  static String m15(widgetPlaceName) =>
+  static String m16(widgetPlaceName) =>
       "Impossibile caricare le tendenze per ${widgetPlaceName}";
 
-  static String m16(responseStatusCode) =>
+  static String m17(responseStatusCode) =>
       "Impossibile salvare il contenuto. Twitter ha restituito uno stato di ${responseStatusCode}";
 
-  static String m17(e) => "Impossibile inviare il ping. ${e}";
+  static String m18(e) => "Impossibile inviare il ping. ${e}";
 
-  static String m18(statusCode) =>
+  static String m19(statusCode) =>
       "Impossibile inviare il ping. Il codice di stato era ${statusCode}";
 
-  static String m19(releaseVersion) =>
+  static String m20(releaseVersion) =>
       "Aggiorna a ${releaseVersion} tramite il tuo client F-Droid";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -75,6 +77,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("Info"),
         "account_suspended":
             MessageLookupByLibrary.simpleMessage("Profilo sospeso"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Nascondi autori dei tweet. Impedisci il bias di conferma causato da discussioni autoritarie."),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Modalità anti bias di conferma"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Aggiungi al gruppo"),
         "all": MessageLookupByLibrary.simpleMessage("Tutti"),
@@ -101,6 +109,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fallimento catastrofico"),
         "choose": MessageLookupByLibrary.simpleMessage("Scegli"),
         "close": MessageLookupByLibrary.simpleMessage("Chiudi"),
+        "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
+            "Sei sicuro di voler chiudere Fritter?"),
         "contribute": MessageLookupByLibrary.simpleMessage("Contribuisci"),
         "copied_address_to_clipboard": MessageLookupByLibrary.simpleMessage(
             "Indirizzo copiato negli appunti"),
@@ -128,6 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "default_tab":
             MessageLookupByLibrary.simpleMessage("Scheda predefinita"),
         "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("Disattiva screenshot"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "Impedisce di poter acquisire screenshot. Potrebbe non funzionare su tutti i dispositivi."),
         "disabled": MessageLookupByLibrary.simpleMessage("Disabilitato"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("Non inviare"),
         "donate": MessageLookupByLibrary.simpleMessage("Dona"),
@@ -140,6 +154,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chiedi sempre"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("Salva nella directory"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "Impossibile scaricare. Questo media potrebbe essere solo disponibile come stream, che Fritter non supporta ancora."),
         "download_path":
             MessageLookupByLibrary.simpleMessage("Percorso di scaricamento"),
         "downloading_media":
@@ -174,6 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter Blu"),
         "general": MessageLookupByLibrary.simpleMessage("Generale"),
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Gruppi"),
         "help_make_fritter_even_better": MessageLookupByLibrary.simpleMessage(
             "Aiuta a rendere Fritter migliore"),
@@ -182,6 +199,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "Ecco i dati che verranno inviati. Saranno usati solo per determinare quali dispositivi e lingue supportare su Fritter in futuro."),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("Nascondi tweet sensibili"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "Se hai qualche feedback su questa funzione, per favore lascialo"),
@@ -192,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Importa da Twitter"),
         "import_subscriptions":
             MessageLookupByLibrary.simpleMessage("Importa iscrizioni"),
-        "imported_snapshot_data_users_so_far": m6,
+        "imported_snapshot_data_users_so_far": m7,
         "include_replies":
             MessageLookupByLibrary.simpleMessage("Includi risposte"),
         "include_retweets":
@@ -203,7 +223,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage(
                 "Sembra che tu abbia già inviato un ping di recente 🤔"),
-        "joined": m7,
+        "joined": m8,
+        "language": MessageLookupByLibrary.simpleMessage("Lingua"),
+        "language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Richiede un riavvio"),
         "large": MessageLookupByLibrary.simpleMessage("Grande"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("Importa Android Legacy"),
@@ -235,7 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Nota: a causa di una limitazione di Twitter, non tutti i tweet potrebbero essere inclusi"),
-        "numberFormat_format_total_votes": m8,
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("Ok"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Ops! Qualcosa è andato storto 🥲"),
@@ -252,7 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinned_tweet": MessageLookupByLibrary.simpleMessage("Tweet fissato"),
         "playback_speed":
             MessageLookupByLibrary.simpleMessage("Velocità di riproduzione"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "please_enter_a_name": MessageLookupByLibrary.simpleMessage(
             "Per favore inserisci un nome"),
         "please_make_sure_the_data_you_wish_to_import_is_located_there_then_press_the_import_button_below":
@@ -261,6 +284,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Si ricorda che il metodo che Fritter usa per importare iscrizioni è fortemente limitato da Twitter, quindi potrebbe fallire se segui molti account."),
+        "possibly_sensitive":
+            MessageLookupByLibrary.simpleMessage("Potenzialmente sensibile"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "Questo profilo può includere immagini, linguaggio o altri contenuti potenzialmente sensibili. Desideri comunque vederlo?"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "Questo tweet contiene contenuti potenzialmente sensibili. Desideri visualizzarlo?"),
         "prefix": MessageLookupByLibrary.simpleMessage("prefisso"),
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Profilo privato"),
@@ -271,6 +300,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "report_a_bug": MessageLookupByLibrary.simpleMessage("Segnala un bug"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Segnalazione di un errore"),
+        "reset_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Reimposta pagine predefinite"),
         "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
         "save": MessageLookupByLibrary.simpleMessage("Salva"),
         "save_bandwidth_using_smaller_images":
@@ -280,6 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "say_hello": MessageLookupByLibrary.simpleMessage("Dì ciao"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Dì ciao 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Ricerca"),
+        "search_term": MessageLookupByLibrary.simpleMessage("Ricerca"),
         "select": MessageLookupByLibrary.simpleMessage("Seleziona"),
         "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already":
             MessageLookupByLibrary.simpleMessage(
@@ -314,22 +346,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "subscriptions": MessageLookupByLibrary.simpleMessage("Iscrizioni"),
         "subtitles": MessageLookupByLibrary.simpleMessage("Sottotitoli"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("Media salvati."),
+            MessageLookupByLibrary.simpleMessage("Media salvati!"),
         "system": MessageLookupByLibrary.simpleMessage("Sistema"),
-        "tap_to_download_release_version": m10,
-        "tap_to_show_getMediaType_item_type": m11,
+        "tap_to_download_release_version": m11,
+        "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
             "Grazie per aver aiutato Fritter! 💖"),
         "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
             MessageLookupByLibrary.simpleMessage(
                 "Grazie per la segnalazione. Proveremo a sistemarlo in pochissimo tempo!"),
-        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m12,
+        "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": m13,
         "the_github_issue":
             MessageLookupByLibrary.simpleMessage("il problema GitHub (nº 143)"),
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage(
                 "Il tweet non contiene alcun testo. Questo è inaspettato"),
         "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Modalità Tema"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Non ci sono state tendenze restituite. Questo è inaspettato! Si prega di segnalare come bug, se possibile."),
@@ -341,7 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Ci ha messo troppo tempo per caricare. Si prega di controllare la connessione di rete!"),
         "this_tweet_is_unavailable": MessageLookupByLibrary.simpleMessage(
             "Questo tweet non è disponibile. Probabilmente è stato cancellato."),
-        "this_tweet_user_name_retweeted": m13,
+        "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage(
                 "Questo utente non segue nessuno!"),
@@ -364,7 +397,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("Tweet"),
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweet e risposte"),
-        "tweets_number": m14,
+        "tweets_number": m15,
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile trovare le posizioni di tendenza disponibili."),
@@ -373,6 +406,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Impossibile trovare i tuoi tweet salvati."),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("Impossibile importare"),
+        "unable_to_load_home_pages": MessageLookupByLibrary.simpleMessage(
+            "Impossibile caricare le tue pagine home"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile caricare i gruppi di iscrizioni"),
@@ -398,7 +433,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_search_results":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile caricare i risultati della ricerca."),
-        "unable_to_load_the_trends_for_widget_place_name": m15,
+        "unable_to_load_the_trends_for_widget_place_name": m16,
         "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
             "Impossibile caricare il tweet"),
         "unable_to_load_the_tweets": MessageLookupByLibrary.simpleMessage(
@@ -413,16 +448,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile eseguire le migrazioni del database"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
-            m16,
-        "unable_to_send_the_ping_e_to_string": m17,
-        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m18,
+            m17,
+        "unable_to_send_the_ping_e_to_string": m18,
+        "unable_to_send_the_ping_the_status_code_was_response_statusCode": m19,
         "unable_to_stream_the_trend_location_preference":
             MessageLookupByLibrary.simpleMessage(
                 "Impossibile trasmettere la preferenza della posizione della tendenza"),
         "unknown": MessageLookupByLibrary.simpleMessage("Sconosciuto"),
         "unsave": MessageLookupByLibrary.simpleMessage("Annulla salvataggio"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Disiscriviti"),
-        "update_to_release_version_through_your_fdroid_client": m19,
+        "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Aggiornamenti"),
         "use_true_black_for_the_dark_mode_theme":
             MessageLookupByLibrary.simpleMessage(
@@ -437,6 +472,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage(
                 "Se gli errori dovrebbero essere segnalati a Sentry"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage(
+                "Se nascondere i tweet segnalati come sensibili"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage(
                 "Quale scheda viene visualizzata quando si apre l\'app"),
@@ -444,9 +482,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Ti piacerebbe abilitare la segnalazione automatica degli errori?"),
         "yes": MessageLookupByLibrary.simpleMessage("Sì"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("Si, grazie"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage(
                 "Non hai ancora salvato un tweet!"),
+        "you_must_have_at_least_2_home_screen_pages":
+            MessageLookupByLibrary.simpleMessage(
+                "Hai bisogno di avere almeno due pagine nella home"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":
             MessageLookupByLibrary.simpleMessage(
                 "Il tuo dispositivo sta usando una versione di Android più vecchia di KitKat (4.4), quindi i dati possono essere importati solo da:"),
