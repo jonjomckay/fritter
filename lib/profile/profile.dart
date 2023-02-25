@@ -289,10 +289,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      ///TODO: translation
                       Tab(
                         child: Text(
-                          'Saved Tweets',
+                          L10n.of(context).saved,
                           textAlign: TextAlign.center,
                         ),
                       ),
