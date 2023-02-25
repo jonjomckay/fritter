@@ -478,5 +478,9 @@
   "saved_tweet_too_large": "Ten zapisany tweet nie mógł zostać wyświetlony, ponieważ jest zbyt duży, aby go załadować. Zgłoś to programistom.",
   "@saved_tweet_too_large": {},
   "two_home_pages_required": "Musisz mieć co najmniej 2 karty.",
-  "@two_home_pages_required": {}
+  "@two_home_pages_required": {},
+  "mute_videos": "Wyciszaj wideo",
+  "@mute_videos": {},
+  "mute_video_description": "Domyślnie wyciszaj wideo",
+  "@mute_video_description": {}
 }
