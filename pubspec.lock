@@ -801,14 +801,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.18.1"
+    version: "6.20.1"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.18.1"
+    version: "6.20.1"
   share:
     dependency: "direct main"
     description:
