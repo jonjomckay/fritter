@@ -105,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("فشل ذريع"),
         "choose": MessageLookupByLibrary.simpleMessage("أختر"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("اختيار الصفحات"),
         "close": MessageLookupByLibrary.simpleMessage("اغلاق"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "هل أنت متأكد من أنك تريد إغلاق Fritter؟"),
@@ -233,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("الوسائط"),
         "media_size": MessageLookupByLibrary.simpleMessage("حجم الوسائط"),
         "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("صفحة مفقودة"),
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
         "never_send": MessageLookupByLibrary.simpleMessage("يا ويلك لو تبعث"),
         "newTrans": MessageLookupByLibrary.simpleMessage("الجديد"),
@@ -252,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "ملاحظة: نظراً لقَيد معين من تويتر، قد لا يتم تضمين جميع التغريدات"),
         "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("تمام"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "لا يمكن استيراد الاشتراكات إلا من الملفات الشخصية العامة"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("أوبسي! حدث خطأ ما 🥲"),
         "open_app_settings":
@@ -297,6 +302,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "حفظ النطاق الترددي مع صور أصغر"),
         "saved": MessageLookupByLibrary.simpleMessage("المحفوظ"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "تعذر عرض هذه التغريدة المحفوظة لأنها كبيرة جدًا بحيث لا يمكن تحميلها. الرجاء الإبلاغ عن ذلك للمطورين."),
         "say_hello": MessageLookupByLibrary.simpleMessage("سَلّم"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("سَلّم 👋"),
         "search": MessageLookupByLibrary.simpleMessage("البحث"),
@@ -387,6 +394,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("التغريدات والردود"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "تحتاج إلى صفحتان على الأقل من صفحات الشاشة الرئيسية."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "غير قادر على تحديد موقع الترندات."),
@@ -446,6 +455,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
         "unsave": MessageLookupByLibrary.simpleMessage("الغاء الحفظ"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("إلغاء الاشتراك"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("عنوان URL غير مدعوم"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("التحديثات"),
         "use_true_black_for_the_dark_mode_theme":

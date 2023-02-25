@@ -93,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "catastrophic_failure": MessageLookupByLibrary.simpleMessage("致命问题"),
         "choose": MessageLookupByLibrary.simpleMessage("选择"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("选择页面"),
         "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "confirm_close_fritter":
             MessageLookupByLibrary.simpleMessage("确定要关闭 Fritter 吗？"),
@@ -200,6 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("媒体"),
         "media_size": MessageLookupByLibrary.simpleMessage("媒体尺寸"),
         "medium": MessageLookupByLibrary.simpleMessage("中"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("缺失的页面"),
         "name": MessageLookupByLibrary.simpleMessage("取个名字"),
         "never_send": MessageLookupByLibrary.simpleMessage("从不发送"),
         "newTrans": MessageLookupByLibrary.simpleMessage("新的"),
@@ -254,6 +256,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "save_bandwidth_using_smaller_images":
             MessageLookupByLibrary.simpleMessage("使用较小的图像以节省带宽"),
         "saved": MessageLookupByLibrary.simpleMessage("书签"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "无法显示这条已保存的推文，因其太大导致难以加载。请将它报告给开发者。"),
         "say_hello": MessageLookupByLibrary.simpleMessage("打招呼"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("打招呼👋"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
@@ -330,6 +334,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets": MessageLookupByLibrary.simpleMessage("推文"),
         "tweets_and_replies": MessageLookupByLibrary.simpleMessage("推文和回复"),
         "tweets_number": m15,
+        "two_home_pages_required":
+            MessageLookupByLibrary.simpleMessage("你需要有至少 2 个主屏页面。"),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage("无法找到可用的趋势位置。"),
         "unable_to_find_your_saved_tweets":
@@ -375,6 +381,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("未知"),
         "unsave": MessageLookupByLibrary.simpleMessage("取消保存"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("取消订阅"),
+        "unsupported_url": MessageLookupByLibrary.simpleMessage("不受支持的 URL"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":

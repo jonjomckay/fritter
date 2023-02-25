@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Katastrofické selhání"),
         "choose": MessageLookupByLibrary.simpleMessage("Vybrat"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Vybrat stránky"),
         "close": MessageLookupByLibrary.simpleMessage("Zavřít"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Opravdu chcete zavřít Fritter?"),
@@ -238,6 +239,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("Média"),
         "media_size": MessageLookupByLibrary.simpleMessage("Velikost médií"),
         "medium": MessageLookupByLibrary.simpleMessage("Střední"),
+        "missing_page":
+            MessageLookupByLibrary.simpleMessage("Chybějící stránka"),
         "name": MessageLookupByLibrary.simpleMessage("Název"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nikdy neposílat"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nová"),
@@ -257,6 +260,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Poznámka: kvuli imitaci Twitteru nemusí byt zahrnuty všechny tweety"),
         "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "Odběry lze importovat pouze z veřejných profilů"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("Jejda! Něco se pokazilo 🥲"),
         "open_app_settings":
@@ -306,6 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Ušetřete data s menšími obrázky"),
         "saved": MessageLookupByLibrary.simpleMessage("Uloženo"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Tento uložený tweet nebylo možné zobrazit, protože je příliš velký na to, aby se načetl. Nahlaste to prosím vývojářům."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Řekněte ahoj"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Řekněte ahoj 👋"),
@@ -397,6 +405,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweety a odpovědi"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "Musíte mít alespoň 2 stránky domovské obrazovky."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Nepodařilo se nalézt umístění trendů."),
@@ -456,6 +466,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Neznámé"),
         "unsave": MessageLookupByLibrary.simpleMessage("Zrušit uložení"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Zrušit odběr"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("Nepodporovaná adresa URL"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Aktualizace"),
         "use_true_black_for_the_dark_mode_theme":

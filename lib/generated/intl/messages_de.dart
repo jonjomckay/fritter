@@ -342,6 +342,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Der Tweet hat keinen Textinhalt. Dies kommt unerwartet"),
         "theme": MessageLookupByLibrary.simpleMessage("Thema"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("Farbschema-Modus"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Die Trendanfrage ist erfolglos geblieben; dies kommt unerwartet! Bitte als Fehler melden, wenn möglich."),

@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Katastrofalna awaria"),
         "choose": MessageLookupByLibrary.simpleMessage("Wybierz"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Wybierz karty"),
         "close": MessageLookupByLibrary.simpleMessage("Zamknij"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Czy na pewno chcesz zamknąć Frittera?"),
@@ -239,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size":
             MessageLookupByLibrary.simpleMessage("Rozmiar multimediów"),
         "medium": MessageLookupByLibrary.simpleMessage("Średnie"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Brakująca karta"),
         "name": MessageLookupByLibrary.simpleMessage("Nazwa"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nigdy nie wysyłaj"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nowa"),
@@ -307,6 +309,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Oszczędzaj transfer dzięki mniejszym obrazom"),
         "saved": MessageLookupByLibrary.simpleMessage("Zapisane"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Ten zapisany tweet nie mógł zostać wyświetlony, ponieważ jest zbyt duży, aby go załadować. Zgłoś to programistom."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Przywitaj się"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Przywitaj się 👋"),
@@ -400,6 +404,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweety i odpowiedzi"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "Musisz mieć co najmniej 2 karty."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Nie można znaleźć dostępnych lokalizacji trendów."),
@@ -459,6 +465,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Nieznane"),
         "unsave": MessageLookupByLibrary.simpleMessage("Usuń z zapisanych"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Odsubskrybuj"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("Nieobsługiwany adres URL"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Aktualizacje"),
         "use_true_black_for_the_dark_mode_theme":

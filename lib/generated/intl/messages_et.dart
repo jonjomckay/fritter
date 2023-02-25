@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("Rakenduse teave"),
         "account_suspended": MessageLookupByLibrary.simpleMessage(
-            "Kasutajakonto on ajutisel eemaldatud"),
+            "Kasutajakonto on ajutiselt peatatud"),
         "activate_non_confirmation_bias_mode_description":
             MessageLookupByLibrary.simpleMessage(
                 "Antud valik peidab säutsude autorid. Sellega väldid sotsiaalmeediale omaseid kinnituskalduvusega (confirmation bias) arvestavaid algoritme."),
@@ -111,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Kõik läks ikka väga viltu"),
         "choose": MessageLookupByLibrary.simpleMessage("Vali"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Vali lehed"),
         "close": MessageLookupByLibrary.simpleMessage("Sulge"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Kas sa oled kindel, et soovid panna Fritter\'i kinni?"),
@@ -184,8 +185,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "feed": MessageLookupByLibrary.simpleMessage("Säutsuvoog"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtrid"),
         "finished_with_snapshotData_users": m5,
-        "followers": MessageLookupByLibrary.simpleMessage("Järgijad"),
-        "following": MessageLookupByLibrary.simpleMessage("Järgitavad"),
+        "followers": MessageLookupByLibrary.simpleMessage("Jälgijaid"),
+        "following": MessageLookupByLibrary.simpleMessage("Jälgitavaid"),
         "forbidden": MessageLookupByLibrary.simpleMessage(
             "Twitter ütleb, et juurdepääs sellele sisule on keelatud"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
@@ -202,7 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Siin näed meile saadetavaid andmeid. Me kasutame seda vaid selleks, et omada ülevaadet seadmetest ja keeltest, mida Fritter võiks ka tulevikus toetada."),
         "hide_sensitive_tweets": MessageLookupByLibrary.simpleMessage(
-            "Peida võimaliku ebasobiliku sisuga säutsud"),
+            "Peida võimalikud ebasobiliku sisuga säutsud"),
         "home": MessageLookupByLibrary.simpleMessage("Koduleht"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
@@ -243,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size":
             MessageLookupByLibrary.simpleMessage("Multimeedia suurus"),
         "medium": MessageLookupByLibrary.simpleMessage("Keskmised pildid"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Puuduv lehekülg"),
         "name": MessageLookupByLibrary.simpleMessage("Nimi"),
         "never_send":
             MessageLookupByLibrary.simpleMessage("Ära saada mitte kunagi"),
@@ -251,7 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "Vastuses ei leidunud andmeid ning midagi sellist ei tohiks juhtuda. Kui saad, siis palun anna meile sellest veast teada!"),
-        "no_results": MessageLookupByLibrary.simpleMessage("Tumemusi pole"),
+        "no_results": MessageLookupByLibrary.simpleMessage("Tulemusi pole"),
         "no_results_for":
             MessageLookupByLibrary.simpleMessage("Otsingutulemused puuduvad:"),
         "no_subscriptions_try_searching_or_importing_some":
@@ -263,6 +265,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Märkus: Twitteri määratud piirangute tõttu ei pruugi kõik säutsud olla kaasatud"),
         "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("Sobib"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "Tellimusi saad importida ainult avalikest profiilidest"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Hopsti! Midagi läks nüüd viltu 🥲"),
         "open_app_settings":
@@ -286,7 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Palun veendu, et andmed, mida soovid importida, asuvad seal, seejärel vajuta allpool olevat importimisnuppu."),
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
-                "Palun arvesta, et Fritter kasutab tellimuste impordiks päringut, mille kasutamise sagedust Twitter piirab. Seega kui sul on palju järgitavaid kontosid, siis import ei pruugi õnnestuda."),
+                "Palun arvesta, et Fritter kasutab tellimuste impordiks päringut, mille kasutamise sagedust Twitter piirab. Seega kui sul on palju jälgitavaid kontosid, siis import ei pruugi õnnestuda."),
         "possibly_sensitive":
             MessageLookupByLibrary.simpleMessage("Võimalik ebasobilik sisu"),
         "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
@@ -311,6 +316,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Kasutades väiksemaid pildifaile säästad ribalaiust"),
         "saved": MessageLookupByLibrary.simpleMessage("Salvestatud"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Seda salvestatud säutsu ei saa kuvada, kuna see on laadimiseks liiga suur. Palun teata sellest veast arendajatele."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Ütle meile tere"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Ütle meile tere 👋"),
@@ -352,7 +359,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "subtitles": MessageLookupByLibrary.simpleMessage("Subtiitrid"),
         "successfully_saved_the_media":
             MessageLookupByLibrary.simpleMessage("Salvestasin meedia!"),
-        "system": MessageLookupByLibrary.simpleMessage("Süsteemi teema"),
+        "system": MessageLookupByLibrary.simpleMessage("Süsteemi keel"),
         "tap_to_download_release_version": m11,
         "tap_to_show_getMediaType_item_type": m12,
         "thanks_for_helping_fritter": MessageLookupByLibrary.simpleMessage(
@@ -405,6 +412,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Säutsud ja vastused"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "Sul peab olema vähemalt 2 avalehte."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Ei õnnestu laadida riike ja piirkondi, mille kohta kuvada hetkel populaarsemaid viiteid ja otsinguid."),
@@ -465,6 +474,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave": MessageLookupByLibrary.simpleMessage("Eemalda salvestus"),
         "unsubscribe":
             MessageLookupByLibrary.simpleMessage("Loobu tellimusest"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("URL ei ole toetatud"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Uuendused"),
         "use_true_black_for_the_dark_mode_theme":

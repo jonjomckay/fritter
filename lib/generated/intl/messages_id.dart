@@ -40,6 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(date) => "Bergabung ${date}";
 
+  static String m9(num, numFormatted) =>
+      "${Intl.plural(num, zero: 'Tidak ada pemilihan', one: 'Satu pemilihan', two: 'Dua pemilihan', few: '${numFormatted} pemilihan', many: '${numFormatted} pemilihan', other: '${numFormatted} pemilihan')}";
+
   static String m10(errorMessage) =>
       "Mohon periksa koneksi Internet Anda.\n\n${errorMessage}";
 
@@ -107,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Kegagalan serius"),
         "choose": MessageLookupByLibrary.simpleMessage("Pilih"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Pilih halaman"),
         "close": MessageLookupByLibrary.simpleMessage("Tutup"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Apakah Anda yakin ingin menutup Fritter?"),
@@ -235,6 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("Media"),
         "media_size": MessageLookupByLibrary.simpleMessage("Ukuran media"),
         "medium": MessageLookupByLibrary.simpleMessage("Sedang"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Halaman hilang"),
         "name": MessageLookupByLibrary.simpleMessage("Nama"),
         "never_send":
             MessageLookupByLibrary.simpleMessage("Jangan pernah kirim"),
@@ -253,7 +258,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included":
             MessageLookupByLibrary.simpleMessage(
                 "Catatan: Karena batasan Twitter, tidak semua cuitan akan disertakan"),
+        "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("Oke"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "Subskripsi hanya bisa terimpor dari profil publik"),
         "oops_something_went_wrong": MessageLookupByLibrary.simpleMessage(
             "Aduh! Ada yang tidak beres 🥲"),
         "open_app_settings":
@@ -292,7 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "replying_to": MessageLookupByLibrary.simpleMessage("Membalas ke"),
         "report": MessageLookupByLibrary.simpleMessage("Lapor"),
         "report_a_bug":
-            MessageLookupByLibrary.simpleMessage("Laporkan sebuah masalah"),
+            MessageLookupByLibrary.simpleMessage("Laporkan masalah"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Melaporkan galat"),
         "reset_home_pages": MessageLookupByLibrary.simpleMessage(
@@ -303,6 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Hemat bandwidth menggunakan gambar yang lebih kecil"),
         "saved": MessageLookupByLibrary.simpleMessage("Disimpan"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Tweet yang disimpan ini tidak bisa ditampilkan, karna terlalu besar. Silahkan laporkan ke developer."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Sapa"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Sapa 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Cari"),
@@ -393,6 +404,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Cuitan & Balasan"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "Kamu perlu setidaknya 2 halaman beranda."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa menemukan lokasi tren yang tersedia."),
@@ -416,7 +429,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Tidak bisa memuat daftar pengikut"),
         "unable_to_load_the_next_page_of_follows":
             MessageLookupByLibrary.simpleMessage(
-                "Tidak bisa memuat halaman selanjutnya dari pengikut"),
+                "Tidak bisa memuat halaman pengikut selanjutnya"),
         "unable_to_load_the_next_page_of_replies":
             MessageLookupByLibrary.simpleMessage(
                 "Tidak bisa memuat halaman balasan selanjutnya"),
@@ -452,6 +465,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Tidak diketahui"),
         "unsave": MessageLookupByLibrary.simpleMessage("Batal simpan"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Batal langganan"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("URL tidak didukung"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Pembaruan"),
         "use_true_black_for_the_dark_mode_theme":

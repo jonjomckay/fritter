@@ -109,6 +109,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Falha catastrófica"),
         "choose": MessageLookupByLibrary.simpleMessage("Escolher"),
+        "choose_pages":
+            MessageLookupByLibrary.simpleMessage("Escolha as páginas"),
         "close": MessageLookupByLibrary.simpleMessage("Fechar"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Tem certeza de que deseja fechar o Fritter?"),
@@ -238,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("Mídia"),
         "media_size": MessageLookupByLibrary.simpleMessage("Tamanho da mídia"),
         "medium": MessageLookupByLibrary.simpleMessage("Média"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Página ausente"),
         "name": MessageLookupByLibrary.simpleMessage("Nome"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nunca enviar"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Novo"),
@@ -257,6 +260,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Observação: devido a uma limitação do Twitter, nem todos os tweets podem ser incluídos"),
         "numberFormat_format_total_votes": m9,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "only_public_subscriptions_can_be_imported":
+            MessageLookupByLibrary.simpleMessage(
+                "As inscrições só podem ser importadas de perfis públicos"),
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("Ops! Algo deu errado 🥲"),
         "open_app_settings": MessageLookupByLibrary.simpleMessage(
@@ -306,6 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Economize largura de banda com imagens menores"),
         "saved": MessageLookupByLibrary.simpleMessage("Salvo"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Este tweet salvo não pôde ser exibido porque é muito grande para carregar. Por favor, denuncie aos desenvolvedores."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Diga Olá"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("Diga Olá 👋"),
         "search": MessageLookupByLibrary.simpleMessage("Buscar"),
@@ -396,6 +404,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweets e Respostas"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "Você precisa ter pelo menos 2 páginas iniciais."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Não foi possível encontrar os locais de tendências disponíveis."),
@@ -456,6 +466,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsave": MessageLookupByLibrary.simpleMessage("Remover dos salvos"),
         "unsubscribe":
             MessageLookupByLibrary.simpleMessage("Cancelar inscrição"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("URL não suportado"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Atualizações"),
         "use_true_black_for_the_dark_mode_theme":

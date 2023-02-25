@@ -109,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure":
             MessageLookupByLibrary.simpleMessage("Feci arıza"),
         "choose": MessageLookupByLibrary.simpleMessage("Seç"),
+        "choose_pages": MessageLookupByLibrary.simpleMessage("Sayfaları seçin"),
         "close": MessageLookupByLibrary.simpleMessage("Kapat"),
         "confirm_close_fritter": MessageLookupByLibrary.simpleMessage(
             "Fritter\'ı kapatmak istediğinizden emin misiniz?"),
@@ -239,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "media": MessageLookupByLibrary.simpleMessage("Medya"),
         "media_size": MessageLookupByLibrary.simpleMessage("Medya boyutu"),
         "medium": MessageLookupByLibrary.simpleMessage("Orta"),
+        "missing_page": MessageLookupByLibrary.simpleMessage("Eksik sayfa"),
         "name": MessageLookupByLibrary.simpleMessage("Ad"),
         "never_send": MessageLookupByLibrary.simpleMessage("Asla gönderme"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Yeni"),
@@ -307,6 +309,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Daha küçük görüntülerle bant genişliğinden tasarruf edin"),
         "saved": MessageLookupByLibrary.simpleMessage("Kaydedilmiş"),
+        "saved_tweet_too_large": MessageLookupByLibrary.simpleMessage(
+            "Kaydedilen bu tweet, yüklenemeyecek kadar büyük olduğu için görüntülenemedi. Lütfen bunu geliştiricilere bildirin."),
         "say_hello": MessageLookupByLibrary.simpleMessage("Merhaba de"),
         "say_hello_emoji":
             MessageLookupByLibrary.simpleMessage("Merhaba de 👋"),
@@ -400,6 +404,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tweets_and_replies":
             MessageLookupByLibrary.simpleMessage("Tweet\'ler & Yanıtlar"),
         "tweets_number": m15,
+        "two_home_pages_required": MessageLookupByLibrary.simpleMessage(
+            "En az 2 ana ekran sayfanızın olması gerekir."),
         "unable_to_find_the_available_trend_locations":
             MessageLookupByLibrary.simpleMessage(
                 "Mevcut trend konumları bulunamadı."),
@@ -457,6 +463,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("Bilinmeyen"),
         "unsave": MessageLookupByLibrary.simpleMessage("Kaydetmeyi iptal et"),
         "unsubscribe": MessageLookupByLibrary.simpleMessage("Abonelikten çık"),
+        "unsupported_url":
+            MessageLookupByLibrary.simpleMessage("Desteklenmeyen URL"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("Güncellemeler"),
         "use_true_black_for_the_dark_mode_theme":
