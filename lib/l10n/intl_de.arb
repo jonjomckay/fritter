@@ -60,7 +60,9 @@
   "enable_sentry": "Sentry aktivieren?",
   "@enable_sentry": {},
   "activate_non_confirmation_bias_mode_label": "Anti-Bestätigungsfehler-Modus aktivieren",
+  "@activate_non_confirmation_bias_mode_label": {},
   "activate_non_confirmation_bias_mode_description": "Autor eines Tweets verstecken. Vermeide Bestätigungsfehler durch Autoritätsargumente.",
+  "@activate_non_confirmation_bias_mode_description": {},
   "whether_errors_should_be_reported_to_sentry": "Ob Fehlermeldungen an Sentry gesendet werden sollen",
   "@whether_errors_should_be_reported_to_sentry": {},
   "about": "Über",
@@ -418,9 +420,17 @@
   "not_set": "Nicht festgelegt",
   "@not_set": {},
   "language": "Sprache",
+  "@language": {},
   "language_subtitle": "Neustart erforderlich",
+  "@language_subtitle": {},
   "hide_sensitive_tweets": "Sensible Tweets ausblenden",
+  "@hide_sensitive_tweets": {},
   "whether_to_hide_tweets_marked_as_sensitive": "Ob Tweets, die als sensibel markiert sind, ausgeblendet werden sollen",
+  "@whether_to_hide_tweets_marked_as_sensitive": {},
   "disable_screenshots": "Screenshots deaktivieren",
-  "disable_screenshots_hint": "Versucht zu verhindern, dass Screenshots von Fritter gemacht werden können. Dies ist keine Garantie und funktioniert möglicherweise nicht auf allen Geräten."
+  "@disable_screenshots": {},
+  "disable_screenshots_hint": "Versucht zu verhindern, dass Screenshots von Fritter gemacht werden können. Dies ist keine Garantie und funktioniert möglicherweise nicht auf allen Geräten.",
+  "@disable_screenshots_hint": {},
+  "theme_mode": "Farbschema-Modus",
+  "@theme_mode": {}
 }

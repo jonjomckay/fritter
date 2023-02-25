@@ -468,5 +468,15 @@
   "group_name": "Grupa: {name}",
   "@group_name": {},
   "only_public_subscriptions_can_be_imported": "Subskrypcje mogą być importowane tylko z profili publicznych.",
-  "@only_public_subscriptions_can_be_imported": {}
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "Nieobsługiwany adres URL",
+  "@unsupported_url": {},
+  "choose_pages": "Wybierz karty",
+  "@choose_pages": {},
+  "missing_page": "Brakująca karta",
+  "@missing_page": {},
+  "saved_tweet_too_large": "Ten zapisany tweet nie mógł zostać wyświetlony, ponieważ jest zbyt duży, aby go załadować. Zgłoś to programistom.",
+  "@saved_tweet_too_large": {},
+  "two_home_pages_required": "Musisz mieć co najmniej 2 karty.",
+  "@two_home_pages_required": {}
 }

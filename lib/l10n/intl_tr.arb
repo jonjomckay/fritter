@@ -468,5 +468,15 @@
   "group_name": "Grup: {name}",
   "@group_name": {},
   "only_public_subscriptions_can_be_imported": "Abonelikler yalnızca herkese açık profillerden içe aktarılabilir",
-  "@only_public_subscriptions_can_be_imported": {}
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "Desteklenmeyen URL",
+  "@unsupported_url": {},
+  "saved_tweet_too_large": "Kaydedilen bu tweet, yüklenemeyecek kadar büyük olduğu için görüntülenemedi. Lütfen bunu geliştiricilere bildirin.",
+  "@saved_tweet_too_large": {},
+  "missing_page": "Eksik sayfa",
+  "@missing_page": {},
+  "two_home_pages_required": "En az 2 ana ekran sayfanızın olması gerekir.",
+  "@two_home_pages_required": {},
+  "choose_pages": "Sayfaları seçin",
+  "@choose_pages": {}
 }

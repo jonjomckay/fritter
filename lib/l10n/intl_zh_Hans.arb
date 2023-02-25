@@ -468,5 +468,15 @@
   "disable_screenshots_hint": "防止截屏。可能不适用于所有设备。",
   "@disable_screenshots_hint": {},
   "only_public_subscriptions_can_be_imported": "只能从公开的个人资料页导入订阅",
-  "@only_public_subscriptions_can_be_imported": {}
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "不受支持的 URL",
+  "@unsupported_url": {},
+  "saved_tweet_too_large": "无法显示这条已保存的推文，因其太大导致难以加载。请将它报告给开发者。",
+  "@saved_tweet_too_large": {},
+  "missing_page": "缺失的页面",
+  "@missing_page": {},
+  "two_home_pages_required": "你需要有至少 2 个主屏页面。",
+  "@two_home_pages_required": {},
+  "choose_pages": "选择页面",
+  "@choose_pages": {}
 }

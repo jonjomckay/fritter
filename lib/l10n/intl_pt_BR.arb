@@ -466,5 +466,17 @@
   "reset_home_pages": "Redefinir páginas para o padrão",
   "@reset_home_pages": {},
   "you_must_have_at_least_2_home_screen_pages": "Você deve ter pelo menos 2 páginas de tela inicial",
-  "@you_must_have_at_least_2_home_screen_pages": {}
+  "@you_must_have_at_least_2_home_screen_pages": {},
+  "only_public_subscriptions_can_be_imported": "As inscrições só podem ser importadas de perfis públicos",
+  "@only_public_subscriptions_can_be_imported": {},
+  "unsupported_url": "URL não suportado",
+  "@unsupported_url": {},
+  "saved_tweet_too_large": "Este tweet salvo não pôde ser exibido porque é muito grande para carregar. Por favor, denuncie aos desenvolvedores.",
+  "@saved_tweet_too_large": {},
+  "missing_page": "Página ausente",
+  "@missing_page": {},
+  "two_home_pages_required": "Você precisa ter pelo menos 2 páginas iniciais.",
+  "@two_home_pages_required": {},
+  "choose_pages": "Escolha as páginas",
+  "@choose_pages": {}
 }
