@@ -169,6 +169,7 @@ Future<void> main() async {
     optionHomePages: defaultHomePages.map((e) => e.id).toList(),
     optionLocale: optionLocaleDefault,
     optionMediaSize: 'medium',
+    optionMediaDefaultMute: true,
     optionNonConfirmationBiasMode: false,
     optionShouldCheckForUpdates: true,
     optionSubscriptionGroupsOrderByAscending: false,

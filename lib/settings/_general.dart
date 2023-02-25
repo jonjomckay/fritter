@@ -251,6 +251,12 @@ class SettingsGeneralFragment extends StatelessWidget {
                   child: Text(L10n.of(context).large),
                 ),
               ]),
+          /// TODO: translate
+          PrefSwitch(
+            pref: optionMediaDefaultMute,
+            title: Text('Mute videos'),
+            subtitle: Text('"Whether all videos should be muted by default"'),
+          ),
           PrefCheckbox(
             title: Text(L10n.of(context).hide_sensitive_tweets),
             subtitle: Text(L10n.of(context).whether_to_hide_tweets_marked_as_sensitive),

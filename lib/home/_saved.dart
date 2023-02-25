@@ -12,6 +12,7 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
@@ -41,6 +42,8 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     var model = context.read<SavedTweetModel>();
 
+    var prefs = PrefService.of(context, listen: false);
+
     return NestedScrollView(
       controller: widget.scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -54,8 +57,11 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
           )
         ];
       },
-      body: ChangeNotifierProvider<TweetContextState>(
-        create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+          ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+        ],
         child: ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(
           store: model,
           onError: (_, e) => FullPageErrorWidget(

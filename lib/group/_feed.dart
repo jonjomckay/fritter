@@ -9,6 +9,7 @@ import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/profile/profile.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/iterables.dart';
@@ -226,12 +227,17 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
       );
     }
 
+    var prefs = PrefService.of(context, listen: false);
+
     return RefreshIndicator(
       onRefresh: () async {
         _pagingController.refresh();
       },
-      child: ChangeNotifierProvider<TweetContextState>(
-        create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+          ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+        ],
         child: PagedListView<String?, TweetChain>(
           scrollController: widget.scrollController,
           pagingController: _pagingController,

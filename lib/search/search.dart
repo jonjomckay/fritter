@@ -9,6 +9,7 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/search/search_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
@@ -75,6 +76,8 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
   Widget build(BuildContext context) {
     var subscriptionsModel = context.read<SubscriptionsModel>();
 
+    var prefs = PrefService.of(context, listen: false);
+
     var defaultTheme = Theme.of(context);
     var searchTheme = defaultTheme.copyWith(
       appBarTheme: AppBarTheme(
@@ -133,8 +136,11 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
                 Tab(icon: Icon(Icons.comment)),
               ]),
             ),
-            ChangeNotifierProvider<TweetContextState>(
-              create: (context) => TweetContextState(PrefService.of(context, listen: false).get(optionTweetsHideSensitive)),
+            MultiProvider(
+              providers: [
+                ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+                ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+              ],
               child: Expanded(
                   child: TabBarView(controller: _tabController, children: [
                     TweetSearchResultList<SearchUsersModel, UserWithExtra>(
