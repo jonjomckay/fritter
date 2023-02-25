@@ -30,7 +30,7 @@ class GroupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
 
-    return SubscriptionGroupScreen(scrollController: ScrollController(), id: args.id, name: args.name, actions: []);
+    return SubscriptionGroupScreen(scrollController: ScrollController(), id: args.id, name: args.name, actions: const []);
   }
 }
 

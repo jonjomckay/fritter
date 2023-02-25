@@ -96,7 +96,7 @@ class SettingsGeneralFragment extends StatelessWidget {
 
       metadata = {
         'abis': info.supportedAbis,
-        'device': info.device ?? 'unknown',
+        'device': info.device,
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'android',

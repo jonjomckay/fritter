@@ -1,16 +1,12 @@
 import 'package:catcher/catcher.dart';
-import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fritter/client.dart';
-import 'package:fritter/constants.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/tweet/conversation.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTweets extends StatefulWidget {

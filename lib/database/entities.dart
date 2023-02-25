@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/user.dart';

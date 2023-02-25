@@ -70,14 +70,14 @@ class _TweetVideoState extends State<TweetVideo> {
     var streamUrl = urls.streamUrl;
     var downloadUrl = urls.downloadUrl;
 
-    _videoController = VideoPlayerController.network(streamUrl!);
+    _videoController = VideoPlayerController.network(streamUrl);
 
     var model = context.read<VideoContextState>();
     var volume = model.isMuted ? 0.0 : _videoController!.value.volume;
     _videoController!.setVolume(volume);
 
     _videoController!.addListener(() {
-        model.setIsMuted(_videoController!.value!.volume);
+        model.setIsMuted(_videoController!.value.volume);
     });
 
     _chewieController = ChewieController(

@@ -126,9 +126,9 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
 
 class FollowButton extends StatelessWidget {
   final Subscription user;
-  Color? color;
+  final Color? color;
 
-  FollowButton({Key? key, required this.user, this.color}) : super(key: key);
+  const FollowButton({Key? key, required this.user, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

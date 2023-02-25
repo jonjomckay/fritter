@@ -40,6 +40,7 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var model = context.read<SavedTweetModel>();
 
     var prefs = PrefService.of(context, listen: false);

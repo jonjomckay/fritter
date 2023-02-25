@@ -14,7 +14,7 @@ Future<String> getLegacyPath(String filename) async {
 Future<bool> isLegacyAndroid() async {
   var deviceInfo = await DeviceInfoPlugin().androidInfo;
   var sdkVersion = deviceInfo.version.sdkInt;
-  if (sdkVersion != null && sdkVersion < 19) {
+  if (sdkVersion < 19) {
     return true;
   }
 

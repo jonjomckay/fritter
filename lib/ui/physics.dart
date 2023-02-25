@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 
 /// The default PageView scroll physics are very sensitive, and easily swipe pages when you mean to scroll up and down
 /// instead. This dampens the physics, by making the widget "heavy" (mass), so it's harder to swipe.

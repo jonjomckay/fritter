@@ -88,7 +88,7 @@ class TranslationAPI {
     var response = await makeRequest();
     if (response.success) {
       // Cache the response if it's a successful one
-      var body = await cache.write(key, jsonEncode(response.body));
+      await cache.write(key, jsonEncode(response.body));
 
       return TranslationAPIResult(success: true, body: response.body);
     }

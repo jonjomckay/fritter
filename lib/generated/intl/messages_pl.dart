@@ -241,6 +241,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Rozmiar multimediów"),
         "medium": MessageLookupByLibrary.simpleMessage("Średnie"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Brakująca karta"),
+        "mute_video_description":
+            MessageLookupByLibrary.simpleMessage("Domyślnie wyciszaj wideo"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("Wyciszaj wideo"),
         "name": MessageLookupByLibrary.simpleMessage("Nazwa"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nigdy nie wysyłaj"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nowa"),
