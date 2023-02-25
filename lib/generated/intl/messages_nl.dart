@@ -20,7 +20,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'nl';
 
-  static String m9(errorMessage) =>
+  static String m10(errorMessage) =>
       "Controleer je internet verbinding.\n\n${errorMessage}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter meldt dat deze pagina niet bestaat, maar dit hoeft niet te kloppen"),
         "pinned_tweet":
             MessageLookupByLibrary.simpleMessage("Vastgezette tweet"),
-        "please_check_your_internet_connection_error_message": m9,
+        "please_check_your_internet_connection_error_message": m10,
         "private_profile":
             MessageLookupByLibrary.simpleMessage("Privé profiel"),
         "replying_to": MessageLookupByLibrary.simpleMessage("Reagerend op"),

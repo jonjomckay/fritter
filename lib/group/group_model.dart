@@ -108,9 +108,7 @@ class GroupsModel extends StreamStore<Object, List<SubscriptionGroup>> {
       await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
       await database.delete(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]);
       
-      state.removeWhere((e) => e.id == id);
-
-      return state;
+      return state.where((e) => e.id != id).toList();
     });
   }
 

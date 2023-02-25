@@ -115,9 +115,7 @@ class SubscriptionGroupScreen extends StatelessWidget {
                 pinned: false,
                 snap: true,
                 floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(name),
-                ),
+                title: Text(name),
                 actions: [
                   IconButton(
                       icon: const Icon(Icons.more_vert),

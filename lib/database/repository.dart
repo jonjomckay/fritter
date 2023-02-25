@@ -174,7 +174,7 @@ class Repository {
       18: [
         // Add support for saving searches
         SqlMigration('CREATE TABLE IF NOT EXISTS $tableSearchSubscription (id VARCHAR PRIMARY KEY, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', reverseSql: 'DROP TABLE $tableSearchSubscription'),
-        SqlMigration('CREATE TABLE $tableSearchSubscriptionGroupMember (group_id VARCHAR, search_id VARCHAR, CONSTRAINT pk_$tableSearchSubscription PRIMARY KEY (group_id, search_id))', reverseSql: 'DROP TABLE $tableSearchSubscriptionGroupMember'),
+        SqlMigration('CREATE TABLE IF NOT EXISTS $tableSearchSubscriptionGroupMember (group_id VARCHAR, search_id VARCHAR, CONSTRAINT pk_$tableSearchSubscription PRIMARY KEY (group_id, search_id))', reverseSql: 'DROP TABLE $tableSearchSubscriptionGroupMember'),
       ]
     });
     await openDatabase(

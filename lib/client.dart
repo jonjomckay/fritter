@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:catcher/catcher.dart';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
 import 'package:fritter/catcher/exceptions.dart';
-import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/user.dart';
@@ -119,43 +119,93 @@ class _FritterTwitterClient extends TwitterClient {
   }
 }
 
+class UnknownProfileResultType with SyntheticException implements Exception {
+  final String type;
+  final String message;
+  final String uri;
+
+  UnknownProfileResultType(this.type, this.message, this.uri);
+
+  @override
+  String toString() {
+    return 'Unknown profile result type: {type: $type, message: $message, uri: $uri}';
+  }
+}
+
+class UnknownProfileUnavailableReason with SyntheticException implements Exception {
+  final String reason;
+  final String uri;
+
+  UnknownProfileUnavailableReason(this.reason, this.uri);
+
+  @override
+  String toString() {
+    return 'Unknown profile unavailable reason: {reason: $reason, uri: $uri}';
+  }
+}
+
+
 class Twitter {
   static final TwitterApi _twitterApi = TwitterApi(client: _FritterTwitterClient());
 
   static final FFCache _cache = FFCache();
 
   static Map<String, String> defaultParams = {
-    'include_profile_interstitial_type': '0',
-    'include_blocking': '0',
-    'include_blocked_by': '0',
-    'include_followed_by': '0',
-    'include_mute_edge': '0',
-    'include_can_dm': '0',
+    'include_profile_interstitial_type': '1',
+    'include_blocking': '1',
+    'include_blocked_by': '1',
+    'include_followed_by': '1',
+    'include_mute_edge': '1',
+    'include_can_dm': '1',
     'include_can_media_tag': '1',
+    'include_ext_has_nft_avatar': '1',
+    'include_ext_is_blue_verified': '1',
     'skip_status': '1',
     'cards_platform': 'Web-12',
     'include_cards': '1',
-    'include_composer_source': 'false',
     'include_ext_alt_text': 'true',
+    'include_ext_limited_action_results': 'false',
+    'include_quote_count': 'true',
     'include_reply_count': '1',
     'tweet_mode': 'extended',
+    'include_ext_collab_control': 'true',
     'include_entities': 'true',
     'include_user_entities': 'true',
-    'include_ext_media_color': 'false',
+    'include_ext_media_color': 'true',
     'include_ext_media_availability': 'true',
+    'include_ext_sensitive_media_warning': 'true',
+    'include_ext_trusted_friends_metadata': 'true',
     'send_error_codes': 'true',
     'simple_quoted_tweet': 'true',
-    'ext': 'mediaStats',
-    'include_quote_count': 'true'
+    'pc': '1',
+    'spelling_corrections': '1',
+    'include_ext_edit_control': 'true',
+    'ext': 'mediaStats,highlightedLabel,hasNftAvatar,voiceInfo,enrichments,superFollowMetadata,unmentionInfo,editControl,collab_control,vibe,'
   };
 
-  static Future<Profile> getProfile(String username) async {
+  static Future<Profile> getProfileById(String id) async {
+    var uri = Uri.https('twitter.com', '/i/api/graphql/Qs44y3K0SXxItjNi6mUFQA/UserByRestId', {
+      'variables': jsonEncode({'userId': id, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
+      'features': jsonEncode({
+        'responsive_web_graphql_timeline_navigation_enabled': true,
+        'responsive_web_twitter_blue_verified_badge_is_enabled': true,
+        'verified_phone_label_enabled': false,
+      })
+    });
+
+    return _getProfile(uri);
+  }
+
+  static Future<Profile> getProfileByScreenName(String screenName) async {
     var uri = Uri.https('twitter.com', '/i/api/graphql/vG3rchZtwqiwlKgUYCrTRA/UserByScreenName', {
-      'variables': jsonEncode({'screen_name': username, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
+      'variables': jsonEncode({'screen_name': screenName, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
       'features': jsonEncode({'responsive_web_graphql_timeline_navigation_enabled': false})
     });
 
+    return _getProfile(uri);
+  }
 
+  static Future<Profile> _getProfile(Uri uri) async {
     var response = await _twitterApi.client.get(uri);
     var content = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -169,9 +219,33 @@ class Twitter {
       }
     }
 
+    var result = content['data']?['user']?['result'];
+    if (result == null) {
+      throw TwitterError(uri: uri.toString(), code: 50, message: L10n.current.user_not_found);
+    }
 
-    var user = UserWithExtra.fromJson({...content['data']['user']['result']['legacy'], 'id_str': content['data']['user']['result']['rest_id']});
-    var pins = List<String>.from(content['data']['user']['result']['legacy']['pinned_tweet_ids_str']);
+    var resultType = result['__typename'];
+    if (resultType != null) {
+      switch (resultType) {
+        case 'UserUnavailable':
+          var code = result['reason'];
+          if (code == 'Suspended') {
+            throw TwitterError(code: 63, message: result['reason'], uri: uri.toString());
+          } else {
+            Catcher.reportCheckedError(UnknownProfileUnavailableReason(code, uri.toString()), null);
+            throw TwitterError(code: -1, message: result['reason'], uri: uri.toString());
+          }
+        case 'User':
+          // This means everything's fine
+          break;
+        default:
+          Catcher.reportCheckedError(UnknownProfileResultType(resultType, result['reason'], uri.toString()), null);
+          break;
+      }
+    }
+
+    var user = UserWithExtra.fromJson({...result['legacy'], 'id_str': result['rest_id']});
+    var pins = List<String>.from(result['legacy']['pinned_tweet_ids_str']);
 
     return Profile(user, pins);
   }
@@ -272,7 +346,6 @@ class Twitter {
       'cursor': cursor,
       'max_id': maxId,
       'q': query,
-      'query_source': 'typed_query',
       'pc': '1',
       'tweet_search_mode': mode,
       'spelling_corrections': '1',
@@ -289,7 +362,6 @@ class Twitter {
       'count': limit.toString(),
       'max_id': maxId,
       'q': query,
-      'query_source': 'typed_query',
       'pc': '1',
       'spelling_corrections': '1',
       'result_filter': 'user'
@@ -486,6 +558,12 @@ class Twitter {
         .toList();
 
     return {for (var e in tweets) e.idStr!: e};
+  }
+
+  static Future<Map<String, dynamic>> getBroadcastDetails(String key) async {
+    var response = await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/1.1/live_video_stream/status/$key'));
+
+    return json.decode(response.body);
   }
 }
 

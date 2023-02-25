@@ -642,7 +642,7 @@ class FritterCenterPlayButton extends StatelessWidget {
           child: GestureDetector(
             onTap: onPressed,
             child: Container(
-              // NOTE: Added specific sizes here, otherwise it fills the container on Flutter 3.3.2
+              // NOTE: Added specific sizes here, otherwise it fills the container on Flutter >3.3.2
               width: 64,
               height: 64,
               decoration: BoxDecoration(

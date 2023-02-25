@@ -1,4 +1,5 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
@@ -18,24 +19,46 @@ import 'package:measure_size/measure_size.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
+class ProfileScreenArguments {
+  final String? id;
+  final String? screenName;
+
+  ProfileScreenArguments(this.id, this.screenName);
+
+  factory ProfileScreenArguments.fromId(String id) {
+    return ProfileScreenArguments(id, null);
+  }
+
+  factory ProfileScreenArguments.fromScreenName(String screenName) {
+    return ProfileScreenArguments(null, screenName);
+  }
+}
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final username = ModalRoute.of(context)!.settings.arguments as String;
+    final args = ModalRoute.of(context)!.settings.arguments as ProfileScreenArguments;
 
     return Provider(
-      create: (context) => ProfileModel()..loadProfile(username),
-      child: _ProfileScreen(username: username)
+      create: (context) {
+        if (args.id != null) {
+          return ProfileModel()..loadProfileById(args.id!);
+        } else {
+          return ProfileModel()..loadProfileByScreenName(args.screenName!);
+        }
+      },
+      child: _ProfileScreen(id: args.id, screenName: args.screenName)
     );
   }
 }
 
 class _ProfileScreen extends StatelessWidget {
-  final String username;
+  final String? id;
+  final String? screenName;
 
-  const _ProfileScreen({Key? key, required this.username}) : super(key: key);
+  const _ProfileScreen({Key? key, required this.id, required this.screenName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +69,13 @@ class _ProfileScreen extends StatelessWidget {
           error: error,
           stackTrace: null,
           prefix: L10n.of(context).unable_to_load_the_profile,
-          onRetry: () => context.read<ProfileModel>().loadProfile(username),
+          onRetry: () {
+            if (id != null) {
+              return context.read<ProfileModel>().loadProfileById(id!);
+            } else {
+              return context.read<ProfileModel>().loadProfileByScreenName(screenName!);
+            }
+          },
         ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) => ProfileScreenBody(profile: state),
@@ -67,7 +96,11 @@ class ProfileScreenBody extends StatefulWidget {
 class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProviderStateMixin {
   static const defaultHeight = 256.12345;
 
+  final GlobalKey<NestedScrollViewState> nestedScrollViewKey = GlobalKey();
+
   late TabController _tabController;
+
+  bool _showBackToTopButton = false;
 
   double descriptionHeight = defaultHeight;
   double metadataHeight = defaultHeight;
@@ -79,6 +112,15 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var nestedScrollViewState = nestedScrollViewKey.currentState;
+      if (nestedScrollViewState == null) {
+        return;
+      }
+
+      nestedScrollViewState.innerController.addListener(_listen);
+    });
+
     _tabController = TabController(length: 5, vsync: this);
 
     var description = widget.profile.user.description;
@@ -86,6 +128,45 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       descriptionHeight = 0;
       descriptionResized = true;
     }
+  }
+
+  @override
+  void dispose() {
+    nestedScrollViewKey.currentState?.innerController.removeListener(_listen);
+
+    super.dispose();
+  }
+
+  void _listen() {
+    var nestedScrollViewState = nestedScrollViewKey.currentState;
+    if (nestedScrollViewState == null) {
+      return;
+    }
+
+    if (!nestedScrollViewState.innerController.hasClients) {
+      return;
+    }
+
+    // Show the "scroll to top" button if we scroll down a bit, and hide it if we go back above
+    if (nestedScrollViewState.innerController.positions.any((element) => element.pixels >= 400)) {
+      if (!_showBackToTopButton) {
+        setState(() {
+          _showBackToTopButton = true;
+        });
+      }
+    } else {
+      if (_showBackToTopButton) {
+        setState(() {
+          _showBackToTopButton = false;
+        });
+      }
+    }
+  }
+
+  void _scrollToTop() {
+    // We scroll the outer controller (the whole nested scroll view and children) to the top
+    // TODO: No animation due to Flutter crashing on huge lists (https://github.com/flutter/flutter/issues/52207) (#607)
+    nestedScrollViewKey.currentState?.outerController.jumpTo(0);
   }
 
   List<InlineSpan> _addLinksToText(BuildContext context, String content) {
@@ -109,7 +190,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
       if (type == '@') {
         onTap = () async {
-          Navigator.pushNamed(context, routeProfile, arguments: full.substring(1));
+          Navigator.pushNamed(context, routeProfile,
+              arguments: ProfileScreenArguments.fromScreenName(full.substring(1)));
         };
       }
 
@@ -155,9 +237,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
     // The height of the app bar should be all the inner components, plus any margins
     var appBarHeight = profileStuffTop + avatarHeight + metadataHeight + 8 + descriptionHeight;
 
+    var metadataTextStyle = const TextStyle(fontSize: 12.5);
+
     return Scaffold(
       body: Stack(children: [
-        NestedScrollView(
+        ExtendedNestedScrollView(
+          key: nestedScrollViewKey,
+          onlyOneScrollInBody: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -284,8 +370,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text.rich(TextSpan(
                                                               children: [
-                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: metadataTextStyle)
                                                               ]
                                                           )),
                                                         ],
@@ -301,8 +387,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text.rich(TextSpan(
                                                               children: [
-                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: const TextStyle(fontSize: 12))
+                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
+                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: metadataTextStyle)
                                                               ]
                                                           )),
                                                         ],
@@ -316,7 +402,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         children: [
                                                           const Icon(Icons.place, size: 12, color: Colors.white),
                                                           const SizedBox(width: 4),
-                                                          Text(user.location!, style: const TextStyle(fontSize: 13)),
+                                                          Text(user.location!, style: metadataTextStyle),
                                                         ],
                                                       ),
                                                     ),
@@ -336,10 +422,18 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                             return Container();
                                                           }
 
+                                                          var displayUrl = url.displayUrl ?? url.url;
+                                                          var expandedUrl = url.expandedUrl ?? url.url;
+
+                                                          var textStyle = metadataTextStyle;
+                                                          if (displayUrl == null || expandedUrl == null) {
+                                                            return Text(L10n.current.unsupported_url, style: textStyle.copyWith(color: theme.hintColor));
+                                                          }
+
                                                           return InkWell(
-                                                            child: Text(url.displayUrl!,
-                                                                style: const TextStyle(color: Colors.blue, fontSize: 13)),
-                                                            onTap: () => openUri(url.expandedUrl!),
+                                                            child: Text(displayUrl,
+                                                                style: textStyle.copyWith(color: Colors.blue)),
+                                                            onTap: () => openUri(expandedUrl),
                                                           );
                                                         }),
                                                       ],
@@ -354,7 +448,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                           const SizedBox(width: 4),
                                                           Text(L10n.of(context)
                                                               .joined(DateFormat('MMMM yyyy').format(user.createdAt!)),
-                                                              style: const TextStyle(fontSize: 13)
+                                                              style: metadataTextStyle
                                                           ),
                                                         ],
                                                       ),
@@ -371,7 +465,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                             Container(
                               alignment: Alignment.topRight,
                               margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
-                              child: FollowButton(user: UserSubscription.fromUser(user)),
+                              child: FollowButton(user: UserSubscription.fromUser(user), color: Colors.white),
                             ),
                             Container(
                               alignment: Alignment.topLeft,
@@ -416,6 +510,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                 ),
         )
       ]),
+      floatingActionButton: _showBackToTopButton == false
+          ? null
+          : FloatingActionButton(
+        onPressed: _scrollToTop,
+        child: const Icon(Icons.arrow_upward),
+      ),
     );
   }
 }

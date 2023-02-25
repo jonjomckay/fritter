@@ -7,6 +7,7 @@ import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +71,7 @@ class UserTile extends StatelessWidget {
         child: FollowButton(user: user),
       ),
       onTap: () {
-        Navigator.pushNamed(context, routeProfile, arguments: user.screenName);
+        Navigator.pushNamed(context, routeProfile, arguments: ProfileScreenArguments(user.id, user.screenName));
       },
     );
   }
@@ -125,8 +126,9 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
 
 class FollowButton extends StatelessWidget {
   final Subscription user;
+  Color? color;
 
-  const FollowButton({Key? key, required this.user}) : super(key: key);
+  FollowButton({Key? key, required this.user, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +139,7 @@ class FollowButton extends StatelessWidget {
       onState: (_, state) {
         var followed = state.any((element) => element.id == user.id);
 
-        var icon = followed ? const Icon(Icons.person_remove) : const Icon(Icons.person_add);
+        var icon = followed ? Icon(Icons.person_remove, color: color) : Icon(Icons.person_add, color: color);
         var text = followed ? L10n.of(context).unsubscribe : L10n.of(context).subscribe;
 
         return PopupMenuButton<String>(

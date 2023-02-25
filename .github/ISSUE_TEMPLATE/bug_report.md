@@ -22,4 +22,6 @@ Steps to reproduce the behavior:
 If applicable, add screenshots to help explain your problem.
 
 **Device**
-Your device model, OS version, device locale/language and Fritter version.
+Your device model, OS version, device locale/language and Fritter version. Please supply the actual
+version of Fritter being used, and **do not** just write "latest version" or similar, as this
+changes constantly.

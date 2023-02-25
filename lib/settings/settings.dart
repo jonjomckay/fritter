@@ -12,7 +12,9 @@ import 'package:fritter/utils/legacy.dart';
 import 'package:package_info/package_info.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  final String? initialPage;
+
+  const SettingsScreen({Key? key, this.initialPage}) : super(key: key);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -41,15 +43,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     var appVersion = 'v${_packageInfo.version}+${_packageInfo.buildNumber}';
 
+    var pages = [
+      NavigationPage('general', (c) => L10n.of(c).general, Icons.settings),
+      NavigationPage('home', (c) => L10n.of(c).home, Icons.home),
+      NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint),
+      NavigationPage('data', (c) => L10n.of(c).data, Icons.storage),
+      NavigationPage('about', (c) => L10n.of(c).about, Icons.help),
+    ];
+
+    var initialPage = pages.indexWhere((element) => element.id == widget.initialPage);
+    if (initialPage == -1) {
+      initialPage = 0;
+    }
+
     return ScaffoldWithBottomNavigation(
-      selectedPage: 0,
-      pages: [
-        NavigationPage('general', (c) => L10n.of(c).general, Icons.settings),
-        NavigationPage('home', (c) => L10n.of(c).home, Icons.home),
-        NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint),
-        NavigationPage('data', (c) => L10n.of(c).data, Icons.storage),
-        NavigationPage('about', (c) => L10n.of(c).about, Icons.help),
-      ],
+      initialPage: initialPage,
+      pages: pages,
       builder: (scrollController) {
         return [
           const SettingsGeneralFragment(),

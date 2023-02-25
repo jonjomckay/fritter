@@ -8,11 +8,10 @@ import 'package:pref/pref.dart';
 
 class HomePage {
   final String id;
-  final int order;
   bool selected;
   final NavigationPage page;
 
-  HomePage(this.id, this.order, this.selected, this.page);
+  HomePage(this.id, this.selected, this.page);
 }
 
 class HomeModel extends StreamStore<Object, List<HomePage>> {
@@ -43,11 +42,24 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
       ];
 
       var pages = <HomePage>[];
-      for (var page in available) {
-        var order = saved.indexWhere((element) => element == page.id);
-        var exist = saved.any((element) => element == page.id);
 
-        pages.add(HomePage(page.id, order, exist, page));
+      // First, add all of our saved pages, in the correct order
+      for (var id in saved) {
+        var page = available.firstWhereOrNull((e) => e.id == id);
+        if (page == null) {
+          continue;
+        }
+
+        pages.add(HomePage(id, true, page));
+      }
+
+      // Then add all the other available pages, unselected, to the end of the list, for the settings screen
+      for (var page in available) {
+        if (saved.contains(page.id)) {
+          continue;
+        }
+
+        pages.add(HomePage(page.id, false, page));
       }
 
       return pages;
@@ -67,7 +79,6 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
   Future<void> save() async {
     var pages = state
         .where((e) => e.selected)
-        .sorted((a, b) => a.order.compareTo(b.order))
         .map((e) => e.id)
         .toList();
 

@@ -428,5 +428,11 @@
   "you_must_have_at_least_2_home_screen_pages": "You must have at least 2 home screen pages",
   "group_name": "Group: {name}",
   "confirm_close_fritter": "Are you sure you want to close Fritter?",
-  "search_term": "Search term"
+  "search_term": "Search term",
+  "only_public_subscriptions_can_be_imported": "Subscriptions can only be imported from public profiles",
+  "unsupported_url": "Unsupported URL",
+  "saved_tweet_too_large": "This saved tweet could not be displayed, as it's too big to load. Please report it to the developers.",
+  "missing_page": "Missing page",
+  "two_home_pages_required": "You need to have at least 2 home screen pages.",
+  "choose_pages": "Choose pages"
 }

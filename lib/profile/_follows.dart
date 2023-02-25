@@ -17,10 +17,13 @@ class ProfileFollows extends StatefulWidget {
   State<ProfileFollows> createState() => _ProfileFollowsState();
 }
 
-class _ProfileFollowsState extends State<ProfileFollows> {
+class _ProfileFollowsState extends State<ProfileFollows> with AutomaticKeepAliveClientMixin<ProfileFollows> {
   late PagingController<int?, UserWithExtra> _pagingController;
 
   final int _pageSize = 200;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -47,6 +50,10 @@ class _ProfileFollowsState extends State<ProfileFollows> {
         count: _pageSize,
       );
 
+      if (!mounted) {
+        return;
+      }
+
       if (result.cursorBottom == _pagingController.nextPageKey) {
         _pagingController.appendLastPage([]);
       } else if (result.cursorBottom == 0) {
@@ -64,6 +71,8 @@ class _ProfileFollowsState extends State<ProfileFollows> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return PagedListView<int?, UserWithExtra>(
       padding: EdgeInsets.zero,
       pagingController: _pagingController,

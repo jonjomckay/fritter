@@ -2436,6 +2436,66 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Subscriptions can only be imported from public profiles`
+  String get only_public_subscriptions_can_be_imported {
+    return Intl.message(
+      'Subscriptions can only be imported from public profiles',
+      name: 'only_public_subscriptions_can_be_imported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unsupported URL`
+  String get unsupported_url {
+    return Intl.message(
+      'Unsupported URL',
+      name: 'unsupported_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This saved tweet could not be displayed, as it's too big to load. Please report it to the developers.`
+  String get saved_tweet_too_large {
+    return Intl.message(
+      'This saved tweet could not be displayed, as it\'s too big to load. Please report it to the developers.',
+      name: 'saved_tweet_too_large',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Missing page`
+  String get missing_page {
+    return Intl.message(
+      'Missing page',
+      name: 'missing_page',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to have at least 2 home screen pages.`
+  String get two_home_pages_required {
+    return Intl.message(
+      'You need to have at least 2 home screen pages.',
+      name: 'two_home_pages_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose pages`
+  String get choose_pages {
+    return Intl.message(
+      'Choose pages',
+      name: 'choose_pages',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
@@ -2445,9 +2505,12 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'ar'),
+      Locale.fromSubtags(languageCode: 'be'),
+      Locale.fromSubtags(languageCode: 'be', scriptCode: 'Latn'),
       Locale.fromSubtags(languageCode: 'ca'),
       Locale.fromSubtags(languageCode: 'cs'),
       Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'eo'),
       Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'et'),
       Locale.fromSubtags(languageCode: 'eu'),
@@ -2460,10 +2523,13 @@ class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
       Locale.fromSubtags(languageCode: 'ml'),
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
       Locale.fromSubtags(languageCode: 'nl'),
+      Locale.fromSubtags(languageCode: 'or'),
       Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+      Locale.fromSubtags(languageCode: 'ro'),
       Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'tr'),
+      Locale.fromSubtags(languageCode: 'uk'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
     ];
   }

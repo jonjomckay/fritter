@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -219,8 +220,11 @@ class _TweetMediaViewState extends State<TweetMediaView> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: const Icon(Icons.file_download),
+          AsyncButtonBuilder(
+            child: const Icon(Icons.file_download),
+            builder: (context, child, callback, buttonState) {
+              return IconButton(onPressed: callback, icon: child);
+            },
             onPressed: () async {
               var url = path.basename(_media.mediaUrlHttps!);
               var fileName = '${widget.username}-$url';
@@ -299,16 +303,12 @@ class _TweetMediaThing extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget media;
     if (item.type == 'animated_gif') {
-      media = TweetVideo(media: item, loop: true, username: username);
+      media = TweetVideo(metadata: TweetVideoMetadata.fromMedia(item), loop: true, username: username);
     } else if (item.type == 'video') {
-      media = TweetVideo(media: item, loop: false, username: username);
+      media = TweetVideo(metadata: TweetVideoMetadata.fromMedia(item), loop: false, username: username);
     } else if (item.type == 'photo') {
       media = TweetPhoto(
-          size: size,
-          uri: item.mediaUrlHttps!,
-          fit: BoxFit.scaleDown,
-          pullToClose: pullToClose,
-          inPageView: inPageView);
+          size: size, uri: item.mediaUrlHttps!, fit: BoxFit.contain, pullToClose: pullToClose, inPageView: inPageView);
     } else {
       media = Text(L10n.of(context).unknown);
     }

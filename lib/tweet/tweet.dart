@@ -6,6 +6,7 @@ import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/import_data_model.dart';
+import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/status.dart';
@@ -100,7 +101,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         source: tweet.entities?.userMentions,
         getNewEntity: (UserMention mention) {
           return TweetUserMention(mention, () {
-            Navigator.pushNamed(context, routeProfile, arguments: mention.screenName!);
+            Navigator.pushNamed(context, routeProfile,
+                arguments: ProfileScreenArguments(mention.idStr, mention.screenName));
           });
         });
 
@@ -183,7 +185,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     });
   }
 
-  void onClickOpenTweet() {
+  void onClickOpenTweet(TweetWithCard tweet) {
     Navigator.pushNamed(context, routeStatus,
         arguments: StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
   }
@@ -302,7 +304,11 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
-      media = TweetMedia(sensitive: tweet.possiblySensitive, media: tweet.extendedEntities!.media!, username: this.tweet.user!.screenName!);
+      media = TweetMedia(
+          sensitive: tweet.possiblySensitive,
+          media: tweet.extendedEntities!.media!,
+          username: tweet.user!.screenName!,
+      );
     }
 
     Widget retweetBanner = Container();
@@ -390,7 +396,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                   }
                 })
               ]),
-              onTap: onClickOpenTweet,
+              onTap: () => onClickOpenTweet(tweet),
             )),
       );
     }
@@ -454,7 +460,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             return;
                           }
 
-                          Navigator.pushNamed(context, routeProfile, arguments: tweet.user!.screenName!);
+                          Navigator.pushNamed(context, routeProfile,
+                              arguments: ProfileScreenArguments(tweet.user!.idStr, tweet.user!.screenName));
                         },
                         title: Row(
                           children: [
@@ -579,7 +586,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             child: Row(
                               children: [
                                 if (tweet.replyCount != null)
-                                  _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, onClickOpenTweet),
+                                  _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () => onClickOpenTweet(tweet)),
                                 if (tweet.retweetCount != null)
                                   _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                                 if (tweet.quoteCount != null)
