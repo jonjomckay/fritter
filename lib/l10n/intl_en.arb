@@ -434,5 +434,7 @@
   "saved_tweet_too_large": "This saved tweet could not be displayed, as it's too big to load. Please report it to the developers.",
   "missing_page": "Missing page",
   "two_home_pages_required": "You need to have at least 2 home screen pages.",
-  "choose_pages": "Choose pages"
+  "choose_pages": "Choose pages",
+  "mute_videos": "Mute videos",
+  "mute_video_description": "Whether videos should be muted by default"
 }

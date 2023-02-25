@@ -2496,6 +2496,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Mute videos`
+  String get mute_videos {
+    return Intl.message(
+      'Mute videos',
+      name: 'mute_videos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whether videos should be muted by default`
+  String get mute_video_description {
+    return Intl.message(
+      'Whether videos should be muted by default',
+      name: 'mute_video_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

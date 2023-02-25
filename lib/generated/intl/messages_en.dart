@@ -236,6 +236,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("Media size"),
         "medium": MessageLookupByLibrary.simpleMessage("Medium"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Missing page"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Whether videos should be muted by default"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("Mute videos"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "never_send": MessageLookupByLibrary.simpleMessage("Never send"),
         "newTrans": MessageLookupByLibrary.simpleMessage("New"),
