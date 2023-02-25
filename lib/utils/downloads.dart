@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/ui/errors.dart';
@@ -78,9 +79,20 @@ Future<void> downloadUriToPickedFile(BuildContext context, Uri uri, String fileN
       onSuccess();
     }
   } catch (e, s) {
-    Catcher.reportCheckedError('Unable to save the media. The error was $e', s);
-
+    Catcher.reportException(UnableToSaveMedia(uri, e), s);
     showSnackBar(context, icon: '🙊', message: e.toString());
+  }
+}
+
+class UnableToSaveMedia implements SyntheticException {
+  final Uri uri;
+  final Object e;
+
+  UnableToSaveMedia(this.uri, this.e);
+
+  @override
+  String toString() {
+    return 'Unable to save the media {uri: $uri, e: $e}';
   }
 }
 
@@ -90,7 +102,7 @@ Future downloadFile(BuildContext context, Uri uri) async {
     return response.bodyBytes;
   }
 
-  Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
+  Catcher.reportSyntheticException(UnableToSaveMedia(uri, response.body));
 
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(

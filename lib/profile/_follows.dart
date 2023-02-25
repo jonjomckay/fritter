@@ -63,7 +63,7 @@ class _ProfileFollowsState extends State<ProfileFollows> with AutomaticKeepAlive
         _pagingController.appendPage(result.users, result.cursorBottom);
       }
     } catch (e, stackTrace) {
-      Catcher.reportCheckedError(e, stackTrace);
+      Catcher.reportException(e, stackTrace);
       if (mounted) {
         _pagingController.error = [e, stackTrace];
       }

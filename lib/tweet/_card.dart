@@ -192,7 +192,7 @@ class TweetCard extends StatelessWidget {
         var child = TweetMedia(media: [Media.fromJson(media)], username: tweet.user!.screenName!, sensitive: false);
         return _createWebsiteCard(context, unifiedCard, uri, imageSize, child);
       default:
-        Catcher.reportCheckedError('Unsupported unified card type ${unifiedCard['type']} encountered', null);
+        Catcher.reportSyntheticException(UnknownUnifiedCardType(tweet.idStr, unifiedCard['type']));
         return Container();
     }
   }
@@ -358,7 +358,7 @@ class TweetCard extends StatelessWidget {
           return _createUnifiedCard(context, card, imageKey, imageSize);
         } catch (e, stackTrace) {
           log.severe('Unable to render the unified card');
-          Catcher.reportCheckedError(e, stackTrace);
+          Catcher.reportException(e, stackTrace);
           return Container();
         }
       case '745291183405076480:live_event':
@@ -424,7 +424,7 @@ class TweetCard extends StatelessWidget {
               ],
             ));
       default:
-        Catcher.reportCheckedError(UnknownCardType(tweet.idStr, card['name']), null);
+        Catcher.reportSyntheticException(UnknownCardType(tweet.idStr, card['name']));
         return Container();
     }
   }
@@ -439,5 +439,17 @@ class UnknownCardType with SyntheticException implements Exception {
   @override
   String toString() {
     return 'UnknownCardType{tweet: $tweet, type: $type}';
+  }
+}
+
+class UnknownUnifiedCardType with SyntheticException implements Exception {
+  final String? tweet;
+  final String type;
+
+  UnknownUnifiedCardType(this.tweet, this.type);
+
+  @override
+  String toString() {
+    return 'UnknownUnifiedCardType{tweet: $tweet, type: $type}';
   }
 }

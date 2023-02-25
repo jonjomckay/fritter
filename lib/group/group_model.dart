@@ -22,7 +22,7 @@ IconData deserializeIconData(String iconData) {
       return icon;
     }
   } catch (e, stackTrace) {
-    Catcher.reportCheckedError(e, stackTrace);
+    Catcher.reportException(e, stackTrace);
     log('Unable to deserialize icon', error: e, stackTrace: stackTrace);
   }
 

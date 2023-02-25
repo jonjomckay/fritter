@@ -2,6 +2,7 @@ import 'package:auto_direction/auto_direction.dart';
 import 'package:fritter/catcher/errors.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -147,7 +148,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       }
     } catch (e, stackTrace) {
       log.severe('Unable to list the supported languages');
-      Catcher.reportCheckedError(e, stackTrace);
+      Catcher.reportException(e, stackTrace);
 
       return showTranslationError(
           'Failed to get the list of supported languages. Please check your connection, or try again later!');
@@ -361,7 +362,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     var tweetText = tweet.fullText ?? tweet.text;
     if (tweetText == null) {
-      Catcher.reportCheckedError('The tweet ${tweet.idStr} did not contain any text. This is unexpected', null);
+      Catcher.reportSyntheticException(TweetHasNoContentException(tweet.idStr));
 
       return Text(L10n.of(context).the_tweet_did_not_contain_any_text_this_is_unexpected);
     }
@@ -432,7 +433,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
       createdAt = tweet.createdAt;
     } else {
       // Report an error if we're missing the creation date for some reason
-      Catcher.reportCheckedError(TweetMissingDataException(tweet.idStr, ['createdAt']), null);
+      Catcher.reportSyntheticException(TweetMissingDataException(tweet.idStr, ['createdAt']));
     }
 
     return Consumer<ImportDataModel>(
@@ -611,6 +612,17 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                 ],
               ),
             ));
+  }
+}
+
+class TweetHasNoContentException implements SyntheticException {
+  final String? id;
+
+  TweetHasNoContentException(this.id);
+
+  @override
+  String toString() {
+    return 'The tweet has no content {id: $id}';
   }
 }
 

@@ -156,8 +156,8 @@ class SettingsGeneralFragment extends StatelessWidget {
                             ),
                           );
                         } else {
-                          Catcher.reportCheckedError(
-                              'Unable to send the ping because the status code was ${response.statusCode}', null);
+                          Catcher.reportException(
+                              'Unable to send the ping because the status code was ${response.statusCode}');
 
                           snackBar = SnackBar(
                             content: Text(
@@ -170,7 +170,7 @@ class SettingsGeneralFragment extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } on TimeoutException catch (e, stackTrace) {
                         log.severe('Timed out trying to send the ping');
-                        Catcher.reportCheckedError(e, stackTrace);
+                        Catcher.reportException(e, stackTrace);
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
@@ -179,7 +179,7 @@ class SettingsGeneralFragment extends StatelessWidget {
                         ));
                       } catch (e, stackTrace) {
                         log.severe('Unable to send the ping');
-                        Catcher.reportCheckedError(e, stackTrace);
+                        Catcher.reportException(e, stackTrace);
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(

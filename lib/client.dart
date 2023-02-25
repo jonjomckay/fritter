@@ -233,14 +233,14 @@ class Twitter {
           if (code == 'Suspended') {
             throw TwitterError(code: 63, message: result['reason'], uri: uri.toString());
           } else {
-            Catcher.reportCheckedError(UnknownProfileUnavailableReason(code, uri.toString()), null);
+            Catcher.reportSyntheticException(UnknownProfileUnavailableReason(code, uri.toString()));
             throw TwitterError(code: -1, message: result['reason'], uri: uri.toString());
           }
         case 'User':
           // This means everything's fine
           break;
         default:
-          Catcher.reportCheckedError(UnknownProfileResultType(resultType, result['reason'], uri.toString()), null);
+          Catcher.reportSyntheticException(UnknownProfileResultType(resultType, result['reason'], uri.toString()));
           break;
       }
     }

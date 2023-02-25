@@ -61,7 +61,7 @@ class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveCl
         _pagingController.appendPage(result.chains, result.cursorBottom);
       }
     } catch (e, stackTrace) {
-      Catcher.reportCheckedError(e, stackTrace);
+      Catcher.reportException(e, stackTrace);
       if (mounted) {
         _pagingController.error = [e, stackTrace];
       }

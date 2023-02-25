@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fritter/catcher/errors.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/repository.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -92,11 +94,22 @@ Future checkForUpdates() async {
         }
       }
     } else {
-      Catcher.reportCheckedError('Unable to check for updates: ${response.body}', null);
+      Catcher.reportSyntheticException(UnableToCheckForUpdatesException(response.body));
     }
   } catch (e, stackTrace) {
     Logger.root.severe('Unable to check for updates');
-    Catcher.reportCheckedError(e, stackTrace);
+    Catcher.reportException(e, stackTrace);
+  }
+}
+
+class UnableToCheckForUpdatesException implements SyntheticException {
+  final String body;
+
+  UnableToCheckForUpdatesException(this.body);
+
+  @override
+  String toString() {
+    return 'Unable to check for updates: {body: $body}';
   }
 }
 
@@ -189,7 +202,7 @@ Future<void> main() async {
 
   TripleObserver.addListener((triple) {
     if (triple.error != null) {
-      Catcher.reportCheckedError(triple.error, null);
+      Catcher.reportException(triple.error);
     }
   });
 
@@ -204,6 +217,8 @@ Future<void> main() async {
       options.attachStacktrace = true;
       options.dsn = 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282';
       options.sendDefaultPii = false;
+      options.enableAppLifecycleBreadcrumbs = true;
+      options.enableAutoNativeBreadcrumbs = true;
 
       options.beforeSend = (event, {hint}) {
         var enabled = prefService.get(optionErrorsSentryEnabled);
@@ -219,7 +234,12 @@ Future<void> main() async {
         return event;
       };
     }, appRunner: () async {
-      Sentry.configureScope((scope) => scope.setTag('flavor', getFlavor()));
+      var deviceInfo = await DeviceInfoPlugin().androidInfo;
+
+      Sentry.configureScope((scope) {
+        scope.setTag('flavor', getFlavor());
+        scope.setTag('versionSdk', deviceInfo.version.sdkInt.toString());
+      });
 
       if (Platform.isAndroid) {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
@@ -490,15 +510,11 @@ class _FritterAppState extends State<FritterApp> {
       },
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
-        ErrorWidget.builder = (FlutterErrorDetails details) {
-          Catcher.reportCheckedError(details.exception, details.stack);
-
-          return FullPageErrorWidget(
-            error: details.exception,
-            stackTrace: details.stack,
-            prefix: L10n.of(context).something_broke_in_fritter,
-          );
-        };
+        ErrorWidget.builder = (FlutterErrorDetails details) => FullPageErrorWidget(
+          error: details.exception,
+          stackTrace: details.stack,
+          prefix: L10n.of(context).something_broke_in_fritter,
+        );
 
         return DevicePreview.appBuilder(context, child ?? Container());
       },

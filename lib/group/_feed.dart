@@ -211,7 +211,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
         }
       }
     } catch (e, stackTrace) {
-      Catcher.reportCheckedError(e, stackTrace);
+      Catcher.reportException(e, stackTrace);
       if (mounted) {
         _pagingController.error = [e, stackTrace];
       }

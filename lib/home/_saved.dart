@@ -138,7 +138,7 @@ class SavedTweetTooLarge extends StatelessWidget {
                 builder: (context, child, callback, buttonState) {
                   return TextButton(onPressed: callback, child: child);
                 },
-                onPressed: () async => Catcher.reportCheckedError(SavedTweetTooLargeException(id), null),
+                onPressed: () async => Catcher.reportSyntheticException(SavedTweetTooLargeException(id)),
                 child: Text(L10n.current.report),
               ),
             )

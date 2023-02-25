@@ -159,7 +159,7 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
                         return createEmojiError(TwitterError(uri: error.uri, code: 22, message: L10n.current.only_public_subscriptions_can_be_imported));
                       }
 
-                      Catcher.reportCheckedError(error, snapshot.stackTrace);
+                      Catcher.reportException(error, snapshot.stackTrace);
 
                       return FullPageErrorWidget(
                         error: snapshot.error,

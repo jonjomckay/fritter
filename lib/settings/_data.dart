@@ -158,7 +158,7 @@ class SettingsDataFragment extends StatelessWidget {
                                   await _importFromFile(context, file);
                                 } catch (e, stackTrace) {
                                   log.severe('Unable to import the file on a legacy Android device');
-                                  Catcher.reportCheckedError(e, stackTrace);
+                                  Catcher.reportException(e, stackTrace);
 
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text('$e'),

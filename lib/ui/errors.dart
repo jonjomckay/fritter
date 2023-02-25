@@ -74,7 +74,7 @@ EmojiErrorWidget createEmojiError(TwitterError error) {
       message = L10n.current.bad_guest_token;
       break;
     default:
-      Catcher.reportCheckedError(UnknownTwitterErrorCode(error.code, error.message, error.uri), null);
+      Catcher.reportSyntheticException(UnknownTwitterErrorCode(error.code, error.message, error.uri));
       emoji = '💥';
       message = L10n.current.catastrophic_failure;
       break;
@@ -302,7 +302,7 @@ class FullPageErrorWidget extends FritterErrorWidget {
             margin: const EdgeInsets.only(top: 12),
             child: ElevatedButton(
               child: Text(L10n.of(context).report),
-              onPressed: () => Catcher.reportCheckedError(ManuallyReportedException(error), stackTrace),
+              onPressed: () => Catcher.reportException(ManuallyReportedException(error), stackTrace),
             ),
           ),
           if (onRetry != null)
