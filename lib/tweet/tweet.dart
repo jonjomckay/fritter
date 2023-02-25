@@ -511,7 +511,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                                                 } else {
                                                   return createSheetButton(L10n.of(context).save, Icons.bookmark_outline,
                                                           () async {
-                                                        await model.saveTweet(tweet.idStr!, tweet.toJson());
+                                                        await model.saveTweet(tweet.idStr!, tweet.user?.idStr, tweet.toJson());
                                                         Navigator.pop(context);
                                                       });
                                                 }

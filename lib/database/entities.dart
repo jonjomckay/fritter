@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/user.dart';
@@ -11,17 +13,18 @@ mixin ToMappable {
 
 class SavedTweet with ToMappable {
   final String id;
+  final String? user;
   final String? content;
 
-  SavedTweet({required this.id, required this.content});
+  SavedTweet({required this.id, required this.user, required this.content});
 
   factory SavedTweet.fromMap(Map<String, Object?> map) {
-    return SavedTweet(id: map['id'] as String, content: map['content'] as String?);
+    return SavedTweet(id: map['id'] as String, user: map['user_id'] as String?, content: map['content'] as String?);
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {'id': id, 'content': content};
+    return {'id': id, 'content': content, 'user_id': user};
   }
 }
 
