@@ -80,7 +80,8 @@ class _TweetMediaItemState extends State<_TweetMediaItem> {
     var item = widget.media;
 
     if (_showMedia) {
-      media = _TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: false, inPageView: false);
+      media =
+          _TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: false, inPageView: false);
     } else {
       media = GestureDetector(
         child: Container(
@@ -144,13 +145,12 @@ class _TweetMediaState extends State<TweetMedia> {
         return Card(
           child: Center(
               child: EmojiErrorWidget(
-                emoji: '🍆🙈🍆',
-                message: L10n.current.possibly_sensitive,
-                errorMessage: L10n.current.possibly_sensitive_tweet,
-                retryText: L10n.current.yes_please,
-                onRetry: () async => model.setHideSensitive(false),
-              )
-          ),
+            emoji: '🍆🙈🍆',
+            message: L10n.current.possibly_sensitive,
+            errorMessage: L10n.current.possibly_sensitive_tweet,
+            retryText: L10n.current.yes_please,
+            onRetry: () async => model.setHideSensitive(false),
+          )),
         );
       }
 
@@ -172,8 +172,8 @@ class _TweetMediaState extends State<TweetMedia> {
                     MaterialPageRoute(
                         builder: (context) =>
                             TweetMediaView(initialIndex: index, media: widget.media, username: widget.username))),
-                child:
-                _TweetMediaItem(media: item, index: index + 1, total: widget.media.length, username: widget.username),
+                child: _TweetMediaItem(
+                    media: item, index: index + 1, total: widget.media.length, username: widget.username),
               );
             },
           ),
@@ -252,7 +252,8 @@ class _TweetMediaViewState extends State<TweetMediaView> {
         itemBuilder: (BuildContext context, int index) {
           var item = widget.media[index];
 
-          return _TweetMediaThing(item: item, username: widget.username, size: size, pullToClose: true, inPageView: true);
+          return _TweetMediaThing(
+              item: item, username: widget.username, size: size, pullToClose: true, inPageView: true);
         },
         controller: ExtendedPageController(
           initialPage: widget.initialIndex,
@@ -272,7 +273,14 @@ class _TweetMediaThing extends StatelessWidget {
   final bool pullToClose;
   final bool inPageView;
 
-  const _TweetMediaThing({Key? key, required this.item, required this.username, required this.size, required this.pullToClose, required this.inPageView}) : super(key: key);
+  const _TweetMediaThing(
+      {Key? key,
+      required this.item,
+      required this.username,
+      required this.size,
+      required this.pullToClose,
+      required this.inPageView})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +290,8 @@ class _TweetMediaThing extends StatelessWidget {
     } else if (item.type == 'video') {
       media = TweetVideo(metadata: TweetVideoMetadata.fromMedia(item), loop: false, username: username);
     } else if (item.type == 'photo') {
-      media = TweetPhoto(size: size, uri: item.mediaUrlHttps!, fit: BoxFit.contain, pullToClose: pullToClose, inPageView: inPageView);
+      media = TweetPhoto(
+          size: size, uri: item.mediaUrlHttps!, fit: BoxFit.contain, pullToClose: pullToClose, inPageView: inPageView);
     } else {
       media = Text(L10n.of(context).unknown);
     }

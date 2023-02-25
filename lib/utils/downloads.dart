@@ -13,8 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
 Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
-    {required Function() onStart,
-    required Function() onSuccess}) async {
+    {required Function() onStart, required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
 
   downloadFile() async {
@@ -27,8 +26,7 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
-        L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(
-            response.statusCode),
+        L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
       ),
     ));
     return null;
@@ -64,8 +62,8 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
       // If the user wants to pick a file every time a download happens
       if (downloadType == optionDownloadTypeAsk || downloadPath == '') {
-        var fileInfo = await FlutterFileDialog.saveFile(
-            params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
+        var fileInfo =
+            await FlutterFileDialog.saveFile(params: SaveFileDialogParams(fileName: sanitizedFilename, data: response));
         if (fileInfo == null) {
           return;
         }
@@ -79,7 +77,8 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(L10n.current.permission_not_granted),
-            action: SnackBarAction(label: L10n.current.open_app_settings,
+            action: SnackBarAction(
+              label: L10n.current.open_app_settings,
               onPressed: openAppSettings,
             ),
           ),
