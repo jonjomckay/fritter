@@ -15,6 +15,7 @@ import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class _TweetMediaItem extends StatefulWidget {
   final int index;
@@ -242,6 +243,19 @@ class _TweetMediaViewState extends State<TweetMediaView> {
                 },
               );
             },
+          ),
+          AsyncButtonBuilder(
+            showSuccess: false,
+            builder: (context, child, callback, buttonState) {
+              return IconButton(onPressed: callback, icon: child);
+            },
+            onPressed: () async {
+              var uri = Uri.parse('${_media.mediaUrlHttps}:orig');
+
+              var fileBytes = await downloadFile(context, uri);
+              Share.shareXFiles([XFile.fromData(fileBytes, mimeType: 'image/jpeg')]);
+            },
+            child: const Icon(Icons.share),
           ),
         ],
       ),

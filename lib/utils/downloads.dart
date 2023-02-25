@@ -12,25 +12,9 @@ import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
-Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
+Future<void> downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
     {required Function() onStart, required Function() onSuccess}) async {
   var sanitizedFilename = fileName.split("?")[0];
-
-  downloadFile() async {
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    }
-
-    Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
-      ),
-    ));
-    return null;
-  }
 
   try {
     var isLegacy = await isLegacyAndroid();
@@ -40,7 +24,7 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
       await Directory(p.dirname(fullPath)).create(recursive: true);
 
-      var response = await downloadFile();
+      var response = await downloadFile(context, uri);
       if (response != null) {
         await File(fullPath).writeAsBytes(response);
 
@@ -48,7 +32,7 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
       }
     } else {
       onStart();
-      var responseTask = downloadFile();
+      var responseTask = downloadFile(context, uri);
 
       var storagePermission = await Permission.storage.request();
 
@@ -89,7 +73,8 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
       }
 
       // Finally, save to the user-defined directory
-      await File(p.join(downloadPath, sanitizedFilename)).writeAsBytes(response);
+      var savedFile = p.join(downloadPath, sanitizedFilename);
+      await File(savedFile).writeAsBytes(response);
       onSuccess();
     }
   } catch (e, s) {
@@ -97,4 +82,21 @@ Future downloadUriToPickedFile(BuildContext context, Uri uri, String fileName,
 
     showSnackBar(context, icon: '🙊', message: e.toString());
   }
+}
+
+Future downloadFile(BuildContext context, Uri uri) async {
+  var response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return response.bodyBytes;
+  }
+
+  Catcher.reportCheckedError('Unable to save the media. The response was ${response.body}', null);
+
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(
+      L10n.of(context).unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode(response.statusCode),
+    ),
+  ));
+  
+  return null;
 }

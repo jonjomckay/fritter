@@ -76,6 +76,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   sentry_flutter: ^6.18.0
   share: ^2.0.4
+  share_plus: ^6.2.0
   simple_icons: ^7.10.0
   sqflite: ^2.2.2
   sqflite_common: ^2.4.0+2
