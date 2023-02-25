@@ -12,3 +12,4 @@
 * Fixed group deletion not updating the UI (#591)
 * Added support for opening redirect links from emails (#257)
 * Added pull-to-refresh and scroll-to-top on profiles (#589)
+* Added support for sharing images (#556 - thanks to @ramosmauricio!)

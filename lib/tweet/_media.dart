@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile.dart';
@@ -15,7 +13,6 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:fritter/utils/downloads.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -247,19 +244,19 @@ class _TweetMediaViewState extends State<TweetMediaView> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.share),
+          AsyncButtonBuilder(
+            showSuccess: false,
+            builder: (context, child, callback, buttonState) {
+              return IconButton(onPressed: callback, icon: child);
+            },
             onPressed: () async {
               var uri = Uri.parse('${_media.mediaUrlHttps}:orig');
 
               var fileBytes = await downloadFile(context, uri);
-              Directory tempDir = await getTemporaryDirectory();
-              var fileFullName = '${tempDir.path}/image.jpg';
-              final file = await File(fileFullName).create();
-              file.writeAsBytesSync(fileBytes);
-              Share.shareXFiles([XFile(fileFullName)]);
+              Share.shareXFiles([XFile.fromData(fileBytes, mimeType: 'image/jpeg')]);
             },
-          )
+            child: const Icon(Icons.share),
+          ),
         ],
       ),
       body: ExtendedImageGesturePageView.builder(
