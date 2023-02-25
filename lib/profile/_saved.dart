@@ -63,7 +63,7 @@ class _ProfileSavedState extends State<ProfileSaved> {
         pagingController: _pagingController,
         addAutomaticKeepAlives: false,
         builderDelegate: PagedChildBuilderDelegate(
-          itemBuilder: (context, savedTweet, index) => SavedTweetTile(id: savedTweet.id, content: savedTweet.user),
+          itemBuilder: (context, savedTweet, index) => SavedTweetTile(id: savedTweet.id, content: savedTweet.content),
           firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
             error: _pagingController.error[0],
             stackTrace: _pagingController.error[1],
