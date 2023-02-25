@@ -437,5 +437,6 @@
   "choose_pages": "Choose pages",
   "mute_videos": "Mute videos",
   "mute_video_description": "Whether videos should be muted by default",
-  "share_base_url": "Share using a custom base URL (optional)"
+  "share_base_url": "Custom share URL",
+  "share_base_url_description": "Use a custom base URL when sharing"
 }

@@ -2517,11 +2517,21 @@ class L10n {
     );
   }
 
-  /// `Share using a custom base URL (optional)`
+  /// `Custom share URL`
   String get share_base_url {
     return Intl.message(
-      'Share using a custom base URL (optional)',
+      'Custom share URL',
       name: 'share_base_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use a custom base URL when sharing`
+  String get share_base_url_description {
+    return Intl.message(
+      'Use a custom base URL when sharing',
+      name: 'share_base_url_description',
       desc: '',
       args: [],
     );

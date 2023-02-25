@@ -46,6 +46,34 @@ class SettingsGeneralFragment extends StatelessWidget {
 
   const SettingsGeneralFragment({Key? key}) : super(key: key);
 
+  PrefDialog _createShareBaseDialog(BuildContext context) {
+    var prefService = PrefService.of(context);
+    var mediaQuery = MediaQuery.of(context);
+
+    final controller = TextEditingController(text: prefService.get(optionShareBaseUrl));
+
+    return PrefDialog(
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(L10n.of(context).cancel)),
+          TextButton(
+              onPressed: () async {
+                await prefService.set(optionShareBaseUrl, controller.text);
+                Navigator.pop(context);
+              },
+              child: Text(L10n.of(context).save))
+        ],
+        title: Text(L10n.of(context).share_base_url),
+        children: [
+          SizedBox(
+            width: mediaQuery.size.width,
+            child: TextFormField(
+              controller: controller,
+              decoration: const InputDecoration(hintText: 'https://twitter.com'),
+            ),
+          )
+        ]);
+  }
+
   Future<void> _sendPing(BuildContext context) async {
     var deviceInfo = DeviceInfoPlugin();
     var packageInfo = await PackageInfo.fromPlatform();
@@ -263,17 +291,11 @@ class SettingsGeneralFragment extends StatelessWidget {
             subtitle: Text(L10n.of(context).whether_to_hide_tweets_marked_as_sensitive),
             pref: optionTweetsHideSensitive,
           ),
-          PrefText(
-              label: L10n.of(context).share_base_url,
-              pref: optionShareBaseUrl,
-              validator: (value) {
-                if (value == null || value.isEmpty || value.startsWith(RegExp("^https?://\\S+"))) {
-                  return null;
-                }
-
-                return 'http(s)://domain(:port)';
-              },
-              hintText: "https://twitter.com"),
+          PrefDialogButton(
+            title: Text(L10n.of(context).share_base_url),
+            subtitle: Text(L10n.of(context).share_base_url_description),
+            dialog: _createShareBaseDialog(context),
+          ),
           PrefSwitch(
             title: Text(L10n.of(context).disable_screenshots),
             subtitle: Text(L10n.of(context).disable_screenshots_hint),
