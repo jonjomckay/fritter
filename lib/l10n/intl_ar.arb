@@ -468,6 +468,7 @@
   "activate_non_confirmation_bias_mode_description": "إخفاء مؤلفي التغريدات. تجنب التحيز التأكيدي بناء على الحجج الموثوقة.",
   "@activate_non_confirmation_bias_mode_description": {},
   "only_public_subscriptions_can_be_imported": "لا يمكن استيراد الاشتراكات إلا من الملفات الشخصية العامة",
+  "@only_public_subscriptions_can_be_imported": {},
   "unsupported_url": "عنوان URL غير مدعوم",
   "@unsupported_url": {},
   "saved_tweet_too_large": "تعذر عرض هذه التغريدة المحفوظة لأنها كبيرة جدًا بحيث لا يمكن تحميلها. الرجاء الإبلاغ عن ذلك للمطورين.",
