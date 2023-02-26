@@ -486,5 +486,9 @@
   "mute_videos": "Ztlumit videa",
   "@mute_videos": {},
   "share_base_url": "Vlastní adresa URL sdílení",
-  "@share_base_url": {}
+  "@share_base_url": {},
+  "next": "Další",
+  "@next": {},
+  "finish": "Dokončit",
+  "@finish": {}
 }
