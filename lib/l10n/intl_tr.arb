@@ -478,5 +478,17 @@
   "two_home_pages_required": "En az 2 ana ekran sayfanızın olması gerekir.",
   "@two_home_pages_required": {},
   "choose_pages": "Sayfaları seçin",
-  "@choose_pages": {}
+  "@choose_pages": {},
+  "mute_videos": "Videoların sesini kapat",
+  "@mute_videos": {},
+  "mute_video_description": "Videoların öntanımlı olarak sesinin kapatılıp kapatılmayacağı",
+  "@mute_video_description": {},
+  "finish": "Bitir",
+  "@finish": {},
+  "next": "İleri",
+  "@next": {},
+  "share_base_url": "Özel paylaşım URL'si",
+  "@share_base_url": {},
+  "share_base_url_description": "Paylaşırken özel bir temel URL kullanın",
+  "@share_base_url_description": {}
 }
