@@ -478,5 +478,17 @@
   "choose_pages": "Vali lehed",
   "@choose_pages": {},
   "saved_tweet_too_large": "Seda salvestatud säutsu ei saa kuvada, kuna see on laadimiseks liiga suur. Palun teata sellest veast arendajatele.",
-  "@saved_tweet_too_large": {}
+  "@saved_tweet_too_large": {},
+  "mute_videos": "Summuta videote heli",
+  "@mute_videos": {},
+  "mute_video_description": "Kas videoteheli peaks esitamisel olema vaikimisi summutatud",
+  "@mute_video_description": {},
+  "share_base_url_description": "Kasuta lingi jagamiseks kohandatud URL'i",
+  "@share_base_url_description": {},
+  "finish": "Lõpeta",
+  "@finish": {},
+  "share_base_url": "Kohandatud URL lingi jagamiseks",
+  "@share_base_url": {},
+  "next": "Järgmine",
+  "@next": {}
 }
