@@ -478,5 +478,17 @@
   "two_home_pages_required": "你需要有至少 2 个主屏页面。",
   "@two_home_pages_required": {},
   "choose_pages": "选择页面",
-  "@choose_pages": {}
+  "@choose_pages": {},
+  "finish": "完毕",
+  "@finish": {},
+  "share_base_url": "自定义分享 URL",
+  "@share_base_url": {},
+  "share_base_url_description": "分享时使用自定义的基 URL",
+  "@share_base_url_description": {},
+  "next": "下一条",
+  "@next": {},
+  "mute_videos": "将视频静音",
+  "@mute_videos": {},
+  "mute_video_description": "是否应默认将视频静音",
+  "@mute_video_description": {}
 }

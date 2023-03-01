@@ -478,5 +478,17 @@
   "two_home_pages_required": "تحتاج إلى صفحتان على الأقل من صفحات الشاشة الرئيسية.",
   "@two_home_pages_required": {},
   "choose_pages": "اختيار الصفحات",
-  "@choose_pages": {}
+  "@choose_pages": {},
+  "next": "التالي",
+  "@next": {},
+  "finish": "انهاء",
+  "@finish": {},
+  "mute_videos": "كتم صوت مقاطع الفيديو",
+  "@mute_videos": {},
+  "share_base_url": "عنوان URL المخصص للمشاركة",
+  "@share_base_url": {},
+  "mute_video_description": "لتحديد ما إذا كان يجب كتم مقاطع الفيديو افتراضيًا",
+  "@mute_video_description": {},
+  "share_base_url_description": "استخدام عنوان URL أساسي مخصص عند المشاركة",
+  "@share_base_url_description": {}
 }

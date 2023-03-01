@@ -478,5 +478,13 @@
   "saved_tweet_too_large": "Ce tweet enregistré n'a pas pu être affiché, car il est trop lourd à charger. Veuillez le signaler aux développeurs.",
   "@saved_tweet_too_large": {},
   "unsupported_url": "URL non pris en charge",
-  "@unsupported_url": {}
+  "@unsupported_url": {},
+  "mute_videos": "Mettre les vidéos en sourdine",
+  "@mute_videos": {},
+  "mute_video_description": "Si les vidéos doivent être mises en sourdine par défaut",
+  "@mute_video_description": {},
+  "share_base_url": "URL de partage personnalisé",
+  "@share_base_url": {},
+  "share_base_url_description": "Utiliser une URL de base personnalisée lors du partage",
+  "@share_base_url_description": {}
 }

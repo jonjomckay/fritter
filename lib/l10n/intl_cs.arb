@@ -478,5 +478,17 @@
   "choose_pages": "Vybrat stránky",
   "@choose_pages": {},
   "saved_tweet_too_large": "Tento uložený tweet nebylo možné zobrazit, protože je příliš velký na to, aby se načetl. Nahlaste to prosím vývojářům.",
-  "@saved_tweet_too_large": {}
+  "@saved_tweet_too_large": {},
+  "share_base_url_description": "Použít vlastní základní adresu URL při sdílení",
+  "@share_base_url_description": {},
+  "mute_video_description": "Zda mají být videa ve výchozím nastavení ztlumena",
+  "@mute_video_description": {},
+  "mute_videos": "Ztlumit videa",
+  "@mute_videos": {},
+  "share_base_url": "Vlastní adresa URL sdílení",
+  "@share_base_url": {},
+  "next": "Další",
+  "@next": {},
+  "finish": "Dokončit",
+  "@finish": {}
 }

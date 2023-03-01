@@ -482,5 +482,13 @@
   "mute_videos": "Wyciszaj wideo",
   "@mute_videos": {},
   "mute_video_description": "Domyślnie wyciszaj wideo",
-  "@mute_video_description": {}
+  "@mute_video_description": {},
+  "share_base_url": "Niestandardowy URL udostępniania",
+  "@share_base_url": {},
+  "share_base_url_description": "Używaj niestandardowej podstawy adresu URL podczas udostępniania",
+  "@share_base_url_description": {},
+  "finish": "Zakończ",
+  "@finish": {},
+  "next": "Dalej",
+  "@next": {}
 }

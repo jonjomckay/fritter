@@ -478,5 +478,17 @@
   "two_home_pages_required": "È necessario avere almeno due pagine nella home.",
   "@two_home_pages_required": {},
   "choose_pages": "Scegli le pagine",
-  "@choose_pages": {}
+  "@choose_pages": {},
+  "share_base_url": "URL di condivisione personalizzato",
+  "@share_base_url": {},
+  "finish": "Fine",
+  "@finish": {},
+  "mute_videos": "Muta i video",
+  "@mute_videos": {},
+  "mute_video_description": "Se i video dovrebbero essere mutati di default",
+  "@mute_video_description": {},
+  "share_base_url_description": "Usa un URL di base personalizzato per la condivisione",
+  "@share_base_url_description": {},
+  "next": "Avanti",
+  "@next": {}
 }
