@@ -486,5 +486,9 @@
   "share_base_url": "URL de partage personnalisé",
   "@share_base_url": {},
   "share_base_url_description": "Utiliser une URL de base personnalisée lors du partage",
-  "@share_base_url_description": {}
+  "@share_base_url_description": {},
+  "next": "Suivant",
+  "@next": {},
+  "finish": "Finir",
+  "@finish": {}
 }
