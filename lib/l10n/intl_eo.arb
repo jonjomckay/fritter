@@ -478,5 +478,17 @@
   "you_must_have_at_least_2_home_screen_pages": "Vi devas havi malpleje 2 paĝojn de hejmekrano",
   "@you_must_have_at_least_2_home_screen_pages": {},
   "saved_tweet_too_large": "Tiu ĉi pepo konservita ne eblas vidiĝi, pro ĝi estas tro granda por ŝarĝi. Bonvolu raporti al la programistoj.",
-  "@saved_tweet_too_large": {}
+  "@saved_tweet_too_large": {},
+  "next": "Sekven",
+  "@next": {},
+  "share_base_url_description": "Uzi URL-on bazan propran kiam kunhavigi",
+  "@share_base_url_description": {},
+  "mute_videos": "Mutigi videojn",
+  "@mute_videos": {},
+  "finish": "Fini",
+  "@finish": {},
+  "mute_video_description": "Ĉu videoj mutiĝu defaŭlte",
+  "@mute_video_description": {},
+  "share_base_url": "URL kunhavanta propra",
+  "@share_base_url": {}
 }
