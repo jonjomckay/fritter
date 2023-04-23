@@ -163,7 +163,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
           // Perform our search for the next page of results for this chunk, and add those tweets to our collection
           var query = _buildSearchQuery(chunk.users);
-          var result = await Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: searchCursor, mode: 'live');
+          var result = await Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: searchCursor);
 
           tweets.addAll(result.chains);
 
