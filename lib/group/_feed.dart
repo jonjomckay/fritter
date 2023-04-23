@@ -241,6 +241,7 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
             ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
           ],
           child: PagedListView<String?, TweetChain>(
+            padding: const EdgeInsets.only(top: 4),
             scrollController: widget.scrollController,
             pagingController: _pagingController,
             addAutomaticKeepAlives: false,

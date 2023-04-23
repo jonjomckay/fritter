@@ -4,7 +4,6 @@ import 'package:async_button_builder/async_button_builder.dart';
 import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
@@ -80,6 +79,7 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
 
             return ListView.builder(
               controller: widget.scrollController,
+              padding: const EdgeInsets.only(top: 4),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var item = data[index];
