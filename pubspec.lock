@@ -726,11 +726,9 @@ packages:
   pref:
     dependency: "direct main"
     description:
-      path: pref
-      ref: "7066164003f772ccfca64a14ea7231cbf7749671"
-      resolved-ref: "7066164003f772ccfca64a14ea7231cbf7749671"
-      url: "https://github.com/jonjomckay/flutter_pref.git"
-    source: git
+      name: pref
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.7.0"
   process:
     dependency: transitive
@@ -801,14 +799,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.20.1"
+    version: "7.4.2"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.20.1"
+    version: "7.4.2"
   share:
     dependency: "direct main"
     description:

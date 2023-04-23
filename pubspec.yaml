@@ -25,11 +25,6 @@ dependency_overrides:
     git:
       url: https://github.com/AhmedAlYousif/auto_direction.git
       ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
-  pref:
-    git:
-      url: https://github.com/jonjomckay/flutter_pref.git
-      ref: 7066164003f772ccfca64a14ea7231cbf7749671
-      path: pref
 
 dependencies:
   flutter:
@@ -68,12 +63,12 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.11
   permission_handler: ^10.2.0
-  pref: ^2.6.0
+  pref: ^2.7.0
   provider: ^6.0.4
   quiver: ^3.1.0
   scroll_bottom_navigation_bar: ^4.0.0
   scroll_to_index: ^3.0.1
-  sentry_flutter: ^6.20.1
+  sentry_flutter: ^7.4.2
   share: ^2.0.4
   share_plus: ^6.2.0
   simple_icons: ^7.10.0
