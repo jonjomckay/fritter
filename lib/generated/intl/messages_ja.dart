@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(snapshotData) => "${snapshotData}ユーザのインポートが完了しました";
 
+  static String m6(name) => "グループ: ${name}";
+
   static String m7(snapshotData) => "${snapshotData}ユーザがインポートされました";
 
   static String m8(date) => "${date}に登録";
@@ -47,7 +49,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m13(filePath) => "ファイルが存在しません。${filePath}に存在することを確認してください";
 
-  static String m14(thisTweetUserName, timeAgo) => "${thisTweetUserName}がリツイート";
+  static String m14(thisTweetUserName, timeAgo) =>
+      "${thisTweetUserName}がリツイート ${timeAgo}";
 
   static String m15(num, numFormatted) =>
       "${Intl.plural(num, zero: '0 ツイート', one: '1 ツイート', two: '2 ツイート', few: '${numFormatted} ツイート', many: '${numFormatted} ツイート', other: '${numFormatted} ツイート')}";
@@ -67,6 +70,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("Fritterについて"),
         "account_suspended": MessageLookupByLibrary.simpleMessage("凍結済みアカウント"),
+        "activate_non_confirmation_bias_mode_description":
+            MessageLookupByLibrary.simpleMessage(
+                "ツイート発信者を非表示にして、権威に基づく確証バイアスに陥るのを避けます。"),
+        "activate_non_confirmation_bias_mode_label":
+            MessageLookupByLibrary.simpleMessage("対確証バイアスモードを有効化"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("グループに追加"),
         "all": MessageLookupByLibrary.simpleMessage("すべて"),
         "all_the_great_software_used_by_fritter":
@@ -86,6 +94,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "catastrophic_failure": MessageLookupByLibrary.simpleMessage("致命的なエラー"),
         "choose": MessageLookupByLibrary.simpleMessage("選択"),
         "close": MessageLookupByLibrary.simpleMessage("閉じる"),
+        "confirm_close_fritter":
+            MessageLookupByLibrary.simpleMessage("Fritter を閉じますか？"),
         "contribute": MessageLookupByLibrary.simpleMessage("貢献する"),
         "copied_address_to_clipboard":
             MessageLookupByLibrary.simpleMessage("アドレスをクリップボードにコピーしました"),
@@ -108,6 +118,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "date_subscribed": MessageLookupByLibrary.simpleMessage("登録日"),
         "default_tab": MessageLookupByLibrary.simpleMessage("デフォルトのタブ"),
         "delete": MessageLookupByLibrary.simpleMessage("削除"),
+        "disable_screenshots":
+            MessageLookupByLibrary.simpleMessage("スクリーンショットを無効化"),
+        "disable_screenshots_hint": MessageLookupByLibrary.simpleMessage(
+            "スクリーンショットの撮影を防止する。すべての端末で動作しない可能性があります。"),
         "disabled": MessageLookupByLibrary.simpleMessage("無効"),
         "don_not_send": MessageLookupByLibrary.simpleMessage("送信しない"),
         "donate": MessageLookupByLibrary.simpleMessage("寄付"),
@@ -119,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("毎回確認する"),
         "download_handling_type_directory":
             MessageLookupByLibrary.simpleMessage("ディレクトリに保存"),
+        "download_media_no_url": MessageLookupByLibrary.simpleMessage(
+            "ダウンロードできません。このメディアはストリーム限定の可能性があり、今のFritterではダウンロードできません。"),
         "download_path": MessageLookupByLibrary.simpleMessage("ダウンロード先"),
         "downloading_media":
             MessageLookupByLibrary.simpleMessage("メディアをダウンロード中..."),
@@ -142,9 +158,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("フォロワー"),
         "following": MessageLookupByLibrary.simpleMessage("フォロー"),
+        "forbidden": MessageLookupByLibrary.simpleMessage("Twitterによればアクセス禁止"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritterブルー"),
         "general": MessageLookupByLibrary.simpleMessage("一般"),
+        "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("グループ"),
         "help_make_fritter_even_better":
             MessageLookupByLibrary.simpleMessage("Fritterを改善するために協力する"),
@@ -153,6 +171,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "here_is_the_data_that_will_be_sent_it_will_only_be_used_to_determine_which_devices_and_languages_to_support_in_fritter_in_the_future":
             MessageLookupByLibrary.simpleMessage(
                 "以下が送信されるデータです。今後Fritterがサポートすべき端末と言語を特定するためにのみ使用されます。"),
+        "hide_sensitive_tweets":
+            MessageLookupByLibrary.simpleMessage("センシティブな内容のツイートを隠す"),
+        "home": MessageLookupByLibrary.simpleMessage("ホーム"),
         "if_you_have_any_feedback_on_this_feature_please_leave_it_on":
             MessageLookupByLibrary.simpleMessage(
                 "この機能にフィードバックがありましたら、こちらにお願いします。"),
@@ -172,6 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "it_looks_like_you_have_already_sent_a_ping_recently":
             MessageLookupByLibrary.simpleMessage("既に最近pingを送信しているようです。🤔"),
         "joined": m8,
+        "language": MessageLookupByLibrary.simpleMessage("言語"),
+        "language_subtitle": MessageLookupByLibrary.simpleMessage("再起動が必要"),
         "large": MessageLookupByLibrary.simpleMessage("大"),
         "legacy_android_import":
             MessageLookupByLibrary.simpleMessage("インポート(レガシー端末)"),
@@ -187,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("グループ名"),
         "never_send": MessageLookupByLibrary.simpleMessage("今後送信しない"),
         "newTrans": MessageLookupByLibrary.simpleMessage("新着"),
+        "next": MessageLookupByLibrary.simpleMessage("次"),
         "no": MessageLookupByLibrary.simpleMessage("いいえ"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -205,6 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "oops_something_went_wrong":
             MessageLookupByLibrary.simpleMessage("問題が発生しました🥲"),
         "open_app_settings": MessageLookupByLibrary.simpleMessage("アプリで開く設定"),
+        "page_not_found": MessageLookupByLibrary.simpleMessage(
+            "Twitterはページがないと表示しているが、本当ではないかもしれない"),
         "permission_not_granted":
             MessageLookupByLibrary.simpleMessage("権限がありません。許可後に再度試してみてください！"),
         "pick_a_color": MessageLookupByLibrary.simpleMessage("色を選択！"),
@@ -220,6 +246,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts":
             MessageLookupByLibrary.simpleMessage(
                 "Fritterが登録アカウントをインポートする際に使うメソッドはTwitterが厳しくレート制限しているため、フォローアカウントが多い場合は失敗する可能性があります。"),
+        "possibly_sensitive_profile": MessageLookupByLibrary.simpleMessage(
+            "プロフィールにセンシティブな画像、言語、その他のコンテンツが含まれる可能性があります。表示しますか？"),
+        "possibly_sensitive_tweet": MessageLookupByLibrary.simpleMessage(
+            "ツイートにセンシティブな内容が含まれる可能性があります。表示しますか？"),
         "prefix": MessageLookupByLibrary.simpleMessage("プレフィックス"),
         "private_profile": MessageLookupByLibrary.simpleMessage("非公開プロフィール"),
         "released_under_the_mit_license":
@@ -228,10 +258,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "report": MessageLookupByLibrary.simpleMessage("レポート"),
         "report_a_bug": MessageLookupByLibrary.simpleMessage("バグのレポート"),
         "reporting_an_error": MessageLookupByLibrary.simpleMessage("エラーの報告"),
-        "retry": MessageLookupByLibrary.simpleMessage("リトライ"),
+        "retry": MessageLookupByLibrary.simpleMessage("再試行"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "save_bandwidth_using_smaller_images":
-            MessageLookupByLibrary.simpleMessage("小さい画像を使用すると通信容量を削減できます"),
+            MessageLookupByLibrary.simpleMessage("小さい画像にすると通信容量を削減できます"),
         "saved": MessageLookupByLibrary.simpleMessage("保存ツイート"),
         "say_hello": MessageLookupByLibrary.simpleMessage("挨拶する"),
         "say_hello_emoji": MessageLookupByLibrary.simpleMessage("こんにちは👋"),
@@ -260,14 +290,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fritterに異常が発生しました。"),
         "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated":
             MessageLookupByLibrary.simpleMessage(
-                "Fritterに問題が発生し、エラーレポートが作成されました。問題を修正するため、開発者にレポートを送信することができます。"),
+                "Fritterに問題が発生し、エラーレポートが作成されました。問題修正のため、このレポートを開発者に送信できます。"),
         "sorry_the_replied_tweet_could_not_be_found":
             MessageLookupByLibrary.simpleMessage("返信ツイートが見つかりませんでした！"),
         "subscribe": MessageLookupByLibrary.simpleMessage("登録する"),
         "subscriptions": MessageLookupByLibrary.simpleMessage("登録アカウント"),
         "subtitles": MessageLookupByLibrary.simpleMessage("字幕"),
         "successfully_saved_the_media":
-            MessageLookupByLibrary.simpleMessage("メディアが保存されました。"),
+            MessageLookupByLibrary.simpleMessage("メディアを保存しました！"),
         "system": MessageLookupByLibrary.simpleMessage("システム"),
         "tap_to_download_release_version": m11,
         "tap_to_show_getMediaType_item_type": m12,
@@ -282,6 +312,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "the_tweet_did_not_contain_any_text_this_is_unexpected":
             MessageLookupByLibrary.simpleMessage("ツイートのテキストがありません。予期せぬ結果です"),
         "theme": MessageLookupByLibrary.simpleMessage("テーマ"),
+        "theme_mode": MessageLookupByLibrary.simpleMessage("テーマのモード"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
                 "トレンドが返されませんでした。予期せぬ動作です！可能でしたらバグとして報告ください。"),
@@ -291,7 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "読み込みに時間がかかり過ぎています。ネットワーク接続を確認してください！"),
         "this_tweet_is_unavailable":
-            MessageLookupByLibrary.simpleMessage("ツイートが利用できません"),
+            MessageLookupByLibrary.simpleMessage("このツイートはありません。削除されたかもしれません。"),
         "this_tweet_user_name_retweeted": m14,
         "this_user_does_not_follow_anyone":
             MessageLookupByLibrary.simpleMessage("このユーザは誰もフォローしていません！"),
@@ -305,7 +336,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below":
             MessageLookupByLibrary.simpleMessage(
                 "Twitterアカウントから登録アカウントをインポートするには、以下にユーザ名を入力してください。"),
-        "toggle_all": MessageLookupByLibrary.simpleMessage("全て選択"),
+        "toggle_all": MessageLookupByLibrary.simpleMessage("すべて選択"),
         "trending": MessageLookupByLibrary.simpleMessage("トレンド"),
         "trends": MessageLookupByLibrary.simpleMessage("トレンド"),
         "true_black": MessageLookupByLibrary.simpleMessage("トゥルーブラック？"),
@@ -318,6 +349,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("保存したツイートが見つかりませんでした。"),
         "unable_to_import":
             MessageLookupByLibrary.simpleMessage("インポートできませんでした"),
+        "unable_to_load_home_pages":
+            MessageLookupByLibrary.simpleMessage("ホームを読み込めません"),
         "unable_to_load_subscription_groups":
             MessageLookupByLibrary.simpleMessage("登録グループの読み込みに失敗しました"),
         "unable_to_load_the_group":
@@ -327,11 +360,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "unable_to_load_the_list_of_follows":
             MessageLookupByLibrary.simpleMessage("フォローリストを読み込めませんでした"),
         "unable_to_load_the_next_page_of_follows":
-            MessageLookupByLibrary.simpleMessage("次ページのフォローを読み込めませんでした"),
+            MessageLookupByLibrary.simpleMessage("フォローの次のページを読み込めませんでした"),
         "unable_to_load_the_next_page_of_replies":
-            MessageLookupByLibrary.simpleMessage("次ページの返信の読み込みに失敗しました"),
+            MessageLookupByLibrary.simpleMessage("返信の次のページ読み込みに失敗しました"),
         "unable_to_load_the_next_page_of_tweets":
-            MessageLookupByLibrary.simpleMessage("次ページのツイートの読み込みに失敗しました"),
+            MessageLookupByLibrary.simpleMessage("ツイートの次のページ読み込みに失敗しました"),
         "unable_to_load_the_profile":
             MessageLookupByLibrary.simpleMessage("プロフィールを読み込めませんでした"),
         "unable_to_load_the_search_results":
@@ -353,7 +386,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トレンドの地域設定をストリームできませんでした"),
         "unknown": MessageLookupByLibrary.simpleMessage("不明"),
         "unsave": MessageLookupByLibrary.simpleMessage("保存取り消し"),
-        "unsubscribe": MessageLookupByLibrary.simpleMessage("登録解除する"),
+        "unsubscribe": MessageLookupByLibrary.simpleMessage("登録解除"),
+        "unsupported_url": MessageLookupByLibrary.simpleMessage("未対応のURL"),
         "update_to_release_version_through_your_fdroid_client": m20,
         "updates": MessageLookupByLibrary.simpleMessage("更新"),
         "use_true_black_for_the_dark_mode_theme":
@@ -365,11 +399,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("新しいアプリの更新が利用可能なとき"),
         "whether_errors_should_be_reported_to_sentry":
             MessageLookupByLibrary.simpleMessage("エラーをSentryに送信する"),
+        "whether_to_hide_tweets_marked_as_sensitive":
+            MessageLookupByLibrary.simpleMessage("センシティブとされたツイートを隠すかどうか"),
         "which_tab_is_shown_when_the_app_opens":
             MessageLookupByLibrary.simpleMessage("アプリの起動時に表示するタブ"),
         "would_you_like_to_enable_automatic_error_reporting":
             MessageLookupByLibrary.simpleMessage("自動エラー報告を有効にしますか？"),
         "yes": MessageLookupByLibrary.simpleMessage("はい"),
+        "yes_please": MessageLookupByLibrary.simpleMessage("はいどうぞ"),
         "you_have_not_saved_any_tweets_yet":
             MessageLookupByLibrary.simpleMessage("まだツイートを保存していません！"),
         "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from":

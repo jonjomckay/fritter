@@ -21,5 +21,58 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ro';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "add_to_group":
+            MessageLookupByLibrary.simpleMessage("Adăugați la grup"),
+        "an_error_was_reported_to_sentry_thank_you":
+            MessageLookupByLibrary.simpleMessage(
+                "O eroare a fost raportată la Sentry. Mulțumesc!"),
+        "could_not_find_any_tweets_by_this_user":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu a putut găsi orice tweets de către acest utilizator!"),
+        "could_not_find_any_tweets_from_the_last_7_days":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu am putut găsi niciun tweet din ultimele 7 zile!"),
+        "don_not_send": MessageLookupByLibrary.simpleMessage("Nu trimite"),
+        "never_send":
+            MessageLookupByLibrary.simpleMessage("Nu trimite niciodată"),
+        "reporting_an_error":
+            MessageLookupByLibrary.simpleMessage("Raportarea unei erori"),
+        "select": MessageLookupByLibrary.simpleMessage("Selectați"),
+        "send_always": MessageLookupByLibrary.simpleMessage("Trimite mereu"),
+        "send_once": MessageLookupByLibrary.simpleMessage("Trimite o dată"),
+        "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated":
+            MessageLookupByLibrary.simpleMessage(
+                "Ceva pur și simplu nu a mers bine în Fritter și a fost generat un raport de eroare. Raportul poate fi trimis dezvoltatorilor Fritter pentru a ajuta la remedierea problemei."),
+        "subscribe": MessageLookupByLibrary.simpleMessage("Abonează-te"),
+        "thanks_for_reporting_we_will_try_and_fix_it_in_no_time":
+            MessageLookupByLibrary.simpleMessage(
+                "Mulțumesc pentru raportare. Vom încerca să o reparăm în cel mai scurt timp!"),
+        "this_group_contains_no_subscriptions":
+            MessageLookupByLibrary.simpleMessage(
+                "Acest grup nu conține abonamente!"),
+        "unable_to_load_subscription_groups":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu se pot încărca grupurile de abonament"),
+        "unable_to_load_the_group":
+            MessageLookupByLibrary.simpleMessage("Nu se poate încărca grupul"),
+        "unable_to_load_the_next_page_of_replies":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu se poate încărca următoarea pagină de răspunsuri"),
+        "unable_to_load_the_next_page_of_tweets":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu se poate încărca următoarea pagină de tweet-uri"),
+        "unable_to_load_the_tweet": MessageLookupByLibrary.simpleMessage(
+            "Nu se poate încărca tweet-ul"),
+        "unable_to_load_the_tweets_for_the_feed":
+            MessageLookupByLibrary.simpleMessage(
+                "Nu se pot încărca tweet-urile pentru feed"),
+        "unsubscribe": MessageLookupByLibrary.simpleMessage("Dezabonează-te"),
+        "would_you_like_to_enable_automatic_error_reporting":
+            MessageLookupByLibrary.simpleMessage(
+                "Doriți să activați raportarea automată a erorilor?"),
+        "your_report_will_be_sent_to_fritter_sentry_project":
+            MessageLookupByLibrary.simpleMessage(
+                "Raportul dvs. va fi trimis către proiectul Fritter\'s Sentry, iar detaliile de confidențialitate pot fi găsite la:")
+      };
 }

@@ -188,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exporter vos données"),
         "feed": MessageLookupByLibrary.simpleMessage("Flux"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtres"),
+        "finish": MessageLookupByLibrary.simpleMessage("Finir"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Abonnés"),
         "following": MessageLookupByLibrary.simpleMessage("Abonnements"),
@@ -254,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Nom"),
         "never_send": MessageLookupByLibrary.simpleMessage("Ne jamais envoyer"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nouveau"),
+        "next": MessageLookupByLibrary.simpleMessage("Suivant"),
         "no": MessageLookupByLibrary.simpleMessage("Non"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(

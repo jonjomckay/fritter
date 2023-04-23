@@ -181,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Eksporti viajn datumojn"),
         "feed": MessageLookupByLibrary.simpleMessage("Fluo"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtriloj"),
+        "finish": MessageLookupByLibrary.simpleMessage("Fini"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Abonantoj"),
         "following": MessageLookupByLibrary.simpleMessage("Abonoj"),
@@ -241,9 +242,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Grando de plurmedio"),
         "medium": MessageLookupByLibrary.simpleMessage("Mezgranda"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Paĝo manka"),
+        "mute_video_description":
+            MessageLookupByLibrary.simpleMessage("Ĉu videoj mutiĝu defaŭlte"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("Mutigi videojn"),
         "name": MessageLookupByLibrary.simpleMessage("Nomo"),
         "never_send": MessageLookupByLibrary.simpleMessage("Sendi neniam"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nova"),
+        "next": MessageLookupByLibrary.simpleMessage("Sekven"),
         "no": MessageLookupByLibrary.simpleMessage("Ne"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -326,6 +331,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Sendi ping-on neidentigan por konigi al mi, ke vi uzas Fritter, kaj helpi programadon estontece"),
         "send_always": MessageLookupByLibrary.simpleMessage("Sendi ĉiufoje"),
         "send_once": MessageLookupByLibrary.simpleMessage("Sendi unufoje"),
+        "share_base_url":
+            MessageLookupByLibrary.simpleMessage("URL kunhavanta propra"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Uzi URL-on bazan propran kiam kunhavigi"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage(
             "Kunhavigi la enhavon de la pepo"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
