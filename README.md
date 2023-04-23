@@ -31,31 +31,27 @@
 
 ## Features
 
-* Privacy | No tracking, with all data local
-* Bookmarks | Save tweets locally and offline
-* Trends | See what's trending in the world
-* Light and Dark themes | Protect your eyes
-* Subscriptions | Follow and group accounts
-* Polls | View results without needing to vote
-* Search | Find users and tweets
+* Privacy: No tracking, with all data local
+* Bookmarks: Save tweets locally and offline
+* Trends: See what's trending in the world
+* Light and Dark themes: Protect your eyes
+* Subscriptions: Follow and group accounts
+* Polls: View results without needing to vote
+* Search: Find users and tweets
 * And more!
 
 ## Screenshots
 
 | <img alt="Viewing subscriptions" src="https://fritter.cc/static/img/screenshot-subscriptions-300.662ad4d0cdd7.webp" width="218"/>| <img alt="Viewing groups" src="https://fritter.cc/static/img/screenshot-groups-300.ed850f7f077e.webp" width="218"/> | <img alt="Viewing a profile" src="https://fritter.cc/static/img/screenshot-profile-300.2689643a9596.webp" width="218"/> | <img alt="Tweet cards" src="https://fritter.cc/static/img/screenshot-cards-300.bc0e1aa4558d.webp" width="218"/> | <img alt="Viewing trends (and theming)" src="https://fritter.cc/static/img/screenshot-trends-300.f6519f716bd1.webp" width="218"/> |
 
-## Acknowledgments
-
-Icons made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com).
-
 ## Contribute
 If you'd like to help make Fritter even better, here are a just a few of the ways you can help!
 
 ### Report a bug
-If you've found a bug in Fritter, open a new issue, but please make sure to check that someone else hasn't reported it first.
+If you've found a bug in Fritter, open a [new issue](https://github.com/jonjomckay/fritter/issues/new/choose), but please make sure to check that someone else hasn't reported it first.
 
 ### Request a feature
-If you feel like something is missing from Fritter, feel free to open an issue about it, detailing exactly what you're looking for. We'll look it over, discuss it with the community, and see if it'll work!
+If you feel like something is missing from Fritter, feel free to [open an issue](https://github.com/jonjomckay/fritter/issues/new/choose) about it, detailing exactly what you're looking for. We'll look it over, discuss it with the community, and see if it'll work!
 
 ### Fix a bug
 If you're looking for something to dip your toes into the codebase, check if there are any issues labelled good first issue. Otherwise, if you see another issue you'd like to tackle, go for it - just fork the repository, push to a branch, and create a PR detailing your changes. We'll review it and merge it in, once it meets all our checks and balances!
@@ -95,6 +91,10 @@ There are various methods that can be used to donate financially. The majority a
 * [Google Pay](https://donate.stripe.com/eVa9BRgEd9R4et2cMM)
 * [Alipay](https://donate.stripe.com/eVa9BRgEd9R4et2cMM)
 * [Liberapay](https://liberapay.com/jonjomckay/)
-* Bitcoin | 1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg
+* Bitcoin (`1DaXsBJVi41fgKkKcw2Ln8noygTbdD7Srg`)
 * [Credit/debit card](https://donate.stripe.com/eVa9BRgEd9R4et2cMM)
 * [Apple Pay](https://donate.stripe.com/eVa9BRgEd9R4et2cMM)
+
+## Acknowledgments
+
+Icons made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com).
