@@ -153,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "export_your_data": MessageLookupByLibrary.simpleMessage("导出您的数据"),
         "feed": MessageLookupByLibrary.simpleMessage("最新"),
         "filters": MessageLookupByLibrary.simpleMessage("过滤器"),
+        "finish": MessageLookupByLibrary.simpleMessage("完毕"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("关注者"),
         "following": MessageLookupByLibrary.simpleMessage("正在关注"),
@@ -202,9 +203,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("媒体尺寸"),
         "medium": MessageLookupByLibrary.simpleMessage("中"),
         "missing_page": MessageLookupByLibrary.simpleMessage("缺失的页面"),
+        "mute_video_description":
+            MessageLookupByLibrary.simpleMessage("是否应默认将视频静音"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("将视频静音"),
         "name": MessageLookupByLibrary.simpleMessage("取个名字"),
         "never_send": MessageLookupByLibrary.simpleMessage("从不发送"),
         "newTrans": MessageLookupByLibrary.simpleMessage("新的"),
+        "next": MessageLookupByLibrary.simpleMessage("下一条"),
         "no": MessageLookupByLibrary.simpleMessage("不"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage("没有返回任何数据，这不应该发生。如果可能，请反馈错误！"),
@@ -271,6 +276,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "向开发人员发送匿名 Ping 以表明您正在使用 Fritter，并支持未来的开发"),
         "send_always": MessageLookupByLibrary.simpleMessage("总是发送"),
         "send_once": MessageLookupByLibrary.simpleMessage("发送一次"),
+        "share_base_url": MessageLookupByLibrary.simpleMessage("自定义分享 URL"),
+        "share_base_url_description":
+            MessageLookupByLibrary.simpleMessage("分享时使用自定义的基 URL"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage("分享推特内容"),
         "share_tweet_content_and_link":
             MessageLookupByLibrary.simpleMessage("分享推文内容和链接"),

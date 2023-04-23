@@ -182,6 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exportar seus dados"),
         "feed": MessageLookupByLibrary.simpleMessage("Feed"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtros"),
+        "finish": MessageLookupByLibrary.simpleMessage("Terminar"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Seguidores"),
         "following": MessageLookupByLibrary.simpleMessage("Seguindo"),
@@ -241,9 +242,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("Tamanho da mídia"),
         "medium": MessageLookupByLibrary.simpleMessage("Média"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Página ausente"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Se os vídeos devem ser silenciados por padrão"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("Silenciar vídeos"),
         "name": MessageLookupByLibrary.simpleMessage("Nome"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nunca enviar"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Novo"),
+        "next": MessageLookupByLibrary.simpleMessage("Próximo"),
         "no": MessageLookupByLibrary.simpleMessage("Não"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -328,6 +333,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Envie um ping não identificável para me informar que você está usando o Fritter e para ajudar no desenvolvimento futuro"),
         "send_always": MessageLookupByLibrary.simpleMessage("Enviar sempre"),
         "send_once": MessageLookupByLibrary.simpleMessage("Enviar uma vez"),
+        "share_base_url": MessageLookupByLibrary.simpleMessage(
+            "URL de compartilhamento personalizado"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Use um URL base personalizado ao compartilhar"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage(
             "Compartilhar conteúdo do tweet"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(

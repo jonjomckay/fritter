@@ -177,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تصدير بياناتك"),
         "feed": MessageLookupByLibrary.simpleMessage("التلقيم"),
         "filters": MessageLookupByLibrary.simpleMessage("المرشحات"),
+        "finish": MessageLookupByLibrary.simpleMessage("انهاء"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("المتابِعون"),
         "following": MessageLookupByLibrary.simpleMessage("المتابَعون"),
@@ -235,9 +236,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("حجم الوسائط"),
         "medium": MessageLookupByLibrary.simpleMessage("متوسط"),
         "missing_page": MessageLookupByLibrary.simpleMessage("صفحة مفقودة"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "لتحديد ما إذا كان يجب كتم مقاطع الفيديو افتراضيًا"),
+        "mute_videos":
+            MessageLookupByLibrary.simpleMessage("كتم صوت مقاطع الفيديو"),
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
         "never_send": MessageLookupByLibrary.simpleMessage("يا ويلك لو تبعث"),
         "newTrans": MessageLookupByLibrary.simpleMessage("الجديد"),
+        "next": MessageLookupByLibrary.simpleMessage("التالي"),
         "no": MessageLookupByLibrary.simpleMessage("لا"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -318,6 +324,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "أرسل ping غير محدد الهوية لإخباري بأنك تستخدم Fritter وللمساعدة في التطوير المستقبلي"),
         "send_always": MessageLookupByLibrary.simpleMessage("ابعث كل مرة"),
         "send_once": MessageLookupByLibrary.simpleMessage("ابعث مرة واحدة"),
+        "share_base_url":
+            MessageLookupByLibrary.simpleMessage("عنوان URL المخصص للمشاركة"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "استخدام عنوان URL أساسي مخصص عند المشاركة"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("مشاركة محتوى التغريدة"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(

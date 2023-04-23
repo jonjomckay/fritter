@@ -180,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exportovat vaše data"),
         "feed": MessageLookupByLibrary.simpleMessage("Zdroj"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtry"),
+        "finish": MessageLookupByLibrary.simpleMessage("Dokončit"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Sledující"),
         "following": MessageLookupByLibrary.simpleMessage("Sledování"),
@@ -241,9 +242,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "medium": MessageLookupByLibrary.simpleMessage("Střední"),
         "missing_page":
             MessageLookupByLibrary.simpleMessage("Chybějící stránka"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Zda mají být videa ve výchozím nastavení ztlumena"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage("Ztlumit videa"),
         "name": MessageLookupByLibrary.simpleMessage("Název"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nikdy neposílat"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nová"),
+        "next": MessageLookupByLibrary.simpleMessage("Další"),
         "no": MessageLookupByLibrary.simpleMessage("Ne"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -329,6 +334,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Pošlete mi neidentifikovatelný ping, abych věděl, že používáte Fritter, a abyste pomohli budoucímu vývoji"),
         "send_always": MessageLookupByLibrary.simpleMessage("Posílat vždy"),
         "send_once": MessageLookupByLibrary.simpleMessage("Poslat jednou"),
+        "share_base_url":
+            MessageLookupByLibrary.simpleMessage("Vlastní adresa URL sdílení"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Použít vlastní základní adresu URL při sdílení"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Sdílet obsah tweetu"),
         "share_tweet_content_and_link":

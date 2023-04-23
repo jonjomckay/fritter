@@ -181,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wyeksportuj swoje dane"),
         "feed": MessageLookupByLibrary.simpleMessage("Główna"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtry"),
+        "finish": MessageLookupByLibrary.simpleMessage("Zakończ"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Obserwujący"),
         "following": MessageLookupByLibrary.simpleMessage("Obserwowani"),
@@ -247,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Nazwa"),
         "never_send": MessageLookupByLibrary.simpleMessage("Nigdy nie wysyłaj"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nowa"),
+        "next": MessageLookupByLibrary.simpleMessage("Dalej"),
         "no": MessageLookupByLibrary.simpleMessage("Nie"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -330,6 +332,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Wyślij nieidentyfikujący ping, aby dać mi znać, że używasz Frittera, i pomóc w przyszłym rozwoju"),
         "send_always": MessageLookupByLibrary.simpleMessage("Wysyłaj zawsze"),
         "send_once": MessageLookupByLibrary.simpleMessage("Wyślij tylko raz"),
+        "share_base_url": MessageLookupByLibrary.simpleMessage(
+            "Niestandardowy URL udostępniania"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Używaj niestandardowej podstawy adresu URL podczas udostępniania"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Udostępnij treść tweeta"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(

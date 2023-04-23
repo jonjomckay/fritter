@@ -182,6 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Verilerinizi dışa aktarın"),
         "feed": MessageLookupByLibrary.simpleMessage("Akış"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtreler"),
+        "finish": MessageLookupByLibrary.simpleMessage("Bitir"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Takipçi"),
         "following": MessageLookupByLibrary.simpleMessage("Takip ediyor"),
@@ -241,9 +242,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("Medya boyutu"),
         "medium": MessageLookupByLibrary.simpleMessage("Orta"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Eksik sayfa"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Videoların öntanımlı olarak sesinin kapatılıp kapatılmayacağı"),
+        "mute_videos":
+            MessageLookupByLibrary.simpleMessage("Videoların sesini kapat"),
         "name": MessageLookupByLibrary.simpleMessage("Ad"),
         "never_send": MessageLookupByLibrary.simpleMessage("Asla gönderme"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Yeni"),
+        "next": MessageLookupByLibrary.simpleMessage("İleri"),
         "no": MessageLookupByLibrary.simpleMessage("Hayır"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -326,6 +332,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Fritter kullandığınızı bildirmek ve gelecekteki geliştirmelere yardımcı olmak için tanımlayıcı olmayan bir ping gönderin"),
         "send_always": MessageLookupByLibrary.simpleMessage("Her zaman gönder"),
         "send_once": MessageLookupByLibrary.simpleMessage("Bir kez gönder"),
+        "share_base_url":
+            MessageLookupByLibrary.simpleMessage("Özel paylaşım URL\'si"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Paylaşırken özel bir temel URL kullanın"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Tweet içeriğini paylaş"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(

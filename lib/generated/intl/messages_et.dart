@@ -184,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ekspordi oma andmed"),
         "feed": MessageLookupByLibrary.simpleMessage("Säutsuvoog"),
         "filters": MessageLookupByLibrary.simpleMessage("Filtrid"),
+        "finish": MessageLookupByLibrary.simpleMessage("Lõpeta"),
         "finished_with_snapshotData_users": m5,
         "followers": MessageLookupByLibrary.simpleMessage("Jälgijaid"),
         "following": MessageLookupByLibrary.simpleMessage("Jälgitavaid"),
@@ -245,10 +246,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Multimeedia suurus"),
         "medium": MessageLookupByLibrary.simpleMessage("Keskmised pildid"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Puuduv lehekülg"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Kas videoteheli peaks esitamisel olema vaikimisi summutatud"),
+        "mute_videos":
+            MessageLookupByLibrary.simpleMessage("Summuta videote heli"),
         "name": MessageLookupByLibrary.simpleMessage("Nimi"),
         "never_send":
             MessageLookupByLibrary.simpleMessage("Ära saada mitte kunagi"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Uus"),
+        "next": MessageLookupByLibrary.simpleMessage("Järgmine"),
         "no": MessageLookupByLibrary.simpleMessage("Ei"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
@@ -334,6 +340,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_always": MessageLookupByLibrary.simpleMessage("Saada alati"),
         "send_once":
             MessageLookupByLibrary.simpleMessage("Saada vaid sel korral"),
+        "share_base_url": MessageLookupByLibrary.simpleMessage(
+            "Kohandatud URL lingi jagamiseks"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Kasuta lingi jagamiseks kohandatud URL\'i"),
         "share_tweet_content":
             MessageLookupByLibrary.simpleMessage("Jaga säutsu sisu"),
         "share_tweet_content_and_link":

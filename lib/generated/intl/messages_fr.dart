@@ -247,6 +247,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "media_size": MessageLookupByLibrary.simpleMessage("Taille du média"),
         "medium": MessageLookupByLibrary.simpleMessage("Moyen"),
         "missing_page": MessageLookupByLibrary.simpleMessage("Page manquante"),
+        "mute_video_description": MessageLookupByLibrary.simpleMessage(
+            "Si les vidéos doivent être mises en sourdine par défaut"),
+        "mute_videos": MessageLookupByLibrary.simpleMessage(
+            "Mettre les vidéos en sourdine"),
         "name": MessageLookupByLibrary.simpleMessage("Nom"),
         "never_send": MessageLookupByLibrary.simpleMessage("Ne jamais envoyer"),
         "newTrans": MessageLookupByLibrary.simpleMessage("Nouveau"),
@@ -333,6 +337,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Envoyer un ping non identifiant pour me faire savoir que vous utilisez Fritter, et pour aider au développement futur"),
         "send_always": MessageLookupByLibrary.simpleMessage("Toujours envoyer"),
         "send_once": MessageLookupByLibrary.simpleMessage("Envoyer une fois"),
+        "share_base_url":
+            MessageLookupByLibrary.simpleMessage("URL de partage personnalisé"),
+        "share_base_url_description": MessageLookupByLibrary.simpleMessage(
+            "Utiliser une URL de base personnalisée lors du partage"),
         "share_tweet_content": MessageLookupByLibrary.simpleMessage(
             "Partager le contenu du tweet"),
         "share_tweet_content_and_link": MessageLookupByLibrary.simpleMessage(
