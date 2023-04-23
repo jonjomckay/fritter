@@ -184,6 +184,32 @@ class Twitter {
     'ext': 'mediaStats,highlightedLabel,hasNftAvatar,voiceInfo,enrichments,superFollowMetadata,unmentionInfo,editControl,collab_control,vibe,'
   };
 
+  static Map<String, bool> gqlFeatures = {
+    "blue_business_profile_image_shape_enabled": false,
+    "freedom_of_speech_not_reach_fetch_enabled": false,
+    "graphql_is_translatable_rweb_tweet_is_translatable_enabled": false,
+    "interactive_text_enabled": false,
+    "longform_notetweets_consumption_enabled": true,
+    "longform_notetweets_richtext_consumption_enabled": true,
+    "longform_notetweets_rich_text_read_enabled": false,
+    "responsive_web_edit_tweet_api_enabled": false,
+    "responsive_web_enhance_cards_enabled": false,
+    "responsive_web_graphql_exclude_directive_enabled": true,
+    "responsive_web_graphql_skip_user_profile_image_extensions_enabled": false,
+    "responsive_web_graphql_timeline_navigation_enabled": false,
+    "responsive_web_text_conversations_enabled": false,
+    "responsive_web_twitter_blue_verified_badge_is_enabled": true,
+    "spaces_2022_h2_clipping": true,
+    "spaces_2022_h2_spaces_communities": true,
+    "standardized_nudges_misinfo": false,
+    "tweet_awards_web_tipping_enabled": false,
+    "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled": false,
+    "tweetypie_unmention_optimization_enabled": false,
+    "verified_phone_label_enabled": false,
+    "vibe_api_enabled": false,
+    "view_counts_everywhere_api_enabled": false
+  };
+
   static Future<Profile> getProfileById(String id) async {
     var uri = Uri.https('twitter.com', '/i/api/graphql/Qs44y3K0SXxItjNi6mUFQA/UserByRestId', {
       'variables': jsonEncode({'userId': id, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
@@ -339,22 +365,35 @@ class Twitter {
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
-  static Future<TweetStatus> searchTweets(String query, bool includeReplies,
-      {int limit = 25, String? maxId, String? cursor, String mode = ''}) async {
-    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', {
-      ...defaultParams,
-      'count': limit.toString(),
-      'cursor': cursor,
-      'max_id': maxId,
-      'q': query,
-      'pc': '1',
-      'tweet_search_mode': mode,
-      'spelling_corrections': '1',
-    }));
+  static Future<TweetStatus> searchTweets(String query, bool includeReplies, {int limit = 25, String? cursor}) async {
+    var variables = {
+      "rawQuery": query,
+      "count": limit.toString(),
+      "product": 'Latest',
+      "withDownvotePerspective": false,
+      "withReactionsMetadata": false,
+      "withReactionsPerspective": false
+    };
 
+    if (cursor != null) {
+      variables['cursor'] = cursor;
+    }
+
+    var uri = Uri.https('twitter.com', '/i/api/graphql/gkjsKepM6gl_HmFWoWKfgg/SearchTimeline', {
+      'variables': jsonEncode(variables),
+      'features': jsonEncode(gqlFeatures)
+    });
+
+    var response = await _twitterApi.client.get(uri);
     var result = json.decode(response.body);
 
-    return createUnconversationedChains(result, 'sq-I-t', [], true, includeReplies);
+    var timeline = result?['data']?['search_by_raw_query']?['search_timeline'];
+    if (timeline == null) {
+      Catcher.reportException(SearchHasNoTimelineException(query));
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
+    }
+
+    return createUnconversationedChainsGraphql(timeline, 'tweet', [], true, includeReplies);
   }
 
   static Future<List<UserWithExtra>> searchUsers(String query, {int limit = 25, String? maxId, String? cursor}) async {
@@ -448,7 +487,12 @@ class Twitter {
     }
 
     if (cursorEntry != null) {
-      cursor = cursorEntry['content']['operation']['cursor']['value'];
+      var content = cursorEntry['content'];
+      if (content.containsKey('value')) {
+        cursor = content['value'];
+      } else {
+        cursor = content['operation']['cursor']['value'];
+      }
     } else {
       // Look for a "replaceEntry" with the cursor
       var cursorReplaceEntry =
@@ -462,8 +506,64 @@ class Twitter {
     return cursor;
   }
 
+  static TweetStatus createUnconversationedChainsGraphql(
+      Map<String, dynamic> result, String tweetIndicator, List<String> pinnedTweets, bool mapToThreads, bool includeReplies) {
+    var instructions = List.from(result['timeline']['instructions']);
+    if (instructions.isEmpty || !instructions.any((e) => e['type'] == 'TimelineAddEntries')) {
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
+    }
+
+    var addEntries = List.from(instructions.firstWhere((e) => e['type'] == 'TimelineAddEntries')['entries']);
+    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntries'));
+
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
+
+    var tweets = _createTweetsGraphql(tweetIndicator, addEntries, includeReplies);
+
+    // First, get all the IDs of the tweets we need to display
+    var tweetEntries = addEntries
+        .where((e) => e['entryId'].contains(tweetIndicator))
+        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
+        .map((e) => e['content']['itemContent']['tweet_results']['result']['rest_id'])
+        .cast<String>()
+        .toList();
+
+    Map<String, List<TweetWithCard>> conversations =
+    tweets.values.where((e) => tweetEntries.contains(e.idStr)).groupBy((e) {
+      // TODO: I don't think a flag is the right way to handle this
+      if (mapToThreads) {
+        // Then group the tweets-to-display by their conversation ID
+        return e.conversationIdStr;
+      }
+
+      return e.idStr;
+    }).cast<String, List<TweetWithCard>>();
+
+    List<TweetChain> chains = [];
+
+    // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
+    for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
+      var chainTweets = conversation.value.sorted((a, b) => a.idStr!.compareTo(b.idStr!)).toList();
+
+      chains.add(TweetChain(id: conversation.key, tweets: chainTweets, isPinned: false));
+    }
+
+    // If we want to show pinned tweets, add them before the chains that we already have
+    if (pinnedTweets.isNotEmpty) {
+      for (var id in pinnedTweets) {
+        // It's possible for the pinned tweet to either not exist, or not be returned, so handle that
+        if (tweets.containsKey(id)) {
+          chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
+        }
+      }
+    }
+
+    return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
+  }
+
   static TweetStatus createUnconversationedChains(
-      dynamic result, String tweetIndicator, List<String> pinnedTweets, bool mapToThreads, bool includeReplies) {
+      Map<String, dynamic> result, String tweetIndicator, List<String> pinnedTweets, bool mapToThreads, bool includeReplies) {
     var instructions = List.from(result['timeline']['instructions']);
     if (instructions.isEmpty || !instructions.any((e) => e.containsKey('addEntries'))) {
       return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
@@ -539,6 +639,40 @@ class Twitter {
 
     return List.from(result).map((e) => UserWithExtra.fromJson(e)).toList(growable: false);
   }
+
+  static Map<String, TweetWithCard> _createTweetsGraphql(
+      String entryPrefix, List<dynamic> allTweets, bool includeReplies) {
+    bool includeTweet(dynamic t) {
+      // Exclude any items that aren't tweets
+      if (!t['entryId'].startsWith(entryPrefix)) {
+        return false;
+      }
+
+      if (includeReplies) {
+        return true;
+      }
+
+      // TODO
+      return t['in_reply_to_status_id'] == null || t['in_reply_to_user_id'] == null;
+    }
+
+    var filteredTweets = allTweets.where(includeTweet);
+    
+    var globalTweets = Map.fromEntries(filteredTweets.map((e) {
+      return MapEntry(e['content']['itemContent']['tweet_results']['result']['rest_id'] as String, e['content']['itemContent']['tweet_results']['result']['legacy']);
+    }));
+
+    var globalUsers = Map.fromEntries(filteredTweets.map((e) {
+      return MapEntry(e['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['rest_id'] as String, e['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy']);
+    }));
+
+    var tweets = globalTweets.values
+        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
+        .toList();
+
+    return {for (var e in tweets) e.idStr!: e};
+  }
+
 
   static Map<String, TweetWithCard> _createTweets(
       String entryPrefix, Map<String, dynamic> result, bool includeReplies) {
@@ -762,5 +896,16 @@ class TwitterError {
   @override
   String toString() {
     return 'TwitterError{code: $code, message: $message, url: $uri}';
+  }
+}
+
+class SearchHasNoTimelineException implements SyntheticException {
+  final String? query;
+
+  SearchHasNoTimelineException(this.query);
+
+  @override
+  String toString() {
+    return 'The search has no timeline {query: $query}';
   }
 }
