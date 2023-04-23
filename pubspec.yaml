@@ -25,6 +25,13 @@ dependency_overrides:
     git:
       url: https://github.com/AhmedAlYousif/auto_direction.git
       ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
+  # Required until device_info_plus updates, as it transitively depends on an old version
+  file: ^6.1.4
+  # TODO: Remove once https://github.com/Ahmadre/FlutterIconPicker/pull/54 is merged
+  flutter_iconpicker:
+    git:
+      url: https://github.com/kechankrisna/FlutterIconPicker
+      ref: cc8878dbd9b3f4d7e29540dcd57d78896f9d9fb7
 
 dependencies:
   flutter:
@@ -35,11 +42,11 @@ dependencies:
   chewie: ^1.3.6
   crypto: 3.0.2
   dart_twitter_api: ^0.5.7+1
-  device_info_plus: ^7.0.0
+  device_info_plus: ^8.2.0
   device_preview: ^1.1.0
   dotted_border: ^2.0.0+3
   extended_image: ^6.3.4
-  extended_nested_scroll_view: ^5.1.3
+  extended_nested_scroll_view: ^6.0.0
   faker: ^2.1.0
   ffcache: ^1.1.0
   flex_color_scheme: ^6.1.1
