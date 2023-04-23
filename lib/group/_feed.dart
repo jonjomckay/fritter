@@ -230,39 +230,41 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
 
     var prefs = PrefService.of(context, listen: false);
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        _pagingController.refresh();
-      },
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
-          ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
-        ],
-        child: PagedListView<String?, TweetChain>(
-          scrollController: widget.scrollController,
-          pagingController: _pagingController,
-          addAutomaticKeepAlives: false,
-          builderDelegate: PagedChildBuilderDelegate(
-            itemBuilder: (context, conversation, index) {
-              return TweetConversation(
-                  id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
-            },
-            newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-              error: _pagingController.error[0],
-              stackTrace: _pagingController.error[1],
-              prefix: L10n.of(context).unable_to_load_the_next_page_of_tweets,
-              onRetry: () => _listTweets(_pagingController.firstPageKey),
-            ),
-            firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
-              error: _pagingController.error[0],
-              stackTrace: _pagingController.error[1],
-              prefix: L10n.of(context).unable_to_load_the_tweets_for_the_feed,
-              onRetry: () => _listTweets(_pagingController.nextPageKey),
-            ),
-            noItemsFoundIndicatorBuilder: (context) => Center(
-              child: Text(
-                L10n.of(context).could_not_find_any_tweets_from_the_last_7_days,
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _pagingController.refresh();
+        },
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+            ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+          ],
+          child: PagedListView<String?, TweetChain>(
+            scrollController: widget.scrollController,
+            pagingController: _pagingController,
+            addAutomaticKeepAlives: false,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (context, conversation, index) {
+                return TweetConversation(
+                    id: conversation.id, username: null, tweets: conversation.tweets, isPinned: conversation.isPinned);
+              },
+              newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+                error: _pagingController.error[0],
+                stackTrace: _pagingController.error[1],
+                prefix: L10n.of(context).unable_to_load_the_next_page_of_tweets,
+                onRetry: () => _listTweets(_pagingController.firstPageKey),
+              ),
+              firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
+                error: _pagingController.error[0],
+                stackTrace: _pagingController.error[1],
+                prefix: L10n.of(context).unable_to_load_the_tweets_for_the_feed,
+                onRetry: () => _listTweets(_pagingController.nextPageKey),
+              ),
+              noItemsFoundIndicatorBuilder: (context) => Center(
+                child: Text(
+                  L10n.of(context).could_not_find_any_tweets_from_the_last_7_days,
+                ),
               ),
             ),
           ),
