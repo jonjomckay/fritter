@@ -411,23 +411,15 @@ class Twitter {
       queryParameters['cursor'] = cursor;
     }
 
-    var response =
-        await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', queryParameters));
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/1.1/users/search.json', queryParameters));
 
-    var result = json.decode(response.body);
+    List result = json.decode(response.body);
 
-    // This is fairly similar to createUnconversationedChains
-    var instructions = List.from(result['timeline']['instructions']);
-    if (instructions.isEmpty) {
+    if (result.isEmpty) {
       return [];
     }
 
-    var users = result['globalObjects']['users'] as Map<String, dynamic>;
-
-    return List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'])
-        .where((element) => element['entryId'].startsWith('user-'))
-        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
-        .map((e) => users[e['content']['item']['content']['user']['id']])
+    return result
         .map((e) => UserWithExtra.fromJson(e))
         .toList();
   }
