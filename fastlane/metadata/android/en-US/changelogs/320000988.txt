@@ -1,0 +1,3 @@
+* Removed support for feeds, as Twitter have permanently blocked the functionality
+* Fixed the video player not responding on single tweets (#666)
+* Fixed long tweets by Twitter Blue users not being shown fully (#644)
