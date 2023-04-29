@@ -2566,6 +2566,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Add subscriptions`
+  String get add_subscriptions {
+    return Intl.message(
+      'Add subscriptions',
+      name: 'add_subscriptions',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

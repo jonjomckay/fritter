@@ -3,6 +3,8 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
+import 'package:fritter/subscriptions/_groups.dart';
+import 'package:fritter/subscriptions/_list.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +36,8 @@ class SubscriptionGroupScreen extends StatelessWidget {
   final String id;
   final List<Widget> actions;
 
-  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.actions}) : super(key: key);
+  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.actions})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +60,47 @@ class SubscriptionGroupScreen extends StatelessWidget {
               return Container();
             }
 
-            // TODO
-            if (group.subscriptions.isEmpty) {
-              return Scaffold(
-                body: Center(
-                  child: Text(L10n.of(context).this_group_contains_no_subscriptions),
-                ),
-              );
-            }
-
             return Scaffold(
               appBar: AppBar(
                 title: Text(group.name),
                 actions: actions,
               ),
-              body: Text('TODO: Display the group members here'),
+              body: Builder(builder: (context) {
+                if (group.subscriptions.isEmpty) {
+                  return Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              child: const Text('¯\\_(ツ)_/¯', style: TextStyle(fontSize: 32)),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(L10n.of(context).this_group_contains_no_subscriptions,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                  )),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              child: ElevatedButton(
+                                child: Text(L10n.current.add_subscriptions),
+                                onPressed: () async {
+                                  await openSubscriptionGroupDialog(context, group.id, group.name, group.icon);
+                                  await context.read<GroupModel>().loadGroup();
+                                },
+                              ),
+                            )
+                          ]));
+                }
+
+                return SubscriptionUsersList(subscriptions: group.subscriptions);
+              }),
             );
           },
         );

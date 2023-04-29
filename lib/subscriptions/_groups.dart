@@ -15,6 +15,14 @@ import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/user.dart';
 import 'package:provider/provider.dart';
 
+Future openSubscriptionGroupDialog(BuildContext context, String? id, String name, String icon) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return SubscriptionGroupEditDialog(id: id, name: name, icon: icon);
+      });
+}
+
 class SubscriptionGroups extends StatefulWidget {
   final ScrollController scrollController;
 
@@ -25,14 +33,6 @@ class SubscriptionGroups extends StatefulWidget {
 }
 
 class _SubscriptionGroupsState extends State<SubscriptionGroups> {
-  void openSubscriptionGroupDialog(String? id, String name, String icon) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return SubscriptionGroupEditDialog(id: id, name: name, icon: icon);
-        });
-  }
-
   Widget _createGroupCard(
       String id, String name, String icon, Color? color, int? numberOfMembers, void Function()? onLongPress) {
     var title = numberOfMembers == null ? name : '$name ($numberOfMembers)';
@@ -94,13 +94,13 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
               var e = state[actualIndex];
 
               return _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers,
-                      () => openSubscriptionGroupDialog(e.id, e.name, e.icon));
+                      () => openSubscriptionGroupDialog(context, e.id, e.name, e.icon));
             }
 
             return Card(
               child: InkWell(
                 onTap: () {
-                  openSubscriptionGroupDialog(null, '', defaultGroupIcon);
+                  openSubscriptionGroupDialog(context, null, '', defaultGroupIcon);
                 },
                 child: DottedBorder(
                   color: Theme.of(context).textTheme.caption!.color!,

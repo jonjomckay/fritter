@@ -55,27 +55,38 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
                 ]));
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          itemCount: state.length,
-          itemBuilder: (context, i) {
-            var user = state[i];
-            if (user is UserSubscription) {
-              return UserTile(user: user);
-            }
+        return SubscriptionUsersList(subscriptions: state);
+      },
+    );
+  }
+}
 
-            return ListTile(
-              dense: true,
-              leading: const SizedBox(width: 48, child: Icon(Icons.search)),
-              title: Text(user.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-              subtitle: Text(L10n.current.search_term),
-              trailing: SizedBox(
-                width: 36,
-                child: FollowButton(user: user),
-              ),
-              onTap: () => showSnackBar(context, icon: '🙈', message: L10n.current.functionality_unsupported),
-            );
-          },
+class SubscriptionUsersList extends StatelessWidget {
+  final List<Subscription> subscriptions;
+
+  const SubscriptionUsersList({Key? key, required this.subscriptions}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: subscriptions.length,
+      itemBuilder: (context, i) {
+        var user = subscriptions[i];
+        if (user is UserSubscription) {
+          return UserTile(user: user);
+        }
+
+        return ListTile(
+          dense: true,
+          leading: const SizedBox(width: 48, child: Icon(Icons.search)),
+          title: Text(user.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+          subtitle: Text(L10n.current.search_term),
+          trailing: SizedBox(
+            width: 36,
+            child: FollowButton(user: user),
+          ),
+          onTap: () => showSnackBar(context, icon: '🙈', message: L10n.current.functionality_unsupported),
         );
       },
     );

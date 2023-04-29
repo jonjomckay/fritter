@@ -32,7 +32,7 @@ IconData deserializeIconData(String iconData) {
 class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
   final String id;
 
-  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: []));
+  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', icon: defaultGroupIcon, subscriptions: []));
 
   Future<void> loadGroup() async {
     await execute(() async {
@@ -45,7 +45,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
             .map((e) => UserSubscription.fromMap(e))
             .toList(growable: false);
 
-        return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
+        return SubscriptionGroupGet(id: '-1', name: 'All', icon: group['icon'] as String, subscriptions: subscriptions);
       }
 
       var searchSubscriptions = (await database.rawQuery(
@@ -62,6 +62,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
       return SubscriptionGroupGet(
           id: group['id'] as String,
           name: group['name'] as String,
+          icon: group['icon'] as String,
           subscriptions: [...userSubscriptions, ...searchSubscriptions]);
     });
   }

@@ -181,11 +181,13 @@ class SubscriptionGroup with ToMappable {
 class SubscriptionGroupGet {
   final String id;
   final String name;
+  final String icon;
   final List<Subscription> subscriptions;
 
   SubscriptionGroupGet(
       {required this.id,
       required this.name,
+      required this.icon,
       required this.subscriptions});
 }
 
