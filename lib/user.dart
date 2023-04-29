@@ -203,7 +203,7 @@ class UserWithExtra extends User {
           : UserEntities.fromJson(json['entities'] as Map<String, dynamic>)
       ..description = json['description'] as String?
       ..protected = json['protected'] as bool?
-      ..verified = json['verified'] as bool?
+      ..verified = json['ext_is_blue_verified'] ?? json['verified'] as bool?
       ..status = json['status'] == null
           ? null
           : Tweet.fromJson(json['status'] as Map<String, dynamic>)
