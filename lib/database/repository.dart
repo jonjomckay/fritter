@@ -208,9 +208,7 @@ class Repository {
         })),
       ],
       20: [
-        // TODO: Remove feed-related stuff
-        SqlMigration('ALTER TABLE $tableSubscriptionGroup DROP COLUMN include_replies'),
-        SqlMigration('ALTER TABLE $tableSubscriptionGroup DROP COLUMN include_retweets'),
+        // Remove feed-related stuff
         SqlMigration('DROP TABLE IF EXISTS $doNotUseTableFeedGroupChunk'),
         SqlMigration('DROP TABLE IF EXISTS $doNotUseTableFeedGroupCursor'),
       ],
