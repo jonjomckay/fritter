@@ -182,15 +182,11 @@ class SubscriptionGroupGet {
   final String id;
   final String name;
   final List<Subscription> subscriptions;
-  bool includeReplies;
-  bool includeRetweets;
 
   SubscriptionGroupGet(
       {required this.id,
       required this.name,
-      required this.subscriptions,
-      required this.includeReplies,
-      required this.includeRetweets});
+      required this.subscriptions});
 }
 
 class SubscriptionGroupEdit {

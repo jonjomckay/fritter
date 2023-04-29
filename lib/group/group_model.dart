@@ -5,7 +5,6 @@ import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/database/repository.dart';
@@ -33,7 +32,7 @@ IconData deserializeIconData(String iconData) {
 class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
   final String id;
 
-  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: [], includeRetweets: false, includeReplies: false));
+  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', subscriptions: []));
 
   Future<void> loadGroup() async {
     await execute(() async {
@@ -46,7 +45,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
             .map((e) => UserSubscription.fromMap(e))
             .toList(growable: false);
 
-        return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions, includeReplies: group['include_replies'] == 1, includeRetweets: group['include_retweets'] == 1);
+        return SubscriptionGroupGet(id: '-1', name: 'All', subscriptions: subscriptions);
       }
 
       var searchSubscriptions = (await database.rawQuery(
@@ -63,29 +62,7 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
       return SubscriptionGroupGet(
           id: group['id'] as String,
           name: group['name'] as String,
-          subscriptions: [...userSubscriptions, ...searchSubscriptions],
-          includeReplies: group['include_replies'] == 1,
-          includeRetweets: group['include_retweets'] == 1);
-    });
-  }
-
-  Future<void> toggleSubscriptionGroupIncludeReplies(bool value) async {
-    await execute(() async {
-      (await Repository.writable())
-          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_replies = ? WHERE id = ?', [value, state.id]);
-
-      state.includeReplies = value;
-      return state;
-    });
-  }
-
-  Future<void> toggleSubscriptionGroupIncludeRetweets(bool value) async {
-    await execute(() async {
-      (await Repository.writable())
-          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_retweets = ? WHERE id = ?', [value, state.id]);
-
-      state.includeRetweets = value;
-      return state;
+          subscriptions: [...userSubscriptions, ...searchSubscriptions]);
     });
   }
 }
