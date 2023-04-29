@@ -12,7 +12,6 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
-import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:pref/pref.dart';
@@ -61,7 +60,6 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
-          ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
         ],
         child: ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(
           store: model,

@@ -13,6 +13,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/tweet_exceptions.dart';
 import 'package:fritter/ui/dates.dart';
 import 'package:fritter/ui/errors.dart';

@@ -228,20 +228,16 @@ class _VideoState extends State<_Video> {
   }
 }
 
-class VideoContextState extends ChangeNotifier{
-
+class VideoContextState extends ChangeNotifier {
   bool isMuted;
 
   VideoContextState(this.isMuted);
 
-  void setIsMuted(double volume){
-
-    if(isMuted && volume > 0 || !isMuted && volume == 0){
+  void setIsMuted(double volume) {
+    if (isMuted && volume > 0 || !isMuted && volume == 0) {
       isMuted = !isMuted;
     }
 
+    notifyListeners();
   }
-
 }
-
-

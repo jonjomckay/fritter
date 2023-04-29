@@ -10,7 +10,6 @@ import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_saved.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/profile/profile_model.dart';
-import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
@@ -484,8 +483,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
           },
           body: MultiProvider(
             providers: [
-              ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
-              ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+              ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive)))
             ],
             child: TabBarView(
               controller: _tabController,

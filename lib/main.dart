@@ -33,6 +33,7 @@ import 'package:fritter/status.dart';
 import 'package:fritter/subscriptions/_import.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/trends/trends_model.dart';
+import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
@@ -299,6 +300,7 @@ Future<void> main() async {
               Provider(create: (context) => trendLocationModel),
               Provider(create: (context) => TrendLocationsModel()),
               Provider(create: (context) => TrendsModel(trendLocationModel)),
+              ChangeNotifierProvider(create: (_) => VideoContextState(prefService.get(optionMediaDefaultMute))),
             ],
             child: DevicePreview(
               enabled: !kReleaseMode,
