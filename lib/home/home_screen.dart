@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/home/_feed.dart';
+import 'package:fritter/group/group_screen.dart';
 import 'package:fritter/home/_groups.dart';
 import 'package:fritter/home/_missing.dart';
 import 'package:fritter/home/_saved.dart';
@@ -45,7 +45,6 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
 }
 
 final List<NavigationPage> defaultHomePages = [
-  NavigationPage('feed', (c) => L10n.of(c).feed, Icons.rss_feed),
   NavigationPage('subscriptions', (c) => L10n.of(c).subscriptions, Icons.subscriptions),
   NavigationPage('groups', (c) => L10n.of(c).groups, Icons.group),
   NavigationPage('trending', (c) => L10n.of(c).trending, Icons.trending_up),
@@ -118,12 +117,10 @@ class _HomeScreenState extends State<_HomeScreen> {
             return [
               ..._pages.map((e) {
                 if (e.id.startsWith('group-')) {
-                  return FeedScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), name: e.titleBuilder(context));
+                  return SubscriptionGroupScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), actions: createCommonAppBarActions(context));
                 }
 
                 switch (e.id) {
-                  case 'feed':
-                    return FeedScreen(scrollController: scrollController, id: '-1', name: L10n.current.feed);
                   case 'subscriptions':
                     return const SubscriptionsScreen();
                   case 'groups':

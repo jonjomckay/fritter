@@ -25,17 +25,16 @@ class GroupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as GroupScreenArguments;
 
-    return SubscriptionGroupScreen(scrollController: ScrollController(), id: args.id, name: args.name, actions: const []);
+    return SubscriptionGroupScreen(scrollController: ScrollController(), id: args.id, actions: const []);
   }
 }
 
 class SubscriptionGroupScreen extends StatelessWidget {
   final ScrollController scrollController;
   final String id;
-  final String name;
   final List<Widget> actions;
 
-  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.name, required this.actions}) : super(key: key);
+  const SubscriptionGroupScreen({Key? key, required this.scrollController, required this.id, required this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +69,7 @@ class SubscriptionGroupScreen extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text(group.name),
+                actions: actions,
               ),
               body: Text('TODO: Display the group members here'),
             );
