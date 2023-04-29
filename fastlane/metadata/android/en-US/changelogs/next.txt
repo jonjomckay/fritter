@@ -1,1 +1,1 @@
-
+* Removed support for feeds, as Twitter have permanently blocked the functionality
