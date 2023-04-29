@@ -295,7 +295,6 @@ Future<void> main() async {
               ChangeNotifierProvider(create: (context) => importDataModel),
               Provider(create: (context) => subscriptionsModel),
               Provider(create: (context) => SavedTweetModel()),
-              Provider(create: (context) => SearchTweetsModel()),
               Provider(create: (context) => SearchUsersModel()),
               Provider(create: (context) => trendLocationModel),
               Provider(create: (context) => TrendLocationsModel()),

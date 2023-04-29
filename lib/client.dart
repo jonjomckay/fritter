@@ -6,7 +6,6 @@ import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
-import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile_model.dart';
@@ -365,37 +364,6 @@ class Twitter {
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
-  static Future<TweetStatus> searchTweets(String query, bool includeReplies, {int limit = 25, String? cursor}) async {
-    var variables = {
-      "rawQuery": query,
-      "count": limit.toString(),
-      "product": 'Latest',
-      "withDownvotePerspective": false,
-      "withReactionsMetadata": false,
-      "withReactionsPerspective": false
-    };
-
-    if (cursor != null) {
-      variables['cursor'] = cursor;
-    }
-
-    var uri = Uri.https('twitter.com', '/i/api/graphql/gkjsKepM6gl_HmFWoWKfgg/SearchTimeline', {
-      'variables': jsonEncode(variables),
-      'features': jsonEncode(gqlFeatures)
-    });
-
-    var response = await _twitterApi.client.get(uri);
-    var result = json.decode(response.body);
-
-    var timeline = result?['data']?['search_by_raw_query']?['search_timeline'];
-    if (timeline == null) {
-      Catcher.reportException(SearchHasNoTimelineException(query));
-      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
-    }
-
-    return createUnconversationedChainsGraphql(timeline, 'tweet', [], true, includeReplies);
-  }
-
   static Future<List<UserWithExtra>> searchUsers(String query, {int limit = 25, String? maxId, String? cursor}) async {
     var queryParameters = {
       ...defaultParams,
@@ -498,62 +466,6 @@ class Twitter {
     return cursor;
   }
 
-  static TweetStatus createUnconversationedChainsGraphql(
-      Map<String, dynamic> result, String tweetIndicator, List<String> pinnedTweets, bool mapToThreads, bool includeReplies) {
-    var instructions = List.from(result['timeline']['instructions']);
-    if (instructions.isEmpty || !instructions.any((e) => e['type'] == 'TimelineAddEntries')) {
-      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
-    }
-
-    var addEntries = List.from(instructions.firstWhere((e) => e['type'] == 'TimelineAddEntries')['entries']);
-    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntry'));
-
-    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
-    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
-
-    var tweets = _createTweetsGraphql(tweetIndicator, addEntries, includeReplies);
-
-    // First, get all the IDs of the tweets we need to display
-    var tweetEntries = addEntries
-        .where((e) => e['entryId'].contains(tweetIndicator))
-        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
-        .map((e) => e['content']['itemContent']['tweet_results']['result']['rest_id'])
-        .cast<String>()
-        .toList();
-
-    Map<String, List<TweetWithCard>> conversations =
-    tweets.values.where((e) => tweetEntries.contains(e.idStr)).groupBy((e) {
-      // TODO: I don't think a flag is the right way to handle this
-      if (mapToThreads) {
-        // Then group the tweets-to-display by their conversation ID
-        return e.conversationIdStr;
-      }
-
-      return e.idStr;
-    }).cast<String, List<TweetWithCard>>();
-
-    List<TweetChain> chains = [];
-
-    // Order all the conversations by newest first (assuming the ID is an incrementing key), and create a chain from them
-    for (var conversation in conversations.entries.sorted((a, b) => b.key.compareTo(a.key))) {
-      var chainTweets = conversation.value.sorted((a, b) => a.idStr!.compareTo(b.idStr!)).toList();
-
-      chains.add(TweetChain(id: conversation.key, tweets: chainTweets, isPinned: false));
-    }
-
-    // If we want to show pinned tweets, add them before the chains that we already have
-    if (pinnedTweets.isNotEmpty) {
-      for (var id in pinnedTweets) {
-        // It's possible for the pinned tweet to either not exist, or not be returned, so handle that
-        if (tweets.containsKey(id)) {
-          chains.insert(0, TweetChain(id: id, tweets: [tweets[id]!], isPinned: true));
-        }
-      }
-    }
-
-    return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
-  }
-
   static TweetStatus createUnconversationedChains(
       Map<String, dynamic> result, String tweetIndicator, List<String> pinnedTweets, bool mapToThreads, bool includeReplies) {
     var instructions = List.from(result['timeline']['instructions']);
@@ -631,40 +543,6 @@ class Twitter {
 
     return List.from(result).map((e) => UserWithExtra.fromJson(e)).toList(growable: false);
   }
-
-  static Map<String, TweetWithCard> _createTweetsGraphql(
-      String entryPrefix, List<dynamic> allTweets, bool includeReplies) {
-    bool includeTweet(dynamic t) {
-      // Exclude any items that aren't tweets
-      if (!t['entryId'].startsWith(entryPrefix)) {
-        return false;
-      }
-
-      if (includeReplies) {
-        return true;
-      }
-
-      // TODO
-      return t['in_reply_to_status_id'] == null || t['in_reply_to_user_id'] == null;
-    }
-
-    var filteredTweets = allTweets.where(includeTweet);
-    
-    var globalTweets = Map.fromEntries(filteredTweets.map((e) {
-      return MapEntry(e['content']['itemContent']['tweet_results']['result']['rest_id'] as String, e['content']['itemContent']['tweet_results']['result']['legacy']);
-    }));
-
-    var globalUsers = Map.fromEntries(filteredTweets.map((e) {
-      return MapEntry(e['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['rest_id'] as String, e['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy']);
-    }));
-
-    var tweets = globalTweets.values
-        .map((e) => TweetWithCard.fromCardJson(globalTweets, globalUsers, e))
-        .toList();
-
-    return {for (var e in tweets) e.idStr!: e};
-  }
-
 
   static Map<String, TweetWithCard> _createTweets(
       String entryPrefix, Map<String, dynamic> result, bool includeReplies) {
@@ -888,16 +766,5 @@ class TwitterError {
   @override
   String toString() {
     return 'TwitterError{code: $code, message: $message, url: $uri}';
-  }
-}
-
-class SearchHasNoTimelineException implements SyntheticException {
-  final String? query;
-
-  SearchHasNoTimelineException(this.query);
-
-  @override
-  String toString() {
-    return 'The search has no timeline {query: $query}';
   }
 }

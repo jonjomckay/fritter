@@ -185,6 +185,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter says access to this is forbidden"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter blue"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "This functionality is no longer supported by Twitter!"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Groups"),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
@@ -10,19 +9,16 @@ import 'package:fritter/profile/profile.dart';
 import 'package:fritter/search/search_model.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/tweet/_video.dart';
-import 'package:fritter/tweet/tweet.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
-import 'package:fritter/utils/notifiers.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 
 class SearchArguments {
-  final int initialTab;
   final String? query;
   final bool focusInputOnOpen;
 
-  SearchArguments(this.initialTab, {this.query, this.focusInputOnOpen = false});
+  SearchArguments({this.query, this.focusInputOnOpen = false});
 }
 
 class SearchScreen extends StatelessWidget {
@@ -32,18 +28,16 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)!.settings.arguments as SearchArguments;
 
-    return _SearchScreen(
-        initialTab: arguments.initialTab, query: arguments.query, focusInputOnOpen: arguments.focusInputOnOpen);
+    return _SearchScreen(query: arguments.query, focusInputOnOpen: arguments.focusInputOnOpen);
   }
 }
 
 
 class _SearchScreen extends StatefulWidget {
-  final int initialTab;
   final String? query;
   final bool focusInputOnOpen;
 
-  const _SearchScreen({Key? key, required this.initialTab, this.query, this.focusInputOnOpen = false}) : super(key: key);
+  const _SearchScreen({Key? key, this.query, this.focusInputOnOpen = false}) : super(key: key);
 
   @override
   State<_SearchScreen> createState() => _SearchScreenState();
@@ -53,15 +47,9 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
   final TextEditingController _queryController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  late TabController _tabController;
-  late CombinedChangeNotifier _bothControllers;
-
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(length: 2, vsync: this, initialIndex: widget.initialTab);
-    _bothControllers = CombinedChangeNotifier(_tabController, _queryController);
 
     if (widget.focusInputOnOpen) {
       _focusNode.requestFocus();
@@ -98,7 +86,7 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
           title: TextField(
             controller: _queryController,
             focusNode: _focusNode,
-            style: searchTheme.textTheme.headline6,
+            style: searchTheme.textTheme.titleLarge,
             textInputAction: TextInputAction.search,
           ),
           actions: [
@@ -107,17 +95,15 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
               store: subscriptionsModel,
               onState: (_, state) {
                 return AnimatedBuilder(
-                  animation: _bothControllers,
+                  animation: _queryController,
                   builder: (context, child) {
                     var id = _queryController.text;
 
-                    if (_tabController.index == 1) {
-                      var currentlyFollowed = state.any((element) => element.id == id);
-                      if (!currentlyFollowed) {
-                        return IconButton(icon: const Icon(Icons.save), onPressed: () async {
-                          await subscriptionsModel.toggleSubscribe(SearchSubscription(id: id, createdAt: DateTime.now()), currentlyFollowed);
-                        });
-                      }
+                    var currentlyFollowed = state.any((element) => element.id == id);
+                    if (!currentlyFollowed) {
+                      return IconButton(icon: const Icon(Icons.save), onPressed: () async {
+                        await subscriptionsModel.toggleSubscribe(SearchSubscription(id: id, createdAt: DateTime.now()), currentlyFollowed);
+                      });
                     }
 
                     return const IconButton(icon: Icon(Icons.save), onPressed: null);
@@ -129,33 +115,19 @@ class _SearchScreenState extends State<_SearchScreen> with SingleTickerProviderS
         ),
         body: Column(
           children: [
-            Material(
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              child: TabBar(controller: _tabController, tabs: const [
-                Tab(icon: Icon(Icons.person)),
-                Tab(icon: Icon(Icons.comment)),
-              ]),
-            ),
             MultiProvider(
               providers: [
-                ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
-                ChangeNotifierProvider<VideoContextState>(create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
+                ChangeNotifierProvider<TweetContextState>(
+                    create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+                ChangeNotifierProvider<VideoContextState>(
+                    create: (_) => VideoContextState(prefs.get(optionMediaDefaultMute))),
               ],
               child: Expanded(
-                  child: TabBarView(controller: _tabController, children: [
-                    TweetSearchResultList<SearchUsersModel, UserWithExtra>(
-                        queryController: _queryController,
-                        store: context.read<SearchUsersModel>(),
-                        searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
-                        itemBuilder: (context, user) => UserTile(user: UserSubscription.fromUser(user))),
-                    TweetSearchResultList<SearchTweetsModel, TweetWithCard>(
-                        queryController: _queryController,
-                        store: context.read<SearchTweetsModel>(),
-                        searchFunction: (q) => context.read<SearchTweetsModel>().searchTweets(q),
-                        itemBuilder: (context, item) {
-                          return TweetTile(tweet: item, clickable: true);
-                        })
-                  ])),
+                  child: TweetSearchResultList<SearchUsersModel, UserWithExtra>(
+                      queryController: _queryController,
+                      store: context.read<SearchUsersModel>(),
+                      searchFunction: (q) => context.read<SearchUsersModel>().searchUsers(q),
+                      itemBuilder: (context, user) => UserTile(user: UserSubscription.fromUser(user)))),
             )
           ],
         ),

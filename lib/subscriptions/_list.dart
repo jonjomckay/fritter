@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
-import 'package:fritter/search/search.dart';
 import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
@@ -74,9 +73,7 @@ class _SubscriptionUsersState extends State<SubscriptionUsers> {
                 width: 36,
                 child: FollowButton(user: user),
               ),
-              onTap: () {
-                Navigator.pushNamed(context, routeSearch, arguments: SearchArguments(1, focusInputOnOpen: false, query: user.id));
-              },
+              onTap: () => showSnackBar(context, icon: '🙈', message: L10n.current.functionality_unsupported),
             );
           },
         );
