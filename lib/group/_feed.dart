@@ -165,16 +165,18 @@ class _SubscriptionGroupFeedState extends State<SubscriptionGroupFeed> {
           var query = _buildSearchQuery(chunk.users);
           var result = await Twitter.searchTweets(query, widget.includeReplies, limit: 100, cursor: searchCursor);
 
-          tweets.addAll(result.chains);
+          if (result.chains.isNotEmpty) {
+            tweets.addAll(result.chains);
 
-          // Make sure we insert the set of cursors for this latest chunk, ready for the next time we paginate
-          await repository.insert(tableFeedGroupChunk, {
-            'cursor_id': int.parse(nextCursor),
-            'hash': hash,
-            'cursor_top': result.cursorTop,
-            'cursor_bottom': result.cursorBottom,
-            'response': jsonEncode(result.chains.map((e) => e.toJson()).toList())
-          });
+            // Make sure we insert the set of cursors for this latest chunk, ready for the next time we paginate
+            await repository.insert(tableFeedGroupChunk, {
+              'cursor_id': int.parse(nextCursor),
+              'hash': hash,
+              'cursor_top': result.cursorTop,
+              'cursor_bottom': result.cursorBottom,
+              'response': jsonEncode(result.chains.map((e) => e.toJson()).toList())
+            });
+          }
 
           return tweets;
         }));

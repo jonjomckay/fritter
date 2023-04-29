@@ -411,23 +411,15 @@ class Twitter {
       queryParameters['cursor'] = cursor;
     }
 
-    var response =
-        await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/search/adaptive.json', queryParameters));
+    var response = await _twitterApi.client.get(Uri.https('api.twitter.com', '/1.1/users/search.json', queryParameters));
 
-    var result = json.decode(response.body);
+    List result = json.decode(response.body);
 
-    // This is fairly similar to createUnconversationedChains
-    var instructions = List.from(result['timeline']['instructions']);
-    if (instructions.isEmpty) {
+    if (result.isEmpty) {
       return [];
     }
 
-    var users = result['globalObjects']['users'] as Map<String, dynamic>;
-
-    return List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries'])
-        .where((element) => element['entryId'].startsWith('user-'))
-        .sorted((a, b) => b['sortIndex'].compareTo(a['sortIndex']))
-        .map((e) => users[e['content']['item']['content']['user']['id']])
+    return result
         .map((e) => UserWithExtra.fromJson(e))
         .toList();
   }
@@ -496,10 +488,10 @@ class Twitter {
     } else {
       // Look for a "replaceEntry" with the cursor
       var cursorReplaceEntry =
-          repEntries.firstWhere((e) => e['replaceEntry']['entryIdToReplace'].contains(type), orElse: () => null);
+        repEntries.firstWhere((e) => e.containsKey('replaceEntry') ? e['replaceEntry']['entryIdToReplace'].contains(type) : e['entry']['content']['cursorType'].contains(type), orElse: () => null);
 
       if (cursorReplaceEntry != null) {
-        cursor = cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'];
+        cursor = cursorReplaceEntry.containsKey('replaceEntry') ? cursorReplaceEntry['replaceEntry']['entry']['content']['operation']['cursor']['value'] : cursorReplaceEntry['entry']['content']['value'];
       }
     }
 
@@ -514,7 +506,7 @@ class Twitter {
     }
 
     var addEntries = List.from(instructions.firstWhere((e) => e['type'] == 'TimelineAddEntries')['entries']);
-    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntries'));
+    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntry'));
 
     String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
     String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
