@@ -270,7 +270,7 @@ class Twitter {
       }
     }
 
-    var user = UserWithExtra.fromJson({...result['legacy'], 'id_str': result['rest_id']});
+    var user = UserWithExtra.fromJson({...result['legacy'], 'id_str': result['rest_id'], 'ext_is_blue_verified': result['is_blue_verified']});
     var pins = List<String>.from(result['legacy']['pinned_tweet_ids_str']);
 
     return Profile(user, pins);
