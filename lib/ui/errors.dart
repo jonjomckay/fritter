@@ -252,7 +252,18 @@ class FullPageErrorWidget extends FritterErrorWidget {
 
     var message = error;
     if (message is HttpException) {
-      var content = jsonDecode(message.body);
+      Map<String, dynamic> content;
+
+      var contentType = message.response.headers['content-type'];
+      if (contentType != null && contentType.contains('application/json')) {
+        content = jsonDecode(message.body);
+      } else {
+        content = {
+          'statusCode': message.statusCode,
+          'reasonPhrase': message.reasonPhrase,
+          'content': message.body,
+        };
+      }
 
       var hasErrors = content.containsKey('errors');
       if (hasErrors && content['errors'] != null) {
