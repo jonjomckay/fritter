@@ -208,100 +208,109 @@ Future<void> main() async {
     }
   });
 
-  await SentryFlutter.init((options) async {
-    // The native SDK tries to contact Sentry on startup, which we can't do as Sentry is opt-in, so check first
-    options.autoInitializeNativeSdk = prefService.get(optionErrorsSentryEnabled) ?? false;
-    options.attachStacktrace = true;
-    options.dsn = 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282';
-    options.sendDefaultPii = false;
-    options.enableAppLifecycleBreadcrumbs = true;
-    options.enableAutoNativeBreadcrumbs = true;
+  try {
+    await SentryFlutter.init((options) async {
+      // The native SDK tries to contact Sentry on startup, which we can't do as Sentry is opt-in, so check first
+      options.autoInitializeNativeSdk = prefService.get(optionErrorsSentryEnabled) ?? false;
+      options.attachStacktrace = true;
+      options.dsn = 'https://d29f676b4a1d4a21bbad5896841d89bf@o856922.ingest.sentry.io/5820282';
+      options.sendDefaultPii = false;
+      options.enableAppLifecycleBreadcrumbs = true;
+      options.enableAutoNativeBreadcrumbs = true;
 
-    options.beforeSend = (event, {hint}) {
-      var enabled = prefService.get(optionErrorsSentryEnabled);
-      if (enabled == null || enabled == false) {
-        return null;
+      options.beforeSend = (event, {hint}) {
+        var enabled = prefService.get(optionErrorsSentryEnabled);
+        if (enabled == null || enabled == false) {
+          return null;
+        }
+
+        // We don't want to report SocketExceptions as there's so many of them, and they're not super useful
+        if (event.throwable is SocketException) {
+          return null;
+        }
+
+        return event;
+      };
+    }, appRunner: () async {
+      var deviceInfo = DeviceInfoPlugin();
+
+      Sentry.configureScope((scope) async {
+        scope.setTag('flavor', getFlavor());
+
+        if (Platform.isAndroid) {
+          var androidDeviceInfo = await deviceInfo.androidInfo;
+          scope.setTag('versionSdk', androidDeviceInfo.version.sdkInt.toString());
+        }
+      });
+
+      if (Platform.isAndroid) {
+        FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+
+        const InitializationSettings settings =
+        InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+
+        await notifications
+            .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+            onDidReceiveNotificationResponse: (response) async {
+              var payload = response.payload;
+              if (payload != null && payload.startsWith('https://')) {
+                await openUri(payload);
+              }
+            });
+
+        var flavor = getFlavor();
+        var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
+        if (flavor != 'play' && shouldCheckForUpdates) {
+          // Don't check for updates for the Play Store build or if user disabled it.
+          checkForUpdates();
+        }
       }
 
-      // We don't want to report SocketExceptions as there's so many of them, and they're not super useful
-      if (event.throwable is SocketException) {
-        return null;
+      // Run the migrations early, so models work. We also do this later on so we can display errors to the user
+      try {
+        await Repository().migrate();
+      } catch (_) {
+        // Ignore, as we'll catch it later instead
       }
 
-      return event;
-    };
-  }, appRunner: () async {
-    var deviceInfo = await DeviceInfoPlugin().androidInfo;
+      var importDataModel = ImportDataModel();
 
-    Sentry.configureScope((scope) {
-      scope.setTag('flavor', getFlavor());
-      scope.setTag('versionSdk', deviceInfo.version.sdkInt.toString());
+      var groupsModel = GroupsModel(prefService);
+      await groupsModel.reloadGroups();
+
+      var homeModel = HomeModel(prefService, groupsModel);
+      await homeModel.loadPages();
+
+      var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
+      await subscriptionsModel.reloadSubscriptions();
+
+      var trendLocationModel = UserTrendLocationModel(prefService);
+
+      runApp(PrefService(
+          service: prefService,
+          child: MultiProvider(
+            providers: [
+              Provider(create: (context) => groupsModel),
+              Provider(create: (context) => homeModel),
+              ChangeNotifierProvider(create: (context) => importDataModel),
+              Provider(create: (context) => subscriptionsModel),
+              Provider(create: (context) => SavedTweetModel()),
+              Provider(create: (context) => SearchTweetsModel()),
+              Provider(create: (context) => SearchUsersModel()),
+              Provider(create: (context) => trendLocationModel),
+              Provider(create: (context) => TrendLocationsModel()),
+              Provider(create: (context) => TrendsModel(trendLocationModel)),
+            ],
+            child: DevicePreview(
+              enabled: !kReleaseMode,
+              builder: (context) => const FritterApp(),
+            ),
+          )));
     });
-
-    if (Platform.isAndroid) {
-      FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
-
-      const InitializationSettings settings =
-      InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
-
-      await notifications
-          .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
-          onDidReceiveNotificationResponse: (response) async {
-            var payload = response.payload;
-            if (payload != null && payload.startsWith('https://')) {
-              await openUri(payload);
-            }
-          });
-
-      var flavor = getFlavor();
-      var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
-      if (flavor != 'play' && shouldCheckForUpdates) {
-        // Don't check for updates for the Play Store build or if user disabled it.
-        checkForUpdates();
-      }
-    }
-
-    // Run the migrations early, so models work. We also do this later on so we can display errors to the user
-    try {
-      await Repository().migrate();
-    } catch (_) {
-      // Ignore, as we'll catch it later instead
-    }
-
-    var importDataModel = ImportDataModel();
-
-    var groupsModel = GroupsModel(prefService);
-    await groupsModel.reloadGroups();
-
-    var homeModel = HomeModel(prefService, groupsModel);
-    await homeModel.loadPages();
-
-    var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
-    await subscriptionsModel.reloadSubscriptions();
-
-    var trendLocationModel = UserTrendLocationModel(prefService);
-
-    runApp(PrefService(
-        service: prefService,
-        child: MultiProvider(
-          providers: [
-            Provider(create: (context) => groupsModel),
-            Provider(create: (context) => homeModel),
-            ChangeNotifierProvider(create: (context) => importDataModel),
-            Provider(create: (context) => subscriptionsModel),
-            Provider(create: (context) => SavedTweetModel()),
-            Provider(create: (context) => SearchTweetsModel()),
-            Provider(create: (context) => SearchUsersModel()),
-            Provider(create: (context) => trendLocationModel),
-            Provider(create: (context) => TrendLocationsModel()),
-            Provider(create: (context) => TrendsModel(trendLocationModel)),
-          ],
-          child: DevicePreview(
-            enabled: !kReleaseMode,
-            builder: (context) => const FritterApp(),
-          ),
-        )));
-  });
+  } catch (e, stackTrace) {
+    Catcher.reportException(e, stackTrace);
+    log('Unable to start Fritter', error: e, stackTrace: stackTrace);
+  }
 }
 
 class FritterApp extends StatefulWidget {
