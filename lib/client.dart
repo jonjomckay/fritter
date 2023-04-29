@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:fritter/catcher/errors.dart';
 import 'package:dart_twitter_api/src/utils/date_utils.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:faker/faker.dart';
 import 'package:ffcache/ffcache.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile_model.dart';
@@ -289,17 +289,17 @@ class Twitter {
         users: response.users?.map((e) => UserWithExtra.fromJson(e.toJson())).toList() ?? []);
   }
 
-  static List<TweetChain> createTweetChains(dynamic globalTweets, dynamic globalUsers, dynamic instructions) {
+  static List<TweetChain> createTweetChains(List<dynamic> addEntries) {
     List<TweetChain> replies = [];
 
-    for (var entry in instructions[0]['addEntries']['entries']) {
+    for (var entry in addEntries) {
       var entryId = entry['entryId'] as String;
       if (entryId.startsWith('tweet-')) {
-        var id = entry['content']['item']['content']['tweet']['id'];
+        var result = entry['content']['itemContent']['tweet_results']['result'];
 
         replies.add(TweetChain(
-            id: id,
-            tweets: [TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[id])],
+            id: result['rest_id'],
+            tweets: [TweetWithCard.fromGraphqlJson(result)],
             isPinned: false));
       }
 
@@ -307,21 +307,21 @@ class Twitter {
         // TODO: Use as the "next page" cursor
       }
 
-      if (entryId.startsWith('conversationThread')) {
+      if (entryId.startsWith('conversationthread')) {
         List<TweetWithCard> tweets = [];
 
-        for (var item in entry['content']['item']['content']['conversationThread']['conversationComponents']) {
-          var tombstone = item['tombstoneComponent'] ?? item['conversationTweetComponent']['tweet']['tombstone'];
-          if (tombstone != null) {
-            tweets.add(TweetWithCard.tombstone(tombstone['tombstoneInfo']));
+        // TODO: This is missing tombstone support
+        for (var item in entry['content']['items']) {
+          var itemType = item['item']?['itemContent']?['itemType'];
+          if (itemType == 'TimelineTweet') {
+            tweets.add(TweetWithCard.fromGraphqlJson(item['item']['itemContent']['tweet_results']['result']));
           } else {
-            var tweet = item['conversationTweetComponent']['tweet'];
-            tweets.add(TweetWithCard.fromCardJson(globalTweets, globalUsers, globalTweets[tweet['id']]));
+            Catcher.reportSyntheticException(UnknownTimelineItemType(itemType, entryId));
           }
         }
 
         // TODO: There must be a better way of getting the conversation ID
-        replies.add(TweetChain(id: entryId.replaceFirst('conversationThread-', ''), tweets: tweets, isPinned: false));
+        replies.add(TweetChain(id: entryId.replaceFirst('conversationthread-', ''), tweets: tweets, isPinned: false));
       }
     }
 
@@ -329,34 +329,44 @@ class Twitter {
   }
 
   static Future<TweetStatus> getTweet(String id, {String? cursor}) async {
-    var query = {
-      ...defaultParams,
-      'include_tweet_replies': '1',
-      'include_want_retweets': '1',
+    var variables = {
+      'focalTweetId': id,
+      'referrer': 'tweet',
+      'with_rux_injections': false,
+      'includePromotedContent': true,
+      'withCommunity': true,
+      'withQuickPromoteEligibilityTweetFields': true,
+      'withBirdwatchNotes': false,
+      'withVoice': true,
+      'withV2Timeline': true
     };
 
     if (cursor != null) {
-      query['cursor'] = cursor;
+      variables['cursor'] = cursor;
     }
 
-    var response =
-        await _twitterApi.client.get(Uri.https('api.twitter.com', '/2/timeline/conversation/$id.json', query));
+    var response = await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/BbCrSoXIR7z93lLCVFlQ2Q/TweetDetail', {
+      'variables': jsonEncode(variables),
+      'features': jsonEncode(gqlFeatures),
+    }));
 
     var result = json.decode(response.body);
 
-    var globalTweets = result['globalObjects']['tweets'];
-    var globalUsers = result['globalObjects']['users'];
-
-    var instructions = List.from(result['timeline']['instructions']);
+    var instructions = List.from(result?['data']?['threaded_conversation_with_injections_v2']?['instructions']);
     if (instructions.isEmpty) {
       return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
     }
 
-    var addEntries = List.from(instructions.firstWhere((e) => e.containsKey('addEntries'))['addEntries']['entries']);
-    var repEntries = List.from(instructions.where((e) => e.containsKey('replaceEntry')));
+    var addEntriesInstructions = instructions.firstWhereOrNull((e) => e['type'] == 'TimelineAddEntries');
+    if (addEntriesInstructions == null) {
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
+    }
+
+    var addEntries = List.from(addEntriesInstructions['entries']);
+    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntry'));
 
     // TODO: Could this use createUnconversationedChains at some point?
-    var chains = createTweetChains(globalTweets, globalUsers, instructions);
+    var chains = createTweetChains(addEntries);
 
     String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
     String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
@@ -573,9 +583,9 @@ class Twitter {
 }
 
 class TweetWithCard extends Tweet {
+  String? noteText;
   Map<String, dynamic>? card;
   String? conversationIdStr;
-  TweetWithCard? inReplyToWithCard;
   TweetWithCard? quotedStatusWithCard;
   TweetWithCard? retweetedStatusWithCard;
   bool? isTombstone;
@@ -587,7 +597,6 @@ class TweetWithCard extends Tweet {
     var json = super.toJson();
     json['card'] = card;
     json['conversationIdStr'] = conversationIdStr;
-    json['inReplyToWithCard'] = inReplyToWithCard?.toJson();
     json['quotedStatusWithCard'] = quotedStatusWithCard?.toJson();
     json['retweetedStatusWithCard'] = retweetedStatusWithCard?.toJson();
     json['isTombstone'] = isTombstone;
@@ -622,8 +631,6 @@ class TweetWithCard extends Tweet {
     tweetWithCard.inReplyToScreenName = tweet.inReplyToScreenName;
     tweetWithCard.inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
     tweetWithCard.inReplyToUserIdStr = tweet.inReplyToUserIdStr;
-    tweetWithCard.inReplyToWithCard =
-        e['inReplyToWithCard'] == null ? null : TweetWithCard.fromJson(e['inReplyToWithCard']);
     tweetWithCard.isQuoteStatus = tweet.isQuoteStatus;
     tweetWithCard.isTombstone = e['is_tombstone'];
     tweetWithCard.lang = tweet.lang;
@@ -651,7 +658,41 @@ class TweetWithCard extends Tweet {
     return tweetWithCard;
   }
 
+  factory TweetWithCard.fromGraphqlJson(Map<String, dynamic> result) {
+    var retweetedStatus = result['retweeted_status_result'] == null ? null : TweetWithCard.fromGraphqlJson(result['retweeted_status_result']['result']);
+    var quotedStatus = result['quoted_status_result'] == null ? null : TweetWithCard.fromGraphqlJson(result['quoted_status_result']['result']);
+    var user = result['core']?['user_results']?['result']?['legacy'] == null ? null : UserWithExtra.fromJson(result['core']['user_results']['result']['legacy']);
+
+    String? noteText;
+    Entities? noteEntities;
+
+    var noteResult = result['note_tweet']?['note_tweet_results']?['result'];
+    if (noteResult != null) {
+      noteText = noteResult['text'];
+      noteEntities = Entities.fromJson(noteResult['entity_set']);
+    }
+
+    return TweetWithCard.fromData(result['legacy'], noteText, noteEntities, user, retweetedStatus, quotedStatus);
+  }
+
   factory TweetWithCard.fromCardJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
+    var user = e['user_id_str'] == null ? null : UserWithExtra.fromJson(users[e['user_id_str']]);
+
+    var retweetedStatus = e['retweeted_status_id_str'] == null
+        ? null
+        : TweetWithCard.fromCardJson(tweets, users, tweets[e['retweeted_status_id_str']]);
+
+    // Some quotes aren't returned, even though we're given their ID, so double check and don't fail with a null value
+    TweetWithCard? quotedStatus;
+    var quoteId = e['quoted_status_id_str'];
+    if (quoteId != null && tweets[quoteId] != null) {
+      quotedStatus = TweetWithCard.fromCardJson(tweets, users, tweets[quoteId]);
+    }
+
+    return TweetWithCard.fromData(e, null, null, user, retweetedStatus, quotedStatus);
+  }
+
+  factory TweetWithCard.fromData(Map<String, dynamic> e, String? noteText, Entities? noteEntities, UserWithExtra? user, TweetWithCard? retweetedStatus, TweetWithCard? quotedStatus) {
     TweetWithCard tweet = TweetWithCard();
     tweet.card = e['card'];
     tweet.conversationIdStr = e['conversation_id_str'];
@@ -672,35 +713,18 @@ class TweetWithCard extends Tweet {
     tweet.quoteCount = e['quote_count'] as int?;
     tweet.quotedStatusIdStr = e['quoted_status_id_str'] as String?;
     tweet.quotedStatusPermalink =
-        e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
+    e['quoted_status_permalink'] == null ? null : QuotedStatusPermalink.fromJson(e['quoted_status_permalink']);
     tweet.replyCount = e['reply_count'] as int?;
     tweet.retweetCount = e['retweet_count'] as int?;
     tweet.retweeted = e['retweeted'] as bool?;
     tweet.source = e['source'] as String?;
     tweet.text = e['text'] ?? e['full_text'] as String?;
-    tweet.user = e['user_id_str'] == null ? null : UserWithExtra.fromJson(users[e['user_id_str']]);
+    tweet.user = user;
 
-    var retweetedStatus = e['retweeted_status_id_str'] == null
-        ? null
-        : TweetWithCard.fromCardJson(tweets, users, tweets[e['retweeted_status_id_str']]);
     tweet.retweetedStatus = retweetedStatus;
     tweet.retweetedStatusWithCard = retweetedStatus;
-
-    // Some quotes aren't returned, even though we're given their ID, so double check and don't fail with a null value
-    var quoteId = e['quoted_status_id_str'];
-    if (quoteId != null && tweets[quoteId] != null) {
-      var quotedStatus = TweetWithCard.fromCardJson(tweets, users, tweets[quoteId]);
-
-      tweet.quotedStatus = quotedStatus;
-      tweet.quotedStatusWithCard = quotedStatus;
-    }
-
-    var inReplyToId = e['in_reply_to_status_id_str'];
-    if (inReplyToId != null && tweets[inReplyToId] != null) {
-      var inReplyTo = TweetWithCard.fromCardJson(tweets, users, tweets[inReplyToId]);
-
-      tweet.inReplyToWithCard = inReplyTo;
-    }
+    tweet.quotedStatus = quotedStatus;
+    tweet.quotedStatusWithCard = quotedStatus;
 
     tweet.displayTextRange = (e['display_text_range'] as List<dynamic>?)?.map((e) => e as int).toList();
 
@@ -709,6 +733,12 @@ class TweetWithCard extends Tweet {
     tweet.truncated = null;
     tweet.place = null;
     tweet.possiblySensitiveAppealable = null;
+
+    tweet.noteText = noteText;
+    if (noteEntities != null) {
+      tweet.entities = noteEntities;
+      tweet.extendedEntities = noteEntities;
+    }
 
     return tweet;
   }
@@ -766,5 +796,17 @@ class TwitterError {
   @override
   String toString() {
     return 'TwitterError{code: $code, message: $message, url: $uri}';
+  }
+}
+
+class UnknownTimelineItemType with SyntheticException implements Exception {
+  final String type;
+  final String entryId;
+
+  UnknownTimelineItemType(this.type, this.entryId);
+
+  @override
+  String toString() {
+    return 'Unknown timeline item type: {type: $type, entryId: $entryId}';
   }
 }

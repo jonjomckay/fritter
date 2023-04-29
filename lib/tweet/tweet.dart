@@ -1,7 +1,7 @@
 import 'package:auto_direction/auto_direction.dart';
-import 'package:fritter/catcher/errors.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:fritter/catcher/errors.dart';
 import 'package:fritter/catcher/exceptions.dart';
 import 'package:fritter/client.dart';
 import 'package:fritter/constants.dart';
@@ -13,7 +13,6 @@ import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
 import 'package:fritter/tweet/_media.dart';
-import 'package:fritter/tweet/_video.dart';
 import 'package:fritter/tweet/tweet_exceptions.dart';
 import 'package:fritter/ui/dates.dart';
 import 'package:fritter/ui/errors.dart';
@@ -210,11 +209,19 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     // Get the text to display from the actual tweet, i.e. the retweet if there is one, otherwise we end up with "RT @" crap in our text
     var actualTweet = tweet.retweetedStatusWithCard ?? tweet;
 
+    // This is some super long text that I think only Twitter Blue users can write
+    var noteText = tweet.noteText;
+
     // Generate all the tweet entities (mentions, hashtags, etc.) from the tweet text
-    Runes tweetText = Runes(actualTweet.fullText ?? actualTweet.text!);
+    Runes tweetText = Runes(noteText ?? actualTweet.fullText ?? actualTweet.text!);
 
     // If we're not given a text display range, we just display the entire text
-    List<int> displayTextRange = actualTweet.displayTextRange ?? [0, tweetText.length];
+    List<int> displayTextRange;
+    if (noteText == null) {
+      displayTextRange = actualTweet.displayTextRange ?? [0, tweetText.length];
+    } else {
+      displayTextRange = [0, noteText.length];
+    }
 
     Iterable<int> runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
 
