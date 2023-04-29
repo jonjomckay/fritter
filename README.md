@@ -72,7 +72,6 @@ Supporting Fritter financially would allow me to lower my time spent on these ot
 #### Some of the things funding Fritter would help accelerate are:
 
 * Mastodon support - for being able to browse both Twitter and Mastodon content
-* Persistent timeline positions - allowing you to continue where you left off in a feed
 * Desktop support - allowing you to browse Twitter privately on a full-blown computer
 * UX/UI improvements - such as a compact view, and tweaks to improve usability
 * Nitter support - adding Nitter support back in, and helping to develop a stable API for Nitter itself
