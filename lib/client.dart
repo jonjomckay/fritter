@@ -661,7 +661,8 @@ class TweetWithCard extends Tweet {
   factory TweetWithCard.fromGraphqlJson(Map<String, dynamic> result) {
     var retweetedStatus = result['retweeted_status_result'] == null ? null : TweetWithCard.fromGraphqlJson(result['retweeted_status_result']['result']);
     var quotedStatus = result['quoted_status_result'] == null ? null : TweetWithCard.fromGraphqlJson(result['quoted_status_result']['result']);
-    var user = result['core']?['user_results']?['result']?['legacy'] == null ? null : UserWithExtra.fromJson(result['core']['user_results']['result']['legacy']);
+    var resCore = result['core']?['user_results']?['result'];
+    var user = resCore?['legacy'] == null ? null : UserWithExtra.fromJson({...resCore['legacy'], 'id_str': resCore['rest_id'], 'ext_is_blue_verified': resCore['is_blue_verified']});
 
     String? noteText;
     Entities? noteEntities;
