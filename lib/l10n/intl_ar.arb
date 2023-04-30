@@ -490,5 +490,9 @@
   "mute_video_description": "لتحديد ما إذا كان يجب كتم مقاطع الفيديو افتراضيًا",
   "@mute_video_description": {},
   "share_base_url_description": "استخدام عنوان URL أساسي مخصص عند المشاركة",
-  "@share_base_url_description": {}
+  "@share_base_url_description": {},
+  "functionality_unsupported": "لم يعد تويتر يدعم هذه الميزة!",
+  "@functionality_unsupported": {},
+  "add_subscriptions": "إضافة اشتراكات",
+  "@add_subscriptions": {}
 }
