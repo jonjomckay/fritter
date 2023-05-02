@@ -490,5 +490,9 @@
   "next": "Suivant",
   "@next": {},
   "finish": "Finir",
-  "@finish": {}
+  "@finish": {},
+  "functionality_unsupported": "Cette fonctionnalité n'est plus prise en charge par Twitter !",
+  "@functionality_unsupported": {},
+  "add_subscriptions": "Ajouter des abonnements",
+  "@add_subscriptions": {}
 }
