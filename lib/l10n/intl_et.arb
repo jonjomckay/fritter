@@ -490,5 +490,9 @@
   "share_base_url": "Kohandatud URL lingi jagamiseks",
   "@share_base_url": {},
   "next": "Järgmine",
-  "@next": {}
+  "@next": {},
+  "add_subscriptions": "Lisa tellimusi",
+  "@add_subscriptions": {},
+  "functionality_unsupported": "Twitter enam ei võimalda sellise funktsionaalsuse kasutamist!",
+  "@functionality_unsupported": {}
 }
