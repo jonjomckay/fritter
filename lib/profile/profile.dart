@@ -11,6 +11,7 @@ import 'package:fritter/profile/_saved.dart';
 import 'package:fritter/profile/_tweets.dart';
 import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/ui/errors.dart';
+import 'package:fritter/search/search.dart';
 import 'package:fritter/ui/physics.dart';
 import 'package:fritter/user.dart';
 import 'package:fritter/utils/urls.dart';
@@ -42,15 +43,14 @@ class ProfileScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as ProfileScreenArguments;
 
     return Provider(
-      create: (context) {
-        if (args.id != null) {
-          return ProfileModel()..loadProfileById(args.id!);
-        } else {
-          return ProfileModel()..loadProfileByScreenName(args.screenName!);
-        }
-      },
-      child: _ProfileScreen(id: args.id, screenName: args.screenName)
-    );
+        create: (context) {
+          if (args.id != null) {
+            return ProfileModel()..loadProfileById(args.id!);
+          } else {
+            return ProfileModel()..loadProfileByScreenName(args.screenName!);
+          }
+        },
+        child: _ProfileScreen(id: args.id, screenName: args.screenName));
   }
 }
 
@@ -172,8 +172,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
   List<InlineSpan> _addLinksToText(BuildContext context, String content) {
     List<InlineSpan> contentWidgets = [];
 
-    // Split the string by any mentions, and turn those into links
-    content.splitMapJoin(RegExp(r'(@)\w+'), onMatch: (match) {
+    // Split the string by any mentions or hashtags, and turn those into links
+    content.splitMapJoin(RegExp(r'(#|(?<=\W|^)@)\w+'), onMatch: (match) {
       var full = match.group(0);
       var type = match.group(1);
       if (type == null || full == null) {
@@ -181,6 +181,14 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       }
 
       var onTap = () async {};
+
+      if (type == '#') {
+        onTap = () async {
+          Navigator.pushNamed(context, routeSearch,
+              arguments: SearchArguments(1, focusInputOnOpen: false, query: full));
+        };
+      }
+
       if (type == '@') {
         onTap = () async {
           Navigator.pushNamed(context, routeProfile,
@@ -290,133 +298,139 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                       background: SafeArea(
-                        top: false,
-                        child: DefaultTextStyle.merge(
-                          style: const TextStyle(color: Colors.white),
-                          child: Stack(fit: StackFit.expand, children: <Widget>[
-                            Container(alignment: Alignment.topCenter, child: bannerImage),
-                            const DecoratedBox(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  colors: <Color>[Color(0xDD000000), Color(0x80000000)],
-                                ),
-                              ),
+                    top: false,
+                    child: DefaultTextStyle.merge(
+                      style: const TextStyle(color: Colors.white),
+                      child: Stack(fit: StackFit.expand, children: <Widget>[
+                        Container(alignment: Alignment.topCenter, child: bannerImage),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: <Color>[Color(0xDD000000), Color(0x80000000)],
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Container(
-                                      margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(16, profileStuffTop, 16, 0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
                                         children: [
-                                          Row(
+                                          Flexible(
+                                            child: Text(user.name!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                          ),
+                                          if (user.verified ?? false) const SizedBox(width: 6),
+                                          if (user.verified ?? false)
+                                            const Icon(Icons.verified, size: 24, color: Colors.blue)
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(bottom: 8),
+                                        child: Text('@${(user.screenName!)}',
+                                            style: const TextStyle(fontSize: 14, color: Colors.white70)),
+                                      ),
+                                      if (user.description != null && user.description!.isNotEmpty)
+                                        MeasureSize(
+                                          onChange: (size) {
+                                            setState(() {
+                                              descriptionHeight = size.height;
+                                              descriptionResized = true;
+                                            });
+                                          },
+                                          child: Container(
+                                              margin: const EdgeInsets.only(bottom: 8),
+                                              child: RichText(
+                                                  maxLines: 3,
+                                                  text: TextSpan(
+                                                      style: const TextStyle(height: 1.4),
+                                                      children: _addLinksToText(context, user.description!)))),
+                                        ),
+                                      MeasureSize(
+                                        onChange: (size) {
+                                          setState(() {
+                                            metadataHeight = size.height;
+                                            metadataResized = true;
+                                          });
+                                        },
+                                        child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              Flexible(
-                                                child: Text(user.name!,
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                                              ),
-                                              if (user.verified ?? false) const SizedBox(width: 6),
-                                              if (user.verified ?? false)
-                                                const Icon(Icons.verified, size: 24, color: Colors.blue)
-                                            ],
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(bottom: 8),
-                                            child: Text('@${(user.screenName!)}',
-                                                style: const TextStyle(fontSize: 14, color: Colors.white70)),
-                                          ),
-                                          if (user.description != null && user.description!.isNotEmpty)
-                                            MeasureSize(
-                                              onChange: (size) {
-                                                setState(() {
-                                                  descriptionHeight = size.height;
-                                                  descriptionResized = true;
-                                                });
-                                              },
-                                              child: Container(
-                                                  margin: const EdgeInsets.only(bottom: 8),
-                                                  child: RichText(
-                                                      maxLines: 3,
-                                                      text: TextSpan(
-                                                          style: const TextStyle(height: 1.4),
-                                                          children: _addLinksToText(context, user.description!)))),
-                                            ),
-                                          MeasureSize(
-                                            onChange: (size) {
-                                              setState(() {
-                                                metadataHeight = size.height;
-                                                metadataResized = true;
-                                              });
-                                            },
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  if (user.friendsCount != null)
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.person, size: 12, color: Colors.white),
-                                                          const SizedBox(width: 4),
-                                                          Text.rich(TextSpan(
-                                                              children: [
-                                                                TextSpan(text: '${widget.profile.user.friendsCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.following.toLowerCase()}', style: metadataTextStyle)
-                                                              ]
-                                                          )),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  if (user.followersCount != null)
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.person, size: 12, color: Colors.white),
-                                                          const SizedBox(width: 4),
-                                                          Text.rich(TextSpan(
-                                                              children: [
-                                                                TextSpan(text: '${widget.profile.user.followersCount}', style: metadataTextStyle.copyWith(fontWeight: FontWeight.w500)),
-                                                                TextSpan(text: ' ${L10n.current.followers.toLowerCase()}', style: metadataTextStyle)
-                                                              ]
-                                                          )),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  if (user.location != null && user.location!.isNotEmpty)
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.place, size: 12, color: Colors.white),
-                                                          const SizedBox(width: 4),
-                                                          Text(user.location!, style: metadataTextStyle),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  if (user.url != null && user.url!.isNotEmpty)
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.link, size: 12, color: Colors.white),
-                                                          const SizedBox(width: 4),
-                                                          Builder(builder: (context) {
-                                                            var url = user.entities?.url?.urls
-                                                                ?.firstWhere((element) => element.url == user.url);
+                                              if (user.friendsCount != null)
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      const Icon(Icons.person, size: 12, color: Colors.white),
+                                                      const SizedBox(width: 4),
+                                                      Text.rich(TextSpan(children: [
+                                                        TextSpan(
+                                                            text: '${widget.profile.user.friendsCount}',
+                                                            style: metadataTextStyle.copyWith(
+                                                                fontWeight: FontWeight.w500)),
+                                                        TextSpan(
+                                                            text: ' ${L10n.current.following.toLowerCase()}',
+                                                            style: metadataTextStyle)
+                                                      ])),
+                                                    ],
+                                                  ),
+                                                ),
+                                              if (user.followersCount != null)
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      const Icon(Icons.person, size: 12, color: Colors.white),
+                                                      const SizedBox(width: 4),
+                                                      Text.rich(TextSpan(children: [
+                                                        TextSpan(
+                                                            text: '${widget.profile.user.followersCount}',
+                                                            style: metadataTextStyle.copyWith(
+                                                                fontWeight: FontWeight.w500)),
+                                                        TextSpan(
+                                                            text: ' ${L10n.current.followers.toLowerCase()}',
+                                                            style: metadataTextStyle)
+                                                      ])),
+                                                    ],
+                                                  ),
+                                                ),
+                                              if (user.location != null && user.location!.isNotEmpty)
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      const Icon(Icons.place, size: 12, color: Colors.white),
+                                                      const SizedBox(width: 4),
+                                                      Text(user.location!, style: metadataTextStyle),
+                                                    ],
+                                                  ),
+                                                ),
+                                              if (user.url != null && user.url!.isNotEmpty)
+                                                Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        const Icon(Icons.link, size: 12, color: Colors.white),
+                                                        const SizedBox(width: 4),
+                                                        Builder(builder: (context) {
+                                                          var url = user.entities?.url?.urls
+                                                              ?.firstWhere((element) => element.url == user.url);
 
                                                           if (url == null) {
                                                             return Container();
@@ -427,7 +441,8 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
 
                                                           var textStyle = metadataTextStyle;
                                                           if (displayUrl == null || expandedUrl == null) {
-                                                            return Text(L10n.current.unsupported_url, style: textStyle.copyWith(color: theme.hintColor));
+                                                            return Text(L10n.current.unsupported_url,
+                                                                style: textStyle.copyWith(color: theme.hintColor));
                                                           }
 
                                                           return InkWell(
@@ -438,59 +453,62 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                                                         }),
                                                       ],
                                                     )),
-                                                  if (user.createdAt != null)
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const Icon(Icons.calendar_today, size: 12, color: Colors.white),
-                                                          const SizedBox(width: 4),
-                                                          Text(L10n.of(context)
+                                              if (user.createdAt != null)
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      const Icon(Icons.calendar_today, size: 12, color: Colors.white),
+                                                      const SizedBox(width: 4),
+                                                      Text(
+                                                          L10n.of(context)
                                                               .joined(DateFormat('MMMM yyyy').format(user.createdAt!)),
-                                                              style: metadataTextStyle
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                ]),
-                                          ),
-                                        ],
+                                                          style: metadataTextStyle),
+                                                    ],
+                                                  ),
+                                                ),
+                                            ]),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              alignment: Alignment.topRight,
-                              margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
-                              child: FollowButton(user: UserSubscription.fromUser(user), color: Colors.white),
-                            ),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.white,
-                                child: UserAvatar(uri: user.profileImageUrlHttps, size: 96),
-                              ),
-                            )
-                          ]),
+                            ],
+                          ),
                         ),
-                      )))
+                        Container(
+                          alignment: Alignment.topRight,
+                          margin: EdgeInsets.fromLTRB(128, profileImageTop + 64, 16, 16),
+                          child: FollowButton(user: UserSubscription.fromUser(user), color: Colors.white),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.fromLTRB(16, profileImageTop, 16, 16),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.white,
+                            child: UserAvatar(uri: user.profileImageUrlHttps, size: 96),
+                          ),
+                        )
+                      ]),
+                    ),
+                  )))
             ];
           },
           body: MultiProvider(
             providers: [
-              ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive)))
+              ChangeNotifierProvider<TweetContextState>(
+                  create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive)))
             ],
             child: TabBarView(
               controller: _tabController,
               physics: const LessSensitiveScrollPhysics(),
               children: [
-                ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
-                ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(
+                    user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
+                ProfileTweets(
+                    user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
                 ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
                 ProfileFollows(user: user, type: 'following'),
                 ProfileFollows(user: user, type: 'followers'),
@@ -516,9 +534,9 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       floatingActionButton: _showBackToTopButton == false
           ? null
           : FloatingActionButton(
-        onPressed: _scrollToTop,
-        child: const Icon(Icons.arrow_upward),
-      ),
+              onPressed: _scrollToTop,
+              child: const Icon(Icons.arrow_upward),
+            ),
     );
   }
 }

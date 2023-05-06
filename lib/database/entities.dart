@@ -34,12 +34,13 @@ abstract class Subscription with ToMappable {
   final bool verified;
   final DateTime createdAt;
 
-  Subscription({required this.id,
-        required this.screenName,
-        required this.name,
-        required this.profileImageUrlHttps,
-        required this.verified,
-        required this.createdAt});
+  Subscription(
+      {required this.id,
+      required this.screenName,
+      required this.name,
+      required this.profileImageUrlHttps,
+      required this.verified,
+      required this.createdAt});
 }
 
 class SearchSubscription extends Subscription {
@@ -47,9 +48,7 @@ class SearchSubscription extends Subscription {
       : super(name: id, screenName: id, verified: false, profileImageUrlHttps: null);
 
   factory SearchSubscription.fromMap(Map<String, Object?> map) {
-    return SearchSubscription(
-        id: map['id'] as String,
-        createdAt: DateTime.parse(map['created_at'] as String));
+    return SearchSubscription(id: map['id'] as String, createdAt: DateTime.parse(map['created_at'] as String));
   }
 
   @override
@@ -62,10 +61,7 @@ class SearchSubscription extends Subscription {
   @override
   Map<String, dynamic> toMap() {
     // TODO: Created at date format
-    return {
-      'id': id,
-      'created_at': sqliteDateFormat.format(createdAt)
-    };
+    return {'id': id, 'created_at': sqliteDateFormat.format(createdAt)};
   }
 }
 
@@ -94,8 +90,7 @@ class UserSubscription extends Subscription {
             : verifiedIsInt
                 ? map['verified'] == 1
                 : false,
-      createdAt: createdAt
-    );
+        createdAt: createdAt);
   }
 
   factory UserSubscription.fromUser(UserWithExtra user) {
@@ -181,14 +176,16 @@ class SubscriptionGroup with ToMappable {
 class SubscriptionGroupGet {
   final String id;
   final String name;
-  final String icon;
   final List<Subscription> subscriptions;
+  bool includeReplies;
+  bool includeRetweets;
 
   SubscriptionGroupGet(
       {required this.id,
       required this.name,
-      required this.icon,
-      required this.subscriptions});
+      required this.subscriptions,
+      required this.includeReplies,
+      required this.includeRetweets});
 }
 
 class SubscriptionGroupEdit {
