@@ -497,10 +497,8 @@ class Twitter {
       var content = cursorEntry['content'];
       if (content.containsKey('value')) {
         cursor = content['value'];
-      } else if (content.containsKey('operation')) {
-        cursor = content['operation']['cursor']['value'];
       } else {
-        cursor = content['itemContent']['value'];
+        cursor = content['operation']['cursor']['value'];
       }
     } else {
       // Look for a "replaceEntry" with the cursor
