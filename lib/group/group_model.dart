@@ -32,8 +32,7 @@ IconData deserializeIconData(String iconData) {
 class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
   final String id;
 
-  GroupModel(this.id)
-      : super(SubscriptionGroupGet(id: '', name: '', subscriptions: [], includeRetweets: false, includeReplies: false));
+  GroupModel(this.id) : super(SubscriptionGroupGet(id: '', name: '', icon: defaultGroupIcon, subscriptions: []));
 
   Future<void> loadGroup() async {
     await execute(() async {
@@ -42,26 +41,20 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
       var group = (await database.query(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id])).first;
 
       if (id == '-1') {
-        var subscriptions =
-            (await database.query(tableSubscription)).map((e) => UserSubscription.fromMap(e)).toList(growable: false);
+        var subscriptions = (await database.query(tableSubscription))
+            .map((e) => UserSubscription.fromMap(e))
+            .toList(growable: false);
 
-        return SubscriptionGroupGet(
-            id: '-1',
-            name: 'All',
-            subscriptions: subscriptions,
-            includeReplies: group['include_replies'] == 1,
-            includeRetweets: group['include_retweets'] == 1);
+        return SubscriptionGroupGet(id: '-1', name: 'All', icon: group['icon'] as String, subscriptions: subscriptions);
       }
 
       var searchSubscriptions = (await database.rawQuery(
-              'SELECT s.* FROM $tableSearchSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
-              [id]))
+          'SELECT s.* FROM $tableSearchSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => SearchSubscription.fromMap(e))
           .toList(growable: false);
 
       var userSubscriptions = (await database.rawQuery(
-              'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?',
-              [id]))
+          'SELECT s.* FROM $tableSubscription s LEFT JOIN $tableSubscriptionGroupMember sgm ON sgm.profile_id = s.id WHERE sgm.group_id = ?', [id]))
           .map((e) => UserSubscription.fromMap(e))
           .toList(growable: false);
 
@@ -69,36 +62,15 @@ class GroupModel extends StreamStore<Object, SubscriptionGroupGet> {
       return SubscriptionGroupGet(
           id: group['id'] as String,
           name: group['name'] as String,
-          subscriptions: [...userSubscriptions, ...searchSubscriptions],
-          includeReplies: group['include_replies'] == 1,
-          includeRetweets: group['include_retweets'] == 1);
-    });
-  }
-
-  Future<void> toggleSubscriptionGroupIncludeReplies(bool value) async {
-    await execute(() async {
-      (await Repository.writable())
-          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_replies = ? WHERE id = ?', [value, state.id]);
-
-      state.includeReplies = value;
-      return state;
-    });
-  }
-
-  Future<void> toggleSubscriptionGroupIncludeRetweets(bool value) async {
-    await execute(() async {
-      (await Repository.writable())
-          .rawUpdate('UPDATE $tableSubscriptionGroup SET include_retweets = ? WHERE id = ?', [value, state.id]);
-
-      state.includeRetweets = value;
-      return state;
+          icon: group['icon'] as String,
+          subscriptions: [...userSubscriptions, ...searchSubscriptions]);
     });
   }
 }
 
 class GroupsModel extends StreamStore<Object, List<SubscriptionGroup>> {
   static final log = Logger('GroupModel');
-
+  
   final BasePrefService prefs;
 
   GroupsModel(this.prefs) : super([]);
@@ -114,7 +86,7 @@ class GroupsModel extends StreamStore<Object, List<SubscriptionGroup>> {
 
       await database.delete(tableSubscriptionGroupMember, where: 'group_id = ?', whereArgs: [id]);
       await database.delete(tableSubscriptionGroup, where: 'id = ?', whereArgs: [id]);
-
+      
       return state.where((e) => e.id != id).toList();
     });
   }
@@ -130,7 +102,9 @@ class GroupsModel extends StreamStore<Object, List<SubscriptionGroup>> {
       var query =
           "SELECT g.id, g.name, g.icon, g.color, g.created_at, COUNT(gm.profile_id) AS number_of_members FROM $tableSubscriptionGroup g LEFT JOIN $tableSubscriptionGroupMember gm ON gm.group_id = g.id WHERE g.id != '-1' GROUP BY g.id ORDER BY $orderGroupsBy $orderByDirection";
 
-      return (await database.rawQuery(query)).map((e) => SubscriptionGroup.fromMap(e)).toList(growable: false);
+      return (await database.rawQuery(query))
+          .map((e) => SubscriptionGroup.fromMap(e))
+          .toList(growable: false);
     });
   }
 

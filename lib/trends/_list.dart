@@ -1,9 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
-import 'package:fritter/search/search.dart';
 import 'package:fritter/trends/trends_model.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
@@ -20,13 +18,6 @@ class TrendsList extends StatefulWidget {
 }
 
 class _TrendsListState extends State<TrendsList> {
-  @override
-  void initState() {
-    super.initState();
-
-    //context.read<TrendsModel>().loadTrends();
-  }
-
   @override
   Widget build(BuildContext context) {
     var model = context.read<TrendsModel>();
@@ -81,9 +72,7 @@ class _TrendsListState extends State<TrendsList> {
                           numberFormat.format(trend.tweetVolume),
                         ),
                       ),
-                onTap: () => Navigator.pushNamed(context, routeSearch,
-                    arguments:
-                        SearchArguments(1, focusInputOnOpen: false, query: Uri.decodeQueryComponent(trend.query!))));
+                onTap: () => showSnackBar(context, icon: '🙈', message: L10n.current.functionality_unsupported));
           },
         );
       },
