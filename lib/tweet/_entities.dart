@@ -18,6 +18,24 @@ abstract class TweetEntity {
   }
 }
 
+class TweetHashtag extends TweetEntity {
+  final Hashtag hashtag;
+  final Function onTap;
+
+  TweetHashtag(this.hashtag, this.onTap) : super(hashtag.indices);
+
+  @override
+  InlineSpan getContent() {
+    return TextSpan(
+        text: '#${hashtag.text}',
+        style: const TextStyle(color: Colors.blue),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            onTap();
+          });
+  }
+}
+
 class TweetUserMention extends TweetEntity {
   final UserMention mention;
   final Function onTap;

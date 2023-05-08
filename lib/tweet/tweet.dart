@@ -9,6 +9,7 @@ import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/import_data_model.dart';
 import 'package:fritter/profile/profile.dart';
 import 'package:fritter/saved/saved_tweet_model.dart';
+import 'package:fritter/search/search.dart';
 import 'package:fritter/status.dart';
 import 'package:fritter/tweet/_card.dart';
 import 'package:fritter/tweet/_entities.dart';
@@ -88,12 +89,12 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
 
     entities = _populateEntities(
         entities: entities,
-        source: tweet.entities?.userMentions,
-        getNewEntity: (UserMention mention) {
-          return TweetUserMention(mention, () {
-            Navigator.pushNamed(context, routeProfile,
-                arguments: ProfileScreenArguments(mention.idStr, mention.screenName));
-          });
+        source: tweet.entities?.hashtags,
+        getNewEntity: (Hashtag hashtag) {
+          return TweetHashtag(
+              hashtag,
+                  () => Navigator.pushNamed(context, routeSearch,
+                  arguments: SearchArguments(1, focusInputOnOpen: false, query: '#${hashtag.text}')));
         });
 
     entities = _populateEntities(
