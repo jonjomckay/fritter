@@ -1,1 +1,3 @@
-
+* Fixed crashes on startup, due to the notification icon being stripped out (#694 - thanks to @j-fbriere!)
+* Fixed tweets with more than 10 replies throwing an error (#690 - thanks to @j-fbriere!)
+* Fixed the blue tick not being displayed for Twitter Blue users (#686 - thanks to @j-fbriere!)
