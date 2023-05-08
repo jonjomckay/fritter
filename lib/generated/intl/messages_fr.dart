@@ -86,6 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Activer le mode biais de non-confirmation"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Ajouter des abonnements"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Ajouter au groupe"),
         "all": MessageLookupByLibrary.simpleMessage("Tout"),
@@ -196,6 +198,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter informe que l\'accès est interdit"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter bleu"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Cette fonctionnalité n\'est plus prise en charge par Twitter !"),
         "general": MessageLookupByLibrary.simpleMessage("Général"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Groupes"),
@@ -311,7 +315,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Publié sous la licence MIT"),
         "replying_to": MessageLookupByLibrary.simpleMessage("Réponse à"),
         "report": MessageLookupByLibrary.simpleMessage("Signaler"),
-        "report_a_bug": MessageLookupByLibrary.simpleMessage("Signaler un bug"),
+        "report_a_bug":
+            MessageLookupByLibrary.simpleMessage("Signaler une erreur"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Signaler une erreur"),
         "reset_home_pages": MessageLookupByLibrary.simpleMessage(
@@ -386,7 +391,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "theme_mode": MessageLookupByLibrary.simpleMessage("Mode du thème"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
-                "Aucune tendance n\'a été retournée. C\'est inattendu ! Veuillez le signaler comme un bug, si possible."),
+                "Aucune tendance n\'a été retournée. C\'est inattendu ! Veuillez le signaler comme erreur, si possible."),
         "this_group_contains_no_subscriptions":
             MessageLookupByLibrary.simpleMessage(
                 "Ce groupe ne contient pas d\'abonnements !"),

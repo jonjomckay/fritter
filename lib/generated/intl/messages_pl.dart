@@ -84,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Aktywuj tryb bez efektu potwierdzenia"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Dodaj subskrypcje"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Dodaj do grupy"),
         "all": MessageLookupByLibrary.simpleMessage("Wszystkie"),
         "all_the_great_software_used_by_fritter":
@@ -189,6 +191,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter mówi, że dostęp do tego jest zabroniony"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter Blue"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Ta funkcja nie jest już obsługiwana przez Twittera!"),
         "general": MessageLookupByLibrary.simpleMessage("Ogólne"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Grupy"),

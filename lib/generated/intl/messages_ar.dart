@@ -82,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "إخفاء مؤلفي التغريدات. تجنب التحيز التأكيدي بناء على الحجج الموثوقة."),
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage("تفعيل نمط التحيز غير المؤكد"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("إضافة اشتراكات"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("أضف إلى المجموعة"),
         "all": MessageLookupByLibrary.simpleMessage("الكل"),
@@ -185,6 +187,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "تويتر يقول إن الوصول إلى هذا ممنوع"),
         "fritter": MessageLookupByLibrary.simpleMessage("فريتر"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("فريتر أزرق"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "لم يعد تويتر يدعم هذه الميزة!"),
         "general": MessageLookupByLibrary.simpleMessage("العامة"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("المجموعات"),

@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Doğrulama yanlılığı kapalı modunu etkinleştir"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Abonelik ekle"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Gruba ekle"),
         "all": MessageLookupByLibrary.simpleMessage("Hepsi"),
         "all_the_great_software_used_by_fritter":
@@ -190,6 +192,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter buna erişimin yasak olduğunu söylüyor"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter mavisi"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Bu işlev artık Twitter tarafından desteklenmiyor!"),
         "general": MessageLookupByLibrary.simpleMessage("Genel"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Gruplar"),

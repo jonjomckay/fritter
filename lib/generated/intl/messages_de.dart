@@ -86,6 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Non-Confirmation-Bias-Modus aktivieren"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Abonnements hinzufügen"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Zu Gruppe hinzufügen"),
         "all": MessageLookupByLibrary.simpleMessage("Alle"),
@@ -150,7 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "donate": MessageLookupByLibrary.simpleMessage("Spenden"),
         "download": MessageLookupByLibrary.simpleMessage("Herunterladen"),
         "download_handling":
-            MessageLookupByLibrary.simpleMessage("Download Handhabung"),
+            MessageLookupByLibrary.simpleMessage("Downloadverhalten"),
         "download_handling_description": MessageLookupByLibrary.simpleMessage(
             "So soll das Herunterladen funktionieren"),
         "download_handling_type_ask":
@@ -192,6 +194,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Zugang zu diesem Inhalt laut Twitter nicht gestattet"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter Blue"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Diese Funktion wird von Twitter nicht mehr unterstützt!"),
         "general": MessageLookupByLibrary.simpleMessage("Allgemein"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Gruppen"),
@@ -465,7 +469,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Abonnements konnten nicht aktualisiert werden"),
         "unable_to_run_the_database_migrations":
             MessageLookupByLibrary.simpleMessage(
-                "Die Datenbankübertragung konnte nicht durchgeführt werden"),
+                "Die Datenbankmigrationen können nicht ausgeführt werden"),
         "unable_to_save_the_media_twitter_returned_a_status_of_response_statusCode":
             m17,
         "unable_to_send_the_ping_e_to_string": m18,

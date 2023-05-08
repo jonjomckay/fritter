@@ -83,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Aktivovat režim zkreslení bez potvrzení"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Přidat odběry"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Přidat do skupiny"),
         "all": MessageLookupByLibrary.simpleMessage("Vše"),
@@ -189,6 +191,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue":
             MessageLookupByLibrary.simpleMessage("Fritterová modrá"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Tato funkce již není podporována Twitterem!"),
         "general": MessageLookupByLibrary.simpleMessage("Obecné"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Skupiny"),

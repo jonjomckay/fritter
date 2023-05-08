@@ -83,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Modalità anti-bias di conferma"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Aggiungi abbonamenti"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Aggiungi al gruppo"),
         "all": MessageLookupByLibrary.simpleMessage("Tutti"),
@@ -149,7 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "donate": MessageLookupByLibrary.simpleMessage("Dona"),
         "download": MessageLookupByLibrary.simpleMessage("Scarica"),
         "download_handling":
-            MessageLookupByLibrary.simpleMessage("Gestione dei download"),
+            MessageLookupByLibrary.simpleMessage("Gestione degli scaricamenti"),
         "download_handling_description": MessageLookupByLibrary.simpleMessage(
             "Come dovrebbe funzionare lo scaricamento"),
         "download_handling_type_ask":
@@ -192,6 +194,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter dice che l\'accesso non è consentito"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Blu Fritter"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Questa funzionalità non è più supportata da Twitter!"),
         "general": MessageLookupByLibrary.simpleMessage("Generale"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Gruppi"),
@@ -255,7 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
-                "Nessun dato è stato restituito, il che non dovrebbe mai accadere. Si prega di segnalare un bug, se possibile!"),
+                "Nessun dato è stato restituito, il che non dovrebbe mai accadere. Si prega di segnalare un errore, se possibile!"),
         "no_results": MessageLookupByLibrary.simpleMessage("Nessun risultato"),
         "no_results_for":
             MessageLookupByLibrary.simpleMessage("Nessun risultato per:"),
@@ -308,7 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Rilasciato sotto licenza MIT"),
         "replying_to": MessageLookupByLibrary.simpleMessage("In risposta a"),
         "report": MessageLookupByLibrary.simpleMessage("Segnala"),
-        "report_a_bug": MessageLookupByLibrary.simpleMessage("Segnala un bug"),
+        "report_a_bug":
+            MessageLookupByLibrary.simpleMessage("Segnala un errore"),
         "reporting_an_error":
             MessageLookupByLibrary.simpleMessage("Segnalazione di un errore"),
         "reset_home_pages": MessageLookupByLibrary.simpleMessage(
@@ -382,7 +387,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "theme_mode": MessageLookupByLibrary.simpleMessage("Modalità del tema"),
         "there_were_no_trends_returned_this_is_unexpected_please_report_as_a_bug_if_possible":
             MessageLookupByLibrary.simpleMessage(
-                "Non è stata restituita alcuna tendenza. Questo è inaspettato! Si prega di segnalare un bug, se possibile."),
+                "Non è stata restituita alcuna tendenza. Questo è inaspettato! Si prega di segnalare un errore, se possibile."),
         "this_group_contains_no_subscriptions":
             MessageLookupByLibrary.simpleMessage(
                 "Questo gruppo non contiene iscrizioni!"),

@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("隐藏推文作者以避免基于权威论据的确认偏向。"),
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage("激活非确认偏向模式"),
+        "add_subscriptions": MessageLookupByLibrary.simpleMessage("添加订阅"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("添加到订阅组"),
         "all": MessageLookupByLibrary.simpleMessage("全部"),
         "all_the_great_software_used_by_fritter":
@@ -160,6 +161,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forbidden": MessageLookupByLibrary.simpleMessage("Twitter 表示禁止访问此内容"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter 蓝"),
+        "functionality_unsupported":
+            MessageLookupByLibrary.simpleMessage("Twitter 不再支持此功能！"),
         "general": MessageLookupByLibrary.simpleMessage("通用"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("订阅组"),

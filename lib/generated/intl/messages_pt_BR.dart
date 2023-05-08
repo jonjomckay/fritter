@@ -84,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Ativar modo de não-confirmação de viés"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Adicionar inscrições"),
         "add_to_group":
             MessageLookupByLibrary.simpleMessage("Adicionar ao grupo"),
         "all": MessageLookupByLibrary.simpleMessage("Tudo"),
@@ -190,6 +192,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Twitter diz que o acesso a isso é proibido"),
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue": MessageLookupByLibrary.simpleMessage("Fritter azul"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Esta funcionalidade não é mais suportada pelo Twitter!"),
         "general": MessageLookupByLibrary.simpleMessage("Geral"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Grupos"),

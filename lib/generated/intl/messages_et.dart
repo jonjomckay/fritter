@@ -86,6 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activate_non_confirmation_bias_mode_label":
             MessageLookupByLibrary.simpleMessage(
                 "Kasuta kinnituskalduvust eiravat režiimi"),
+        "add_subscriptions":
+            MessageLookupByLibrary.simpleMessage("Lisa tellimusi"),
         "add_to_group": MessageLookupByLibrary.simpleMessage("Lisa gruppi"),
         "all": MessageLookupByLibrary.simpleMessage("Kõik"),
         "all_the_great_software_used_by_fritter":
@@ -193,6 +195,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fritter": MessageLookupByLibrary.simpleMessage("Fritter"),
         "fritter_blue":
             MessageLookupByLibrary.simpleMessage("Fritter\'i sinine"),
+        "functionality_unsupported": MessageLookupByLibrary.simpleMessage(
+            "Twitter enam ei võimalda sellise funktsionaalsuse kasutamist!"),
         "general": MessageLookupByLibrary.simpleMessage("Üldised seadistused"),
         "group_name": m6,
         "groups": MessageLookupByLibrary.simpleMessage("Grupid"),
