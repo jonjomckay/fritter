@@ -490,5 +490,9 @@
   "next": "Další",
   "@next": {},
   "finish": "Dokončit",
-  "@finish": {}
+  "@finish": {},
+  "functionality_unsupported": "Tato funkce již není podporována Twitterem!",
+  "@functionality_unsupported": {},
+  "add_subscriptions": "Přidat odběry",
+  "@add_subscriptions": {}
 }

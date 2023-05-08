@@ -335,7 +335,7 @@
   "@update_to_release_version_through_your_fdroid_client": {},
   "no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible": "Keine Daten empfangen - das sollte nie passieren. Bitte, falls möglich, Fehler melden!",
   "@no_data_was_returned_which_should_never_happen_please_report_a_bug_if_possible": {},
-  "unable_to_run_the_database_migrations": "Die Datenbankübertragung konnte nicht durchgeführt werden",
+  "unable_to_run_the_database_migrations": "Die Datenbankmigrationen können nicht ausgeführt werden",
   "@unable_to_run_the_database_migrations": {},
   "this_group_contains_no_subscriptions": "Diese Gruppe enthält keine Abonnements!",
   "@this_group_contains_no_subscriptions": {},
@@ -433,7 +433,7 @@
   "@disable_screenshots_hint": {},
   "theme_mode": "Design-Modus",
   "@theme_mode": {},
-  "download_handling": "Download Handhabung",
+  "download_handling": "Downloadverhalten",
   "@download_handling": {},
   "mute_videos": "Videos stumm schalten",
   "@mute_videos": {},
@@ -490,5 +490,9 @@
   "bad_guest_token": "Der Zugangs-Token ist nicht mehr gültig. Versuche Fritter erneut zu öffnen!",
   "@bad_guest_token": {},
   "mute_video_description": "Ob Videos standardmäßig stumm sein sollen",
-  "@mute_video_description": {}
+  "@mute_video_description": {},
+  "functionality_unsupported": "Diese Funktion wird von Twitter nicht mehr unterstützt!",
+  "@functionality_unsupported": {},
+  "add_subscriptions": "Abonnements hinzufügen",
+  "@add_subscriptions": {}
 }

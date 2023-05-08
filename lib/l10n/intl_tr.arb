@@ -490,5 +490,9 @@
   "share_base_url": "Özel paylaşım URL'si",
   "@share_base_url": {},
   "share_base_url_description": "Paylaşırken özel bir temel URL kullanın",
-  "@share_base_url_description": {}
+  "@share_base_url_description": {},
+  "functionality_unsupported": "Bu işlev artık Twitter tarafından desteklenmiyor!",
+  "@functionality_unsupported": {},
+  "add_subscriptions": "Abonelik ekle",
+  "@add_subscriptions": {}
 }
