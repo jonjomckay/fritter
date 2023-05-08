@@ -32,15 +32,9 @@
 [<img src="https://user-images.githubusercontent.com/123662124/236850975-950f87c4-2dd1-4c9b-8ba4-1aa2d23ce98d.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236850975-950f87c4-2dd1-4c9b-8ba4-1aa2d23ce98d.jpeg)
 [<img src="https://user-images.githubusercontent.com/123662124/236851092-4825b9d7-cb0b-4981-9c67-8716514f73e8.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236851092-4825b9d7-cb0b-4981-9c67-8716514f73e8.jpeg)
 [<img src="https://user-images.githubusercontent.com/123662124/236851199-6a14e24e-eb1a-48a5-9e53-2247e5e4a9b7.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236851199-6a14e24e-eb1a-48a5-9e53-2247e5e4a9b7.jpeg)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_04.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_04.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_05.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_05.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_06.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_06.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_07.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_07.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_08.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_08.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_09.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_09.png)
-[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_10.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_10.png)
-[<img src="fastlane/metadata/android/en-US/images/tenInchScreenshots/shot_11.png" width=405>](fastlane/metadata/android/en-US/images/tenInchScreenshots/shot_11.png)
-[<img src="fastlane/metadata/android/en-US/images/tenInchScreenshots/shot_12.png" width=405>](fastlane/metadata/android/en-US/images/tenInchScreenshots/shot_12.png)
+[<img src="https://user-images.githubusercontent.com/123662124/236857238-e92b988f-f7e3-4d25-bbf2-ae3c15f2f914.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236857238-e92b988f-f7e3-4d25-bbf2-ae3c15f2f914.jpeg)
+[<img src="https://user-images.githubusercontent.com/123662124/236857233-ab8d7cb5-d989-4b27-9f07-32cbe0b69580.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236857233-ab8d7cb5-d989-4b27-9f07-32cbe0b69580.jpeg)
+[<img src="https://user-images.githubusercontent.com/123662124/236857222-ff298d4a-aa77-4ea7-b177-3da7d3f78790.jpeg" width=160>](https://user-images.githubusercontent.com/123662124/236857222-ff298d4a-aa77-4ea7-b177-3da7d3f78790.jpeg)
 
 ### Features
 
@@ -69,7 +63,7 @@ In the meanwhile, if you want to switch sources for some reason (e.g. Fritter's 
 <b>Note: when you're importing a database into the official app, always make sure that it is the one you exported _from_ the official app. If you import a database exported from an APK other than the official app, it may break things. Such an action is unsupported, and you should only do so when you're absolutely certain you know what you're doing.</b>
 
 ## Contribution
-Whether you have ideas, translations, design changes, code cleaning, or even major code changes, help is always welcome. The app gets better and better with each contribution, no matter how big or small! If you'd like to get involved, check our [contribution notes](.github/CONTRIBUTING.md).
+Whether you have ideas, translations, design changes, code cleaning, or even major code changes, help is always welcome. The app gets better and better with each contribution, no matter how big or small!
 
 <a href="https://hosted.weblate.org/engage/fritter/">
 <img src="https://hosted.weblate.org/widgets/fritter/-/287x66-grey.png" alt="Translation status" />
