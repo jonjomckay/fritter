@@ -224,33 +224,35 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     }
 
     Iterable<int> runes = tweetText.getRange(displayTextRange[0], displayTextRange[1]);
-
-    List<TweetEntity> entities = _getEntities(context, actualTweet);
+    
     List<TweetTextPart> things = [];
 
     int index = 0;
 
-    for (var part in entities) {
-      // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
-      int start = part.getEntityStart() - displayTextRange[0];
-      int end = part.getEntityEnd() - displayTextRange[0];
+    if (noteText == null) {
+      List<TweetEntity> entities = _getEntities(context, actualTweet);
+      for (var part in entities) {
+        // Generate new indices for the entity start and end, by subtracting the displayTextRange's start index, as we ignore text up until that point
+        int start = part.getEntityStart() - displayTextRange[0];
+        int end = part.getEntityEnd() - displayTextRange[0];
 
-      // Only add entities that are after the displayTextRange's start index
-      if (start < 0) {
-        continue;
+        // Only add entities that are after the displayTextRange's start index
+        if (start < 0) {
+          continue;
+        }
+
+        // Add any text between the last entity's end and the start of this one
+        var textPart = _convertRunesToText(runes, index, start);
+        if (textPart != null) {
+          things.add(TweetTextPart(null, textPart));
+        }
+
+        // Then add the actual entity
+        things.add(TweetTextPart(part.getContent(), null));
+
+        // Then set our index in the tweet text as the end of our entity
+        index = end;
       }
-
-      // Add any text between the last entity's end and the start of this one
-      var textPart = _convertRunesToText(runes, index, start);
-      if (textPart != null) {
-        things.add(TweetTextPart(null, textPart));
-      }
-
-      // Then add the actual entity
-      things.add(TweetTextPart(part.getContent(), null));
-
-      // Then set our index in the tweet text as the end of our entity
-      index = end;
     }
 
     var textPart = _convertRunesToText(runes, index);
