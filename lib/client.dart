@@ -737,14 +737,37 @@ class TweetWithCard extends Tweet {
     tweet.place = null;
     tweet.possiblySensitiveAppealable = null;
 
+    Entities copyEntities(Entities src, Entities trg) {
+      if (src.media != null && src.media!.isNotEmpty && (trg.media == null || trg.media!.isEmpty)) {
+        trg.media = src.media;
+      }
+      if (src.urls != null && src.urls!.isNotEmpty && (trg.urls == null || trg.urls!.isEmpty)) {
+        trg.urls = src.urls;
+      }
+      if (src.userMentions != null && src.userMentions!.isNotEmpty && (trg.userMentions == null || trg.userMentions!.isEmpty)) {
+        trg.userMentions = src.userMentions;
+      }
+      if (src.hashtags != null && src.hashtags!.isNotEmpty && (trg.hashtags == null || trg.hashtags!.isEmpty)) {
+        trg.hashtags = src.hashtags;
+      }
+      if (src.symbols != null && src.symbols!.isNotEmpty && (trg.symbols == null || trg.symbols!.isEmpty)) {
+        trg.symbols = src.symbols;
+      }
+      if (src.polls != null && src.polls!.isNotEmpty && (trg.polls == null || trg.polls!.isEmpty)) {
+        trg.polls = src.polls;
+      }
+      return trg;
+    }
+
     tweet.noteText = noteText;
     if (noteEntities != null) {
-      tweet.entities = noteEntities;
-      tweet.extendedEntities = noteEntities;
+      tweet.entities = tweet.entities == null ? noteEntities : copyEntities(noteEntities, tweet.entities!);
+      tweet.extendedEntities = tweet.extendedEntities == null ? noteEntities : copyEntities(noteEntities, tweet.extendedEntities!);
     }
 
     return tweet;
   }
+
 }
 
 class TweetChain {
