@@ -740,22 +740,22 @@ class TweetWithCard extends Tweet {
     tweet.possiblySensitiveAppealable = null;
 
     Entities copyEntities(Entities src, Entities trg) {
-      if (src.media != null && src.media!.isNotEmpty && (trg.media == null || trg.media!.isEmpty)) {
+      if (src.media != null) {
         trg.media = src.media;
       }
-      if (src.urls != null && src.urls!.isNotEmpty && (trg.urls == null || trg.urls!.isEmpty)) {
+      if (src.urls != null) {
         trg.urls = src.urls;
       }
-      if (src.userMentions != null && src.userMentions!.isNotEmpty && (trg.userMentions == null || trg.userMentions!.isEmpty)) {
+      if (src.userMentions != null) {
         trg.userMentions = src.userMentions;
       }
-      if (src.hashtags != null && src.hashtags!.isNotEmpty && (trg.hashtags == null || trg.hashtags!.isEmpty)) {
+      if (src.hashtags != null) {
         trg.hashtags = src.hashtags;
       }
-      if (src.symbols != null && src.symbols!.isNotEmpty && (trg.symbols == null || trg.symbols!.isEmpty)) {
+      if (src.symbols != null) {
         trg.symbols = src.symbols;
       }
-      if (src.polls != null && src.polls!.isNotEmpty && (trg.polls == null || trg.polls!.isEmpty)) {
+      if (src.polls != null) {
         trg.polls = src.polls;
       }
       return trg;
