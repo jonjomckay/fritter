@@ -541,8 +541,8 @@ class _DefaultPageState extends State<DefaultPage> {
   StreamSubscription? _sub;
 
   void handleInitialLink(Uri link) {
-    // Assume it's a username if there's only one segment
-    if (link.pathSegments.length == 1) {
+    // Assume it's a username if there's only one segment (or two segments with the second empty, meaning the URI ends with /)
+    if (link.pathSegments.length == 1 || (link.pathSegments.length == 2 && link.pathSegments.last.isEmpty)) {
       Navigator.pushReplacementNamed(context, routeProfile,
           arguments: ProfileScreenArguments.fromScreenName(link.pathSegments.first));
       return;
