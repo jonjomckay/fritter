@@ -314,7 +314,9 @@ class Twitter {
         for (var item in entry['content']['items']) {
           var itemType = item['item']?['itemContent']?['itemType'];
           if (itemType == 'TimelineTweet') {
-            tweets.add(TweetWithCard.fromGraphqlJson(item['item']['itemContent']['tweet_results']['result']));
+            if (item['item']['itemContent']['tweet_results']?['result'] != null) {
+              tweets.add(TweetWithCard.fromGraphqlJson(item['item']['itemContent']['tweet_results']['result']));
+            }
           } else {
             Catcher.reportSyntheticException(UnknownTimelineItemType(itemType, entryId));
           }
