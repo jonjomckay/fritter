@@ -295,12 +295,14 @@ class Twitter {
     for (var entry in addEntries) {
       var entryId = entry['entryId'] as String;
       if (entryId.startsWith('tweet-')) {
-        var result = entry['content']['itemContent']['tweet_results']['result'];
+        var result = entry['content']['itemContent']['tweet_results']?['result'];
 
-        replies.add(TweetChain(
-            id: result['rest_id'],
-            tweets: [TweetWithCard.fromGraphqlJson(result)],
-            isPinned: false));
+        if (result != null) {
+          replies.add(TweetChain(
+              id: result['rest_id'],
+              tweets: [TweetWithCard.fromGraphqlJson(result)],
+              isPinned: false));
+        }
       }
 
       if (entryId.startsWith('cursor-bottom') || entryId.startsWith('cursor-showMore')) {
