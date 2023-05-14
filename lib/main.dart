@@ -193,6 +193,7 @@ Future<void> main() async {
     optionSubscriptionOrderByField: 'name',
     optionThemeMode: 'system',
     optionThemeTrueBlack: false,
+    optionThemeMaterial3: false,
     optionThemeColorScheme: 'aquaBlue',
     optionTweetsHideSensitive: false,
     optionUserTrendsLocations: jsonEncode({
@@ -248,16 +249,15 @@ Future<void> main() async {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
         const InitializationSettings settings =
-        InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+            InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
 
-        await notifications
-            .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+        await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
             onDidReceiveNotificationResponse: (response) async {
-              var payload = response.payload;
-              if (payload != null && payload.startsWith('https://')) {
-                await openUri(payload);
-              }
-            });
+          var payload = response.payload;
+          if (payload != null && payload.startsWith('https://')) {
+            await openUri(payload);
+          }
+        });
 
         var flavor = getFlavor();
         var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
@@ -326,6 +326,7 @@ class _FritterAppState extends State<FritterApp> {
 
   String _themeMode = 'system';
   bool _trueBlack = false;
+  bool _material3 = false;
   FlexScheme _colorScheme = FlexScheme.aquaBlue;
   Locale? _locale;
 
@@ -366,6 +367,7 @@ class _FritterAppState extends State<FritterApp> {
       setLocale(prefService.get<String>(optionLocale));
       _themeMode = prefService.get(optionThemeMode);
       _trueBlack = prefService.get(optionThemeTrueBlack);
+      _material3 = prefService.get(optionThemeMaterial3);
       setColorScheme(prefService.get(optionThemeColorScheme));
       setDisableScreenshots(prefService.get(optionDisableScreenshots));
     });
@@ -384,6 +386,13 @@ class _FritterAppState extends State<FritterApp> {
     prefService.addKeyListener(optionThemeTrueBlack, () {
       setState(() {
         _trueBlack = prefService.get(optionThemeTrueBlack);
+      });
+    });
+
+    // Whenever the "use material 3" preference is toggled, apply the toggle
+    prefService.addKeyListener(optionThemeMaterial3, () {
+      setState(() {
+        _material3 = prefService.get(optionThemeMaterial3);
       });
     });
 
@@ -483,7 +492,7 @@ class _FritterAppState extends State<FritterApp> {
           blendOnColors: false,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: false,
+        useMaterial3: _material3,
         appBarStyle: FlexAppBarStyle.primary,
       ),
       darkTheme: FlexThemeData.dark(
@@ -498,7 +507,7 @@ class _FritterAppState extends State<FritterApp> {
           blendOnColors: false,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: false,
+        useMaterial3: _material3,
         appBarStyle: _trueBlack ? FlexAppBarStyle.surface : FlexAppBarStyle.primary,
       ),
       themeMode: themeMode,
@@ -517,10 +526,10 @@ class _FritterAppState extends State<FritterApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) => FullPageErrorWidget(
-          error: details.exception,
-          stackTrace: details.stack,
-          prefix: L10n.of(context).something_broke_in_fritter,
-        );
+              error: details.exception,
+              stackTrace: details.stack,
+              prefix: L10n.of(context).something_broke_in_fritter,
+            );
 
         return DevicePreview.appBuilder(context, child ?? Container());
       },

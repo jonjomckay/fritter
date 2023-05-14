@@ -11,9 +11,7 @@ class SettingsThemeFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(L10n.current.theme)
-      ),
+      appBar: AppBar(title: Text(L10n.current.theme)),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: ListView(children: [
@@ -45,6 +43,13 @@ class SettingsThemeFragment extends StatelessWidget {
             pref: optionThemeTrueBlack,
             subtitle: Text(
               L10n.of(context).use_true_black_for_the_dark_mode_theme,
+            ),
+          ),
+          PrefSwitch(
+            title: Text(L10n.of(context).material_you),
+            pref: optionThemeMaterial3,
+            subtitle: Text(
+              L10n.of(context).use_material_you,
             ),
           ),
         ]),

@@ -31,6 +31,7 @@ const optionSubscriptionOrderByField = 'subscription.order_by.field';
 
 const optionThemeMode = 'theme.mode';
 const optionThemeTrueBlack = 'theme.true_black';
+const optionThemeMaterial3 = 'theme.material3';
 const optionThemeColorScheme = 'theme.color_scheme';
 
 const optionTweetsHideSensitive = 'tweets.hide_sensitive';
