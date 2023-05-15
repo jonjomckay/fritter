@@ -94,5 +94,15 @@
   "export_tweets": "Exportera tweets?",
   "@export_tweets": {},
   "data_imported_successfully": "Importeringen av datan lyckades",
-  "@data_imported_successfully": {}
+  "@data_imported_successfully": {},
+  "something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": "Något gick fel i Fritter och en felrapport har genererats. Rapporten kan skickas till Fritter's utvecklare för att hjälpa till att få problemet löst.",
+  "@something_just_went_wrong_in_fritter_and_an_error_report_has_been_generated": {},
+  "an_error_was_reported_to_sentry_thank_you": "Ett fel rapporterades till Sentry. Tack!",
+  "@an_error_was_reported_to_sentry_thank_you": {},
+  "could_not_find_any_tweets_from_the_last_7_days": "Kunde inte hitta några tweets från de senaste 7 dagarna!",
+  "@could_not_find_any_tweets_from_the_last_7_days": {},
+  "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": "Notera att: På grund av en Twitter-begränsning så kan inte alla tweets inkluderas",
+  "@note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": {},
+  "saved": "Sparades",
+  "@saved": {}
 }
