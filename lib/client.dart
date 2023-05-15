@@ -303,6 +303,12 @@ class Twitter {
               tweets: [TweetWithCard.fromGraphqlJson(result)],
               isPinned: false));
         }
+        else {
+          replies.add(TweetChain(
+              id: entryId.substring(6),
+              tweets: [TweetWithCard.tombstone({})],
+              isPinned: false));
+        }
       }
 
       if (entryId.startsWith('cursor-bottom') || entryId.startsWith('cursor-showMore')) {
@@ -318,6 +324,9 @@ class Twitter {
           if (itemType == 'TimelineTweet') {
             if (item['item']['itemContent']['tweet_results']?['result'] != null) {
               tweets.add(TweetWithCard.fromGraphqlJson(item['item']['itemContent']['tweet_results']['result']));
+            }
+            else {
+              tweets.add(TweetWithCard.tombstone({}));
             }
           } else {
             Catcher.reportSyntheticException(UnknownTimelineItemType(itemType, entryId));
