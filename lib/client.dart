@@ -677,7 +677,14 @@ class TweetWithCard extends Tweet {
       noteEntities = Entities.fromJson(noteResult['entity_set']);
     }
 
-    return TweetWithCard.fromData(result['legacy'], noteText, noteEntities, user, retweetedStatus, quotedStatus);
+    TweetWithCard tweet = TweetWithCard.fromData(result['legacy'], noteText, noteEntities, user, retweetedStatus, quotedStatus);
+    if (tweet.card == null && result['card']?['legacy'] != null) {
+      tweet.card = result['card']['legacy'];
+      List bindingValuesList = tweet.card!['binding_values'] as List;
+      Map<String, dynamic> bindingValues = bindingValuesList.fold({}, (prev, elm) { prev[elm['key']] = elm['value']; return prev; });
+      tweet.card!['binding_values'] = bindingValues;
+    }
+    return tweet;
   }
 
   factory TweetWithCard.fromCardJson(Map<String, dynamic> tweets, Map<String, dynamic> users, Map<String, dynamic> e) {
