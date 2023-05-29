@@ -1,1 +1,10 @@
-{}
+{
+  "could_not_find_any_tweets_by_this_user": "Nem található egyetlen tweetet sem ettől a felhasználótól!",
+  "@could_not_find_any_tweets_by_this_user": {},
+  "unable_to_load_the_next_page_of_replies": "Nem lehet betölteni a válaszok következő oldalát",
+  "@unable_to_load_the_next_page_of_replies": {},
+  "this_group_contains_no_subscriptions": "Ez a csoport nem tartalmaz feliratkozásokat!",
+  "@this_group_contains_no_subscriptions": {},
+  "unable_to_load_the_tweet": "Nem lehet betölteni a tweetet",
+  "@unable_to_load_the_tweet": {}
+}
