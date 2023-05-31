@@ -1,11 +1,11 @@
 name: Bug report
-description: Create a bug report to help Quacker improve
+description: Create a bug report to help fritter improve
 labels: [bug]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping to make Quacker better by reporting a bug. :hugs:
+        Thank you for helping to make fritter better by reporting a bug. :hugs:
         
         Please fill in as much information as possible about your bug so that we don't have to play "information ping-pong" and can help you immediately.
 
@@ -14,9 +14,9 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: "I am able to reproduce the bug with the [latest version](https://github.com/thehcj/quacker/releases)."
+        - label: "I am able to reproduce the bug with the [latest version](https://github.com/jonjomckay/fritter/releases)."
           required: true
-        - label: "I made sure that there are *no existing issues* - [open](https://github.com/thehcj/quacker/issues) or [closed](https://github.com/thehcj/quacker/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
+        - label: "I made sure that there are *no existing issues* - [open](https://github.com/jonjomckay/fritter/issues) or [closed](https://github.com/jonjomckay/fritter/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
           required: true
         - label: "I have taken the time to fill in all the required details. I understand that the bug report will be dismissed otherwise."
           required: true
@@ -27,7 +27,7 @@ body:
     id: app-version
     attributes:
      label: Affected version
-     description: "In which Quacker version did you encounter the bug?"
+     description: "In which fritter version did you encounter the bug?"
      placeholder: "x.x.x+x - Can be seen in the app from the 'About' section in settings"
     validations:
       required: true
