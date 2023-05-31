@@ -1,11 +1,11 @@
 name: Feature request
-description: Suggest an idea for Quacker
+description: Suggest an idea for fritter
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping to make Quacker better by suggesting a feature. :hugs:
+        Thank you for helping to make fritter better by suggesting a feature. :hugs:
 
         Your ideas are highly welcome! The app is made for you, the users, after all.
   - type: checkboxes
@@ -13,7 +13,7 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: "I made sure that there are *no existing issues* - [open](https://github.com/thehcj/Quacker/issues) or [closed](https://github.com/thehcj/Quacker/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
+        - label: "I made sure that there are *no existing issues* - [open](https://github.com/jonjomckay/fritter/issues) or [closed](https://github.com/jonjomckay/fritter/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
           required: true
         - label: "I have taken the time to fill in all the required details. I understand that the feature request will be dismissed otherwise."
           required: true
