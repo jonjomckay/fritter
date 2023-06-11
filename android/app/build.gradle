@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         applicationId "com.jonjomckay.fritter"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 33
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()

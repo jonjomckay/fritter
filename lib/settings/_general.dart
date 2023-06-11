@@ -13,7 +13,7 @@ import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pref/pref.dart';
 
@@ -108,11 +108,11 @@ class SettingsGeneralFragment extends StatelessWidget {
 
       metadata = {
         'abis': [],
-        'device': info.utsname.machine ?? 'unknown',
+        'device': info.utsname.machine,
         'flavor': getFlavor(),
         'locale': Localizations.localeOf(context).languageCode,
         'os': 'ios',
-        'system': info.systemVersion ?? 'unknown',
+        'system': info.systemVersion,
         'version': packageInfo.buildNumber,
       };
     }

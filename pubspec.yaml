@@ -21,17 +21,10 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependency_overrides:
-  auto_direction:
-    git:
-      url: https://github.com/AhmedAlYousif/auto_direction.git
-      ref: 41e091d1bcef2f710e10ca88e72d05ea182135d7
-  # Required until device_info_plus updates, as it transitively depends on an old version
-  file: ^6.1.4
-  # TODO: Remove once https://github.com/Ahmadre/FlutterIconPicker/pull/54 is merged
-  flutter_iconpicker:
-    git:
-      url: https://github.com/kechankrisna/FlutterIconPicker
-      ref: cc8878dbd9b3f4d7e29540dcd57d78896f9d9fb7
+  # Required until dart_twitter_api, flutter_localizations, and auto_direction, as it doesn't currently support intl 0.18.0
+  intl: ^0.17.0
+  # Required until wakelock updates, as it doesn't currently support win32 5.0.3
+  win32: ^3.0.0
 
 dependencies:
   flutter:
@@ -41,19 +34,19 @@ dependencies:
   auto_direction: ^0.0.6
   chewie: ^1.3.6
   dart_twitter_api: ^0.5.7+1
-  device_info_plus: ^8.2.0
+  device_info_plus: ^9.0.2
   device_preview: ^1.1.0
   dotted_border: ^2.0.0+3
-  extended_image: ^6.3.4
+  extended_image: ^8.0.2
   extended_nested_scroll_view: ^6.0.0
   faker: ^2.1.0
   ffcache: ^1.1.0
-  flex_color_scheme: ^6.1.1
+  flex_color_scheme: ^7.1.2
   flutter_cache: ^0.1.0
-  file_picker: ^5.2.3
+  file_picker: ^5.3.2
   flutter_colorpicker: ^1.0.3
   flutter_file_dialog: ^2.3.2
-  flutter_iconpicker: ^3.2.2
+  flutter_iconpicker: ^3.2.4
   flutter_local_notifications: ^12.0.4
   flutter_localized_locales: ^2.0.3
   flutter_triple: ^1.2.7+4
@@ -61,22 +54,21 @@ dependencies:
   html_unescape: ^2.0.0
   http: ^0.13.5
   infinite_scroll_pagination: ^3.2.0
-  intl: ^0.17.0
+  intl: ^0.18.1
   logging: ^1.1.0
   measure_size: ^4.0.0
   multi_select_flutter: ^4.1.3
-  package_info: ^2.0.2
+  package_info_plus: ^4.0.2
   path: ^1.8.2
   path_provider: ^2.0.11
   permission_handler: ^10.2.0
   pref: ^2.7.0
-  provider: ^6.0.4
+  provider: ^6.0.5
   quiver: ^3.1.0
   scroll_bottom_navigation_bar: ^4.0.0
   scroll_to_index: ^3.0.1
   sentry_flutter: ^7.4.2
-  share: ^2.0.4
-  share_plus: ^6.2.0
+  share_plus: ^7.0.2
   simple_icons: ^7.10.0
   sqflite: ^2.2.2
   sqflite_common: ^2.4.0+2

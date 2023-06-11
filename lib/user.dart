@@ -105,10 +105,10 @@ class _FollowButtonSelectGroupDialogState extends State<FollowButtonSelectGroupD
       cancelText: Text(L10n.of(context).cancel),
       searchIcon: Icon(Icons.search, color: color),
       closeSearchIcon: Icon(Icons.close, color: color),
-      itemsTextStyle: Theme.of(context).textTheme.bodyText1,
+      itemsTextStyle: Theme.of(context).textTheme.bodyLarge,
       selectedColor: Theme.of(context).colorScheme.secondary,
       unselectedColor: color,
-      selectedItemsTextStyle: Theme.of(context).textTheme.bodyText1,
+      selectedItemsTextStyle: Theme.of(context).textTheme.bodyLarge,
       items: groupModel.state.map((e) => MultiSelectItem(e.id, e.name)).toList(),
       initialValue: widget.groupsForUser,
       onConfirm: (List<String> memberships) async {

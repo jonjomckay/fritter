@@ -25,7 +25,7 @@
 <p align="center">
 <a href="https://github.com/jonjomckay/fritter/releases" alt="GitHub release"><img src="https://img.shields.io/github/release/jonjomckay/fritter.svg" ></a>
 <a href="/LICENSE" alt="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-<a href="https://github.com/jonjomckay/fritter/actions" alt="Build Status"><img src="https://github.com/jonjomckay/fritter/workflows/ci/badge.svg?branch=dev&event=push"></a>
+<a href="https://github.com/jonjomckay/fritter/actions" alt="Build Status"><img src="https://github.com/jonjomckay/fritter/workflows/ci/badge.svg?branch=master&event=push"></a>
 <a href="https://hosted.weblate.org/engage/fritter/" alt="Translation Status"><img src="https://hosted.weblate.org/widgets/fritter/-/svg-badge.svg"></a>
 </p>
 
@@ -72,7 +72,6 @@ Supporting Fritter financially would allow me to lower my time spent on these ot
 #### Some of the things funding Fritter would help accelerate are:
 
 * Mastodon support - for being able to browse both Twitter and Mastodon content
-* Persistent timeline positions - allowing you to continue where you left off in a feed
 * Desktop support - allowing you to browse Twitter privately on a full-blown computer
 * UX/UI improvements - such as a compact view, and tweaks to improve usability
 * Nitter support - adding Nitter support back in, and helping to develop a stable API for Nitter itself

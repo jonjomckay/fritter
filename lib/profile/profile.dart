@@ -509,7 +509,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               : Container(
                   key: const Key('waiting'),
                   height: double.infinity,
-                  color: theme.backgroundColor,
+                  color: theme.colorScheme.background,
                 ),
         )
       ]),
