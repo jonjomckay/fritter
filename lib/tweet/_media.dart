@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/profile/profile.dart';
@@ -16,6 +18,7 @@ import 'package:path/path.dart' as path;
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:uuid/uuid.dart';
 
 class _TweetMediaItem extends StatefulWidget {
   final int index;
@@ -253,7 +256,23 @@ class _TweetMediaViewState extends State<TweetMediaView> {
               var uri = Uri.parse('${_media.mediaUrlHttps}:orig');
 
               var fileBytes = await downloadFile(context, uri);
-              Share.shareXFiles([XFile.fromData(fileBytes, mimeType: 'image/jpeg')]);
+
+              // The following is a workaround because of an issue with the share_plus package which uses the faulty mime_type library.
+              // When the issue is resolved (the PR https://github.com/dart-lang/mime/pull/81 is merged),
+              // then it should be replaced by the original code:
+              // Share.shareXFiles([XFile.fromData(fileBytes, mimeType: 'image/jpeg')]);
+              const uuid = Uuid();
+
+              final String tempPath = (await getTemporaryDirectory()).path;
+              final name = uuid.v4();
+              final path = '$tempPath/$name.jpg';
+
+              final file = File(path);
+              await file.writeAsBytes(fileBytes);
+
+              final xfile = XFile(path, mimeType: 'image/jpeg');
+
+              Share.shareXFiles([xfile]).then((value) => file.delete());
             },
             child: const Icon(Icons.share),
           ),
