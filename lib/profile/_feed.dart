@@ -95,7 +95,11 @@ class _ProfileFeedScreenBodyState extends State<ProfileFeedScreenBody> with Tick
                 create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive)))
           ],
           child: ProfileTweets(
-              user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
+              user: user,
+              type: 'profile',
+              includeReplies: false,
+              pinnedTweets: widget.profile.pinnedTweets,
+              fromFeed: true),
         ),
       ),
     );

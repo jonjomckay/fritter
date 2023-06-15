@@ -14,8 +14,15 @@ class ProfileTweets extends StatefulWidget {
   final String type;
   final bool includeReplies;
   final List<String> pinnedTweets;
+  final bool fromFeed;
 
-  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies, required this.pinnedTweets})
+  const ProfileTweets(
+      {Key? key,
+      required this.user,
+      required this.type,
+      required this.includeReplies,
+      required this.pinnedTweets,
+      required this.fromFeed})
       : super(key: key);
 
   @override
@@ -92,7 +99,11 @@ class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveCl
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (context, chain, index) {
               return TweetConversation(
-                  id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, isPinned: chain.isPinned);
+                  id: chain.id,
+                  tweets: chain.tweets,
+                  username: widget.user.screenName!,
+                  isPinned: chain.isPinned,
+                  fromFeed: widget.fromFeed);
             },
             firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
               error: _pagingController.error[0],
