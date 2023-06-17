@@ -99,13 +99,7 @@ class SubscriptionGroupScreen extends StatelessWidget {
                             )
                           ]));
                 }
-                if (group.subscriptions.length == 1) {
-                  print('id: ${group.subscriptions[0].id}');
-                  return ProfileFeedScreen(
-                      id: group.subscriptions[0].id, screenName: group.subscriptions[0].screenName);
-                } else {
-                  return SubscriptionUsersList(subscriptions: group.subscriptions);
-                }
+                return SubscriptionUsersList(subscriptions: group.subscriptions);
               }),
             );
           },

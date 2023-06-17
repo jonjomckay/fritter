@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
+import 'package:fritter/subscriptions/users_model.dart';
 import 'package:fritter/utils/iterables.dart';
 import 'package:pref/pref.dart';
 
@@ -17,8 +19,9 @@ class HomePage {
 class HomeModel extends StreamStore<Object, List<HomePage>> {
   final BasePrefService prefs;
   final GroupsModel groupsModel;
+  final SubscriptionsModel subscriptionsModel;
 
-  HomeModel(this.prefs, this.groupsModel) : super([]) {
+  HomeModel(this.prefs, this.groupsModel, this.subscriptionsModel) : super([]) {
     groupsModel.observer(onState: (state) async {
       await loadPages();
     });
@@ -38,7 +41,9 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
 
       var available = [
         ...defaultHomePages,
-        ...groupsModel.state.map((e) => NavigationPage('group-${e.id}', (c) => L10n.of(c).group_name(e.name), e.iconData)),
+        ...groupsModel.state.map((e) => NavigationPage('group-${e.id}', (c) => e.name, e.iconData)),
+        ...subscriptionsModel.state
+            .map((e) => NavigationPage('profile-${e.screenName}', (c) => e.name, Icons.account_circle)),
       ];
 
       var pages = <HomePage>[];
@@ -65,7 +70,7 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
       return pages;
     });
   }
-  
+
   Future<void> movePage(int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) {
       newIndex = newIndex - 1;
@@ -77,10 +82,7 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
   }
 
   Future<void> save() async {
-    var pages = state
-        .where((e) => e.selected)
-        .map((e) => e.id)
-        .toList();
+    var pages = state.where((e) => e.selected).map((e) => e.id).toList();
 
     await prefs.set(optionHomePages, pages);
   }
