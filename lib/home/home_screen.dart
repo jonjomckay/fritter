@@ -10,12 +10,12 @@ import 'package:fritter/home/_missing.dart';
 import 'package:fritter/home/_saved.dart';
 import 'package:fritter/home/home_model.dart';
 import 'package:fritter/profile/_feed.dart';
-import 'package:fritter/profile/profile_model.dart';
 import 'package:fritter/search/search.dart';
 import 'package:fritter/subscriptions/subscriptions.dart';
 import 'package:fritter/trends/trends.dart';
 import 'package:fritter/ui/errors.dart';
 import 'package:fritter/ui/physics.dart';
+import 'package:fritter/user.dart';
 import 'package:fritter/utils/debounce.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +26,10 @@ typedef NavigationTitleBuilder = String Function(BuildContext context);
 class NavigationPage {
   final String id;
   final NavigationTitleBuilder titleBuilder;
-  final IconData icon;
+  dynamic icon;
+  dynamic iconImage;
 
-  NavigationPage(this.id, this.titleBuilder, this.icon);
+  NavigationPage(this.id, this.titleBuilder, this.icon, this.iconImage);
 }
 
 List<Widget> createCommonAppBarActions(BuildContext context) {
@@ -47,10 +48,10 @@ List<Widget> createCommonAppBarActions(BuildContext context) {
 }
 
 final List<NavigationPage> defaultHomePages = [
-  NavigationPage('subscriptions', (c) => L10n.of(c).subscriptions, Icons.subscriptions),
-  NavigationPage('groups', (c) => L10n.of(c).groups, Icons.group),
-  NavigationPage('trending', (c) => L10n.of(c).trending, Icons.trending_up),
-  NavigationPage('saved', (c) => L10n.of(c).saved, Icons.bookmark),
+  NavigationPage('subscriptions', (c) => L10n.of(c).subscriptions, Icons.subscriptions, null),
+  NavigationPage('groups', (c) => L10n.of(c).groups, Icons.group, null),
+  NavigationPage('trending', (c) => L10n.of(c).trending, Icons.trending_up, null),
+  NavigationPage('saved', (c) => L10n.of(c).saved, Icons.bookmark, null),
 ];
 
 class HomeScreen extends StatelessWidget {
@@ -185,7 +186,7 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
     var widgetPages = pages;
     if (widgetPages.length < 2) {
       widgetPages.addAll(List.generate(2 - widgetPages.length, (index) {
-        return NavigationPage('none', (context) => L10n.current.missing_page, Icons.disabled_by_default);
+        return NavigationPage('none', (context) => L10n.current.missing_page, Icons.disabled_by_default, null);
       }));
     }
 
@@ -237,7 +238,25 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
         controller: scrollController,
         showUnselectedLabels: true,
         items: [
-          ..._pages.map((e) => BottomNavigationBarItem(icon: Icon(e.icon, size: 22), label: e.titleBuilder(context)))
+          ..._pages.map((e) {
+            Widget icon;
+
+            if (e.icon == null && e.iconImage != null) {
+              icon = Container(
+                width: 22,
+                height: 22,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white,
+                  child: UserAvatar(uri: e.iconImage, size: 22),
+                ),
+              );
+            } else {
+              icon = Icon(e.icon, size: 22);
+            }
+
+            return BottomNavigationBarItem(icon: icon, label: e.titleBuilder(context));
+          })
         ],
       ),
     );

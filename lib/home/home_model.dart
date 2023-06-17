@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
-import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
 import 'package:fritter/home/home_screen.dart';
 import 'package:fritter/subscriptions/users_model.dart';
@@ -41,9 +41,9 @@ class HomeModel extends StreamStore<Object, List<HomePage>> {
 
       var available = [
         ...defaultHomePages,
-        ...groupsModel.state.map((e) => NavigationPage('group-${e.id}', (c) => e.name, e.iconData)),
+        ...groupsModel.state.map((e) => NavigationPage('group-${e.id}', (c) => e.name, e.iconData, null)),
         ...subscriptionsModel.state
-            .map((e) => NavigationPage('profile-${e.screenName}', (c) => e.name, Icons.account_circle)),
+            .map((e) => NavigationPage('profile-${e.screenName}', (c) => e.name, null, e.profileImageUrlHttps)),
       ];
 
       var pages = <HomePage>[];

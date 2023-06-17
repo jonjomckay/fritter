@@ -3,7 +3,6 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
 import 'package:fritter/group/group_model.dart';
-import 'package:fritter/profile/_feed.dart';
 import 'package:fritter/subscriptions/_groups.dart';
 import 'package:fritter/subscriptions/_list.dart';
 import 'package:fritter/ui/errors.dart';
