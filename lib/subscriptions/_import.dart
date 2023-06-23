@@ -93,121 +93,123 @@ class _SubscriptionImportScreenState extends State<SubscriptionImportScreen> {
       appBar: AppBar(
         title: Text(L10n.of(context).import_subscriptions),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text(
-                L10n.of(context).to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text(
-                L10n.of(context)
-                    .please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text.rich(TextSpan(children: [
-                TextSpan(text: '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
-                WidgetSpan(
-                    child: InkWell(
-                  onTap: () => openUri('https://github.com/jonjomckay/fritter/issues/143'),
-                  child: Text(L10n.of(context).the_github_issue,
-                      style: const TextStyle(
-                        color: Colors.blue,
-                      )),
-                )),
-                TextSpan(
-                  text:
-                      '. ${L10n.of(context).selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already}',
-                )
-              ])),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: const UnderlineInputBorder(),
-                  hintText: L10n.of(context).enter_your_twitter_username,
-                  helperText: L10n.of(context).your_profile_must_be_public_otherwise_the_import_will_not_work,
-                  prefixText: '@',
-                  labelText: L10n.of(context).username,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  L10n.of(context).to_import_subscriptions_from_an_existing_twitter_account_enter_your_username_below,
                 ),
-                maxLength: 15,
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))],
-                onChanged: (value) {
-                  setState(() {
-                    _screenName = value;
-                  });
-                },
               ),
-            ),
-            Expanded(
-              child: Center(
-                child: StreamBuilder(
-                  stream: _streamController?.stream,
-                  builder: (context, snapshot) {
-                    var error = snapshot.error;
-                    if (error != null) {
-                      if (error is HttpException && error.statusCode == 401) {
-                        return createEmojiError(TwitterError(uri: error.uri, code: 22, message: L10n.current.only_public_subscriptions_can_be_imported));
-                      }
-
-                      Catcher.reportException(error, snapshot.stackTrace);
-
-                      return FullPageErrorWidget(
-                        error: snapshot.error,
-                        stackTrace: snapshot.stackTrace,
-                        prefix: L10n.of(context).unable_to_import,
-                      );
-                    }
-
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Container();
-                      case ConnectionState.active:
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: CircularProgressIndicator(),
-                            ),
-                            Text(
-                              L10n.of(context).imported_snapshot_data_users_so_far(
-                                snapshot.data.toString(),
-                              ),
-                            )
-                          ],
-                        );
-                      default:
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Icon(Icons.check_circle, size: 36, color: Colors.green),
-                            ),
-                            Text(
-                              L10n.of(context).finished_with_snapshotData_users(
-                                snapshot.data.toString(),
-                              ),
-                            )
-                          ],
-                        );
-                    }
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  L10n.of(context)
+                      .please_note_that_the_method_fritter_uses_to_import_subscriptions_is_heavily_rate_limited_by_twitter_so_this_may_fail_if_you_have_a_lot_of_followed_accounts,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(text: '${L10n.of(context).if_you_have_any_feedback_on_this_feature_please_leave_it_on} '),
+                  WidgetSpan(
+                      child: InkWell(
+                    onTap: () => openUri('https://github.com/jonjomckay/fritter/issues/143'),
+                    child: Text(L10n.of(context).the_github_issue,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                        )),
+                  )),
+                  TextSpan(
+                    text:
+                        '. ${L10n.of(context).selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already}',
+                  )
+                ])),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: const UnderlineInputBorder(),
+                    hintText: L10n.of(context).enter_your_twitter_username,
+                    helperText: L10n.of(context).your_profile_must_be_public_otherwise_the_import_will_not_work,
+                    prefixText: '@',
+                    labelText: L10n.of(context).username,
+                  ),
+                  maxLength: 15,
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9_]+'))],
+                  onChanged: (value) {
+                    setState(() {
+                      _screenName = value;
+                    });
                   },
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Center(
+                  child: StreamBuilder(
+                    stream: _streamController?.stream,
+                    builder: (context, snapshot) {
+                      var error = snapshot.error;
+                      if (error != null) {
+                        if (error is HttpException && error.statusCode == 401) {
+                          return createEmojiError(TwitterError(uri: error.uri, code: 22, message: L10n.current.only_public_subscriptions_can_be_imported));
+                        }
+
+                        Catcher.reportException(error, snapshot.stackTrace);
+
+                        return FullPageErrorWidget(
+                          error: snapshot.error,
+                          stackTrace: snapshot.stackTrace,
+                          prefix: L10n.of(context).unable_to_import,
+                        );
+                      }
+
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container();
+                        case ConnectionState.active:
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text(
+                                L10n.of(context).imported_snapshot_data_users_so_far(
+                                  snapshot.data.toString(),
+                                ),
+                              )
+                            ],
+                          );
+                        default:
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Icon(Icons.check_circle, size: 36, color: Colors.green),
+                              ),
+                              Text(
+                                L10n.of(context).finished_with_snapshotData_users(
+                                  snapshot.data.toString(),
+                                ),
+                              )
+                            ],
+                          );
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
