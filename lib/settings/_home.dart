@@ -13,16 +13,12 @@ class SettingsHomeFragment extends StatelessWidget {
     var model = context.read<HomeModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(L10n.current.home),
-        actions: [
-          IconButton(
+      appBar: AppBar(title: Text(L10n.current.home), actions: [
+        IconButton(
             icon: const Icon(Icons.restart_alt),
             tooltip: L10n.current.reset_home_pages,
-            onPressed: () async => await model.resetPages()
-          )
-        ],
-      ),
+            onPressed: () async => await model.resetPages()),
+      ]),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: ScopedBuilder<HomeModel, Object, List<HomePage>>.transition(
@@ -40,16 +36,24 @@ class SettingsHomeFragment extends StatelessWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 var page = data[index];
+                var icon = const Icon(Icons.home);
+
+                if (page.id.length > 8 && page.id.substring(0, 8) == 'profile-') {
+                  icon = const Icon(Icons.account_circle);
+                } else if (page.id.length > 6 && page.id.substring(0, 6) == 'group-') {
+                  icon = const Icon(Icons.group);
+                }
 
                 return CheckboxListTile(
                   key: Key(page.id),
-                  secondary: const Icon(Icons.drag_handle),
+                  secondary: Row(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.drag_handle), icon]),
                   title: Text(page.page.titleBuilder(context)),
                   value: page.selected,
                   onChanged: (value) async {
                     var selected = value ?? false;
                     if (selected == false && data.where((e) => e.selected).length == 2) {
-                      showSnackBar(context, icon: '🙊', message: L10n.current.you_must_have_at_least_2_home_screen_pages);
+                      showSnackBar(context,
+                          icon: '🙊', message: L10n.current.you_must_have_at_least_2_home_screen_pages);
                       return;
                     }
 
