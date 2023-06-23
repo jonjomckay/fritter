@@ -6,9 +6,11 @@
     <!-- Force usage of the file picker library even on SDKs < 19, as we handle it at runtime -->
     <uses-sdk tools:overrideLibrary="com.kineapps.flutter_file_dialog" />
 
-    <!-- Required for importing and exporting on older versions of Android (<19?) -->
+    <!-- Required for importing and exporting on older versions of Android (<=10) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Permission for the Android 11 and above -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.

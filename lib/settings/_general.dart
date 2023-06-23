@@ -351,7 +351,9 @@ class DownloadTypeSettingState extends State<DownloadTypeSetting> {
         if (PrefService.of(context).get(optionDownloadType) == optionDownloadTypeDirectory)
           PrefButton(
             onTap: () async {
-              var storagePermission = await Permission.storage.request();
+              DeviceInfoPlugin plugin = DeviceInfoPlugin();
+              AndroidDeviceInfo android = await plugin.androidInfo;
+              var storagePermission = android.version.sdkInt < 30 ? await Permission.storage.request() : await Permission.manageExternalStorage.request();
               if (storagePermission.isGranted) {
                 String? directoryPath = await FilePicker.platform.getDirectoryPath();
                 if (directoryPath == null) {
