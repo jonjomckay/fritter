@@ -44,11 +44,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var appVersion = 'v${_packageInfo.version}+${_packageInfo.buildNumber}';
 
     var pages = [
-      NavigationPage('general', (c) => L10n.of(c).general, Icons.settings),
-      NavigationPage('home', (c) => L10n.of(c).home, Icons.home),
-      NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint),
-      NavigationPage('data', (c) => L10n.of(c).data, Icons.storage),
-      NavigationPage('about', (c) => L10n.of(c).about, Icons.help),
+      NavigationPage('general', (c) => L10n.of(c).general, Icons.settings, null),
+      NavigationPage('home', (c) => L10n.of(c).home, Icons.home, null),
+      NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint, null),
+      NavigationPage('data', (c) => L10n.of(c).data, Icons.storage, null),
+      NavigationPage('about', (c) => L10n.of(c).about, Icons.help, null),
     ];
 
     var initialPage = pages.indexWhere((element) => element.id == widget.initialPage);

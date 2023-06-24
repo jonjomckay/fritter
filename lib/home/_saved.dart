@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 
 class SavedScreen extends StatefulWidget {
   final ScrollController scrollController;
-  
+
   const SavedScreen({Key? key, required this.scrollController}) : super(key: key);
 
   @override
@@ -59,7 +59,8 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
       },
       body: MultiProvider(
         providers: [
-          ChangeNotifierProvider<TweetContextState>(create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
+          ChangeNotifierProvider<TweetContextState>(
+              create: (_) => TweetContextState(prefs.get(optionTweetsHideSensitive))),
         ],
         child: ScopedBuilder<SavedTweetModel, Object, List<SavedTweet>>.transition(
           store: model,
@@ -107,7 +108,12 @@ class SavedTweetTile extends StatelessWidget {
 
     var tweet = TweetWithCard.fromJson(jsonDecode(content));
 
-    return TweetTile(key: Key(tweet.idStr!), tweet: tweet, clickable: true);
+    return TweetTile(
+      key: Key(tweet.idStr!),
+      tweet: tweet,
+      clickable: true,
+      fromFeed: false,
+    );
   }
 }
 
@@ -146,7 +152,6 @@ class SavedTweetTooLarge extends StatelessWidget {
     );
   }
 }
-
 
 class SavedTweetTooLargeException with SyntheticException implements Exception {
   final String id;

@@ -248,16 +248,15 @@ Future<void> main() async {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
         const InitializationSettings settings =
-        InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+            InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
 
-        await notifications
-            .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+        await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
             onDidReceiveNotificationResponse: (response) async {
-              var payload = response.payload;
-              if (payload != null && payload.startsWith('https://')) {
-                await openUri(payload);
-              }
-            });
+          var payload = response.payload;
+          if (payload != null && payload.startsWith('https://')) {
+            await openUri(payload);
+          }
+        });
 
         var flavor = getFlavor();
         var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
@@ -279,11 +278,11 @@ Future<void> main() async {
       var groupsModel = GroupsModel(prefService);
       await groupsModel.reloadGroups();
 
-      var homeModel = HomeModel(prefService, groupsModel);
-      await homeModel.loadPages();
-
       var subscriptionsModel = SubscriptionsModel(prefService, groupsModel);
       await subscriptionsModel.reloadSubscriptions();
+
+      var homeModel = HomeModel(prefService, groupsModel, subscriptionsModel);
+      await homeModel.loadPages();
 
       var trendLocationModel = UserTrendLocationModel(prefService);
 
@@ -517,10 +516,10 @@ class _FritterAppState extends State<FritterApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) => FullPageErrorWidget(
-          error: details.exception,
-          stackTrace: details.stack,
-          prefix: L10n.of(context).something_broke_in_fritter,
-        );
+              error: details.exception,
+              stackTrace: details.stack,
+              prefix: L10n.of(context).something_broke_in_fritter,
+            );
 
         return DevicePreview.appBuilder(context, child ?? Container());
       },

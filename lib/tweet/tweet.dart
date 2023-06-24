@@ -34,6 +34,7 @@ class TweetTile extends StatefulWidget {
   final TweetWithCard tweet;
   final bool isPinned;
   final bool isThread;
+  final bool fromFeed;
 
   const TweetTile(
       {Key? key,
@@ -41,7 +42,8 @@ class TweetTile extends StatefulWidget {
       this.currentUsername,
       required this.tweet,
       this.isPinned = false,
-      this.isThread = false})
+      this.isThread = false,
+      required this.fromFeed})
       : super(key: key);
 
   @override
@@ -180,7 +182,6 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         arguments: StatusScreenArguments(id: tweet.idStr!, username: tweet.user!.screenName!));
   }
 
-
   List<TweetTextPart> convertTextPartsToTweetEntities(List<String> parts) {
     List<TweetTextPart> translatedParts = [];
 
@@ -288,9 +289,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     var theme = Theme.of(context);
 
     var shareBaseUrlOption = prefs.get(optionShareBaseUrl);
-    var shareBaseUrl = shareBaseUrlOption != null && shareBaseUrlOption.isNotEmpty
-        ? shareBaseUrlOption
-        : 'https://twitter.com';
+    var shareBaseUrl =
+        shareBaseUrlOption != null && shareBaseUrlOption.isNotEmpty ? shareBaseUrlOption : 'https://twitter.com';
 
     TweetWithCard tweet = this.tweet.retweetedStatusWithCard == null ? this.tweet : this.tweet.retweetedStatusWithCard!;
 
@@ -308,9 +308,9 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     Widget media = Container();
     if (tweet.extendedEntities?.media != null && tweet.extendedEntities!.media!.isNotEmpty) {
       media = TweetMedia(
-          sensitive: tweet.possiblySensitive,
-          media: tweet.extendedEntities!.media!,
-          username: tweet.user!.screenName!,
+        sensitive: tweet.possiblySensitive,
+        media: tweet.extendedEntities!.media!,
+        username: tweet.user!.screenName!,
       );
     }
 
@@ -351,8 +351,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
         icon: Icons.reply,
         children: [
           TextSpan(text: '${L10n.of(context).replying_to} ', style: theme.textTheme.caption),
-          TextSpan(
-              text: '@$replyTo', style: theme.textTheme.caption!.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(text: '@$replyTo', style: theme.textTheme.caption!.copyWith(fontWeight: FontWeight.bold)),
         ],
       );
     }
@@ -369,13 +368,14 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     if (tweet.isQuoteStatus ?? false) {
       if (tweet.quotedStatusWithCard != null) {
         quotedTweet = Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: theme.primaryColor), borderRadius: BorderRadius.circular(8)),
+          decoration:
+              BoxDecoration(border: Border.all(color: theme.primaryColor), borderRadius: BorderRadius.circular(8)),
           margin: const EdgeInsets.all(8),
           child: TweetTile(
             clickable: true,
             tweet: tweet.quotedStatusWithCard!,
             currentUsername: currentUsername,
+            fromFeed: false,
           ),
         );
       }
@@ -461,7 +461,9 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                       ListTile(
                         onTap: () {
                           // If the tweet is by the currently-viewed profile, don't allow clicks as it doesn't make sense
-                          if (currentUsername != null && tweet.user!.screenName!.endsWith(currentUsername!)) {
+                          if (currentUsername != null &&
+                              tweet.user!.screenName!.endsWith(currentUsername!) &&
+                              widget.fromFeed == false) {
                             return;
                           }
 
@@ -490,69 +492,69 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                               child: const Icon(Icons.more_horiz),
                               onTap: () async {
                                 createSheetButton(title, icon, onTap) => ListTile(
-                                  onTap: onTap,
-                                  leading: Icon(icon),
-                                  title: Text(title),
-                                );
+                                      onTap: onTap,
+                                      leading: Icon(icon),
+                                      title: Text(title),
+                                    );
 
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
                                       return SafeArea(
                                           child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Consumer<SavedTweetModel>(builder: (context, model, child) {
-                                                var isSaved = model.isSaved(tweet.idStr!);
-                                                if (isSaved) {
-                                                  return createSheetButton(
-                                                    L10n.of(context).unsave,
-                                                    Icons.bookmark,
-                                                        () async {
-                                                      await model.deleteSavedTweet(tweet.idStr!);
-                                                      Navigator.pop(context);
-                                                    },
-                                                  );
-                                                } else {
-                                                  return createSheetButton(L10n.of(context).save, Icons.bookmark_outline,
-                                                          () async {
-                                                        await model.saveTweet(tweet.idStr!, tweet.user?.idStr, tweet.toJson());
-                                                        Navigator.pop(context);
-                                                      });
-                                                }
-                                              }),
-                                              createSheetButton(
-                                                L10n.of(context).share_tweet_content,
-                                                Icons.share,
-                                                    () async {
-                                                  Share.share(tweetText);
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Consumer<SavedTweetModel>(builder: (context, model, child) {
+                                            var isSaved = model.isSaved(tweet.idStr!);
+                                            if (isSaved) {
+                                              return createSheetButton(
+                                                L10n.of(context).unsave,
+                                                Icons.bookmark,
+                                                () async {
+                                                  await model.deleteSavedTweet(tweet.idStr!);
                                                   Navigator.pop(context);
                                                 },
-                                              ),
-                                              createSheetButton(L10n.of(context).share_tweet_link, Icons.share, () async {
-                                                Share.share(
-                                                    '$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                              );
+                                            } else {
+                                              return createSheetButton(L10n.of(context).save, Icons.bookmark_outline,
+                                                  () async {
+                                                await model.saveTweet(tweet.idStr!, tweet.user?.idStr, tweet.toJson());
                                                 Navigator.pop(context);
-                                              }),
-                                              createSheetButton(
-                                                  L10n.of(context).share_tweet_content_and_link, Icons.share, () async {
-                                                Share.share(
-                                                    '$tweetText\n\n$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
-                                                Navigator.pop(context);
-                                              }),
-                                              const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                                child: Divider(
-                                                  thickness: 1.0,
-                                                ),
-                                              ),
-                                              createSheetButton(
-                                                L10n.of(context).cancel,
-                                                Icons.close,
-                                                    () => Navigator.pop(context),
-                                              )
-                                            ],
-                                          ));
+                                              });
+                                            }
+                                          }),
+                                          createSheetButton(
+                                            L10n.of(context).share_tweet_content,
+                                            Icons.share,
+                                            () async {
+                                              Share.share(tweetText);
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          createSheetButton(L10n.of(context).share_tweet_link, Icons.share, () async {
+                                            Share.share(
+                                                '$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                            Navigator.pop(context);
+                                          }),
+                                          createSheetButton(L10n.of(context).share_tweet_content_and_link, Icons.share,
+                                              () async {
+                                            Share.share(
+                                                '$tweetText\n\n$shareBaseUrl/${tweet.user!.screenName}/status/${tweet.idStr}');
+                                            Navigator.pop(context);
+                                          }),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 16),
+                                            child: Divider(
+                                              thickness: 1.0,
+                                            ),
+                                          ),
+                                          createSheetButton(
+                                            L10n.of(context).cancel,
+                                            Icons.close,
+                                            () => Navigator.pop(context),
+                                          )
+                                        ],
+                                      ));
                                     });
                               },
                             )
@@ -568,7 +570,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                               const SizedBox(width: 4),
                             ],
                             if (createdAt != null)
-                              DefaultTextStyle(style: theme.textTheme.caption!, child: Timestamp(timestamp: createdAt))
+                              DefaultTextStyle(
+                                  style: theme.textTheme.bodySmall!, child: Timestamp(timestamp: createdAt))
                           ],
                         ),
                         // Profile picture
@@ -591,7 +594,8 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
                             child: Row(
                               children: [
                                 if (tweet.replyCount != null)
-                                  _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null, () => onClickOpenTweet(tweet)),
+                                  _createFooterTextButton(Icons.comment, numberFormat.format(tweet.replyCount), null,
+                                      () => onClickOpenTweet(tweet)),
                                 if (tweet.retweetCount != null)
                                   _createFooterTextButton(Icons.repeat, numberFormat.format(tweet.retweetCount)),
                                 if (tweet.quoteCount != null)

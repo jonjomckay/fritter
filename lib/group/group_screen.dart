@@ -98,7 +98,6 @@ class SubscriptionGroupScreen extends StatelessWidget {
                             )
                           ]));
                 }
-
                 return SubscriptionUsersList(subscriptions: group.subscriptions);
               }),
             );
