@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ❓ Question
+    url: https://github.com/jonjomckay/fritter/discussions/new?category=q-a
+    about: Ask about anything Fritter-related
