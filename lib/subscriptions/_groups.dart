@@ -79,10 +79,8 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
         return GridView.builder(
           controller: widget.scrollController,
           padding: const EdgeInsets.only(top: 4),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 180,
-              childAspectRatio: 200 / 150
-          ),
+          gridDelegate:
+              const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 180, childAspectRatio: 200 / 150),
           itemCount: state.length + 2,
           itemBuilder: (context, index) {
             var actualIndex = index - 1;
@@ -94,7 +92,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
               var e = state[actualIndex];
 
               return _createGroupCard(e.id, e.name, e.icon, e.color, e.numberOfMembers,
-                      () => openSubscriptionGroupDialog(context, e.id, e.name, e.icon));
+                  () => openSubscriptionGroupDialog(context, e.id, e.name, e.icon));
             }
 
             return Card(
@@ -103,7 +101,7 @@ class _SubscriptionGroupsState extends State<SubscriptionGroups> {
                   openSubscriptionGroupDialog(context, null, '', defaultGroupIcon);
                 },
                 child: DottedBorder(
-                  color: Theme.of(context).textTheme.caption!.color!,
+                  color: Theme.of(context).textTheme.bodySmall!.color!,
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(12),
                   child: SizedBox(
@@ -326,9 +324,12 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                     icon: Icon(deserializeIconData(icon)),
                     onPressed: () async {
                       var selectedIcon = await FlutterIconPicker.showIconPicker(context,
-                          iconPackModes: [IconPack.custom], customIconPack: Map.fromEntries(iconPack),
-                          title: Text(L10n.of(context).pick_an_icon), closeChild: Text(L10n.of(context).close),
-                          searchHintText: L10n.of(context).search, noResultsText: L10n.of(context).no_results_for);
+                          iconPackModes: [IconPack.custom],
+                          customIconPack: Map.fromEntries(iconPack),
+                          title: Text(L10n.of(context).pick_an_icon),
+                          closeChild: Text(L10n.of(context).close),
+                          searchHintText: L10n.of(context).search,
+                          noResultsText: L10n.of(context).no_results_for);
                       if (selectedIcon != null) {
                         setState(() {
                           icon = jsonEncode(serializeIcon(selectedIcon));
@@ -345,13 +346,12 @@ class _SubscriptionGroupEditDialogState extends State<SubscriptionGroupEditDialo
                   itemBuilder: (context, index) {
                     var subscription = subscriptionsModel.state[index];
 
-                    var subtitle = subscription is SearchSubscription
-                      ? L10n.current.search_term
-                      : '@${subscription.screenName}';
+                    var subtitle =
+                        subscription is SearchSubscription ? L10n.current.search_term : '@${subscription.screenName}';
 
                     var icon = subscription is SearchSubscription
-                      ? const SizedBox(width: 48, child: Icon(Icons.search))
-                      : UserAvatar(uri: subscription.profileImageUrlHttps);
+                        ? const SizedBox(width: 48, child: Icon(Icons.search))
+                        : UserAvatar(uri: subscription.profileImageUrlHttps);
 
                     return CheckboxListTile(
                       dense: true,

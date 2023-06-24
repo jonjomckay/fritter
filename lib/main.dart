@@ -38,7 +38,7 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/utils/urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -248,16 +248,15 @@ Future<void> main() async {
         FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
 
         const InitializationSettings settings =
-        InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
+            InitializationSettings(android: AndroidInitializationSettings('@drawable/ic_notification'));
 
-        await notifications
-            .initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
+        await notifications.initialize(settings, onDidReceiveBackgroundNotificationResponse: handleNotificationCallback,
             onDidReceiveNotificationResponse: (response) async {
-              var payload = response.payload;
-              if (payload != null && payload.startsWith('https://')) {
-                await openUri(payload);
-              }
-            });
+          var payload = response.payload;
+          if (payload != null && payload.startsWith('https://')) {
+            await openUri(payload);
+          }
+        });
 
         var flavor = getFlavor();
         var shouldCheckForUpdates = prefService.get(optionShouldCheckForUpdates);
@@ -483,7 +482,7 @@ class _FritterAppState extends State<FritterApp> {
           blendOnColors: false,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: false,
+        useMaterial3: true,
         appBarStyle: FlexAppBarStyle.primary,
       ),
       darkTheme: FlexThemeData.dark(
@@ -498,7 +497,7 @@ class _FritterAppState extends State<FritterApp> {
           blendOnColors: false,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: false,
+        useMaterial3: true,
         appBarStyle: _trueBlack ? FlexAppBarStyle.surface : FlexAppBarStyle.primary,
       ),
       themeMode: themeMode,
@@ -517,10 +516,10 @@ class _FritterAppState extends State<FritterApp> {
       builder: (context, child) {
         // Replace the default red screen of death with a slightly friendlier one
         ErrorWidget.builder = (FlutterErrorDetails details) => FullPageErrorWidget(
-          error: details.exception,
-          stackTrace: details.stack,
-          prefix: L10n.of(context).something_broke_in_fritter,
-        );
+              error: details.exception,
+              stackTrace: details.stack,
+              prefix: L10n.of(context).something_broke_in_fritter,
+            );
 
         return DevicePreview.appBuilder(context, child ?? Container());
       },

@@ -19,7 +19,7 @@ class TrendsTabBar extends StatefulWidget implements PreferredSizeWidget {
   /// height. In that case implementations of this method can just return
   /// `new Size.fromHeight(myAppBarHeight)`.
   @override
-  Size get preferredSize => const Size.fromHeight(48.0);
+  Size get preferredSize => const Size.fromHeight(56.0);
 }
 
 class _TrendsTabBarState extends State<TrendsTabBar> with TickerProviderStateMixin {
@@ -69,6 +69,8 @@ class _TrendsTabBarState extends State<TrendsTabBar> with TickerProviderStateMix
       onState: (context, state) {
         return AppBar(
           bottom: TabBar(
+              labelColor: Theme.of(context).textTheme.bodySmall!.color,
+              indicatorColor: Theme.of(context).textTheme.bodySmall!.color,
               controller: _tabController,
               isScrollable: true,
               onTap: (index) async {

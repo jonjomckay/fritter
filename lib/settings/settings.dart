@@ -9,7 +9,7 @@ import 'package:fritter/settings/_general.dart';
 import 'package:fritter/settings/_home.dart';
 import 'package:fritter/settings/_theme.dart';
 import 'package:fritter/utils/legacy.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String? initialPage;
