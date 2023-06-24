@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fritter/catcher/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -35,7 +36,9 @@ Future<void> downloadUriToPickedFile(BuildContext context, Uri uri, String fileN
       onStart();
       var responseTask = downloadFile(context, uri);
 
-      var storagePermission = await Permission.storage.request();
+      DeviceInfoPlugin plugin = DeviceInfoPlugin();
+      AndroidDeviceInfo android = await plugin.androidInfo;
+      var storagePermission = android.version.sdkInt < 30 ? await Permission.storage.request() : await Permission.manageExternalStorage.request();
 
       var response = await responseTask;
       if (response == null) {
