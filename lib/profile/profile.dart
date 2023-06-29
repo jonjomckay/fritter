@@ -43,11 +43,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Provider(
       create: (context) {
-        if (args.id != null) {
-          return ProfileModel()..loadProfileById(args.id!);
-        } else {
           return ProfileModel()..loadProfileByScreenName(args.screenName!);
-        }
       },
       child: _ProfileScreen(id: args.id, screenName: args.screenName)
     );

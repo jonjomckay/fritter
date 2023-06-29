@@ -13,6 +13,8 @@ import 'intl/messages_all.dart';
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class L10n {
+
+
   L10n();
 
   static L10n? _current;
@@ -2576,6 +2578,74 @@ class L10n {
       args: [],
     );
   }
+  /// `Twitter Account`
+  String get account {
+    return Intl.message(
+      'Twitter account',
+      name: 'account',
+      desc: '',
+      args: [],
+    );
+  }
+
+
+  /// `Tweets from All profiles`
+  String get browsingTweets {
+    return Intl.message(
+      'Browsing Tweets',
+      name: 'browsingTweets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Twitter Login name`
+  String get loginNameTwitterAcc {
+    return Intl.message(
+      'Login name',
+      name: 'loginTwitterAcc',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Twitter Login password`
+  String get passwordTwitterAcc {
+    return Intl.message(
+      'Login password',
+      name: 'passwordTwitterAcc',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Twitter email`
+  String get emailTwitterAcc {
+    return Intl.message(
+      'Email',
+      name: 'emailTwitterAcc',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Cookies of twitter account are deleted`
+  String get twitterCookiesDeleted {
+    return Intl.message(
+      'All cookies of the account are deleted',
+      name: 'twitterCookiesDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Cookies of twitter account are deleted`
+  String get DeleteTwitterCookies {
+    return Intl.message(
+      'Delete all cookies of the account',
+      name: 'DeleteTwitterCookies',
+      desc: '',
+      args: [],
+    );
+  }
+
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

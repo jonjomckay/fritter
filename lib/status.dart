@@ -86,7 +86,7 @@ class _StatusScreenState extends State<_StatusScreen> {
 
         _pagingController.appendPage(chains, result.cursorBottom);
 
-        // If we're on the first page, we want to scroll to the selected status
+        //If we're on the first page, we want to scroll to the selected status
         if (isFirstPage) {
           var statusIndex = chains.indexWhere((e) => e.id == widget.id);
 
