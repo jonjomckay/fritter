@@ -104,5 +104,17 @@
   "note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": "Notera att: På grund av en Twitter-begränsning så kan inte alla tweets inkluderas",
   "@note_due_to_a_twitter_limitation_not_all_tweets_may_be_included": {},
   "saved": "Sparades",
-  "@saved": {}
+  "@saved": {},
+  "unable_to_load_the_next_page_of_replies": "Svaren på nästa sida kunde inte laddas",
+  "@unable_to_load_the_next_page_of_replies": {},
+  "your_report_will_be_sent_to_fritter_sentry_project": "Din rapport kommer att skickas till Fritter's Sentry-projekt och detaljer och privatliv kan hittas på:",
+  "@your_report_will_be_sent_to_fritter_sentry_project": {},
+  "unable_to_load_the_tweets_for_the_feed": "Tweet-meddelandena för flödet kunde inte laddas",
+  "@unable_to_load_the_tweets_for_the_feed": {},
+  "unable_to_load_the_tweets": "Tweet-meddelandena kunde inte laddas",
+  "@unable_to_load_the_tweets": {},
+  "tweets_and_replies": "Tweet-meddelanden och Svar",
+  "@tweets_and_replies": {},
+  "export_subscription_groups": "Exportera prenumerationsgrupper?",
+  "@export_subscription_groups": {}
 }
