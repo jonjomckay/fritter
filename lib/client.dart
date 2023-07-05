@@ -17,21 +17,14 @@ import 'package:logging/logging.dart';
 import 'package:quiver/iterables.dart';
 
 const Duration _defaultTimeout = Duration(seconds: 30);
-final String _bearerToken = String.fromCharCodes(
-  base64Decode(
-    'QmVhcmVyIEFBQUFBQUFBQUFB' +
-        'QUFBQUFBQUFBQVBZWEJBQUFBQUFBQ0xYVU5EZWtNeHFhOGglMkY0MEs0bW9Va0dz' +
-        'b2MlM0RUWWZiREtiVDNqSlBDRVZuTVlxaWx' +
-        'CMjhOSGZPUHFrY2EzcWFBeEdmc3lLQ3Mwd1Jidw==',
-  ),
-);
+const String _accessToken = 'AAAAAAAAAAAAAAAAAAAAAGHtAgAAAAAA%2Bx7ILXNILCqkSGIzy6faIHZ9s3Q%3DQy97w6SIrzE7lQwPJEYQBsArEE2fC25caFwRBvAGi456G09vGR';
 
 class _FritterTwitterClient extends TwitterClient {
   static final log = Logger('_FritterTwitterClient');
 
   _FritterTwitterClient() : super(consumerKey: '', consumerSecret: '', token: '', secret: '');
 
-  static Object? _token;
+  static String? _guestToken;
   static int _expiresAt = -1;
   static int _tokenLimit = -1;
   static int _tokenRemaining = -1;
@@ -47,12 +40,12 @@ class _FritterTwitterClient extends TwitterClient {
     });
   }
 
-  static Future<Object> getToken() async {
-    if (_token != null) {
+  static Future<String> getToken() async {
+    if (_guestToken != null) {
       // If we don't have an expiry or limit, it's probably because we haven't made a request yet, so assume they're OK
       if (_expiresAt == -1 && _tokenLimit == -1 && _tokenRemaining == -1) {
         // TODO: Null safety with concurrent threads
-        return _token!;
+        return _guestToken!;
       }
 
       // Check if the token we have hasn't expired yet
@@ -60,13 +53,13 @@ class _FritterTwitterClient extends TwitterClient {
         // Check if the token we have still has usages remaining
         if (_tokenRemaining < _tokenLimit) {
           // TODO: Null safety with concurrent threads
-          return _token!;
+          return _guestToken!;
         }
       }
     }
 
     // Otherwise, fetch a new token
-    _token = null;
+    _guestToken = null;
     _tokenLimit = -1;
     _tokenRemaining = -1;
     _expiresAt = -1;
@@ -74,15 +67,15 @@ class _FritterTwitterClient extends TwitterClient {
     log.info('Refreshing the Twitter token');
 
     var response = await http.post(Uri.parse('https://api.twitter.com/1.1/guest/activate.json'), headers: {
-      'authorization': _bearerToken,
+      'Authorization': 'Bearer $_accessToken',
     });
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       if (result.containsKey('guest_token')) {
-        _token = result['guest_token'];
+        _guestToken = result['guest_token'];
 
-        return _token!;
+        return _guestToken!;
       }
     }
 
@@ -95,8 +88,8 @@ class _FritterTwitterClient extends TwitterClient {
 
     var response = await http.get(uri, headers: {
       ...?headers,
-      'authorization': _bearerToken,
-      'x-guest-token': (await getToken()).toString(),
+      'Authorization': 'Bearer $_accessToken',
+      'x-guest-token': await getToken(),
       'x-twitter-active-user': 'yes',
       'user-agent': faker.internet.userAgent()
     });
@@ -183,39 +176,22 @@ class Twitter {
     'ext': 'mediaStats,highlightedLabel,hasNftAvatar,voiceInfo,enrichments,superFollowMetadata,unmentionInfo,editControl,collab_control,vibe,'
   };
 
-  static Map<String, bool> gqlFeatures = {
-    "blue_business_profile_image_shape_enabled": false,
-    "freedom_of_speech_not_reach_fetch_enabled": false,
-    "graphql_is_translatable_rweb_tweet_is_translatable_enabled": false,
-    "interactive_text_enabled": false,
-    "longform_notetweets_consumption_enabled": true,
-    "longform_notetweets_richtext_consumption_enabled": true,
-    "longform_notetweets_rich_text_read_enabled": false,
-    "responsive_web_edit_tweet_api_enabled": false,
-    "responsive_web_enhance_cards_enabled": false,
-    "responsive_web_graphql_exclude_directive_enabled": true,
-    "responsive_web_graphql_skip_user_profile_image_extensions_enabled": false,
-    "responsive_web_graphql_timeline_navigation_enabled": false,
-    "responsive_web_text_conversations_enabled": false,
-    "responsive_web_twitter_blue_verified_badge_is_enabled": true,
-    "spaces_2022_h2_clipping": true,
-    "spaces_2022_h2_spaces_communities": true,
-    "standardized_nudges_misinfo": false,
-    "tweet_awards_web_tipping_enabled": false,
-    "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled": false,
-    "tweetypie_unmention_optimization_enabled": false,
-    "verified_phone_label_enabled": false,
-    "vibe_api_enabled": false,
-    "view_counts_everywhere_api_enabled": false
-  };
-
   static Future<Profile> getProfileById(String id) async {
-    var uri = Uri.https('twitter.com', '/i/api/graphql/Qs44y3K0SXxItjNi6mUFQA/UserByRestId', {
-      'variables': jsonEncode({'userId': id, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
+    var uri = Uri.https('twitter.com', '/i/api/graphql/Lxg1V9AiIzzXEiP2c8dRnw/UserByRestId', {
+      'variables': jsonEncode({
+        'userId': id,
+        'withHighlightedLabel': true,
+        'withSafetyModeUserFields': true,
+        'withSuperFollowsUserFields': true
+      }),
       'features': jsonEncode({
-        'responsive_web_graphql_timeline_navigation_enabled': true,
-        'responsive_web_twitter_blue_verified_badge_is_enabled': true,
+        'hidden_profile_likes_enabled': false,
+        'responsive_web_graphql_exclude_directive_enabled': true,
         'verified_phone_label_enabled': false,
+        'highlights_tweets_tab_ui_enabled': true,
+        'creator_subscriptions_tweet_preview_api_enabled': true,
+        'responsive_web_graphql_skip_user_profile_image_extensions_enabled': false,
+        'responsive_web_graphql_timeline_navigation_enabled': true
       })
     });
 
@@ -223,9 +199,23 @@ class Twitter {
   }
 
   static Future<Profile> getProfileByScreenName(String screenName) async {
-    var uri = Uri.https('twitter.com', '/i/api/graphql/vG3rchZtwqiwlKgUYCrTRA/UserByScreenName', {
-      'variables': jsonEncode({'screen_name': screenName, 'withHighlightedLabel': true, 'withSafetyModeUserFields': true, 'withSuperFollowsUserFields': true}),
-      'features': jsonEncode({'responsive_web_graphql_timeline_navigation_enabled': false})
+    var uri = Uri.https('twitter.com', '/i/api/graphql/oUZZZ8Oddwxs8Cd3iW3UEA/UserByScreenName', {
+      'variables': jsonEncode({
+        'screen_name': screenName,
+        'withHighlightedLabel': true,
+        'withSafetyModeUserFields': true,
+        'withSuperFollowsUserFields': true
+      }),
+      'features': jsonEncode({
+        'hidden_profile_likes_enabled': false,
+        'responsive_web_graphql_exclude_directive_enabled': true,
+        'verified_phone_label_enabled': false,
+        'subscriptions_verification_info_verified_since_enabled': true,
+        'highlights_tweets_tab_ui_enabled': true,
+        'creator_subscriptions_tweet_preview_api_enabled': true,
+        'responsive_web_graphql_skip_user_profile_image_extensions_enabled': false,
+        'responsive_web_graphql_timeline_navigation_enabled': true
+      })
     });
 
     return _getProfile(uri);
@@ -347,9 +337,31 @@ class Twitter {
       variables['cursor'] = cursor;
     }
 
-    var response = await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/BbCrSoXIR7z93lLCVFlQ2Q/TweetDetail', {
+    var response =
+    await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/3XDB26fBve-MmjHaWTUZxA/TweetDetail', {
       'variables': jsonEncode(variables),
-      'features': jsonEncode(gqlFeatures),
+      'features': jsonEncode({
+        'rweb_lists_timeline_redesign_enabled': true,
+        'responsive_web_graphql_exclude_directive_enabled': true,
+        'verified_phone_label_enabled': false,
+        'creator_subscriptions_tweet_preview_api_enabled': true,
+        'responsive_web_graphql_timeline_navigation_enabled': true,
+        'responsive_web_graphql_skip_user_profile_image_extensions_enabled': false,
+        'tweetypie_unmention_optimization_enabled': true,
+        'responsive_web_edit_tweet_api_enabled': true,
+        'graphql_is_translatable_rweb_tweet_is_translatable_enabled': true ,
+        'view_counts_everywhere_api_enabled': true ,
+        'longform_notetweets_consumption_enabled': true ,
+        'responsive_web_twitter_article_tweet_consumption_enabled': false,
+        'tweet_awards_web_tipping_enabled': false,
+        'freedom_of_speech_not_reach_fetch_enabled': true ,
+        'standardized_nudges_misinfo': true ,
+        'tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled': true ,
+        'longform_notetweets_rich_text_read_enabled': true ,
+        'longform_notetweets_inline_media_enabled': true ,
+        'responsive_web_media_download_video_enabled': false,
+        'responsive_web_enhance_cards_enabled': false,
+      }),
     }));
 
     var result = json.decode(response.body);
