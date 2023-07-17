@@ -319,7 +319,7 @@ class TweetTileState extends State<TweetTile> with SingleTickerProviderStateMixi
     if (this.tweet.retweetedStatusWithCard != null) {
       retweetBanner = _TweetTileLeading(
         icon: Icons.repeat,
-        onTap: () => Navigator.pushNamed(context, routeProfile, arguments: this.tweet.user!.screenName!),
+        onTap: () => Navigator.pushNamed(context, routeProfile, arguments: ProfileScreenArguments.fromScreenName(this.tweet.user!.screenName!)),
         children: [
           TextSpan(
               text: L10n.of(context)
