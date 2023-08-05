@@ -13,7 +13,7 @@
   "@select": {},
   "unsubscribe": "Leiratkozás",
   "@unsubscribe": {},
-  "subscribe": "Feliratkozás",
+  "subscribe": "Előfizetés",
   "@subscribe": {},
   "unable_to_load_subscription_groups": "Nem lehet betölteni a feliratkozási csoportokat",
   "@unable_to_load_subscription_groups": {},
@@ -114,5 +114,9 @@
   "export_tweets": "Exportálja a tweeteket?",
   "@export_tweets": {},
   "export_subscription_group_members": "Exportálja az előfizetési csoport tagjait?",
-  "@export_subscription_group_members": {}
+  "@export_subscription_group_members": {},
+  "cancel": "Mégse",
+  "@cancel": {},
+  "it_looks_like_you_have_already_said_hello_from_this_version_of_fritter": "Úgy tűnik, hogy ebből a Fritter verzióból már mondta azt, hogy helló!",
+  "@it_looks_like_you_have_already_said_hello_from_this_version_of_fritter": {}
 }
