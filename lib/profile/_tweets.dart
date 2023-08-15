@@ -7,15 +7,19 @@ import 'package:fritter/ui/errors.dart';
 import 'package:fritter/user.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
+
+import 'filter_model.dart';
 
 class ProfileTweets extends StatefulWidget {
   final UserWithExtra user;
   final String type;
   final bool includeReplies;
   final List<String> pinnedTweets;
+  final BasePrefService pref;
 
-  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies, required this.pinnedTweets})
+  const ProfileTweets({Key? key, required this.user, required this.type, required this.includeReplies, required this.pinnedTweets, required this.pref})
       : super(key: key);
 
   @override
@@ -24,19 +28,19 @@ class ProfileTweets extends StatefulWidget {
 
 class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveClientMixin<ProfileTweets> {
   late PagingController<String?, TweetChain> _pagingController;
-
   static const int pageSize = 20;
-
+  int loadTweetsCounter = 0;
+  late FilterModel filterModel;
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
-
+    filterModel= FilterModel(widget.user.idStr!,widget.pref);
     _pagingController = PagingController(firstPageKey: null);
     _pagingController.addPageRequestListener((cursor) {
-      _loadTweets(cursor);
+      _loadTweets(cursor,filterModel);
     });
   }
 
@@ -45,11 +49,19 @@ class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveCl
     _pagingController.dispose();
     super.dispose();
   }
+  void  incrementLoadTweetsCounter() {
+    ++loadTweetsCounter;
+  }
+  int getLoadTweetsCounter(){
+    return loadTweetsCounter;
 
-  Future _loadTweets(String? cursor) async {
+  }
+  Future _loadTweets(String? cursor, FilterModel filterModel) async {
     try {
       var result = await Twitter.getTweets(widget.user.idStr!, widget.type, widget.pinnedTweets,
-          cursor: cursor, count: pageSize, includeReplies: widget.includeReplies);
+          cursor: cursor, count: pageSize, includeReplies: widget.includeReplies,
+          getTweetsCounter : getLoadTweetsCounter, incrementTweetsCounter: incrementLoadTweetsCounter,
+          filterModel : filterModel);
 
       if (!mounted) {
         return;
@@ -98,13 +110,14 @@ class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveCl
               error: _pagingController.error[0],
               stackTrace: _pagingController.error[1],
               prefix: L10n.of(context).unable_to_load_the_tweets,
-              onRetry: () => _loadTweets(_pagingController.firstPageKey),
+              onRetry: () => _loadTweets(_pagingController.firstPageKey,this.filterModel
+              ),
             ),
             newPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
               error: _pagingController.error[0],
               stackTrace: _pagingController.error[1],
               prefix: L10n.of(context).unable_to_load_the_next_page_of_tweets,
-              onRetry: () => _loadTweets(_pagingController.nextPageKey),
+              onRetry: () => _loadTweets(_pagingController.nextPageKey,this.filterModel),
             ),
             noItemsFoundIndicatorBuilder: (context) {
               return Center(

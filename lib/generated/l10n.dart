@@ -2645,6 +2645,49 @@ class L10n {
     );
   }
 
+  String get tweetFilters{
+    return Intl.message(
+      'Filters',
+      name: 'tweetFilters',
+      desc: '',
+      args: [],
+    );
+  }
+  String get loadTweetCounterMaximum{
+    return Intl.message(
+      'Number of Loads',
+      name: 'loadTweetCounterMaximum',
+      desc: '',
+      args: [],
+    );
+  }
+  String get loadTweetCounterMaximumSubtitle{
+    return Intl.message(
+      'Maximum of tweet`s loads while showing less than 5 tweets',
+      name: 'loadTweetCounterMaximumSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+  String get regex{
+    return Intl.message(
+      'Regex filters',
+      name: 'regex',
+      desc: '',
+      args: [],
+    );
+  }
+  String get regexSubtitle{
+    return Intl.message(
+      "Filtr exclude tweets containing an expression. Each filter is separated by a pipe(|): "
+          +"ExampleFilter1|ExampleFilter[2-3] \n If you want to show tweets containing just your expression"
+          +", use this one :^((?!expression).)*\$",
+      name: 'regexSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
 
 }
 

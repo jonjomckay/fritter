@@ -6,6 +6,7 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:fritter/constants.dart';
 import 'package:fritter/database/entities.dart';
 import 'package:fritter/generated/l10n.dart';
+import 'package:fritter/profile/_filters.dart';
 import 'package:fritter/profile/_follows.dart';
 import 'package:fritter/profile/_saved.dart';
 import 'package:fritter/profile/_tweets.dart';
@@ -18,6 +19,8 @@ import 'package:intl/intl.dart';
 import 'package:measure_size/measure_size.dart';
 import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
+
+import '../settings/_account.dart';
 
 class ProfileScreenArguments {
   final String? id;
@@ -117,7 +120,7 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
       nestedScrollViewState.innerController.addListener(_listen);
     });
 
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(length: 7, vsync: this);
 
     var description = widget.profile.user.description;
     if (description == null || description.isEmpty) {
@@ -279,6 +282,12 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
                       Tab(
                         child: Text(
                           L10n.of(context).saved,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          L10n.of(context).tweetFilters,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -485,12 +494,13 @@ class _ProfileScreenBodyState extends State<ProfileScreenBody> with TickerProvid
               controller: _tabController,
               physics: const LessSensitiveScrollPhysics(),
               children: [
-                ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets),
-                ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets),
-                ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const []),
+                ProfileTweets(user: user, type: 'profile', includeReplies: false, pinnedTweets: widget.profile.pinnedTweets,pref: PrefService.of(context)),
+                ProfileTweets(user: user, type: 'profile', includeReplies: true, pinnedTweets: widget.profile.pinnedTweets,pref: PrefService.of(context)),
+                ProfileTweets(user: user, type: 'media', includeReplies: false, pinnedTweets: const [],pref: PrefService.of(context)),
                 ProfileFollows(user: user, type: 'following'),
                 ProfileFollows(user: user, type: 'followers'),
                 ProfileSaved(user: user),
+                Filters(user: user),
               ],
             ),
           ),

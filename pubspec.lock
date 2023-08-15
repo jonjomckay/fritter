@@ -578,10 +578,10 @@ packages:
     dependency: "direct main"
     description:
       name: logging
-      sha256: c0bbfe94d46aedf9b8b3e695cf3bd48c8e14b35e3b2c639e0aa7755d589ba946
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   matcher:
     dependency: transitive
     description:
@@ -826,10 +826,10 @@ packages:
     dependency: "direct main"
     description:
       name: pref
-      sha256: "5915ddde64c435102dce50c192a77a4fabad7b478f5e40badd233b9a5d1adcac"
+      sha256: "0d20346ebb662ac3b1bc26c5e75adf02e2646d93ac0b4e41d0cdd173d7ba298d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.0"
+    version: "2.7.1"
   process:
     dependency: transitive
     description:
