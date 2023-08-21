@@ -2687,6 +2687,22 @@ class L10n {
       args: [],
     );
   }
+  String get foryou{
+    return Intl.message(
+      "For-you",
+      name: 'foryou',
+      desc: '',
+      args: [],
+    );
+  }
+  String get clickToShowMore{
+    return Intl.message(
+      " \nClick to show more..",
+      name: 'clickToShowMore',
+      desc: '',
+      args: [],
+    );
+  }
 
 
 }

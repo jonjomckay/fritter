@@ -297,7 +297,7 @@ class Twitter {
 
             if (!FilterTweetRegEx(filterModel,tweet)) {
               replies.add(TweetChain(
-                  id: result['rest_id'],
+                  id: result['rest_id']??result['tweet']['rest_id'],
                   tweets: [tweet],
                   isPinned: isPinned));
           }
@@ -355,48 +355,21 @@ class Twitter {
 
   }
   static Future<TweetStatus> getTweet(String id, {String? cursor}) async {
-    var variables = {
-      'focalTweetId': id,
-      'referrer': 'tweet',
-      'with_rux_injections': false,
-      'includePromotedContent': true,
-      'withCommunity': true,
-      'withQuickPromoteEligibilityTweetFields': true,
-      'withBirdwatchNotes': false,
-      'withVoice': true,
-      'withV2Timeline': true
+    Map<String,Object> defaultParam = {
+      "variables":"{\"focalTweetId\":\"1696081434153214389\",\"referrer\":\"profile\",\"controller_data\":\"DAACDAABDAABCgABAAAAAAAAAAAKAAkNObspUxawBQAAAAA=\",\"with_rux_injections\":false,\"includePromotedContent\":true,\"withCommunity\":true,\"withQuickPromoteEligibilityTweetFields\":true,\"withBirdwatchNotes\":true,\"withVoice\":true,\"withV2Timeline\":true}",
+      "features":"{\"rweb_lists_timeline_redesign_enabled\":true,\"responsive_web_graphql_exclude_directive_enabled\":true,\"verified_phone_label_enabled\":false,\"creator_subscriptions_tweet_preview_api_enabled\":true,\"responsive_web_graphql_timeline_navigation_enabled\":true,\"responsive_web_graphql_skip_user_profile_image_extensions_enabled\":false,\"tweetypie_unmention_optimization_enabled\":true,\"responsive_web_edit_tweet_api_enabled\":true,\"graphql_is_translatable_rweb_tweet_is_translatable_enabled\":true,\"view_counts_everywhere_api_enabled\":true,\"longform_notetweets_consumption_enabled\":true,\"responsive_web_twitter_article_tweet_consumption_enabled\":false,\"tweet_awards_web_tipping_enabled\":false,\"freedom_of_speech_not_reach_fetch_enabled\":true,\"standardized_nudges_misinfo\":true,\"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled\":true,\"longform_notetweets_rich_text_read_enabled\":true,\"longform_notetweets_inline_media_enabled\":true,\"responsive_web_media_download_video_enabled\":false,\"responsive_web_enhance_cards_enabled\":false}",
+      "fieldToggles":"{\"withArticleRichContentState\":false}"
     };
 
+    Map<String, dynamic> variables=json.decode(defaultParam["variables"].toString());
+    variables["focalTweetId"]=id;
     if (cursor != null) {
       variables['cursor'] = cursor;
     }
+    defaultParam["variables"]=json.encode(variables);
 
     var response =
-    await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/3XDB26fBve-MmjHaWTUZxA/TweetDetail', {
-      'variables': jsonEncode(variables),
-      'features': jsonEncode({
-        'rweb_lists_timeline_redesign_enabled': true,
-        'responsive_web_graphql_exclude_directive_enabled': true,
-        'verified_phone_label_enabled': false,
-        'creator_subscriptions_tweet_preview_api_enabled': true,
-        'responsive_web_graphql_timeline_navigation_enabled': true,
-        'responsive_web_graphql_skip_user_profile_image_extensions_enabled': false,
-        'tweetypie_unmention_optimization_enabled': true,
-        'responsive_web_edit_tweet_api_enabled': true,
-        'graphql_is_translatable_rweb_tweet_is_translatable_enabled': true ,
-        'view_counts_everywhere_api_enabled': true ,
-        'longform_notetweets_consumption_enabled': true ,
-        'responsive_web_twitter_article_tweet_consumption_enabled': false,
-        'tweet_awards_web_tipping_enabled': false,
-        'freedom_of_speech_not_reach_fetch_enabled': true ,
-        'standardized_nudges_misinfo': true ,
-        'tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled': true ,
-        'longform_notetweets_rich_text_read_enabled': true ,
-        'longform_notetweets_inline_media_enabled': true ,
-        'responsive_web_media_download_video_enabled': false,
-        'responsive_web_enhance_cards_enabled': false,
-      }),
-    }));
+    await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/3XDB26fBve-MmjHaWTUZxA/TweetDetail', defaultParam));
 
     var result = json.decode(response.body);
 
@@ -473,6 +446,40 @@ class Twitter {
 
     return List.from(jsonDecode(result)).map((e) => Trends.fromJson(e)).toList(growable: false);
   }
+  static Future<TweetStatus> getTimelineTweets(String id, String type, List<String> pinnedTweets,
+      {int count = 10, String? cursor, bool includeReplies = true,
+        bool includeRetweets = true, required int Function() getTweetsCounter,
+        required void Function() incrementTweetsCounter, required FilterModel filterModel}) async {
+    bool showPinnedTweet=true;
+    var query = {
+      ...defaultParams,
+      'include_tweet_replies': includeReplies ? '1' : '0',
+      'include_want_retweets': includeRetweets ? '1' : '0', // This may not actually do anything
+      'count': count.toString(),
+    };
+    Map<String,Object> defaultUserTweetsParam=
+    {
+      "variables":"{\"userId\":\"160534877\",\"count\":20,\"includePromotedContent\":true,\"withQuickPromoteEligibilityTweetFields\":true,\"withVoice\":true,\"withV2Timeline\":true}",
+      "features":"{\"rweb_lists_timeline_redesign_enabled\":true,\"responsive_web_graphql_exclude_directive_enabled\":true,\"verified_phone_label_enabled\":false,\"creator_subscriptions_tweet_preview_api_enabled\":true,\"responsive_web_graphql_timeline_navigation_enabled\":true,\"responsive_web_graphql_skip_user_profile_image_extensions_enabled\":false,\"tweetypie_unmention_optimization_enabled\":true,\"responsive_web_edit_tweet_api_enabled\":true,\"graphql_is_translatable_rweb_tweet_is_translatable_enabled\":true,\"view_counts_everywhere_api_enabled\":true,\"longform_notetweets_consumption_enabled\":true,\"responsive_web_twitter_article_tweet_consumption_enabled\":false,\"tweet_awards_web_tipping_enabled\":false,\"freedom_of_speech_not_reach_fetch_enabled\":true,\"standardized_nudges_misinfo\":true,\"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled\":true,\"longform_notetweets_rich_text_read_enabled\":true,\"longform_notetweets_inline_media_enabled\":true,\"responsive_web_media_download_video_enabled\":false,\"responsive_web_enhance_cards_enabled\":false}",
+      "fieldToggles":"{\"withAuxiliaryUserLabels\":false,\"withArticleRichContentState\":false}"
+    };
+
+    Map<String, dynamic> variables=json.decode(defaultUserTweetsParam["variables"].toString());
+    variables["userId"]=id;
+    if (cursor != null) {
+      variables['cursor'] = cursor;
+    }
+    variables['count'] = count;
+    defaultUserTweetsParam["variables"]=json.encode(variables);
+
+    var response = await _twitterApi.client.get(Uri.https('twitter.com', 'i/api/graphql/W4Tpu1uueTGK53paUgxF0Q/HomeTimeline', defaultUserTweetsParam));
+    var result = json.decode(response.body);
+    //if this page is not first one on the profile page, dont add pinned tweet
+    if(variables['cursor'] != null)
+      showPinnedTweet=false;
+    return createTimelineChains(result, 'tweet', pinnedTweets, includeReplies == false,
+        includeReplies,showPinnedTweet,getTweetsCounter,incrementTweetsCounter,filterModel:filterModel);
+  }
   static Future<TweetStatus> getTweets(String id, String type, List<String> pinnedTweets,
       {int count = 10, String? cursor, bool includeReplies = true,
         bool includeRetweets = true, required int Function() getTweetsCounter,
@@ -498,6 +505,7 @@ class Twitter {
     }
     variables['count'] = count;
     defaultUserTweetsParam["variables"]=json.encode(variables);
+
     var response = await _twitterApi.client.get(Uri.https('twitter.com', '/i/api/graphql/2GIWTr7XwadIixZDtyXd4A/UserTweets', defaultUserTweetsParam));
     var result = json.decode(response.body);
     //if this page is not first one on the profile page, dont add pinned tweet
@@ -589,6 +597,52 @@ class Twitter {
     return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
   }
 
+  static TweetStatus createTimelineChains(
+      Map<String, dynamic> result, String tweetIndicator, List<String> pinnedTweets,
+      bool mapToThreads, bool includeReplies,bool showPinnedTweet, int Function() getTweetsCounter,
+      void Function() increaseTweetCounter, {required FilterModel filterModel}
+      ) {
+    var instructions = List.from(result["data"]["home"]["home_timeline_urt"]['instructions']);
+    var addEntriesInstructions = instructions.firstWhereOrNull((e) => e['type'] == 'TimelineAddEntries');
+    if (addEntriesInstructions == null) {
+      return TweetStatus(chains: [], cursorBottom: null, cursorTop: null);
+    }
+    var addPinnedTweetsInstructions = instructions.firstWhereOrNull((e) => e['type'] == 'TimelinePinEntry');
+    var addEntries = List.from(addEntriesInstructions['entries']);
+    var repEntries = List.from(instructions.where((e) => e['type'] == 'TimelineReplaceEntry'));
+    List addPinnedEntries = List<dynamic>.empty(growable: true);
+    if (addPinnedTweetsInstructions != null) {
+      addPinnedEntries.add(addPinnedTweetsInstructions['entry'] ?? null);
+    }
+
+    String? cursorBottom = getCursor(addEntries, repEntries, 'cursor-bottom', 'Bottom');
+    String? cursorTop = getCursor(addEntries, repEntries, 'cursor-top', 'Top');
+    var chains = createTweets(addEntries,filterModel);
+    // var debugTweets = json.encode(chains);
+    //var debugTweets2 = json.encode(addEntries);
+    var pinnedChains =createTweets(addPinnedEntries,filterModel,true);
+
+
+    // Order all the conversations by newest first (assuming the ID is an incrementing key),
+    // and create a chain from them
+    chains.sort((a, b){
+      return  b.id!.compareTo(a.id!);});
+
+    //If we want to show pinned tweets, add them before the others that we already have
+    if (pinnedTweets.isNotEmpty & showPinnedTweet) {
+      chains.insertAll(0, pinnedChains);
+    }
+    //To prevent infinte loading of tweets while filtering via regex , we have to count added tweets.
+    //(infinite loading originating in paged_silver_builder.dart at line 246)
+    if(chains.length < 5)
+      increaseTweetCounter();
+    //As soon as there is no tweet left that passes regex critera and we also reached maximum attemps
+    //to find them, than stop loading more.
+    if(chains.length <= 5 && getTweetsCounter()>filterModel.GetLoadTweetsCounter()) {
+      cursorBottom=null;
+    }
+    return TweetStatus(chains: chains, cursorBottom: cursorBottom, cursorTop: cursorTop);
+  }
   static Future<List<UserWithExtra>> getUsers(Iterable<String> ids) async {
     // Split into groups of 100, as the API only supports that many at a time
     List<Future<List<UserWithExtra>>> futures = [];
@@ -665,7 +719,7 @@ class TweetWithCard extends Tweet {
     var tweetWithCard = TweetWithCard();
     tweetWithCard.idStr = '';
     tweetWithCard.isTombstone = true;
-    tweetWithCard.text = ((e['richText']?['text'] ?? e['text'] ?? L10n.current.this_tweet_is_unavailable) as String)
+    tweetWithCard.text = ((e['richText']?['text'] ?? e['text']?['text'] ?? L10n.current.this_tweet_is_unavailable) as String)
         .replaceFirst(' Learn more', '');
 
     return tweetWithCard;
@@ -716,7 +770,18 @@ class TweetWithCard extends Tweet {
   }
 
   factory TweetWithCard.fromGraphqlJson(Map<String, dynamic> result) {
-    var retweetedStatus = result['legacy']['retweeted_status_result'] == null ? null : TweetWithCard.fromGraphqlJson(result['legacy']['retweeted_status_result']['result']);
+    var retweetedStatus;
+     // if(result['tweet']!= null){
+     //   int a=1;
+     // }
+    if(result['tweet']!= null)
+      result=result['tweet'];
+    else if(result['legacy']?['retweeted_status_result']?['result']!=null) {
+      retweetedStatus=TweetWithCard.fromGraphqlJson(result['legacy']['retweeted_status_result']['result']);
+    }
+    else {
+      retweetedStatus=null;
+    }
     var quotedStatus = result['quoted_status_result'] == null ||
         result['quoted_status_result']['result']["__typename"]=="TweetWithVisibilityResults" ? null : TweetWithCard.fromGraphqlJson(result['quoted_status_result']['result']);
     var resCore = result['core']?['user_results']?['result'];
@@ -729,7 +794,10 @@ class TweetWithCard extends Tweet {
       noteText = noteResult['text'];
       noteEntities = Entities.fromJson(noteResult['entity_set']);
     }
-
+    if(result['tombstone'] != null){
+      TweetWithCard tweet = TweetWithCard.tombstone(result['tombstone']);
+      return tweet;
+    }
     TweetWithCard tweet = TweetWithCard.fromData(result['legacy'], noteText, noteEntities, user, retweetedStatus, quotedStatus);
     if (tweet.card == null && result['card']?['legacy'] != null) {
       tweet.card = result['card']['legacy'];
