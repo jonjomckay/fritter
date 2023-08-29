@@ -39,6 +39,10 @@ const optionUserTrendsLocations = 'trends.locations';
 
 const optionNonConfirmationBiasMode = 'other.improve_non_confirmation_bias';
 
+const optionPasswordTwitterAcc = 'passwordTwitterAcc';
+const optionLoginNameTwitterAcc = 'loginNameTwitterAcc';
+const optionEmailTwitterAcc = 'emailTwitterAcc';
+
 const routeHome = '/';
 const routeGroup = '/group';
 const routeProfile = '/profile';

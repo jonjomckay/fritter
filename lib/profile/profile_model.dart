@@ -15,7 +15,6 @@ class ProfileModel extends StreamStore<Object, Profile> {
   Future<void> loadProfileById(String id) async {
     await execute(() async => await Twitter.getProfileById(id));
   }
-
   Future<void> loadProfileByScreenName(String screenName) async {
     await execute(() async => await Twitter.getProfileByScreenName(screenName));
   }
