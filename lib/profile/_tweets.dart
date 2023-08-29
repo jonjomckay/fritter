@@ -103,8 +103,8 @@ class _ProfileTweetsState extends State<ProfileTweets> with AutomaticKeepAliveCl
           addAutomaticKeepAlives: false,
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (context, chain, index) {
-              return TweetConversation(
-                  id: chain.id, tweets: chain.tweets, username: widget.user.screenName!, isPinned: chain.isPinned);
+              return TweetConversation(id: chain.id, tweets: chain.tweets,
+                  username: widget.user.screenName!, isPinned: chain.isPinned);
             },
             firstPageErrorIndicatorBuilder: (context) => FullPageErrorWidget(
               error: _pagingController.error[0],
