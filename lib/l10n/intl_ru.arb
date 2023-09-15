@@ -466,5 +466,17 @@
   "pick_an_icon": "Выберите иконку!",
   "@pick_an_icon": {},
   "activate_non_confirmation_bias_mode_description": "Скрывайте авторов твитов. Избегайте предубеждения подтверждения, основанного на авторитетных аргументах.",
-  "@activate_non_confirmation_bias_mode_description": {}
+  "@activate_non_confirmation_bias_mode_description": {},
+  "missing_page": "Отсутствуящая страница",
+  "@missing_page": {},
+  "unsupported_url": "Неподдерживаемый URL",
+  "@unsupported_url": {},
+  "next": "Дальше",
+  "@next": {},
+  "finish": "Завершить",
+  "@finish": {},
+  "only_public_subscriptions_can_be_imported": "Подписки могут быть импортированы только из открытых профилей",
+  "@only_public_subscriptions_can_be_imported": {},
+  "saved_tweet_too_large": "Этот сохраненный твит не может быть отображен, ибо он слишком большой для загрузки. Пожалуйста, свяжитесь с разработчиком.",
+  "@saved_tweet_too_large": {}
 }
