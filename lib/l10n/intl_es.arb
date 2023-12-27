@@ -291,7 +291,7 @@
   "@imported_snapshot_data_users_so_far": {},
   "import_from_twitter": "Importar desde Twitter",
   "@import_from_twitter": {},
-  "ended_timeago_format_endsAt_allowFromNow_true": "Finalizado",
+  "ended_timeago_format_endsAt_allowFromNow_true": "Finalizado {timeagoFormat}",
   "@ended_timeago_format_endsAt_allowFromNow_true": {},
   "unable_to_load_the_trends_for_widget_place_name": "No se pueden cargar las tendencias de {widgetPlaceName}",
   "@unable_to_load_the_trends_for_widget_place_name": {},
