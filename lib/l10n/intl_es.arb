@@ -93,7 +93,7 @@
   "@no_results_for": {},
   "activate_non_confirmation_bias_mode_description": "Ocultar autores de tuits.  Evite el sesgo de confirmación basado en argumentos de autoridad.",
   "@activate_non_confirmation_bias_mode_description": {},
-  "the_github_issue": "el issue #143 en GitHub",
+  "the_github_issue": "reporte #143 en GitHub",
   "@the_github_issue": {},
   "search": "Búsqueda",
   "@search": {},
@@ -272,5 +272,17 @@
   "pick_a_color": "¡Elige un color!",
   "@pick_a_color": {},
   "contribute": "Contribuir",
-  "@contribute": {}
+  "@contribute": {},
+  "unable_to_import": "No fue posible importar",
+  "@unable_to_import": {},
+  "your_profile_must_be_public_otherwise_the_import_will_not_work": "Tu perfil debe ser público, de otra forma no podemos importar la información",
+  "@your_profile_must_be_public_otherwise_the_import_will_not_work": {},
+  "username": "Nombre de usuario",
+  "@username": {},
+  "no_subscriptions_try_searching_or_importing_some": "No hay suscripciones. ¡Intenta con la búsqueda o importando algunas!",
+  "@no_subscriptions_try_searching_or_importing_some": {},
+  "selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": "¡La selección de cuentas individuales para importar y la asignación de grupos ya están planificadas para el futuro!",
+  "@selecting_individual_accounts_to_import_and_assigning_groups_are_both_planned_for_the_future_already": {},
+  "enter_your_twitter_username": "Ingresa tu usuario de Twitter",
+  "@enter_your_twitter_username": {}
 }
