@@ -130,5 +130,15 @@
   "could_not_find_any_tweets_by_this_user": "Không thể tìm thấy bất kỳ tweet nào của người dùng này!",
   "@could_not_find_any_tweets_by_this_user": {},
   "subtitles": "Phụ đề",
-  "@subtitles": {}
+  "@subtitles": {},
+  "data_imported_successfully": "Nhập dữ liệu thành công",
+  "@data_imported_successfully": {},
+  "export_tweets": "Xuất tweets?",
+  "@export_tweets": {},
+  "export_subscription_groups": "Xuất các nhóm đăng ký",
+  "@export_subscription_groups": {},
+  "export_subscription_group_members": "Xuất thành viên các nhóm đăng ký?",
+  "@export_subscription_group_members": {},
+  "export_subscriptions": "Xuất các đăng ký",
+  "@export_subscriptions": {}
 }
