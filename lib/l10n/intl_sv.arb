@@ -282,5 +282,7 @@
   "subtitles": "Undertitlar",
   "@subtitles": {},
   "contribute": "Bidra",
-  "@contribute": {}
+  "@contribute": {},
+  "include_retweets": "Inkludera retweets",
+  "@include_retweets": {}
 }
