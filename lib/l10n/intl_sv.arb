@@ -330,5 +330,7 @@
   "share_tweet_link": "Dela tweetens länk",
   "@share_tweet_link": {},
   "share_tweet_content_and_link": "Dela tweetens innehåll och länk",
-  "@share_tweet_content_and_link": {}
+  "@share_tweet_content_and_link": {},
+  "timed_out_trying_to_send_the_ping": "Tidsgränsen nåddes när försöket till pingning utfördes 😢",
+  "@timed_out_trying_to_send_the_ping": {}
 }
