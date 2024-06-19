@@ -478,5 +478,13 @@
   "choose_pages": "Pilih halaman",
   "@choose_pages": {},
   "missing_page": "Halaman hilang",
-  "@missing_page": {}
+  "@missing_page": {},
+  "next": "Berikutnya",
+  "@next": {},
+  "finish": "Selesai",
+  "@finish": {},
+  "mute_videos": "Bisukan video",
+  "@mute_videos": {},
+  "mute_video_description": "Bila secara baku video akan diputar bisu",
+  "@mute_video_description": {}
 }
