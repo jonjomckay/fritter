@@ -11,6 +11,8 @@ import 'package:fritter/settings/_theme.dart';
 import 'package:fritter/utils/legacy.dart';
 import 'package:package_info/package_info.dart';
 
+import '_account.dart';
+
 class SettingsScreen extends StatefulWidget {
   final String? initialPage;
 
@@ -48,6 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       NavigationPage('home', (c) => L10n.of(c).home, Icons.home),
       NavigationPage('theme', (c) => L10n.of(c).theme, Icons.format_paint),
       NavigationPage('data', (c) => L10n.of(c).data, Icons.storage),
+      NavigationPage('account', (c) => L10n.of(c).account, Icons.account_box_sharp),
       NavigationPage('about', (c) => L10n.of(c).about, Icons.help),
     ];
 
@@ -65,6 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SettingsHomeFragment(),
           const SettingsThemeFragment(),
           SettingsDataFragment(legacyExportPath: _legacyExportPath),
+          const SettingsAccountFragment(),
           SettingsAboutFragment(appVersion: appVersion)
         ];
       },

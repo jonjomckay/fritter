@@ -19,6 +19,11 @@ import 'package:pref/pref.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_bottom_navigation_bar/scroll_bottom_navigation_bar.dart';
 
+import '../forYou/_tweets.dart';
+import '../forYou/foryou.dart';
+import '../profile/profile.dart';
+import '../profile/profile_model.dart';
+
 typedef NavigationTitleBuilder = String Function(BuildContext context);
 
 class NavigationPage {
@@ -48,6 +53,7 @@ final List<NavigationPage> defaultHomePages = [
   NavigationPage('subscriptions', (c) => L10n.of(c).subscriptions, Icons.subscriptions),
   NavigationPage('groups', (c) => L10n.of(c).groups, Icons.group),
   NavigationPage('trending', (c) => L10n.of(c).trending, Icons.trending_up),
+  NavigationPage('foryou', (c) => L10n.of(c).foryou, Icons.person),
   NavigationPage('saved', (c) => L10n.of(c).saved, Icons.bookmark),
 ];
 
@@ -86,10 +92,7 @@ class _HomeScreenState extends State<_HomeScreen> {
   }
 
   void _buildPages(List<HomePage> state) {
-    var pages = state
-        .where((element) => element.selected)
-        .map((e) => e.page)
-        .toList();
+    var pages = state.where((element) => element.selected).map((e) => e.page).toList();
 
     if (widget.prefs.getKeys().contains(optionHomeInitialTab)) {
       _initialPage = max(0, pages.indexWhere((element) => element.id == widget.prefs.get(optionHomeInitialTab)));
@@ -105,38 +108,45 @@ class _HomeScreenState extends State<_HomeScreen> {
     return ScopedBuilder<HomeModel, Object, List<HomePage>>.transition(
         store: widget.model,
         onError: (_, e) => ScaffoldErrorWidget(
-          prefix: L10n.current.unable_to_load_home_pages,
-          error: e,
-          stackTrace: null,
-          onRetry: () async => await widget.model.resetPages(),
-          retryText: L10n.current.reset_home_pages,
-        ),
+              prefix: L10n.current.unable_to_load_home_pages,
+              error: e,
+              stackTrace: null,
+              onRetry: () async => await widget.model.resetPages(),
+              retryText: L10n.current.reset_home_pages,
+            ),
         onLoading: (_) => const Center(child: CircularProgressIndicator()),
         onState: (_, state) {
-          return ScaffoldWithBottomNavigation(pages: _pages, initialPage: _initialPage, builder: (scrollController) {
-            return [
-              ..._pages.map((e) {
-                if (e.id.startsWith('group-')) {
-                  return SubscriptionGroupScreen(scrollController: scrollController, id: e.id.replaceAll('group-', ''), actions: createCommonAppBarActions(context));
-                }
+          return ScaffoldWithBottomNavigation(
+              pages: _pages,
+              initialPage: _initialPage,
+              builder: (scrollController) {
+                return [
+                  ..._pages.map((e) {
+                    if (e.id.startsWith('group-')) {
+                      return SubscriptionGroupScreen(
+                          scrollController: scrollController,
+                          id: e.id.replaceAll('group-', ''),
+                          actions: createCommonAppBarActions(context));
+                    }
 
-                switch (e.id) {
-                  case 'subscriptions':
-                    return const SubscriptionsScreen();
-                  case 'groups':
-                    return GroupsScreen(scrollController: scrollController);
-                  case 'trending':
-                    return TrendsScreen(scrollController: scrollController);
-                  case 'saved':
-                    return SavedScreen(scrollController: scrollController);
-                  default:
-                    return const MissingScreen();
-                }
-              })
-            ];
-          });
-        }
-    );
+                    switch (e.id) {
+                      case 'subscriptions':
+                        return const SubscriptionsScreen();
+                      case 'groups':
+                        return GroupsScreen(scrollController: scrollController);
+                      case 'trending':
+                        return TrendsScreen(scrollController: scrollController);
+                      case 'foryou':
+                       return ForYouScreen();
+                      case 'saved':
+                        return SavedScreen(scrollController: scrollController);
+                      default:
+                        return const MissingScreen();
+                    }
+                  })
+                ];
+              });
+        });
   }
 }
 
@@ -145,7 +155,8 @@ class ScaffoldWithBottomNavigation extends StatefulWidget {
   final int initialPage;
   final List<Widget> Function(ScrollController scrollController) builder;
 
-  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.initialPage, required this.builder}) : super(key: key);
+  const ScaffoldWithBottomNavigation({Key? key, required this.pages, required this.initialPage, required this.builder})
+      : super(key: key);
 
   @override
   State<ScaffoldWithBottomNavigation> createState() => _ScaffoldWithBottomNavigationState();
@@ -230,10 +241,7 @@ class _ScaffoldWithBottomNavigationState extends State<ScaffoldWithBottomNavigat
         controller: scrollController,
         showUnselectedLabels: true,
         items: [
-          ..._pages.map((e) => BottomNavigationBarItem(
-              icon: Icon(e.icon, size: 22),
-              label: e.titleBuilder(context)
-          ))
+          ..._pages.map((e) => BottomNavigationBarItem(icon: Icon(e.icon, size: 22), label: e.titleBuilder(context)))
         ],
       ),
     );
