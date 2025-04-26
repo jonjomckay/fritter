@@ -205,7 +205,7 @@
   "@use_true_black_for_the_dark_mode_theme": {},
   "data": "தகவல்கள்",
   "@data": {},
-  "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": "கோப்பு இல்லை. இது {FilePath} இல் அமைந்துள்ளது என்பதை உறுதிப்படுத்தவும்",
+  "the_file_does_not_exist_please_ensure_it_is_located_at_file_path": "கோப்பு இல்லை. இது {filePath} இல் அமைந்துள்ளது என்பதை உறுதிப்படுத்தவும்",
   "@the_file_does_not_exist_please_ensure_it_is_located_at_file_path": {},
   "your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from": "உங்கள் சாதனம் கிட்காட் (4.4) ஐ விட பழைய ஆண்ட்ராய்டு பதிப்பை இயக்குகிறது, எனவே தரவை மட்டுமே இறக்குமதி செய்ய முடியும்:",
   "@your_device_is_running_a_version_of_android_older_than_kitKat_so_data_can_only_be_imported_from": {},
